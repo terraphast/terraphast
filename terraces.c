@@ -52,7 +52,8 @@ typedef int boolean;
 int terraceAnalysis(
 		    const size_t numberOfSpecies, 		    
 		    const size_t numberOfPartitions, 		  
-		    const unsigned char missingDataMatrix[numberOfSpecies][numberOfPartitions], 		  	    		    		    
+		    const unsigned char missingDataMatrix[numberOfSpecies][numberOfPartitions], 
+		    const char *speciesNames[numberOfSpecies],
 		    const char *newickTreeString, 		   		    
 		    const boolean countTrees,		   
 		    const boolean enumerateTrees,		 
@@ -85,7 +86,11 @@ int terraceAnalysis(
 		       binary matrix with the missing data pattern, here the idea is to use one char per species, we could also 
 		       use one bit quite evidently, but let's avoid messing with bits here, since the matrices will not be that big 
 		    */		    
-		    
+		    const char *speciesNames[numberOfSpecies],
+		    /* 
+		       array of species names to establish how they correspond to rows in the missing data matrix. 
+		       species 0 in this array corresponds to row 0 in the matrix etc. 
+		    */
 		    
 		    const char *newickTreeString, 
 		    /* 
@@ -187,6 +192,12 @@ int main (int argc, char *argv[])
   char 
     *newickString0 = "((s1,s2),s3,(s4,s5));", //tree T_0 from Fig 2 in the task specification
     *newickString1 = "((s1,s2),s4,(s3,s5))";  //tree T_1 from Fig 2 in the task sepcification 
+
+
+  //names of species in newick tree that corrspond to rows in the data matrix, i.e., position 0 in array speciesNames corresponds to 
+  //row 0 in matrix missingDataMatrix, etc. 
+  const char 
+    *speciesNames[5] = {"s1","s2","s3","s4", "s5"};
     
   const unsigned char 
     missingDataMatrix[5][2] = {{1,0},{1,0},{1,1},{0,1},{0,1}}, //missing data matrix from example in the task specification 
@@ -205,13 +216,13 @@ int main (int argc, char *argv[])
   int 
     errorCode;
 
-  if((errorCode = terraceAnalysis(5, 2, missingDataMatrix, newickString0, TRUE, TRUE, FALSE, FALSE, f0, &terraceSize0)) == TERRACE_SUCCESS) 
+  if((errorCode = terraceAnalysis(5, 2, missingDataMatrix, speciesNames, newickString0, TRUE, TRUE, FALSE, FALSE, f0, &terraceSize0)) == TERRACE_SUCCESS) 
     printf("Test 1\n");
   else
     printf("Error handling");
 
 
-  if((errorCode = terraceAnalysis(5, 2, missingDataMatrix, newickString1, TRUE, TRUE, FALSE, FALSE, f1, &terraceSize1)) == TERRACE_SUCCESS)
+  if((errorCode = terraceAnalysis(5, 2, missingDataMatrix, speciesNames, newickString1, TRUE, TRUE, FALSE, FALSE, f1, &terraceSize1)) == TERRACE_SUCCESS)
     printf("Test 2\n");
   else
     printf("Error handling");
@@ -221,8 +232,8 @@ int main (int argc, char *argv[])
   // example calling a matrix with no missing data, hence there are no terraces, or the size of all terraces is 1, or 
   // there are 15 unique trees. 
 
-  errorCode = terraceAnalysis(5, 2, noMissingDataMatrix, newickString0, TRUE, TRUE, FALSE, FALSE, f0, &terraceSize0);
-  errorCode = terraceAnalysis(5, 2, noMissingDataMatrix, newickString1, TRUE, TRUE, FALSE, FALSE, f1, &terraceSize1);
+  errorCode = terraceAnalysis(5, 2, noMissingDataMatrix, speciesNames, newickString0, TRUE, TRUE, FALSE, FALSE, f0, &terraceSize0);
+  errorCode = terraceAnalysis(5, 2, noMissingDataMatrix, speciesNames, newickString1, TRUE, TRUE, FALSE, FALSE, f1, &terraceSize1);
 
   assert(terraceSize0 == terraceSize1 && terraceSize0 == 1);
   
@@ -231,6 +242,9 @@ int main (int argc, char *argv[])
   // what should your function return if we change the data matrix to: 
   // weirdDataMatrx[6][6] = {{1,0,0,0,0,0}, {0,1,0,0,0,0}, {0,0,1,0,0,0}, {0,0,0,1,0,0}, {0,0,0,0,1,0}, {0,0,0,0,0,1}};
   // ?
+
+  const char 
+    *weirdSpeciesNames[6] = {"s1","s2","s3","s4", "s5", "s6"};
 
   const unsigned char 
     weirdDataMatrix[6][6] = {{1,1,1,1,1,1}, {0,1,0,0,0,0}, {0,0,1,0,0,0}, {0,0,0,1,0,0}, {0,0,0,0,1,0}, {0,0,0,0,0,1}};
@@ -241,7 +255,7 @@ int main (int argc, char *argv[])
   size_t
     weirdTerraceSize;
 
-  errorCode = terraceAnalysis(6, 6, weirdDataMatrix, weirdTree, TRUE, TRUE, FALSE, FALSE, f0, &weirdTerraceSize);
+  errorCode = terraceAnalysis(6, 6, weirdDataMatrix, weirdSpeciesNames, weirdTree, TRUE, TRUE, FALSE, FALSE, f0, &weirdTerraceSize);
 
 
   printf("%zu \n", weirdTerraceSize);
