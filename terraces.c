@@ -56,7 +56,8 @@ typedef int boolean;
 
 /**
    print unrooted trees on terrace to file
-   @TODO: should TA_NUMERATE automatically imply TA_COUNT?
+   @TODO: should TA_ENUMERATE automatically imply TA_COUNT?
+   @TODO: Yes it should!
 */
 #define TA_ENUMERATE          2
 
@@ -65,6 +66,7 @@ typedef int boolean;
    because we can brake off, as soon as we have found that thera are at least two trees
    on the terrace. 
    @TODO: how the output should look like in this case?
+   @TODO: return any integer in terraceSize large than 1 if the tree is on a terrace 
 */
 #define TA_DETECT             4
 
@@ -81,7 +83,7 @@ int terraceAnalysis(
 		    const unsigned char missingDataMatrix[numberOfSpecies][numberOfPartitions], 
 		    const char *speciesNames[numberOfSpecies],
 		    const char *newickTreeString,
-            const int ta_outspec,
+		    const int ta_outspec,
 		    FILE *allTreesOnTerrace,
 		    size_t *terraceSize		   
 		    );
@@ -132,7 +134,8 @@ int terraceAnalysis(
 		    FILE *allTreesOnTerrace,
 		    
 		    /**< [out]
-		       output file for unrooted tree enumeration. Trees should be displayed in standard unrooted Newick format, and you should print one tree 
+		       output file for unrooted tree enumeration. Trees should be displayed in standard unrooted Newick format, 
+		       and you should print one tree 
 		       per line. 
 		    */
 
@@ -148,10 +151,11 @@ int terraceAnalysis(
   
   *terraceSize = 0;
 
-  const boolean countTrees = (ta_outspec & TA_COUNT) != 0;
-  const boolean enumerateTrees = (ta_outspec & TA_ENUMERATE) != 0;
-  const boolean treeIsOnTerrace = (ta_outspec & TA_DETECT) != 0;
-  const boolean enumerateCompressedTrees = (ta_outspec & TA_ENUMERATE_COMPRESS) != 0;
+  const boolean 
+    countTrees = (ta_outspec & TA_COUNT) != 0,
+    enumerateTrees = (ta_outspec & TA_ENUMERATE) != 0,
+    treeIsOnTerrace = (ta_outspec & TA_DETECT) != 0,
+    enumerateCompressedTrees = (ta_outspec & TA_ENUMERATE_COMPRESS) != 0;
 
   /* some basic error checking, please extend this, see error codes at the end of this function */
   
@@ -162,7 +166,7 @@ int terraceAnalysis(
       if(!(missingDataMatrix[i][j] == 0 || missingDataMatrix[i][j] == 1))
 	return TERRACE_MATRIX_ERROR;
 
-  if(enumerateTrees && allTreesOnTerrace == (FILE*)NULL)
+  if((enumerateTrees || enumerateCompressedTrees) && allTreesOnTerrace == (FILE*)NULL)
     return TERRACE_OUTPUT_FILE_ERROR;
 
   /* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
