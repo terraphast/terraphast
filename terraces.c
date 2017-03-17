@@ -1,6 +1,6 @@
-/* 
-
-terraces framework and interface definition by Alexandros Stamatakis released under GNU GPL 
+/**
+@file
+@brief terraces framework and interface definition by Alexandros Stamatakis released under GNU GPL
 
 Alexandros.Stamatakis@gmail.com
 
@@ -47,6 +47,32 @@ Alexandros.Stamatakis@gmail.com
 
 typedef int boolean;
 
+/* Argument to control output of terraceAnalysis function (ta_outspec) */
+
+/** 
+    count unrooted trees on terrace
+*/
+#define TA_COUNT              1
+
+/**
+   print unrooted trees on terrace to file
+   @TODO: should TA_NUMERATE automatically imply TA_COUNT?
+*/
+#define TA_ENUMERATE          2
+
+/**
+   just detect if the tree is on a terrace. this should run much quicker than TA_COUNT or TA_ENUMERATE,
+   because we can brake off, as soon as we have found that thera are at least two trees
+   on the terrace. 
+   @TODO: how the output should look like in this case?
+*/
+#define TA_DETECT             4
+
+/**
+   print trees on a terrace in compressed form using some external binary tree compression tool.
+   optional, does not need to be implemented, only if you want to. 
+*/
+#define TA_ENUMERATE_COMPRESS 8
 
 
 int terraceAnalysis(
@@ -54,87 +80,65 @@ int terraceAnalysis(
 		    const size_t numberOfPartitions, 		  
 		    const unsigned char missingDataMatrix[numberOfSpecies][numberOfPartitions], 
 		    const char *speciesNames[numberOfSpecies],
-		    const char *newickTreeString, 		   		    
-		    const boolean countTrees,		   
-		    const boolean enumerateTrees,		 
-		    const boolean treeIsOnTerrace,		   
-		    const boolean enumerateCompressedTrees,		    				    
-		    FILE *allTreesOnTerrace,		    		 
+		    const char *newickTreeString,
+            const int ta_outspec,
+		    FILE *allTreesOnTerrace,
 		    size_t *terraceSize		   
 		    );
 
-/* 
+/**
    Function that tells us, given a tree, and a missing data matrix as well as its dimensions, if the tree is on a terrace, 
    how many trees there are on the terrace, it also prints trees on the terrace to file, if specified and might compress them as well. 
 
    We might need to change the data type of variable terraceSize that is being written in this function. Why? 
+   
+   @return TERRACE_SUCCESS on success, or an error code (see TERRACE_*) on failure
 */
 
 int terraceAnalysis(
 		    const size_t numberOfSpecies, 
-		    /* 
+		    /**< [in]
 		       number of species, i.e, number of rows in the matrix. This is denoted by n in the 
 		       task specification 
 		    */
 		    
 		    const size_t numberOfPartitions, 
-		    /* 
+		    /**< [in]
 		       number of partitions (columns) in the above matrix. This is denoted by p in the task specification
 		    */
-		    const unsigned char missingDataMatrix[numberOfSpecies][numberOfPartitions], 
-		    /* 
+
+		    const unsigned char missingDataMatrix[numberOfSpecies][numberOfPartitions],
+		    /**< [in]
 		       binary matrix with the missing data pattern, here the idea is to use one char per species, we could also 
 		       use one bit quite evidently, but let's avoid messing with bits here, since the matrices will not be that big 
 		    */		    
+
 		    const char *speciesNames[numberOfSpecies],
-		    /* 
+		    /**< [in]
 		       array of species names to establish how they correspond to rows in the missing data matrix. 
 		       species 0 in this array corresponds to row 0 in the matrix etc. 
 		    */
 		    
 		    const char *newickTreeString, 
-		    /* 
+		    /**< [in]
 		       Unrooted strictly binary phylogenetic tree, in Newick format for which we want to find out if it is on a terrace. 
 		       Denoted by T in the task specification 
 		    */
 		    
-		    const boolean countTrees,
-		    
-		    /* 
-		       return the count of unrooted trees
+		    const int ta_outspec,
+		    /**< [in] bit-masked integer as combination of TA_* constants to control the outputs
 		    */
-		    
-		    const boolean enumerateTrees,
-		    
-		    /* 
-		       print unrooted trees on terrace to file
-		    */
-		    
-		    const boolean treeIsOnTerrace,
-		    
-		    /* 
-		       just tell us if the tree is on a terrace. So if enumerateTrees and countTrees are both set to FALSE 
-		       this should run much quicker, because we can brake off, as soon as we have found that thera are at least two trees 
-		       on the terrace. 
-		    */
-		    
-		    const boolean enumerateCompressedTrees,
-		    
-		    /* 
-		       print trees on a terrace in compressed form using some external binary tree compression tool.
-		       optional, does not need to be implemented, only if you want to. 
-		    */
-		    
+
 		    FILE *allTreesOnTerrace,
 		    
-		    /* 
+		    /**< [out]
 		       output file for unrooted tree enumeration. Trees should be displayed in standard unrooted Newick format, and you should print one tree 
 		       per line. 
 		    */
 
 		    size_t *terraceSize
 
-		    /* number of unrooted trees on the terrace */
+		    /**< [out] number of unrooted trees on the terrace */
 
 		    )
 {
@@ -143,6 +147,11 @@ int terraceAnalysis(
     j = 0;
   
   *terraceSize = 0;
+
+  const boolean countTrees = (ta_outspec & TA_COUNT) != 0;
+  const boolean enumerateTrees = (ta_outspec & TA_ENUMERATE) != 0;
+  const boolean treeIsOnTerrace = (ta_outspec & TA_DETECT) != 0;
+  const boolean enumerateCompressedTrees = (ta_outspec & TA_ENUMERATE_COMPRESS) != 0;
 
   /* some basic error checking, please extend this, see error codes at the end of this function */
   
@@ -216,13 +225,13 @@ int main (int argc, char *argv[])
   int 
     errorCode;
 
-  if((errorCode = terraceAnalysis(5, 2, missingDataMatrix, speciesNames, newickString0, TRUE, TRUE, FALSE, FALSE, f0, &terraceSize0)) == TERRACE_SUCCESS) 
+  if((errorCode = terraceAnalysis(5, 2, missingDataMatrix, speciesNames, newickString0, TA_COUNT+TA_ENUMERATE, f0, &terraceSize0)) == TERRACE_SUCCESS)
     printf("Test 1\n");
   else
     printf("Error handling");
 
 
-  if((errorCode = terraceAnalysis(5, 2, missingDataMatrix, speciesNames, newickString1, TRUE, TRUE, FALSE, FALSE, f1, &terraceSize1)) == TERRACE_SUCCESS)
+  if((errorCode = terraceAnalysis(5, 2, missingDataMatrix, speciesNames, newickString1, TA_COUNT+TA_ENUMERATE, f1, &terraceSize1)) == TERRACE_SUCCESS)
     printf("Test 2\n");
   else
     printf("Error handling");
@@ -232,8 +241,8 @@ int main (int argc, char *argv[])
   // example calling a matrix with no missing data, hence there are no terraces, or the size of all terraces is 1, or 
   // there are 15 unique trees. 
 
-  errorCode = terraceAnalysis(5, 2, noMissingDataMatrix, speciesNames, newickString0, TRUE, TRUE, FALSE, FALSE, f0, &terraceSize0);
-  errorCode = terraceAnalysis(5, 2, noMissingDataMatrix, speciesNames, newickString1, TRUE, TRUE, FALSE, FALSE, f1, &terraceSize1);
+  errorCode = terraceAnalysis(5, 2, noMissingDataMatrix, speciesNames, newickString0, TA_COUNT+TA_ENUMERATE, f0, &terraceSize0);
+  errorCode = terraceAnalysis(5, 2, noMissingDataMatrix, speciesNames, newickString1, TA_COUNT+TA_ENUMERATE, f1, &terraceSize1);
 
   assert(terraceSize0 == terraceSize1 && terraceSize0 == 1);
   
@@ -255,7 +264,7 @@ int main (int argc, char *argv[])
   size_t
     weirdTerraceSize;
 
-  errorCode = terraceAnalysis(6, 6, weirdDataMatrix, weirdSpeciesNames, weirdTree, TRUE, TRUE, FALSE, FALSE, f0, &weirdTerraceSize);
+  errorCode = terraceAnalysis(6, 6, weirdDataMatrix, weirdSpeciesNames, weirdTree, TA_COUNT+TA_ENUMERATE, f0, &weirdTerraceSize);
 
 
   printf("%zu \n", weirdTerraceSize);
