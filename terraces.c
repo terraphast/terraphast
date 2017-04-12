@@ -13,6 +13,7 @@ Alexandros.Stamatakis@gmail.com
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include "input_parser.h"
 
 
 /* 
@@ -274,6 +275,18 @@ int main (int argc, char *argv[])
 
   printf("%zu \n", weirdTerraceSize);
   //result value of terraceAnalysis? 
+
+  // TODO: create a loop over all input files
+  input_data* read_data = parse_input_data("input/Allium.data");
+  char* read_tree = read_newk_tree("input/Allium.nwk");
+
+  size_t alliumTerraceSize;
+
+  // TODO: this creates a couple of warnings. Find out if we can silence them somehow.
+  terraceAnalysis(read_data->number_of_species, read_data->number_of_partitions, read_data->matrix, read_data->names, read_tree, TA_COUNT + TA_ENUMERATE, f0, &alliumTerraceSize);
+
+  free_input_data(read_data);
+  free(read_tree);
 
   return 0;
 }
