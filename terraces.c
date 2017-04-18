@@ -80,6 +80,10 @@ int terraceAnalysis(
   
   *terraceSize = 0;
 
+  printf("read_tree = %s\n", newickTreeString);
+  printf("read_names[0] = %s\n", speciesNames[0]);
+  printf("read_matrix[0] = %hhu\n", missingDataMatrix[0][0]);
+
   const boolean 
     countTrees = (ta_outspec & TA_COUNT) != 0,
     enumerateTrees = (ta_outspec & TA_ENUMERATE) != 0,
