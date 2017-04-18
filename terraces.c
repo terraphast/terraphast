@@ -288,5 +288,8 @@ int main (int argc, char *argv[])
   free_input_data(read_data);
   free(read_tree);
 
+  fclose(f0);
+  fclose(f1);
+
   return 0;
 }
