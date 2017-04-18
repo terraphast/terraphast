@@ -1,3 +1,6 @@
+#ifndef INPUT_PARSER_H
+#define INPUT_PARSER_H
+
 #include <stdlib.h>
 
 typedef struct input_data {
@@ -32,3 +35,5 @@ input_data* parse_input_data(const char* data_file);
  * @return The contents of the file.
  */
 char* read_newk_tree(const char* newk_file);
+
+#endif /* INPUT_PARSER_H */
