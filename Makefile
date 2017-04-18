@@ -19,7 +19,7 @@ terraces : $(objs)
 
 terraces.o : terraces.c
 
-input_parser.o : input_parser.c
+input_parser.o : input_parser.c input_parser.h
 
 
 clean : 
