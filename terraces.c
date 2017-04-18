@@ -207,17 +207,29 @@ int main (int argc, char *argv[])
   printf("%zu \n", weirdTerraceSize);
   //result value of terraceAnalysis? 
 
-  // TODO: create a loop over all input files
-  input_data* read_data = parse_input_data("input/Allium.data");
-  char* read_tree = read_newk_tree("input/Allium.nwk");
+  if (argc == 3) {
+    input_data* read_data = parse_input_data(argv[1]);
+    char* read_tree = read_newk_tree(argv[2]);
 
-  size_t alliumTerraceSize;
+    size_t alliumTerraceSize;
 
-  // TODO: this creates a couple of warnings. Find out if we can silence them somehow.
-  terraceAnalysis(read_data->number_of_species, read_data->number_of_partitions, read_data->matrix, read_data->names, read_tree, TA_COUNT + TA_ENUMERATE, f0, &alliumTerraceSize);
+    if (read_data != NULL && read_tree != NULL) {
+      // TODO: this creates a couple of warnings. Find out if we can silence them somehow.
+      errorCode = terraceAnalysis(read_data->number_of_species, read_data->number_of_partitions, read_data->matrix, read_data->names, read_tree, TA_COUNT + TA_ENUMERATE, f0, &alliumTerraceSize);
+      printf("%i\n", errorCode);
 
-  free_input_data(read_data);
-  free(read_tree);
+    }
+
+    if (read_data != NULL) {
+      free_input_data(read_data);
+    }
+
+    if (read_tree != NULL) {
+      free(read_tree);
+    }
+  } else {
+    printf("Specify .data and .nwk as first and second argument to analyze them.\n");
+  }
 
   fclose(f0);
   fclose(f1);
