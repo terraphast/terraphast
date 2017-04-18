@@ -16,6 +16,7 @@ Alexandros.Stamatakis@gmail.com
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdbool.h>
 
 /**
    Function that tells us, given a tree, and a missing data matrix as well as its dimensions, if the tree is on a terrace, 
@@ -84,7 +85,7 @@ int terraceAnalysis(
   printf("read_names[0] = %s\n", speciesNames[0]);
   printf("read_matrix[0] = %hhu\n", missingDataMatrix[0][0]);
 
-  const boolean 
+  const bool
     countTrees = (ta_outspec & TA_COUNT) != 0,
     enumerateTrees = (ta_outspec & TA_ENUMERATE) != 0,
     treeIsOnTerrace = (ta_outspec & TA_DETECT) != 0,

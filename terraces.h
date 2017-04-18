@@ -28,14 +28,6 @@
 #define TERRACE_OUTPUT_FILE_ERROR        -7
 /* to be extended */ 
 
-
-/* a boolean type for C */
-
-#define TRUE             1
-#define FALSE            0
-
-typedef int boolean;
-
 /* Argument to control output of terraceAnalysis function (ta_outspec) */
 
 /** 
