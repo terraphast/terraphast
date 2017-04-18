@@ -3,7 +3,7 @@
 typedef struct input_data {
 	size_t number_of_species;
 	size_t number_of_partitions;
-	unsigned char** matrix;
+	unsigned char* matrix;
 	char** names;
 } input_data;
 

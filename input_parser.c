@@ -7,7 +7,6 @@
 void free_input_data(input_data* d) {
   for (size_t i = 0; i < d->number_of_species; ++i) {
     free(d->names[i]);
-    free(d->matrix[i]);
   }
 
   free(d->names);
@@ -57,13 +56,12 @@ input_data* parse_input_data(const char* data_file) {
   if (result != NULL) {
     fscanf(f, "%zu %zu", &(result->number_of_species), &(result->number_of_partitions));
 
-    result->matrix = (unsigned char**)malloc(sizeof(unsigned char*) * result->number_of_species);
+    result->matrix = (unsigned char*)malloc(sizeof(unsigned char) * result->number_of_species * result->number_of_partitions);
     result->names = (char**)malloc(sizeof(char*) * result->number_of_species);
 
     for (size_t s = 0; s < result->number_of_species; ++s) {
-      result->matrix[s] = (unsigned char*)malloc(sizeof(unsigned char) * result->number_of_partitions);
       for (size_t p = 0; p < result->number_of_partitions; ++p) {
-	fscanf(f, "%1hhu", &result->matrix[s][p]);
+	fscanf(f, "%1hhu", &result->matrix[s * result->number_of_partitions + p]);
       }
 
       // discard one (whitespace)
