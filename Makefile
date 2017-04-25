@@ -8,7 +8,7 @@ LIBRARIES = -lm
 
 RM = rm -f
 
-objs    = terraces.o
+objs    = terraces.o input_parser.o
 
 all : terraces
 
@@ -18,6 +18,8 @@ terraces : $(objs)
 	$(CC) -o terraces $(objs) $(LIBRARIES) 
 
 terraces.o : terraces.c
+
+input_parser.o : input_parser.c input_parser.h
 
 
 clean : 
