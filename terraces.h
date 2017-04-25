@@ -2,6 +2,7 @@
 #define TERRACES_H
 
 #include <stdio.h>
+#include <stdbool.h>
 
 /* 
    Error Codes
@@ -57,12 +58,99 @@
 */
 #define TA_ENUMERATE_COMPRESS 8
 
+// data type containing data to be passed to the algorithm we want to implement 
+
+typedef struct
+{
+  size_t numberOfSpecies;
+  size_t numberOfPartitions;
+  unsigned char *missingDataMatrix;
+  char **speciesNames;
+  bool allocatedNameArray; 
+} missingData; 
+
+
+/**
+ * Initialize missing data data type 
+ *
+ * @param numberOfSpecies number of species in dataset 
+ *
+ * @param numberOfPartitions number of partitions in dataset 
+ *
+ * @param speciesNames list of species names in dataset, first entry correpsonds to first row in missingDataMatrix etc. 
+ * 
+ * @return poitner to missing data data structure 
+ */
+
+missingData * initializeMissingData(size_t numberOfSpecies, size_t numberOfPartitions, const char **speciesNames);
+
+
+/**
+ * Free missing data data structure 
+ * 
+ * @param m pointer to missing data data structure 
+ */
+
+void freeMissingData(missingData *m);
+
+/**
+ * set entry in missing data matrix 
+ * 
+ * @param m pointer to missing data data structure 
+ * 
+ * @param speciesNumber species index 
+ *
+ * @param partitionNumber partition index 
+ * 
+ * @param value value to be set 
+ */
+
+
+void setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber, unsigned char value);
+
+
+/**
+ * get entry from missing data matrix 
+ * 
+ * @param m pointer to missing data data structure 
+ * 
+ * @param speciesNumber species index 
+ *
+ * @param partitionNumber partition index 
+ * 
+ * @return the value at the specified matrix position 
+ */
+
+unsigned char getDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber);
+
+
+/**
+ * copy one dimensional array containing the missing data matrix to the matrix in the missing data data type
+ * 
+ * @param matrix one-dimensional 
+ * 
+ * @param m pointer to missing data data structure 
+ * 
+ */
+
+void copyDataMatrix(unsigned char *matrix, missingData *m);
+
+/**
+ * terrace analysis algorithm 
+ * 
+ * @param m missing data data structure 
+ * 
+ * @param newickTreeString tree in Newick format
+ * 
+ * @param ta_outspec bit mask for specifying what the algorithm shall calculate 
+ * 
+ * @param allTreesOnTerrace file for eventually printing all trees residing on the terrace, if there is a terrace
+ * 
+ * @return error code 
+ */
 
 int terraceAnalysis(
-		    const size_t numberOfSpecies, 		    
-		    const size_t numberOfPartitions, 		  
-		    const unsigned char missingDataMatrix[numberOfSpecies][numberOfPartitions], 
-		    const char *speciesNames[numberOfSpecies],
+		    missingData *m,
 		    const char *newickTreeString,
 		    const int ta_outspec,
 		    FILE *allTreesOnTerrace,

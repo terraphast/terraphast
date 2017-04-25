@@ -4,6 +4,8 @@
 #include <string.h>
 #include <assert.h>
 
+//function to free input data 
+
 void free_input_data(input_data* d) {
   for (size_t i = 0; i < d->number_of_species; ++i) {
     free(d->names[i]);
@@ -13,6 +15,9 @@ void free_input_data(input_data* d) {
   free(d->matrix);
   free(d);
 }
+
+
+//read newick tree string from empirical input example files 
 
 char* read_newk_tree(const char* newk_file) {
   FILE *f = fopen(newk_file, "rb");
@@ -41,6 +46,9 @@ char* read_newk_tree(const char* newk_file) {
 
   return string;
 }
+
+
+//parse input data from input example files 
 
 input_data* parse_input_data(const char* data_file) {
   FILE *f = fopen(data_file, "rb");
