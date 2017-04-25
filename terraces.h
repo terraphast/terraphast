@@ -2,6 +2,7 @@
 #define TERRACES_H
 
 #include <stdio.h>
+#include <stdbool.h>
 
 /* 
    Error Codes
@@ -65,6 +66,7 @@ typedef struct
   size_t numberOfPartitions;
   unsigned char *missingDataMatrix;
   char **speciesNames;
+  bool allocatedNameArray; 
 } missingData; 
 
 

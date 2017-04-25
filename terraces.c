@@ -133,7 +133,36 @@ missingData * initializeMissingData(size_t numberOfSpecies, size_t numberOfParti
   
   m->numberOfPartitions = numberOfPartitions; 
 
-  m->speciesNames = (char **)speciesNames; 
+  //if the species names have been passed by the application programmer just set a pointer to them
+  if(speciesNames != (const char **)NULL)
+    {
+      m->speciesNames = (char **)speciesNames; 
+      m->allocatedNameArray = 0;
+    }    
+  //otherwise, we assume that species names are just indexes 
+  else
+    {
+      m->allocatedNameArray = 1;
+      m->speciesNames = (char **)malloc(sizeof(char *) * numberOfSpecies);
+      
+      size_t 
+	i;
+
+      char 
+	buffer[1024];
+      
+      for(i = 0; i < numberOfSpecies; i++)		 	  
+	{
+	  sprintf(buffer, "%zu", i);	 	        
+
+	  size_t 
+	    n = strlen(buffer);
+
+	  m->speciesNames[i] = (char *)malloc((n + 1) * sizeof(char));
+
+	  strcpy(m->speciesNames[i], buffer);
+	}
+    }
 
   m->missingDataMatrix = (unsigned char *)malloc(sizeof(unsigned char) * numberOfSpecies * numberOfPartitions);
   
@@ -145,6 +174,16 @@ missingData * initializeMissingData(size_t numberOfSpecies, size_t numberOfParti
 void freeMissingData(missingData *m)
 {
   free(m->missingDataMatrix);
+  
+  if(m->allocatedNameArray == 1)
+    {
+      size_t 
+	i;
+      for(i = 0; i < m->numberOfSpecies; i++)
+	free(m->speciesNames[i]);      
+      free(m->speciesNames);
+    }
+  
   free(m);
 }
 
