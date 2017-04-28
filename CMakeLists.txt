@@ -20,22 +20,28 @@ if(DEV_ENVIRONMENT)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 endif()
 
+# Get Libraries
+#####################################################################
+
+# TODO add proper use of GMP
+
 #####################################################################
 
 file(GLOB lib_headers "include/terraces/*.hpp")
 file(GLOB lib_sources "lib/*.cpp")
 file(GLOB lib_int_headers "lib/*.hpp")
 add_library(terraces ${lib_sources} ${lib_headers} ${lib_int_headers})
+target_link_libraries(terraces gmp gmpxx)
 
 
 file(GLOB test_headers "test/*.hpp")
 file(GLOB test_sources "test/*.cpp")
 add_executable(unittests ${test_sources} ${test_headers})
-target_link_libraries(unittests terraces)
+target_link_libraries(unittests terraces gmp gmpxx)
 add_test(NAME unittests COMMAND unittests)
 
 
 file(GLOB app_headers "app/*.hpp")
 file(GLOB app_sources "app/*.cpp")
 add_executable(app ${app_sources} ${app_headers})
-target_link_libraries(app terraces)
+target_link_libraries(app terraces gmp gmpxx)
