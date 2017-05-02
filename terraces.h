@@ -135,7 +135,7 @@ unsigned char getDataMatrix(missingData *m, size_t speciesNumber, size_t partiti
  * 
  */
 
-void copyDataMatrix(unsigned char *matrix, missingData *m);
+void copyDataMatrix(const unsigned char *matrix, missingData *m);
 
 /**
  * terrace analysis algorithm 
