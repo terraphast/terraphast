@@ -17,6 +17,8 @@ Alexandros.Stamatakis@gmail.com
 #include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
+#include <gmp.h>
+
 
 /**
    Function that tells us, given a tree, and a missing data matrix as well as its dimensions, if the tree is on a terrace, 
@@ -51,7 +53,7 @@ int terraceAnalysis(
 		       per line. 
 		    */
 
-		    size_t *terraceSize
+		    mpz_t *terraceSize
 
 		    /**< [out] number of unrooted trees on the terrace */
 
@@ -61,7 +63,7 @@ int terraceAnalysis(
     i = 0,
     j = 0;
   
-  *terraceSize = 0;
+  mpz_set_ui(*terraceSize, 0);
 
   //some debugging print outs 
 
@@ -275,9 +277,15 @@ int main (int argc, char *argv[])
   
   //variables to store the terrace size 
   
-  size_t     
+  mpz_t    
     terraceSize0,
     terraceSize1;
+
+  mpz_init(terraceSize0);
+  mpz_init(terraceSize1);
+  
+  mpz_set_ui(terraceSize0, 0);
+  mpz_set_ui(terraceSize1, 0);
 
   //error code, return value of the function you shall implement 
 
@@ -298,7 +306,7 @@ int main (int argc, char *argv[])
     printf("Error handling");
 
   //the terraces for example input trees 0 and 1 must be of the same size and equal to 15 
-  assert(terraceSize0 == terraceSize1 && terraceSize0 == 15);
+  assert((mpz_cmp(terraceSize0, terraceSize1) == 0)  && (mpz_cmp_ui(terraceSize0, 15) == 0));
     
 
   /*********************************************************************************************************************/
@@ -320,7 +328,7 @@ int main (int argc, char *argv[])
     printf("Error handling");
 
   //terrace size for both trees must be 1
-  assert(terraceSize0 == terraceSize1 && terraceSize0 == 1);
+  assert((mpz_cmp(terraceSize0, terraceSize1) == 0) && (mpz_cmp_ui(terraceSize0, 1) == 0));
 
   freeMissingData(example1);
   freeMissingData(example2);
@@ -353,8 +361,11 @@ int main (int argc, char *argv[])
   char 
     *weirdTree = "((s1,s2),(s3,s4),(s5,s6))"; 
 
-  size_t
+  mpz_t
     weirdTerraceSize;
+
+  mpz_init(weirdTerraceSize);
+  mpz_set_ui(weirdTerraceSize, 0);
 
   //initialize missing data data structure 
   missingData 
@@ -367,7 +378,14 @@ int main (int argc, char *argv[])
   else
     printf("Error handling");
 
-  printf("%zu \n", weirdTerraceSize);
+  char 
+    *weirdTerraceSizeString = (char*)NULL;
+  
+  weirdTerraceSizeString = mpz_get_str(weirdTerraceSizeString, 10, weirdTerraceSize);
+
+  printf("weird terrace size: %s\n\n", weirdTerraceSizeString); 
+
+  free(weirdTerraceSizeString); 
 
   freeMissingData(weirdExample);
   
@@ -379,7 +397,10 @@ int main (int argc, char *argv[])
       input_data* read_data = parse_input_data(argv[1]);
       char* read_tree = read_newk_tree(argv[2]);
 
-      size_t alliumTerraceSize;
+      mpz_t  
+	alliumTerraceSize;
+
+      mpz_init(alliumTerraceSize);
            
       FILE 
 	*empiricalTrees = fopen("empiricalTrees", "w");
@@ -391,8 +412,19 @@ int main (int argc, char *argv[])
 
 	  copyDataMatrix(read_data->matrix, m);
 
+	  mpz_set_ui(alliumTerraceSize, 0);
+
 	  if((errorCode = terraceAnalysis(m, read_tree, TA_COUNT + TA_ENUMERATE, empiricalTrees, &alliumTerraceSize)) == TERRACE_SUCCESS)
-	    printf("Empirical data set %s terrace size %zu \n", argv[1], alliumTerraceSize);
+	    {
+	      char 
+		*alliumTerraceSizeString = (char*)NULL;
+	      
+	      alliumTerraceSizeString = mpz_get_str(alliumTerraceSizeString, 10, alliumTerraceSize);
+	      
+	      printf("Empirical data set %s terrace size %s \n", argv[1], alliumTerraceSizeString);
+	      
+	      free(alliumTerraceSizeString); 
+	    }
 	  else
 	    printf("Error %i\n", errorCode);
 

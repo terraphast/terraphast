@@ -4,7 +4,7 @@ CC = clang
 
 CFLAGS = -O2 -fomit-frame-pointer -funroll-loops -Weverything -Wno-padded -Wno-float-equal -Wno-vla
 
-LIBRARIES = -lm
+LIBRARIES = -lm -lgmp
 
 RM = rm -f
 

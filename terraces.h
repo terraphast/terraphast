@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <gmp.h>
+
 
 /* 
    Error Codes
@@ -154,7 +156,7 @@ int terraceAnalysis(
 		    const char *newickTreeString,
 		    const int ta_outspec,
 		    FILE *allTreesOnTerrace,
-		    size_t *terraceSize		   
+		    mpz_t *terraceSize		   
 		    );
 
 #endif /* TERRACES_H */
