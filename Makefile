@@ -2,7 +2,7 @@
 
 CC = clang  
 
-CFLAGS = -O2 -fomit-frame-pointer -funroll-loops -Weverything -Wno-padded -Wno-float-equal -Wno-vla
+CFLAGS = -O2 -fomit-frame-pointer -funroll-loops -Weverything -Wno-padded -Wno-float-equal -Wno-vla -std=c99
 
 LIBRARIES = -lm -lgmp
 

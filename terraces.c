@@ -204,9 +204,9 @@ void setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber,
   m->missingDataMatrix[speciesNumber * m->numberOfPartitions + partitionNumber] = value;
 }
 
-void copyDataMatrix(unsigned char *matrix, missingData *m)
+void copyDataMatrix(const unsigned char *matrix, missingData *m)
 {
-  memcpy((void *)m->missingDataMatrix, (void*)matrix, m->numberOfPartitions * m->numberOfSpecies);
+  memcpy((void *)m->missingDataMatrix, (const void*)matrix, m->numberOfPartitions * m->numberOfSpecies);
 }
 
 /* get an element from the missing data matrix */ 
@@ -266,8 +266,8 @@ int main (int argc, char *argv[])
 
     //now copy the missing data matrices to the data structure
 
-    copyDataMatrix((unsigned char *)matrix1, example1);
-    copyDataMatrix((unsigned char *)matrix2, example2);
+    copyDataMatrix(matrix1, example1);
+    copyDataMatrix(matrix2, example2);
     
     
     //open some output files for enumerating all trees on a terrace 
@@ -371,7 +371,7 @@ int main (int argc, char *argv[])
   missingData 
     *weirdExample = initializeMissingData(6, 6, weirdSpeciesNames);
   
-  copyDataMatrix((unsigned char *)weirdDataMatrix, weirdExample);
+  copyDataMatrix(weirdDataMatrix, weirdExample);
   
   if((errorCode = terraceAnalysis(weirdExample, weirdTree, TA_COUNT+TA_ENUMERATE, f0, &weirdTerraceSize)) == TERRACE_SUCCESS)
     printf("Weird Test\n");
