@@ -1,0 +1,4 @@
+*.o
+build
+terraces
+terraces_test
