@@ -18,7 +18,7 @@ LIBRARIES = -lm -lgmp
 
 RM = rm -f
 
-objs    = terraces.o input_parser.o
+objs    = terraces.o input_parser.o newick-tools/newick-tools.o newick-tools/parse_ntree.o newick-tools/ntree.o newick-tools/rtree.o newick-tools/lex_ntree.o
 
 all : terraces terraces_test
 
@@ -39,6 +39,17 @@ test/terraces_test.o : test/terraces_test.cpp
 
 input_parser.o : input_parser.c input_parser.h
 
+#build the part of the newick-tools program that we need to read and write newick files
+newick-tools/newick-tools.o : newick-tools/newick-tools.c newick-tools/newick-tools.h
+
+newick-tools/parse_ntree.o : newick-tools/parse_ntree.c newick-tools/newick-tools.h
+
+newick-tools/ntree.o : newick-tools/ntree.c
+
+newick-tools/rtree.o : newick-tools/rtree.c
+
+newick-tools/lex_ntree.o : newick-tools/lex_ntree.c
+
 clean : 
-	$(RM) *.o test/*.o terraces 
+	$(RM) *.o test/*.o terraces newick-tools/*.o 
 	$(RM) -r $(GOOGLE_LIB_BIN_ROOT)

@@ -92,3 +92,7 @@ input_data* parse_input_data(const char* data_file) {
 
   return result;
 }
+
+ntree_t* get_newk_tree(const char* nwk_file) {
+    return ntree_parse_newick(nwk_file);
+}

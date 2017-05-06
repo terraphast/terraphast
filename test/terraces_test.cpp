@@ -1,6 +1,9 @@
+#include "input_parser_test.h"
+
 #include <limits.h>
 #include "terraces.h"
 #include "gtest/gtest.h"
+
 
 // Returns n! (the factorial of n).  For negative n, n! is defined to be 1.
 int Factorial(int n) {
