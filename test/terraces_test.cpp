@@ -1,3 +1,5 @@
+#include "input_parser_test.h"
+
 #include <limits.h>
 #include "terraces.h"
 #include "gtest/gtest.h"
@@ -38,6 +40,9 @@ bool IsPrime(int n) {
   // n has no integer factor in the range (1, n), and thus is prime.
   return true;
 }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 
 // Tests factorial of negative numbers.
 TEST(FactorialTest, Negative) {
@@ -103,8 +108,9 @@ TEST(IsPrimeTest, Positive) {
   EXPECT_TRUE(IsPrime(23));
 }
 
+#pragma clang diagnostic pop
+
 int main(int argc, char** argv) {
 	testing::InitGoogleTest(&argc, argv);
-	RUN_ALL_TESTS();
-    std::getchar(); // keep console window open until Return keystroke
+	return RUN_ALL_TESTS();
 }

@@ -2,6 +2,8 @@
 #define INPUT_PARSER_H
 
 #include <stdlib.h>
+#include "newick-tools/newick-tools.h"
+#include "newick-tools/parse_ntree.h"
 
 typedef struct input_data {
 	size_t number_of_species;
@@ -35,5 +37,14 @@ input_data* parse_input_data(const char* data_file);
  * @return The contents of the file.
  */
 char* read_newk_tree(const char* newk_file);
+
+/**
+ * Reads the newick tree from the given file and creates a struct based tree.
+ * The returned data must be freed by the caller.
+ *
+ * @param nwk_file The file to read.
+ * @return a point to a node in the tree.
+ */
+ntree_t* get_newk_tree(const char* nwk_file);
 
 #endif /* INPUT_PARSER_H */
