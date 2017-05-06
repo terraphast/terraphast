@@ -12,6 +12,10 @@ typedef struct input_data {
 	char** names;
 } input_data;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Free the input data d points to including the struct.
  *
@@ -46,5 +50,9 @@ char* read_newk_tree(const char* newk_file);
  * @return a point to a node in the tree.
  */
 ntree_t* get_newk_tree(const char* nwk_file);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INPUT_PARSER_H */

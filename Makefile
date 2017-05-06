@@ -37,7 +37,7 @@ main.o : main.c
 
 terraces.o : terraces.c
 
-test/terraces_test.o : test/terraces_test.cpp
+test/terraces_test.o : test/terraces_test.cpp test/input_parser_test.h
 
 input_parser.o : input_parser.c input_parser.h
 
@@ -53,5 +53,5 @@ newick-tools/rtree.o : newick-tools/rtree.c
 newick-tools/lex_ntree.o : newick-tools/lex_ntree.c
 
 clean : 
-	$(RM) *.o test/*.o terraces newick-tools/*.o 
+	$(RM) *.o test/*.o terraces terraces_test newick-tools/*.o 
 	$(RM) -r $(GOOGLE_LIB_BIN_ROOT)
