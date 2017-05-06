@@ -1,9 +1,11 @@
 
 #include "gtest/gtest.h"
-#include <gmock/gmock-matchers.h>
+#include "gmock/gmock-matchers.h"
 #include <limits.h>
 #include "../input_parser.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 
 // Test a simple tree file
 //TODO figure out, why i get a compiler error
@@ -16,3 +18,5 @@ TEST(GetNewickTreeTest, simple_tree) {
   EXPECT_EQ(tree->children[2]->children[0]->label, "D");
   EXPECT_EQ(tree->children[2]->children[1]->parent->parent->children[0]->label, "A");*/
 }
+
+#pragma clang diagnostic pop
