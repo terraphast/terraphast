@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
+//TODO: Extract test cases as unit tests - only leave the actual application sceleton
 int main (int argc, char *argv[])
 {
   //example from the task specification,
