@@ -2,6 +2,9 @@
 #include "terraces.h"
 #include "gtest/gtest.h"
 
+static int Factorial(int n);
+static bool IsPrime(int n);
+
 // Returns n! (the factorial of n).  For negative n, n! is defined to be 1.
 int Factorial(int n) {
   int result = 1;
@@ -72,7 +75,6 @@ TEST(FactorialTest, Positive) {
   EXPECT_EQ(6, Factorial(3));
   EXPECT_EQ(40320, Factorial(8));
 }
-
 
 // Tests IsPrime()
 
