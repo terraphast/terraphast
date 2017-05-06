@@ -24,14 +24,16 @@ all : terraces terraces_test
 
 GLOBAL_DEPS = axml.h globalVariables.h
 
-terraces : $(objs)
-	$(CC) -o terraces $(objs) $(LIBRARIES) 
+terraces : $(objs) main.o
+	$(CC) -o terraces $(objs) main.o $(LIBRARIES) 
 
 terraces_test : $(objs) $(GOOGLE_MAIN_LIB) test/terraces_test.o
-	$(CXX) -o terraces_test test/terraces_test.o $(LIBRARIES) -L$(GOOGLE_LIB_PATH) -lgtest -lpthread
+	$(CXX) -o terraces_test $(objs) test/terraces_test.o $(LIBRARIES) -L$(GOOGLE_LIB_PATH) -lgtest -lpthread
 
 $(GOOGLE_MAIN_LIB) : 
 	mkdir -p $(GOOGLE_LIB_BIN_ROOT); cd $(GOOGLE_LIB_BIN_ROOT); cmake ..; make
+
+main.o : main.c
 
 terraces.o : terraces.c
 
