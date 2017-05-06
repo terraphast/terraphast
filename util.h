@@ -13,9 +13,9 @@
  *
  * @param tree the tree to be rooted
  * @param data_file the name of the file containing the missing-data data
- * @return true if rooting was succesfully, false otherwise (e.g. if there is no species that has data for every partition)
+ * @return the new root of the tree, or NULL if the tree cannot be rooted (e.g. if there is no species that has data for every partition)
  */
-bool root_tree(ntree_t *tree, const char* data_file);
+rtree_t* root_tree(ntree_t *tree, const char* data_file);
 
 /**
  * Returns a pointer to the leaf that has the label <label>

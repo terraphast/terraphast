@@ -41,7 +41,7 @@ test/terraces_test.o : test/terraces_test.cpp test/input_parser_test.h
 
 input_parser.o : input_parser.c input_parser.h
 
-util.o : util.cpp util.h
+util.o : util.c util.h
 
 #build the part of the newick-tools program that we need to read and write newick files
 newick-tools/newick-tools.o : newick-tools/newick-tools.c newick-tools/newick-tools.h

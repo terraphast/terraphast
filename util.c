@@ -1,8 +1,9 @@
 #include "util.h"
 
+rtree_t * ntree_to_rtree(ntree_t * root);
 
-bool root_tree(ntree_t *tree, const char* data_file) {
-    /*missingData *missing_data = NULL;
+rtree_t* root_tree(ntree_t *tree, const char* data_file) {
+    missingData *missing_data = NULL;
     input_data *in_data = parse_input_data(data_file);
     initializeMissingData(in_data->number_of_species, in_data->number_of_partitions, (const char**) in_data->names);
     copyDataMatrix(in_data->matrix, missing_data);
@@ -22,15 +23,15 @@ bool root_tree(ntree_t *tree, const char* data_file) {
         }
     }
     if (root_species_number != -1) {
-        //TODO root tree
-        return true;
+        ntree_t *temp = get_leaf_by_name(tree, missing_data->speciesNames[root_species_number]);
+        return ntree_to_rtree(temp);
     } else {    //tree cannot be rooted consistently
-        return false;
-    }*/
+        return NULL;
+    }
 }
 
 ntree_t* get_leaf_by_name(ntree_t *tree, char *label) {
-    /*if (strcmp(tree->label, label) == 0) {
+    if (strcmp(tree->label, label) == 0) {
         return tree;
     } else {
         for (int i = 0; i < tree->children_count; i++) {
@@ -40,5 +41,5 @@ ntree_t* get_leaf_by_name(ntree_t *tree, char *label) {
             }
         }
     }
-    return NULL;*/
+    return NULL;
 }
