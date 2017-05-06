@@ -11,7 +11,7 @@ GOOGLE_MAIN_LIB = $(GOOGLE_LIB_PATH)/libgtest.a
 CFLAGS = -I. -O2 -fomit-frame-pointer -funroll-loops \
 		 -Weverything -Wno-padded -Wno-float-equal -Wno-vla -std=c99
 
-CXXFLAGS = -I. -I$(GOOGLE_LIB_SRC_ROOT)/googletest/include -O2 -fomit-frame-pointer -funroll-loops \
+CXXFLAGS = -I. -isystem $(GOOGLE_LIB_SRC_ROOT)/googletest/include -O2 -fomit-frame-pointer -funroll-loops \
 		   -Weverything -Wno-padded -Wno-float-equal -Wno-vla -std=c++14
 
 LIBRARIES = -lm -lgmp
