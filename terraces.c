@@ -19,6 +19,23 @@
 #include <stdbool.h>
 #include <gmp.h>
 
+#ifndef DEBUG
+static void d_print_tree_rec(const ntree_t* tree, int depth) {
+	for (int j = 0; j < depth * 4; j++) {
+		printf(" ");
+	}
+	printf("Label: %s\n", tree->label);
+	for (int i = 0; i < tree->children_count; i++) {
+		d_print_tree_rec(tree->children[i], depth + 1);
+	}
+}
+
+void d_print_tree(const ntree_t* tree) {
+	d_printf("Dump Tree:\n");
+	d_print_tree_rec(tree, 1);
+}
+#endif /* DEBUG */
+
 int terraceAnalysis(missingData *m, const char *newickTreeString,
 		const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize) {
 	size_t i = 0;
@@ -57,6 +74,12 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 		return TERRACE_OUTPUT_FILE_ERROR;
 	}
 
+	ntree_t *tree = get_newk_tree(newickTreeString);
+
+	assert(tree != NULL);
+
+	d_print_tree(tree);
+
 	/* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
 
 	/*
@@ -78,6 +101,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	 -7: no output file specified
 	 */
 
+	ntree_destroy(tree);
 	return TERRACE_SUCCESS;
 }
 

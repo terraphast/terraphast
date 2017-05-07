@@ -165,12 +165,14 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
  * for debug statements
  */
 #ifndef DEBUG
-#define d_printf(fmt, ...) do { \
+void d_print_tree(const ntree_t* tree);
+#define d_printf(...) do { \
    printf("DEBUG(%s, %d): ", __FILE__, __LINE__); \
-   printf(fmt, __VA_ARGS__);\
+   printf(__VA_ARGS__);\
 } while(false)
 #else
-#define d_printf(fmt, ...) do {} while(false)
+#define d_printf(...) do {} while(false)
+#define d_print_tree(tree) do {} while(false)
 #endif
 
 #endif /* TERRACES_H */
