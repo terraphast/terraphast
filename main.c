@@ -4,12 +4,16 @@
 #include <stdlib.h>
 #include <assert.h>
 
+static void example1();
+static void example2();
+static void example_with_actual_datasets(int argc, char *argv[]);
+
 //TODO: Extract test cases as unit tests - only leave the actual application skeleton
 int main (int argc, char *argv[])
 {
   example1();
   example2();
-  example_with_actual_datasets();
+  example_with_actual_datasets(argc, argv);
   
   return 0;
 }
@@ -17,10 +21,10 @@ int main (int argc, char *argv[])
 /* example from the task specification */
 void example1() {
   //open some output files for enumerating all trees on a terrace
-  FILE *f0 = fopen("tree1", "w"),
+  FILE *f0 = fopen("tree1", "w");
   FILE *f1 = fopen("tree2", "w");
   
-  char *newickString0 = "((s1,s2),s3,(s4,s5));", //tree T_0 from Fig 2 in the task specification
+  char *newickString0 = "((s1,s2),s3,(s4,s5));"; //tree T_0 from Fig 2 in the task specification
   char *newickString1 = "((s1,s2),s4,(s3,s5))";  //tree T_1 from Fig 2 in the task sepcification
   
   //names of species in newick tree that corrspond to rows in the data matrix, i.e., position 0 in array speciesNames corresponds to
@@ -44,7 +48,7 @@ void example1() {
                  1,1}; //no missing data, so there should not be any terraces
 
   //let's initialize some missing data data structures now
-  missingData *example1 = initializeMissingData(5, 2, speciesNames),
+  missingData *example1 = initializeMissingData(5, 2, speciesNames);
   missingData *example2 = initializeMissingData(5, 2, speciesNames);
   
   //now copy the missing data matrices to the data structure
@@ -52,7 +56,7 @@ void example1() {
   copyDataMatrix(matrix2, example2);
   
   //variables to store the terrace size
-  mpz_t terraceSize0,
+  mpz_t terraceSize0;
   mpz_t terraceSize1;
   
   mpz_init(terraceSize0);
@@ -71,7 +75,7 @@ void example1() {
   else
     printf("Error %i\n", errorCode);
   
-  errorCode = terraceAnalysis(example1, newickString1, TA_COUNT+TA_ENUMERATE, f1, &terraceSize1)
+  errorCode = terraceAnalysis(example1, newickString1, TA_COUNT+TA_ENUMERATE, f1, &terraceSize1);
   //now let's calculate terraces for example 2
   if(errorCode == TERRACE_SUCCESS)
     printf("Test 2\n");
@@ -110,7 +114,7 @@ void example1() {
   fclose(f1);
 }
 
-void example2(FILE &f0) {
+void example2() {
   //now let's define a weird missing data matrix, there are 6 partitions and 6 species, each species
   //has data in exactly one distinct partition, what should your function return?
   // what should your function return if we change the data matrix to:
@@ -125,7 +129,7 @@ void example2(FILE &f0) {
   // ?
   
   //open an output files for enumerating all trees on a terrace
-  FILE *f0 = fopen("tree1", "w"),
+  FILE *f0 = fopen("tree1", "w");
 
   const char *weirdSpeciesNames[] = {"s1","s2","s3","s4", "s5", "s6"};
 
