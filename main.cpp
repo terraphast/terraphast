@@ -12,8 +12,8 @@ static void example_with_actual_datasets(int argc, char *argv[]);
 int main (int argc, char *argv[])
 {
   example1();
-  example2();
-  example_with_actual_datasets(argc, argv);
+  //example2();
+  //example_with_actual_datasets(argc, argv);
   
   return 0;
 }
@@ -24,8 +24,12 @@ void example1() {
   FILE *f0 = fopen("tree1", "w");
   FILE *f1 = fopen("tree2", "w");
   
-  char *newickString0 = "((s1,s2),s3,(s4,s5));"; //tree T_0 from Fig 2 in the task specification
-  char *newickString1 = "((s1,s2),s4,(s3,s5))";  //tree T_1 from Fig 2 in the task sepcification
+  //Original: use raw tree as input
+  //char *newickString0 = "((s1,s2),s3,(s4,s5))"; //tree T_0 from Fig 2 in the task specification
+  //char *newickString1 = "((s1,s2),s4,(s3,s5))";  //tree T_1 from Fig 2 in the task sepcification
+
+  char *newickString0 = "test/dummy_tree1.nwk"; //tree T_0 from Fig 2 in the task specification
+  char *newickString1 = "test/dummy_tree2.nwk";  //tree T_1 from Fig 2 in the task sepcification
   
   //names of species in newick tree that corrspond to rows in the data matrix, i.e., position 0 in array speciesNames corresponds to
   //row 0 in matrix missingDataMatrix, etc.
@@ -71,16 +75,16 @@ void example1() {
   //now let's calculate terraces for example 1
   errorCode = terraceAnalysis(example1, newickString0, TA_COUNT+TA_ENUMERATE, f0, &terraceSize0);
   if(errorCode == TERRACE_SUCCESS)
-    printf("Test 1\n");
+    d_printf("Test 1\n");
   else
-    printf("Error %i\n", errorCode);
+    d_printf("Error %i\n", errorCode);
   
   errorCode = terraceAnalysis(example1, newickString1, TA_COUNT+TA_ENUMERATE, f1, &terraceSize1);
   //now let's calculate terraces for example 2
   if(errorCode == TERRACE_SUCCESS)
-    printf("Test 2\n");
+    d_printf("Test 2\n");
   else
-    printf("Error %i\n", errorCode);
+    d_printf("Error %i\n", errorCode);
 
   //the terraces for example input trees 0 and 1 must be of the same size and equal to 15
   assert((mpz_cmp(terraceSize0, terraceSize1) == 0)  && (mpz_cmp_ui(terraceSize0, 15) == 0));

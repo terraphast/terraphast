@@ -35,7 +35,7 @@ char* read_newk_tree(const char* newk_file) {
     return NULL;
   }
 
-  char *string = malloc((size_t)fsize + 1);
+  char *string = (char*)malloc((size_t)fsize + 1);
 
   if (string != NULL) {
     fread(string, (size_t)fsize, 1, f);
@@ -78,7 +78,7 @@ input_data* parse_input_data(const char* data_file) {
       fgets(input_buffer, 256, f);
       size_t len = strlen(input_buffer);
       if (len < 255) {
-	result->names[s] = malloc(sizeof(char) * len);
+	result->names[s] = (char*)malloc(sizeof(char) * len);
 	strncpy(result->names[s], input_buffer, len);
 	// replace newline by NULL
 	result->names[s][len-1] = 0;

@@ -208,22 +208,22 @@ static rtree_t * resolve_random(ntree_t * node)
       if (r1 > r2) SWAP(r1,r2);
 
       /* create a new node */
-      rtree_t * new = (rtree_t *)xmalloc(sizeof(rtree_t));
-      new->left   = children[r1];
-      new->right  = children[r2];
-      new->leaves = new->left->leaves + new->right->leaves;
-      new->length = 0;
-      new->label  = NULL;
-      new->mark   = 0;
-      new->color  = NULL;
-      new->data   = NULL;
+      rtree_t * new_tree = (rtree_t *)xmalloc(sizeof(rtree_t));
+      new_tree->left   = children[r1];
+      new_tree->right  = children[r2];
+      new_tree->leaves = new_tree->left->leaves + new_tree->right->leaves;
+      new_tree->length = 0;
+      new_tree->label  = NULL;
+      new_tree->mark   = 0;
+      new_tree->color  = NULL;
+      new_tree->data   = NULL;
 
-      new->left->parent = new;
-      new->right->parent = new;
+      new_tree->left->parent = new_tree;
+      new_tree->right->parent = new_tree;
 
       /* update list of children with new inner node and remove old
          invalid children */
-      children[r1] = new;
+      children[r1] = new_tree;
       if (r2 != i-1)
         children[r2] = children[i-1];
 

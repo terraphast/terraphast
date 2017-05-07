@@ -26,7 +26,7 @@ static void d_print_tree_rec(const ntree_t* tree, int depth) {
 	}
 	printf("Label: %s\n", tree->label);
 	for (int i = 0; i < tree->children_count; i++) {
-		d_print_tree_rec(tree->children[i], depth + 1);
+		d_print_tree_rec	(tree->children[i], depth + 1);
 	}
 }
 
