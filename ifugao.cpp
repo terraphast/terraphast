@@ -56,3 +56,28 @@ std::vector<std::tr1::shared_ptr<std::set<leaf> > > apply_constraints(const std:
 	}
 	return sets;
 }
+
+std::vector<constraint> find_constraints(const std::set<leaf> &set, const std::vector<constraint> &constraints) {
+	
+	std::vector<constraint> valid_constraints;
+
+	for(constraint cons: constraints) {
+		if(cons.smaller_left == cons.bigger_left) {
+			if(set.find(cons.smaller_left) != set.end()
+				&& set.find(cons.smaller_right) != set.end()
+				&& set.find(cons.bigger_right) != set.end()) {
+				// constraint is valid on leaf set
+				valid_constraints.push_back(cons);
+			}
+		} else {
+			// smaller_right == bigger_right
+			if(set.find(cons.smaller_left) != set.end()
+				&& set.find(cons.smaller_right) != set.end()
+				&& set.find(cons.bigger_left) != set.end()) {
+				// constraint is valid on leaf set
+				valid_constraints.push_back(cons);
+			}
+		}
+	}
+	return valid_constraints;
+}
