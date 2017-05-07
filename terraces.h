@@ -119,7 +119,7 @@ void setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber,
  * @return the value at the specified matrix position 
  */
 
-unsigned char getDataMatrix(missingData *m, size_t speciesNumber,
+unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
 		size_t partitionNumber);
 
 /**
@@ -166,6 +166,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
  */
 #ifndef DEBUG
 void d_print_tree(const ntree_t* tree);
+void d_print_tree(const rtree_t* tree);
 #define d_printf(...) do { \
    printf("DEBUG(%s, %d): ", __FILE__, __LINE__); \
    printf(__VA_ARGS__);\

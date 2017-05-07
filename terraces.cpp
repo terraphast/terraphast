@@ -8,6 +8,7 @@
 
 #include "input_parser.h"
 #include "terraces.h"
+#include "util.h"
 
 #include <assert.h>
 #include <math.h>
@@ -26,12 +27,35 @@ static void d_print_tree_rec(const ntree_t* tree, int depth) {
 	}
 	printf("Label: %s\n", tree->label);
 	for (int i = 0; i < tree->children_count; i++) {
-		d_print_tree_rec	(tree->children[i], depth + 1);
+		d_print_tree_rec(tree->children[i], depth + 1);
 	}
 }
 
 void d_print_tree(const ntree_t* tree) {
 	d_printf("Dump Tree:\n");
+	d_print_tree_rec(tree, 1);
+}
+
+static void d_print_tree_rec(const rtree_t* tree, int depth) {
+	printf("Label: %s\n", tree->label);
+	if (tree->left != nullptr) {
+		for (int j = 0; j < depth * 4; j++) {
+			printf(" ");
+		}
+		printf("L:");
+		d_print_tree_rec(tree->left, depth + 1);
+	}
+	if (tree->right != nullptr) {
+		for (int j = 0; j < depth * 4; j++) {
+			printf(" ");
+		}
+		printf("R:");
+		d_print_tree_rec(tree->right, depth + 1);
+	}
+}
+
+void d_print_tree(const rtree_t* tree) {
+	d_printf("Dump RTree:\n");
 	d_print_tree_rec(tree, 1);
 }
 #endif /* DEBUG */
@@ -70,15 +94,19 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	}
 
 	if ((enumerateTrees || enumerateCompressedTrees)
-			&& allTreesOnTerrace == (FILE*) NULL) {
+			&& allTreesOnTerrace == nullptr) {
 		return TERRACE_OUTPUT_FILE_ERROR;
 	}
 
 	ntree_t *tree = get_newk_tree(newickTreeString);
 
-	assert(tree != NULL);
-
+	assert(tree != nullptr);
 	d_print_tree(tree);
+
+	rtree_t *rtree = root_tree(tree, m);
+
+	assert(rtree != nullptr);
+	d_print_tree(rtree);
 
 	/* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
 
@@ -188,7 +216,7 @@ void copyDataMatrix(const unsigned char *matrix, missingData *m) {
 
 /* get an element from the missing data matrix */
 
-unsigned char getDataMatrix(missingData *m, size_t speciesNumber,
+unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
 		size_t partitionNumber) {
 	assert(speciesNumber < m->numberOfSpecies);
 	assert(speciesNumber >= 0);
