@@ -24,15 +24,15 @@ struct constraint {
 /** Calls apply_constraints first, then combine_sets and writes all found trees.
   @param count_only Only count trees, don't write them
  */
-long list_trees(const std::vector<constraint> &constraints, std::vector<long> &leafs, bool count_only, FILE &file);
+long list_trees(const std::vector<constraint> &constraints, std::vector<long> &leaves, bool count_only, FILE &file);
+
+std::vector<std::tr1::shared_ptr<std::set<leaf> > > apply_constraints(const std::set<leaf> &leaves, const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
 std::vector<binary_tree> combine_sets(const std::vector<std::tr1::shared_ptr<std::set<leaf> > > &set_array, const std::vector<constraint> &constraints);
 
-std::vector<std::tr1::shared_ptr<std::set<leaf> > > apply_constraints(const std::vector<std::tr1::shared_ptr<std::set<leaf> > > &set_array, const std::vector<constraint> &constraints);
-
 /** Returns a vector containing all constraints that still are valid for the given set of leaves */
-std::vector<constraint> find_constraints(const std::set<leaf> &set, const std::vector<constraint> &constraints);
+std::vector<constraint> find_constraints(const std::set<leaf> &leaves, const std::vector<constraint> &constraints);
 
 /** merges two sub-trees */
 std::vector<binary_tree> merge_subtrees(std::vector<binary_tree> &left, std::vector<binary_tree> &right);
