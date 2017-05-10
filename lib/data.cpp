@@ -31,4 +31,21 @@ std::string printable_node(data::node n) {
     return buffer;
 }
 
+std::vector<data::node> append_subtree(std::vector<data::node>& tree,
+                                        int tree_index,
+                                        int tree_node_ref,
+                                        std::vector<data::node>& subtree,
+                                        int subtree_index,
+                                        int subtree_node_index
+                                        ) {
+    // TODO: Assert that every identifier is unique
+    // TODO: Optimize by using moves
+    std::vector<data::node> out = std::vector<data::node>(tree);
+    out.insert(out.end(), subtree.begin(), subtree.end());
+    /* TODO: Set references so that node tree_index and subtree_index point to
+             each other via references tree_node_ref and subtree_node_ref.
+    */
+    return out;
+}
+
 } // namespace terraces
