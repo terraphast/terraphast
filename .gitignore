@@ -1,2 +1,6 @@
 build
 *.o
+.vscode
+terraces
+tree1
+tree2
