@@ -24,10 +24,6 @@
 int opt_precision = 7;
 long opt_resolve_ladder = 0;
 
-rtree_t * ntree_to_rtree(ntree_t * root);
-char * rtree_export_newick(rtree_t * root);
-
-
 void * xmalloc(size_t size)
 {
   const size_t alignment = 16;
