@@ -23,9 +23,9 @@
 #ifndef DEBUG
 static void d_print_tree_rec(const ntree_t* tree, int depth) {
 	for (int j = 0; j < depth * 4; j++) {
-		printf(" ");
+		fprintf(stderr, " ");
 	}
-	printf("Label: %s\n", tree->label);
+	fprintf(stderr, "Label: %s\n", tree->label);
 	for (int i = 0; i < tree->children_count; i++) {
 		d_print_tree_rec(tree->children[i], depth + 1);
 	}
@@ -37,19 +37,20 @@ void d_print_tree(const ntree_t* tree) {
 }
 
 static void d_print_tree_rec(const rtree_t* tree, int depth) {
-	printf("Label: %s\n", tree->label);
+	fprintf(stderr, "Label: %s --- leaves: %d, length: %d, color: %s, mark: %f\n", tree->label,
+			tree->leaves, tree->length, tree->color, tree->mark);
 	if (tree->left != nullptr) {
 		for (int j = 0; j < depth * 4; j++) {
-			printf(" ");
+			fprintf(stderr, " ");
 		}
-		printf("L:");
+		fprintf(stderr, "L:");
 		d_print_tree_rec(tree->left, depth + 1);
 	}
 	if (tree->right != nullptr) {
 		for (int j = 0; j < depth * 4; j++) {
-			printf(" ");
+			fprintf(stderr, " ");
 		}
-		printf("R:");
+		fprintf(stderr, "R:");
 		d_print_tree_rec(tree->right, depth + 1);
 	}
 }
@@ -148,7 +149,7 @@ missingData * initializeMissingData(size_t numberOfSpecies,
 	m->numberOfPartitions = numberOfPartitions;
 
 	//if the species names have been passed by the application programmer just set a pointer to them
-	if (speciesNames != (const char **) NULL) {
+	if (speciesNames != nullptr) {
 		m->speciesNames = (char **) speciesNames;
 		m->allocatedNameArray = 0;
 	}
@@ -210,7 +211,7 @@ void setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber,
 }
 
 void copyDataMatrix(const unsigned char *matrix, missingData *m) {
-	memcpy((void *) m->missingDataMatrix, (const void*) matrix,
+	memcpy(m->missingDataMatrix, matrix,
 			m->numberOfPartitions * m->numberOfSpecies);
 }
 

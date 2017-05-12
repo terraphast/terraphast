@@ -65,8 +65,7 @@ typedef struct {
 	size_t numberOfSpecies;
 	size_t numberOfPartitions;
 	unsigned char *missingDataMatrix;
-	char **speciesNames;
-	bool allocatedNameArray;
+	char **speciesNames;bool allocatedNameArray;
 } missingData;
 
 /**
@@ -168,8 +167,8 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 void d_print_tree(const ntree_t* tree);
 void d_print_tree(const rtree_t* tree);
 #define d_printf(...) do { \
-   printf("DEBUG(%s, %d): ", __FILE__, __LINE__); \
-   printf(__VA_ARGS__);\
+   fprintf(stderr, "DEBUG(%s, %d): ", __FILE__, __LINE__); \
+   fprintf(stderr, __VA_ARGS__);\
 } while(false)
 #else
 #define d_printf(...) do {} while(false)

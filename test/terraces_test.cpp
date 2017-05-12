@@ -1,19 +1,54 @@
-#include "input_parser_test.h"
-
 #include <limits.h>
+
+#include "input_parser_test.h"
 #include "terraces.h"
+#include "util.h"
 #include "gtest/gtest.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 
-// Tests positive input.
-/*TEST(TerracesTest, Simple) {
-  EXPECT_FALSE(IsPrime(4));
-  EXPECT_TRUE(IsPrime(5));
-  EXPECT_FALSE(IsPrime(6));
-  EXPECT_TRUE(IsPrime(23));
-}*/
+// Test a simple tree file
+TEST(Util, generate_induced_tree) {
+	ntree_t *tree = get_newk_tree("test/dummy_tree1.nwk");
+	rtree_t *r_tree = ntree_to_rtree(tree);
+
+	const char *speciesNames[] = { "s1", "s2", "s3", "s4", "s5" };
+
+	const unsigned char matrix1[] = { 1, 0,
+									  1, 0,
+									  1, 1,
+									  0, 1,
+									  0, 1 };
+
+	//let's initialize some missing data data structures now
+	missingData *example1 = initializeMissingData(5, 2, speciesNames);
+	copyDataMatrix(matrix1, example1);
+	mpz_t terraceSize0;
+	mpz_init(terraceSize0);
+	mpz_set_ui(terraceSize0, 0);
+
+	std::map<char*, unsigned char, cmp_str> species_map;
+	for (unsigned char i = 0; i < example1->numberOfSpecies; i++) {
+		species_map[example1->speciesNames[i]] = i;
+	}
+
+//	d_print_tree(r_tree);
+	rtree_t* part0 = generate_induced_tree(r_tree, example1, species_map, 0);
+//	d_print_tree(part0);
+	ASSERT_TRUE(part0 != nullptr);
+	ASSERT_STREQ("s1", part0->left->left->label);
+	ASSERT_STREQ("s2", part0->left->right->label);
+	ASSERT_STREQ("s3", part0->right->label);
+
+	rtree_t* part1 = generate_induced_tree(r_tree, example1, species_map, 1);
+//	d_print_tree(part1);
+	ASSERT_TRUE(part1 != nullptr);
+	ASSERT_STREQ("s3", part1->left->label);
+	ASSERT_STREQ("s4", part1->right->left->label);
+	ASSERT_STREQ("s5", part1->right->right->label);
+
+}
 
 #pragma clang diagnostic pop
 
