@@ -73,7 +73,7 @@ rtree_t* generate_induced_tree(rtree_t *tree, const missingData *missing_data,
 
 rtree_t* ntree_to_rtree(ntree_t * root);
 
-rtree_t* root_tree(ntree_t *tree, const missingData *missing_data) {
+std::shared_ptr<Rtree> root_tree(ntree_t *tree, const missingData *missing_data) {
 	long root_species_number = -1;
 	for (size_t i = 0; i < missing_data->numberOfSpecies; i++) {
 		bool contains_all_data = true;
@@ -89,9 +89,11 @@ rtree_t* root_tree(ntree_t *tree, const missingData *missing_data) {
 		}
 	}
 	if (root_species_number != -1) {
-		ntree_t *temp = get_leaf_by_name(tree,
+        //rtree_t *temp_root = ntree_to_rtree(future_root);
+        ntree_t *future_root = get_leaf_by_name(tree,
 				missing_data->speciesNames[root_species_number]);
-		return ntree_to_rtree(temp);
+
+        return root_at(future_root);
 	} else {
 		//tree cannot be rooted consistently
 		return NULL;
@@ -99,17 +101,97 @@ rtree_t* root_tree(ntree_t *tree, const missingData *missing_data) {
 }
 
 ntree_t* get_leaf_by_name(ntree_t *tree, char *label) {
-	assert(tree != nullptr);
-	assert(label != nullptr);
-	if (tree->label != nullptr && strcmp(tree->label, label) == 0) {
-		return tree;
-	} else {
-		for (int i = 0; i < tree->children_count; i++) {
-			ntree_t *temp = get_leaf_by_name(tree->children[i], label);
-			if (temp != NULL) {
-				return temp;
-			}
-		}
-	}
-	return NULL;
+    assert(tree != nullptr);
+    assert(label != nullptr);
+    if (tree->label != nullptr && strcmp(tree->label, label) == 0) {
+        return tree;
+    } else {
+        for (int i = 0; i < tree->children_count; i++) {
+            ntree_t *temp = get_leaf_by_name(tree->children[i], label);
+            if (temp != nullptr) {
+                return temp;
+            }
+        }
+    }
+    return nullptr;
+}
+
+std::shared_ptr<Rtree> root_at(ntree_t *leaf) {
+    //if leaf->parent is null, leaf is the root => the tree is not binary, or the node is no leaf
+    assert(leaf->parent != nullptr);
+    ntree_t *neighbour = leaf->parent;
+    std::shared_ptr<Rtree> root = std::make_shared<Rtree>();
+    std::shared_ptr<Rtree> new_leaf = std::make_shared<Rtree>();
+    std::shared_ptr<Rtree> new_neighbour = std::make_shared<Rtree>();
+
+    //initialize root
+    root->label = "";
+    root->left = new_leaf;
+    root->right = new_neighbour;
+    root->label = "";
+
+    //initialize new_leaf and new_neighbour
+    new_leaf->parent = root;
+    new_neighbour->parent = root;
+
+    recursive_root(new_leaf, leaf, neighbour);
+    recursive_root(new_neighbour, neighbour, leaf);
+    return root;
+}
+
+void recursive_root(std::shared_ptr<Rtree> current,  ntree_t *current_ntree, ntree_t *parent) {
+    //when the children_count is 3, we are at the pseudoroot of the unrooted binary tree
+    assert(current_ntree->children_count == 2 || current_ntree->children_count == 0 ||
+           (current_ntree->children_count == 3 && current_ntree->parent == nullptr));
+
+    if (current_ntree->label == nullptr) {
+        current->label = "";
+    } else {
+        current->label = current_ntree->label;
+    }
+
+    if (current_ntree->children_count == 0) {   //is leaf
+        return;
+    }
+
+    current->left = std::make_shared<Rtree>();
+    current->right = std::make_shared<Rtree>();
+
+    ntree_t *left_ntree;
+    ntree_t *right_ntree;
+
+    if (current_ntree->children_count == 3) {   //we are at the pseudoroot
+        //set the children, leave out the parent
+        if (current_ntree->children[0] == parent) {
+            left_ntree = current_ntree->children[1];
+            right_ntree = current_ntree->children[2];
+        } else if (current_ntree->children[1] == parent) {
+            left_ntree = current_ntree->children[0];
+            right_ntree = current_ntree->children[2];
+        } else if (current_ntree->children[2] == parent) {
+            left_ntree = current_ntree->children[0];
+            right_ntree = current_ntree->children[1];
+        } else {
+            assert(false);
+        }
+    } else {
+        assert(current_ntree->children_count == 2);
+        //set the children, leave out the parent
+        if(current_ntree->children[0] == parent) {
+            left_ntree = current_ntree->children[1];
+            right_ntree = current_ntree->parent;
+        } else if (current_ntree->children[1] == parent) {
+            left_ntree = current_ntree->children[0];
+            right_ntree = current_ntree->parent;
+        } else if (current_ntree->parent == parent) {
+            left_ntree = current_ntree->children[0];
+            right_ntree = current_ntree->children[1];
+        } else {
+            assert(false);
+        }
+
+    }
+
+    recursive_root(current->left, left_ntree, current_ntree);
+    recursive_root(current->right, right_ntree, current_ntree);
 }

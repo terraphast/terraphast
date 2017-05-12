@@ -8,11 +8,28 @@
 #include "terraces.h"
 #include <string.h>
 #include <map>
+#include <memory>
+#include <string>
 
 struct cmp_str {
 	bool operator()(char const *a, char const *b) const {
 		return strcmp(a, b) < 0;
 	}
+};
+
+
+class Rtree {
+public: //TODO getter and setter? //performance vs. code quality?
+  std::string label;
+  //double length;  //TODO do we need the length?
+  std::shared_ptr<Rtree> left;
+  std::shared_ptr<Rtree> right;
+  std::shared_ptr<Rtree> parent;
+  //unsigned int leaves;
+  //char * color;
+  //int mark;
+
+  //void * data;
 };
 
 /**
@@ -33,7 +50,7 @@ rtree_t* generate_induced_tree(rtree_t *tree, const missingData *missing_data,
  * @param missing_data the data for the missing sequences on each partition
  * @return the new root of the tree, or NULL if the tree cannot be rooted (e.g. if there is no species that has data for every partition)
  */
-rtree_t* root_tree(ntree_t *tree, const missingData *missing_data);
+std::shared_ptr<Rtree> root_tree(ntree_t *tree, const missingData *missing_data);
 
 /**
  * Returns a pointer to the leaf that has the label <label>
@@ -42,5 +59,20 @@ rtree_t* root_tree(ntree_t *tree, const missingData *missing_data);
  * @return a pointer to the leaf
  */
 ntree_t* get_leaf_by_name(ntree_t *tree, char *label);
+
+/**
+ * private function that roots the tree at a given leaf-edge
+ * @param root the leaf-edge
+ * @return pointer to the new root
+ */
+std::shared_ptr<Rtree> root_at(ntree_t *root);
+
+/**
+ * private function
+ * @param current instance of the Rtree class that needs to get its child pointers
+ * @param current_ntree the ntree_t coresponding to the current parameter. Here we get the children from
+ * @param parent the ntree_t represention of the parent. this is needed to avoid calling the recursion on the parent
+ */
+void recursive_root(std::shared_ptr<Rtree> current, ntree_t *current_ntree, ntree_t *parent);
 
 #endif //include guard
