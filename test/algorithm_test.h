@@ -57,6 +57,21 @@ TEST(FindConstraintsTest, example_from_slides) {
   ASSERT_EQ(result[0].bigger_right, 2);
 }
 
+TEST(MergeSubtreesTest, simple_tree) {
+  binary_tree leaf_1 = {.is_leaf = true, .label = "leaf_1", .left_subtree = NULL, .right_subtree = NULL};
+  binary_tree leaf_2 = {.is_leaf = true, .label = "leaf_2", .left_subtree = NULL, .right_subtree = NULL};
 
+  std::vector<binary_tree> left, right;
+
+  left.push_back(leaf_1);
+  right.push_back(leaf_2);
+ 
+  std::vector<binary_tree> result = merge_subtrees(left, right);
+
+  ASSERT_EQ(result.size(), 1);
+  ASSERT_EQ(result[0].is_leaf, false);
+  ASSERT_STREQ(result[0].left_subtree->label, "leaf_1");
+  ASSERT_STREQ(result[0].right_subtree->label, "leaf_2");
+}
 
 #pragma clang diagnostic pop
