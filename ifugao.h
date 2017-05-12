@@ -26,6 +26,13 @@ struct constraint {
  */
 long list_trees(const std::vector<constraint> &constraints, std::vector<long> &leaves, bool count_only, FILE &file);
 
+/**
+ * Applies the given constraints on a set of given leaves.
+ *
+ * @param leaves Leaves to apply the constraints on.
+ * @param constraints Constraints to apply.
+ * @return Merged sets containing the leaves.
+ */
 std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */

@@ -1,4 +1,5 @@
 #include "input_parser_test.h"
+#include "algorithm_test.h"
 
 #include <limits.h>
 #include "terraces.h"
