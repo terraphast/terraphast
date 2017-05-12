@@ -7,6 +7,24 @@
 #include "input_parser.h"
 #include "terraces.h"
 #include <string.h>
+#include <map>
+
+struct cmp_str {
+	bool operator()(char const *a, char const *b) const {
+		return strcmp(a, b) < 0;
+	}
+};
+
+/**
+ * This funktion generates the trees T|G_i, which is exactly the subtree of T induced by partition G_i
+ * @param tree the rooted binary supertree
+ * @param missing_data the data matrix representing the missing partition data.
+ * @param partition the index i used to extract the subtree T|G_i. In other words, it is the i-th
+ * column of the missing data matrix
+ * @return the subtree T|G_i.
+ */
+rtree_t* generate_induced_tree(rtree_t *tree, const missingData *missing_data,
+		std::map<char*, unsigned char, cmp_str>& first, size_t partition);
 
 /**
  * This function roots the tree at an appropriate position according to the missing data array

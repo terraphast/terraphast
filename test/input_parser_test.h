@@ -1,4 +1,3 @@
-
 #include "gtest/gtest.h"
 #include "gmock/gmock-matchers.h"
 
@@ -12,13 +11,14 @@
 
 // Test a simple tree file
 TEST(GetNewickTreeTest, simple_tree) {
-  ntree_t *tree = get_newk_tree("test/simple_tree.nwk");
+	ntree_t *tree = get_newk_tree("test/simple_tree.nwk");
 
-  ASSERT_STREQ(tree->children[0]->label, "A");
-  ASSERT_STREQ(tree->children[1]->label, "B");
-  ASSERT_STREQ(tree->children[2]->children[0]->label, "C");
-  ASSERT_STREQ(tree->children[2]->children[1]->label, "D");
-  ASSERT_STREQ(tree->children[2]->children[1]->parent->parent->children[0]->label, "A");
+	ASSERT_STREQ("A", tree->children[0]->label);
+	ASSERT_STREQ("B", tree->children[1]->label);
+	ASSERT_STREQ("C", tree->children[2]->children[0]->label);
+	ASSERT_STREQ("D", tree->children[2]->children[1]->label);
+	ASSERT_STREQ("A",
+			tree->children[2]->children[1]->parent->parent->children[0]->label);
 }
 
 #pragma clang diagnostic pop

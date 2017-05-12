@@ -313,4 +313,8 @@ char ** parse_labels(const char * filename, int * count);
 /* functions in attach.c */
 
 void cmd_attach_tree(void);
+
+rtree_t * ntree_to_rtree(ntree_t * root);
+char * rtree_export_newick(rtree_t * root);
+
 #endif //include guard
