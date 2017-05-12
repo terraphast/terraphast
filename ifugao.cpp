@@ -1,6 +1,22 @@
 #include "ifugao.h"
 #include "assert.h"
 
+
+long list_trees(const std::vector<constraint> &constraints, const std::set<leaf_number> &leaves, bool count_only, FILE &file) {
+
+	std::vector<binary_tree> all_trees = combine_sets(apply_constraints(leaves, constraints), constraints);
+
+	if(!count_only) {
+    		// TODO: print all trees to file
+	}
+	return all_trees.size();
+}
+
+std::vector<binary_tree> combine_sets(const std::vector<std::shared_ptr<std::set<leaf_number> > > &set_array, const std::vector<constraint> &constraints) {
+	//TODO
+	return std::vector<binary_tree> ();
+}
+
 std::vector<binary_tree> merge_subtrees(std::vector<binary_tree> &left, std::vector<binary_tree> &right) {
 
 	std::vector<binary_tree> merged_trees;

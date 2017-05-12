@@ -21,10 +21,16 @@ struct constraint {
   leaf_number bigger_right;
 };
 
-/** Calls apply_constraints first, then combine_sets and writes all found trees.
-  @param count_only Only count trees, don't write them
+/**
+ * Calculates the number of trees on the terrace.
+ *
+ * @param constraints All constraints to fulfill.
+ * @param leaves All leaves of the tree.
+ * @param count_only Return only the number of trees iff count_only = 1.
+ * @param file File to write all trees in newick format into, iff count_only = 0.
+ * @return Number of all trees on the terrace.
  */
-long list_trees(const std::vector<constraint> &constraints, std::vector<long> &leaves, bool count_only, FILE &file);
+long list_trees(const std::vector<constraint> &constraints, const std::set<leaf_number> &leaves, bool count_only, FILE &file);
 
 /**
  * Applies the given constraints on a set of given leaves.
