@@ -57,23 +57,23 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(const st
 	return sets;
 }
 
-std::vector<constraint> find_constraints(const std::set<leaf_number> &set, const std::vector<constraint> &constraints) {
+std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints) {
 	
 	std::vector<constraint> valid_constraints;
 
 	for(constraint cons: constraints) {
 		if(cons.smaller_left == cons.bigger_left) {
-			if(set.find(cons.smaller_left) != set.end()
-				&& set.find(cons.smaller_right) != set.end()
-				&& set.find(cons.bigger_right) != set.end()) {
+			if(leaves.find(cons.smaller_left) != leaves.end()
+				&& leaves.find(cons.smaller_right) != leaves.end()
+				&& leaves.find(cons.bigger_right) != leaves.end()) {
 				// constraint is valid on leaf set
 				valid_constraints.push_back(cons);
 			}
 		} else {
 			// smaller_right == bigger_right
-			if(set.find(cons.smaller_left) != set.end()
-				&& set.find(cons.smaller_right) != set.end()
-				&& set.find(cons.bigger_left) != set.end()) {
+			if(leaves.find(cons.smaller_left) != leaves.end()
+				&& leaves.find(cons.smaller_right) != leaves.end()
+				&& leaves.find(cons.bigger_left) != leaves.end()) {
 				// constraint is valid on leaf set
 				valid_constraints.push_back(cons);
 			}
