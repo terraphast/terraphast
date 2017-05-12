@@ -20,13 +20,13 @@ std::vector<binary_tree> merge_subtrees(std::vector<binary_tree> &left, std::vec
 	return merged_trees;
 }
 
-std::vector<std::tr1::shared_ptr<std::set<leaf> > > apply_constraints(const std::set<leaf> &leaves, const std::vector<constraint> &constraints) {
+std::vector<std::tr1::shared_ptr<std::set<leaf_number> > > apply_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints) {
 	
-	std::vector<std::tr1::shared_ptr<std::set<leaf> > > sets;
+	std::vector<std::tr1::shared_ptr<std::set<leaf_number> > > sets;
 
-	for(leaf l: leaves) {
+	for(leaf_number l: leaves) {
 		// create an empty set for each leave
-		std::tr1::shared_ptr<std::set<leaf>> set (new std::set<leaf>);
+		std::tr1::shared_ptr<std::set<leaf_number>> set (new std::set<leaf_number>);
 		set->insert(l);
 		sets.push_back(set);
 	}
@@ -57,7 +57,7 @@ std::vector<std::tr1::shared_ptr<std::set<leaf> > > apply_constraints(const std:
 	return sets;
 }
 
-std::vector<constraint> find_constraints(const std::set<leaf> &set, const std::vector<constraint> &constraints) {
+std::vector<constraint> find_constraints(const std::set<leaf_number> &set, const std::vector<constraint> &constraints) {
 	
 	std::vector<constraint> valid_constraints;
 

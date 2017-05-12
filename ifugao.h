@@ -5,7 +5,7 @@
 #include "set"
 #include "tr1/memory"
 
-typedef int leaf;
+typedef int leaf_number;
 
 struct binary_tree {
 	bool is_leaf; // 0 if node is an internal node, 1 if node is a leaf
@@ -15,10 +15,10 @@ struct binary_tree {
 };
 
 struct constraint {
-  leaf smaller_left;
-  leaf bigger_left;
-  leaf smaller_right;
-  leaf bigger_right;
+  leaf_number smaller_left;
+  leaf_number bigger_left;
+  leaf_number smaller_right;
+  leaf_number bigger_right;
 };
 
 /** Calls apply_constraints first, then combine_sets and writes all found trees.
@@ -26,13 +26,13 @@ struct constraint {
  */
 long list_trees(const std::vector<constraint> &constraints, std::vector<long> &leaves, bool count_only, FILE &file);
 
-std::vector<std::tr1::shared_ptr<std::set<leaf> > > apply_constraints(const std::set<leaf> &leaves, const std::vector<constraint> &constraints);
+std::vector<std::tr1::shared_ptr<std::set<leaf_number> > > apply_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
-std::vector<binary_tree> combine_sets(const std::vector<std::tr1::shared_ptr<std::set<leaf> > > &set_array, const std::vector<constraint> &constraints);
+std::vector<binary_tree> combine_sets(const std::vector<std::tr1::shared_ptr<std::set<leaf_number> > > &set_array, const std::vector<constraint> &constraints);
 
 /** Returns a vector containing all constraints that still are valid for the given set of leaves */
-std::vector<constraint> find_constraints(const std::set<leaf> &leaves, const std::vector<constraint> &constraints);
+std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
 
 /** merges two sub-trees */
 std::vector<binary_tree> merge_subtrees(std::vector<binary_tree> &left, std::vector<binary_tree> &right);
