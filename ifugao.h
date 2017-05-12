@@ -38,7 +38,13 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(const st
 /** Combines all sets (constraints need to be applied already) */
 std::vector<binary_tree> combine_sets(const std::vector<std::shared_ptr<std::set<leaf_number> > > &set_array, const std::vector<constraint> &constraints);
 
-/** Returns a vector containing all constraints that still are valid for the given set of leaves */
+/**
+ * Returns a vector containing all constraints that still are valid for the given set of leaves.
+ *
+ * @param leaves Leaves to search valid constraints for.
+ * @param constraints All constraints that could still be valid.
+ * @return All constraints that are still valid.
+ */
 std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
 
 /** merges two sub-trees */
