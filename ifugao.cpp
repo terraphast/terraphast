@@ -20,13 +20,13 @@ std::vector<binary_tree> merge_subtrees(std::vector<binary_tree> &left, std::vec
 	return merged_trees;
 }
 
-std::vector<std::tr1::shared_ptr<std::set<leaf_number> > > apply_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints) {
+std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints) {
 	
-	std::vector<std::tr1::shared_ptr<std::set<leaf_number> > > sets;
+	std::vector<std::shared_ptr<std::set<leaf_number> > > sets;
 
 	for(leaf_number l: leaves) {
 		// create an empty set for each leave
-		std::tr1::shared_ptr<std::set<leaf_number>> set (new std::set<leaf_number>);
+		std::shared_ptr<std::set<leaf_number>> set (new std::set<leaf_number>);
 		set->insert(l);
 		sets.push_back(set);
 	}

@@ -3,7 +3,7 @@
 
 #include "vector"
 #include "set"
-#include "tr1/memory"
+#include "memory"
 
 typedef int leaf_number;
 
@@ -26,10 +26,10 @@ struct constraint {
  */
 long list_trees(const std::vector<constraint> &constraints, std::vector<long> &leaves, bool count_only, FILE &file);
 
-std::vector<std::tr1::shared_ptr<std::set<leaf_number> > > apply_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
+std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
-std::vector<binary_tree> combine_sets(const std::vector<std::tr1::shared_ptr<std::set<leaf_number> > > &set_array, const std::vector<constraint> &constraints);
+std::vector<binary_tree> combine_sets(const std::vector<std::shared_ptr<std::set<leaf_number> > > &set_array, const std::vector<constraint> &constraints);
 
 /** Returns a vector containing all constraints that still are valid for the given set of leaves */
 std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
