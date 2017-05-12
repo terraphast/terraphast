@@ -16,7 +16,7 @@ LIBRARIES = -lm -lgmp
 
 RM = rm -f
 
-objs    = terraces.o input_parser.o newick-tools/newick-tools.o newick-tools/parse_ntree.o newick-tools/ntree.o newick-tools/rtree.o newick-tools/lex_ntree.o util.o
+objs    = terraces.o input_parser.o newick-tools/newick-tools.o newick-tools/parse_ntree.o newick-tools/ntree.o newick-tools/rtree.o newick-tools/lex_ntree.o util.o ifugao.o
 
 all : terraces terraces_test
 
@@ -35,11 +35,13 @@ main.o : main.cpp
 
 terraces.o : terraces.cpp
 
-test/terraces_test.o : test/terraces_test.cpp test/input_parser_test.h
+test/terraces_test.o : test/terraces_test.cpp test/input_parser_test.h test/algorithm_test.h
 
 input_parser.o : input_parser.cpp input_parser.h
 
 util.o : util.cpp util.h
+
+ifugao.o : ifugao.cpp ifugao.h
 
 #build the part of the newick-tools program that we need to read and write newick files
 newick-tools/newick-tools.o : newick-tools/newick-tools.cpp newick-tools/newick-tools.h

@@ -1,9 +1,9 @@
 #ifndef IFUGAO_H
 #define IFUGAO_H
 
-#include "vector"
-#include "set"
-#include "memory"
+#include <memory>
+#include <vector>
+#include <set>
 
 typedef int leaf_number;
 

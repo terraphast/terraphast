@@ -21,11 +21,11 @@ std::vector<binary_tree> merge_subtrees(std::vector<binary_tree> &left, std::vec
 
 	std::vector<binary_tree> merged_trees;
 
-	for(binary_tree l: left) {
-		for(binary_tree r: right) {
+	for(binary_tree &l: left) {
+		for(binary_tree &r: right) {
 			binary_tree new_tree;
 			new_tree.is_leaf = false;
-			new_tree.label = NULL;
+			new_tree.label = nullptr;
 			new_tree.left_subtree = &l;
 			new_tree.right_subtree = &r;
 			merged_trees.push_back(new_tree);

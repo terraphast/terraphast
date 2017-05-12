@@ -2,13 +2,14 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock-matchers.h"
 
-#include "../ifugao.cpp"
+#include "ifugao.h"
 
 #include <limits.h>
 #include <iostream>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wglobal-constructors"
+
 
 TEST(ApplyConstraintsTest, example_from_slides) {
 
@@ -35,7 +36,6 @@ TEST(ApplyConstraintsTest, example_from_slides) {
   // all elements still contained in the sets?
   ASSERT_EQ(sum, 15);
 }
-
 
 TEST(FindConstraintsTest, example_from_slides) {
   std::set<leaf_number> leaves = {1, 2, 3};
