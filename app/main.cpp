@@ -5,9 +5,9 @@
 int main() {
 	const auto tree = terraces::tree{
 		{},
-		{{{0}}},
-		{{{0}}},
-		{{{2}}},
+		{0},
+		{0},
+		{2},
 	};
 
 	for (const auto& node : tree) {

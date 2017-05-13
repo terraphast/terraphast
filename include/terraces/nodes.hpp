@@ -30,6 +30,8 @@ constexpr static const auto none = std::numeric_limits<index>::max();
 // we know better what exactly we need, so don't rely too much on
 // details yet.
 struct node {
+	node(index parent = none, index left = none, index right = none):
+		data{{parent, left, right}} {}
 	// In the rooted case:
 	// data[0]: parent
 	// data[1]: left child
