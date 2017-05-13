@@ -14,6 +14,20 @@ struct cmp_str {
 	}
 };
 
+class Rtree {
+public:
+	//TODO getter and setter? //performance vs. code quality?
+	std::string label;
+	//double length;  //TODO do we need the length?
+	std::shared_ptr<Rtree> left;
+	std::shared_ptr<Rtree> right;
+	std::shared_ptr<Rtree> parent;
+	//unsigned int leaves;
+	//char * color;
+	//int mark;
+
+	//void * data;
+};
 
 /* 
  Error Codes
@@ -175,6 +189,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
  */
 #ifndef DEBUG
 void d_print_tree(const ntree_t* tree);
+void d_print_tree(const std::shared_ptr<Rtree>* tree);
 void d_print_tree(const rtree_t* tree);
 void d_print_tree(const binary_tree* tree);
 #define d_printf(...) do { \
