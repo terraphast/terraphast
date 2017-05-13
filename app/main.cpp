@@ -11,8 +11,7 @@ int main() {
 	};
 
 	for (const auto& node : tree) {
-		(void) node;
-		// std::cout << node << '\n';
+		std::cout << node << '\n';
 	}
 
 }

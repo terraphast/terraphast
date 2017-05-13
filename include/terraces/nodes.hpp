@@ -4,8 +4,9 @@
 
 #include <array>
 #include <cstdint>
-#include <unordered_map>
+#include <iosfwd>
 #include <limits>
+#include <unordered_map>
 #include <vector>
 
 namespace terraces {
@@ -37,6 +38,8 @@ struct node {
 	std::array<index, 3> data = {{none, none, none}};
 };
 
+
+std::ostream& operator<<(std::ostream& s, const node& n);
 
 // The same thing as above applies: The details of this
 // type will most likely change:
