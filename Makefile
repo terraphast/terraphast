@@ -1,7 +1,7 @@
 # Makefile June 2011 by Alexandros Stamatakis
 
 CC = clang
-CXX = clang++
+CXX = clang++ -std=c++14
 
 GOOGLE_LIB_SRC_ROOT = lib/googletest
 GOOGLE_LIB_BIN_ROOT = $(GOOGLE_LIB_SRC_ROOT)/build
@@ -10,7 +10,7 @@ GOOGLE_MAIN_LIB = $(GOOGLE_LIB_PATH)/libgtest.a
 
 CXXFLAGS = -I. -isystem $(GOOGLE_LIB_SRC_ROOT)/googletest/include -isystem $(GOOGLE_LIB_SRC_ROOT)/googlemock/include \
 		   -O2 -fomit-frame-pointer -funroll-loops \
-		   -Weverything -Wno-c++98-compat-pedantic -Wno-padded -Wno-float-equal -Wno-vla -std=c++14
+		   -Weverything -Wno-c++98-compat-pedantic -Wno-padded -Wno-float-equal -Wno-vla
 
 LIBRARIES = -lm -lgmp
 

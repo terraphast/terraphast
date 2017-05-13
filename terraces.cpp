@@ -8,7 +8,6 @@
 
 #include "input_parser.h"
 #include "terraces.h"
-#include "util.h"
 
 #include <assert.h>
 #include <math.h>
@@ -19,6 +18,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <gmp.h>
+#include "util.h"
 
 #ifndef DEBUG
 static void d_print_tree_rec(const ntree_t* tree, int depth) {
@@ -37,7 +37,7 @@ void d_print_tree(const ntree_t* tree) {
 }
 
 static void d_print_tree_rec(const rtree_t* tree, int depth) {
-	fprintf(stderr, "Label: %s --- leaves: %d, length: %d, color: %s, mark: %f\n", tree->label,
+	fprintf(stderr, "Label: %s --- leaves: %d, length: %d, color: %s, mark: %d\n", tree->label,
 			tree->leaves, tree->length, tree->color, tree->mark);
 	if (tree->left != nullptr) {
 		for (int j = 0; j < depth * 4; j++) {
@@ -57,6 +57,29 @@ static void d_print_tree_rec(const rtree_t* tree, int depth) {
 
 void d_print_tree(const rtree_t* tree) {
 	d_printf("Dump RTree:\n");
+	d_print_tree_rec(tree, 1);
+}
+
+static void d_print_tree_rec(const binary_tree* tree, int depth) {
+	fprintf(stderr, "Label: %s\n", tree->label);
+	if (tree->left_subtree != nullptr) {
+		for (int j = 0; j < depth * 4; j++) {
+			fprintf(stderr, " ");
+		}
+		fprintf(stderr, "L:");
+		d_print_tree_rec(tree->left_subtree, depth + 1);
+	}
+	if (tree->right_subtree != nullptr) {
+		for (int j = 0; j < depth * 4; j++) {
+			fprintf(stderr, " ");
+		}
+		fprintf(stderr, "R:");
+		d_print_tree_rec(tree->right_subtree, depth + 1);
+	}
+}
+
+void d_print_tree(const binary_tree* tree) {
+	d_printf("Dump Binary Tree:\n");
 	d_print_tree_rec(tree, 1);
 }
 #endif /* DEBUG */
@@ -104,10 +127,10 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	assert(tree != nullptr);
 	d_print_tree(tree);
 
-	rtree_t *rtree = root_tree(tree, m);
+//	rtree_t *rtree = root_tree(tree, m);
 
-	assert(rtree != nullptr);
-	d_print_tree(rtree);
+//	assert(rtree != nullptr);
+//	d_print_tree(rtree);
 
 	/* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
 

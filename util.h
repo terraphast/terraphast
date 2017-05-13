@@ -6,14 +6,9 @@
 #include "newick-tools/newick-tools.h"
 #include "input_parser.h"
 #include "terraces.h"
+
 #include <string.h>
 #include <map>
-
-struct cmp_str {
-	bool operator()(char const *a, char const *b) const {
-		return strcmp(a, b) < 0;
-	}
-};
 
 /**
  * This funktion generates the trees T|G_i, which is exactly the subtree of T induced by partition G_i

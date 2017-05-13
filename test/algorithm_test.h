@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock-matchers.h"
 
-#include "ifugao.h"
+#include "terraces.h"
 
 #include <limits.h>
 #include <iostream>
@@ -27,8 +27,8 @@ TEST(ApplyConstraintsTest, example_from_slides) {
  
   ASSERT_EQ(result.size(), 3);
 
-  int sum = 0;
-  for(int i = 0; i < result.size(); i++){
+  size_t sum = 0;
+  for(size_t i = 0; i < result.size(); i++){
 	for(leaf_number n: *result[i]) {
 	   sum += n;
 	}
@@ -36,6 +36,36 @@ TEST(ApplyConstraintsTest, example_from_slides) {
   // all elements still contained in the sets?
   ASSERT_EQ(sum, 15);
 }
+
+TEST(Algorithm, combine_sets) {
+	ntree_t *tree = get_newk_tree("test/dummy_tree1_rooted.nwk");
+	rtree_t *r_tree = ntree_to_rtree(tree);
+
+	const char *speciesNames[] = { "s1", "s2", "s3", "s4", "s5" };
+
+	const unsigned char matrix1[] = { 1, 0,
+									  1, 0,
+									  1, 1,
+									  0, 1,
+									  0, 1 };
+
+	//let's initialize some missing data data structures now
+	missingData *example1 = initializeMissingData(5, 2, speciesNames);
+	copyDataMatrix(matrix1, example1);
+	mpz_t terraceSize0;
+	mpz_init(terraceSize0);
+	mpz_set_ui(terraceSize0, 0);
+
+	std::map<const char*, unsigned char, cmp_str> species_map;
+	for (unsigned char i = 0; i < example1->numberOfSpecies; i++) {
+		species_map[example1->speciesNames[i]] = i;
+	}
+
+	d_print_tree(r_tree);
+//	std::vector<binary_tree> all_trees = combine_sets(
+//				apply_constraints(leaves, constraints), constraints);
+}
+
 
 TEST(FindConstraintsTest, example_from_slides) {
   std::set<leaf_number> leaves = {1, 2, 3};
