@@ -3,9 +3,11 @@
 
 #include "ifugao.h"
 
+#include "input_parser.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <gmp.h>
+#include <cstring>
 
 //TODO Move to separete header file
 struct cmp_str {
