@@ -1,13 +1,12 @@
 /**
  @file
  @brief terraces framework and interface definition by Alexandros Stamatakis released under GNU GPL
-
  Alexandros.Stamatakis@gmail.com
-
  */
 
 #include "input_parser.h"
 #include "terraces.h"
+#include "util.h"
 
 #include <assert.h>
 #include <math.h>
@@ -18,7 +17,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <gmp.h>
-#include "util.h"
 
 #ifndef DEBUG
 static void d_print_tree_rec(const ntree_t* tree, int depth) {
@@ -36,26 +34,25 @@ void d_print_tree(const ntree_t* tree) {
 	d_print_tree_rec(tree, 1);
 }
 
-static void d_print_tree_rec(const rtree_t* tree, int depth) {
-	fprintf(stderr, "Label: %s --- leaves: %d, length: %d, color: %s, mark: %d\n", tree->label,
-			tree->leaves, tree->length, tree->color, tree->mark);
-	if (tree->left != nullptr) {
-		for (int j = 0; j < depth * 4; j++) {
-			fprintf(stderr, " ");
-		}
-		fprintf(stderr, "L:");
-		d_print_tree_rec(tree->left, depth + 1);
-	}
-	if (tree->right != nullptr) {
-		for (int j = 0; j < depth * 4; j++) {
-			fprintf(stderr, " ");
-		}
-		fprintf(stderr, "R:");
-		d_print_tree_rec(tree->right, depth + 1);
-	}
+static void d_print_tree_rec(const std::shared_ptr<Rtree> tree, int depth) {
+    fprintf(stderr, "Label: %s\n", tree->label.c_str());
+    if (tree->left != nullptr) {
+        for (int j = 0; j < depth * 4; j++) {
+            fprintf(stderr, " ");
+        }
+        fprintf(stderr, "L:");
+        d_print_tree_rec(tree->left, depth + 1);
+    }
+    if (tree->right != nullptr) {
+        for (int j = 0; j < depth * 4; j++) {
+            fprintf(stderr, " ");
+        }
+        fprintf(stderr, "R:");
+        d_print_tree_rec(tree->right, depth + 1);
+    }
 }
 
-void d_print_tree(const rtree_t* tree) {
+void d_print_tree(const std::shared_ptr<Rtree> tree) {
 	d_printf("Dump RTree:\n");
 	d_print_tree_rec(tree, 1);
 }
@@ -127,10 +124,10 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	assert(tree != nullptr);
 	d_print_tree(tree);
 
-//	rtree_t *rtree = root_tree(tree, m);
+    std::shared_ptr<Rtree> rtree = root_tree(tree, m);
 
-//	assert(rtree != nullptr);
-//	d_print_tree(rtree);
+	assert(rtree != nullptr);
+	d_print_tree(rtree);
 
 	/* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
 
