@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
 			for (auto i = terraces::index{}; i < data.tree.size(); ++i) {
 				std::cout
 					<< '\t' << i << " (" << data.names.at(i)
-					<< ") : " << data.tree.at(i).data.at(0) << "\n";
+					<< ") : " << data.tree.at(i).parent() << "\n";
 			}
 		}
 	}

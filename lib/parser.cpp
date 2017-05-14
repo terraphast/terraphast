@@ -78,7 +78,7 @@ tree_set parse_nwk(const std::string& input) {
 			stack.push(state);
 			state = parsing::parser_state{parent, self};
 			ret.emplace_back(parent, none, none);
-			ret.at(parent).data.at(1) = self;
+			ret.at(parent).lchild() = self;
 			names.emplace_back();
 			break;
 		}
@@ -87,7 +87,7 @@ tree_set parse_nwk(const std::string& input) {
 			const auto self = ret.size();
 			state.self = self;
 			ret.emplace_back(parent, none, none);
-			ret.at(parent).data.at(2) = self;
+			ret.at(parent).rchild() = self;
 			names.emplace_back();
 			break;
 			// no need to update state as the tree is binary to

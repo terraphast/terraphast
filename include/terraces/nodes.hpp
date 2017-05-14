@@ -38,6 +38,15 @@ struct node {
 	// data[2]: right child
 	// everything else: undefined behavio ;-)
 	std::array<index, 3> data = {{none, none, none}};
+
+	index parent() const {return data[0];}
+	index& parent() {return data[0];}
+
+	index lchild() const {return data[1];}
+	index& lchild() {return data[1];}
+
+	index rchild() const {return data[2];}
+	index& rchild() {return data[2];}
 };
 
 
