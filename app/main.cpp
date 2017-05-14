@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
 			auto data = terraces::parse_nwk(line);
 			for (auto i = terraces::index{}; i < data.first.size(); ++i) {
 				std::cout
-					<< i << " (" << data.second.at(i)
+					<< '\t' << i << " (" << data.second.at(i)
 					<< ") : " << data.first.at(i).data.at(0) << "\n";
 			}
 		}
