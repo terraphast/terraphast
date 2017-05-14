@@ -5,15 +5,17 @@
 #include <stdexcept>
 #include <string>
 #include <tuple>
+#include <istream>
 
 #include "trees.hpp"
+#include "bitmatrix.hpp"
 
 namespace terraces {
 
 struct tree_set {
 	tree tree;
 	name_map names;
-	index_map indeces;
+	index_map indices;
 };
 
 /**
@@ -30,6 +32,8 @@ tree_set parse_nwk(const std::string& input);
 class bad_input_error : public std::runtime_error {
 	using std::runtime_error::runtime_error;
 };
+
+bitmatrix parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size);
 
 } // namespace terraces
 

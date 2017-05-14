@@ -57,7 +57,7 @@ token next_token(Iterator& it, Iterator end) {
 tree_set parse_nwk(const std::string& input) {
 	auto ret = tree{};
 	auto names = name_map{""};
-	auto indeces = index_map{};
+	auto indices = index_map{};
 
 	auto stack = parsing::parser_stack{};
 
@@ -101,14 +101,37 @@ tree_set parse_nwk(const std::string& input) {
 		}
 		case parsing::token_type::name: {
 			names.at(state.self) = token.name;
-			indeces[token.name] = state.self;
+			indices[token.name] = state.self;
 			break;
 		}
 		case parsing::token_type::eof:
 		default: { throw std::logic_error{"dafuq?"}; }
 		}
 	}
-	return {std::move(ret), std::move(names), std::move(indeces)};
+	return {std::move(ret), std::move(names), std::move(indices)};
+}
+
+
+bitmatrix parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size) {
+	auto cols = index{};
+	auto rows = index{}; // mostly a dummy;
+	input >> cols >> rows >> std::ws;
+	auto line = std::string{};
+	auto mat = bitmatrix{tree_size, cols};
+	while (std::getline(input, line)) {
+		if (line.empty()) {continue;}
+		const auto name_start = std::find(line.rbegin(), line.rend(), ' ').base();
+		const auto species = indices.at({name_start, line.end()});
+		auto it = line.begin();
+		auto end = name_start;
+		for (auto i = index{}; i < cols; ++i) {
+			it = utils::skip_ws(it, end);
+			utils::ensure<bad_input_error>(it != end, "bad table in input");
+			auto c = *it++;
+			mat.set(species, i, c == '1');
+		}
+	}
+	return mat;
 }
 
 } // namespace terraces
