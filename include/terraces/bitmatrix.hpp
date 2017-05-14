@@ -16,12 +16,12 @@ public:
 
 	bool get(index row, index col) const;
 	void set(index row, index col, bool val);
+
 private:
 	index m_rows;
 	index m_cols;
 	std::vector<bool> m_vec; // yes, it's evil
 };
-
 }
 
 #endif

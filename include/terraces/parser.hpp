@@ -2,13 +2,13 @@
 #ifndef TERRACES_PARSER_HPP
 #define TERRACES_PARSER_HPP
 
+#include <istream>
 #include <stdexcept>
 #include <string>
 #include <tuple>
-#include <istream>
 
-#include "trees.hpp"
 #include "bitmatrix.hpp"
+#include "trees.hpp"
 
 namespace terraces {
 

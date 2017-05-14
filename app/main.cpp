@@ -22,7 +22,8 @@ int main(int argc, char** argv) try {
 		for (auto j = terraces::index{}; j < mat.cols(); ++j) {
 			std::cout << mat.get(i, j) << ' ';
 		}
-		std::cout << '(' << std::setw(3) << data.tree.at(i).parent() << ") : " << data.names.at(i) << '\n';
+		std::cout << '(' << std::setw(3) << data.tree.at(i).parent()
+		          << ") : " << data.names.at(i) << '\n';
 	}
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << '\n';

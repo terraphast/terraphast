@@ -81,7 +81,6 @@ TEST_CASE("parsing a datafile with two species and two cols", "[parser],[data-pa
 	CHECK(mat.get(1, 1) == true);
 	CHECK(mat.get(2, 0) == false);
 	CHECK(mat.get(2, 1) == true);
-	
 }
 
 } // namespace tests

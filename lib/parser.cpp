@@ -111,7 +111,6 @@ tree_set parse_nwk(const std::string& input) {
 	return {std::move(ret), std::move(names), std::move(indices)};
 }
 
-
 bitmatrix parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size) {
 	auto cols = index{};
 	auto rows = index{}; // mostly a dummy;
@@ -119,7 +118,9 @@ bitmatrix parse_bitmatrix(std::istream& input, const index_map& indices, index t
 	auto line = std::string{};
 	auto mat = bitmatrix{tree_size, cols};
 	while (std::getline(input, line)) {
-		if (line.empty()) {continue;}
+		if (line.empty()) {
+			continue;
+		}
 		const auto name_start = std::find(line.rbegin(), line.rend(), ' ').base();
 		const auto species = indices.at({name_start, line.end()});
 		auto it = line.begin();
