@@ -4,6 +4,7 @@
 
 #include <cctype>
 #include <utility>
+#include <iterator>
 
 
 namespace terraces {
@@ -15,6 +16,19 @@ Iterator skip_ws(Iterator it, Iterator last) {
 		++it;
 	}
 	return it;
+}
+
+
+template<typename Iterator>
+Iterator reverse_skip_ws(Iterator first, Iterator last) {
+	while (first != last) {
+		if (std::isspace(*std::prev(last))) {
+			--last;
+		} else {
+			break;
+		}
+	}
+	return last;
 }
 
 
