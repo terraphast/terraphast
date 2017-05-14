@@ -48,7 +48,7 @@ token next_token(Iterator& it, Iterator end) {
 	}
 	const auto name_begin = it;
 	it = std::find_first_of(it, end, special_tokens.begin(), special_tokens.end());
-	return {token_type::name, {name_begin, it}};
+	return {token_type::name, {name_begin, utils::reverse_skip_ws(name_begin, it)}};
 }
 
 } // namespace parsing
