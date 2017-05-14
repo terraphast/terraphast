@@ -115,7 +115,7 @@ tree_set parse_nwk(const std::string& input) {
 bitmatrix parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size) {
 	auto cols = index{};
 	auto rows = index{}; // mostly a dummy;
-	input >> cols >> rows >> std::ws;
+	input >> rows >> cols >> std::ws;
 	auto line = std::string{};
 	auto mat = bitmatrix{tree_size, cols};
 	while (std::getline(input, line)) {
