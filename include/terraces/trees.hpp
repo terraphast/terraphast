@@ -1,6 +1,6 @@
 
-#ifndef TERRACES_NODES_HPP
-#define TERRACES_NODES_HPP
+#ifndef TERRACES_TREES_HPP
+#define TERRACES_TREES_HPP
 
 #include <array>
 #include <cstdint>

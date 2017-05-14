@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <terraces/nodes.hpp>
+#include <terraces/trees.hpp>
 #include <terraces/parser.hpp>
 
 int main(int argc, char** argv) {

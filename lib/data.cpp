@@ -2,7 +2,7 @@
 #include<string>
 #include<iostream>
 
-#include <terraces/nodes.hpp>
+#include <terraces/trees.hpp>
 
 namespace terraces{
 

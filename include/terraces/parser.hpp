@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <tuple>
 
-#include "nodes.hpp"
+#include "trees.hpp"
 
 namespace terraces {
 
