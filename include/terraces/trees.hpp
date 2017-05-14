@@ -22,7 +22,6 @@ using index = std::size_t;
 
 constexpr static const auto none = std::numeric_limits<index>::max();
 
-
 // This struct will represent both nodes of rooted and
 // unrooted trees, depending on context
 //
@@ -30,8 +29,8 @@ constexpr static const auto none = std::numeric_limits<index>::max();
 // we know better what exactly we need, so don't rely too much on
 // details yet.
 struct node {
-	node(index parent = none, index left = none, index right = none):
-		data{{parent, left, right}} {}
+	node(index parent = none, index left = none, index right = none)
+	        : data{{parent, left, right}} {}
 	// In the rooted case:
 	// data[0]: parent
 	// data[1]: left child
@@ -39,23 +38,21 @@ struct node {
 	// everything else: undefined behavio ;-)
 	std::array<index, 3> data = {{none, none, none}};
 
-	index parent() const {return data[0];}
-	index& parent() {return data[0];}
+	index parent() const { return data[0]; }
+	index& parent() { return data[0]; }
 
-	index lchild() const {return data[1];}
-	index& lchild() {return data[1];}
+	index lchild() const { return data[1]; }
+	index& lchild() { return data[1]; }
 
-	index rchild() const {return data[2];}
-	index& rchild() {return data[2];}
+	index rchild() const { return data[2]; }
+	index& rchild() { return data[2]; }
 };
-
 
 std::ostream& operator<<(std::ostream& s, const node& n);
 
 // The same thing as above applies: The details of this
 // type will most likely change:
 using tree = std::vector<node>;
-
 
 // to look up the name associated with an index, simply
 // reuse the index to check in a std::vector:
@@ -65,6 +62,5 @@ using name_map = std::vector<std::string>;
 using index_map = std::unordered_map<std::string, index>;
 
 } // namespace terraces
-
 
 #endif

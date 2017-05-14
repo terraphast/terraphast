@@ -21,7 +21,6 @@ TEST_CASE("parsing a tree with just a root-node", "[parser]") {
 	CHECK(indeces.at("foo") == 0);
 }
 
-
 TEST_CASE("parsing a tree with one real node", "[parser]") {
 	const auto results = parse_nwk("(foo)");
 	const auto& tree = results.tree;
@@ -37,7 +36,6 @@ TEST_CASE("parsing a tree with one real node", "[parser]") {
 	CHECK(names[1] == "foo");
 	CHECK(indeces.at("foo") == 1);
 }
-
 
 TEST_CASE("parsing a tree with three leaves and two inner nodes", "[parser]") {
 	const auto results = parse_nwk("((foo,bar), baz)");
@@ -70,5 +68,3 @@ TEST_CASE("parsing a tree with three leaves and two inner nodes", "[parser]") {
 
 } // namespace tests
 } // namespace terraces
-
-

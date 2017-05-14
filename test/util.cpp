@@ -22,7 +22,6 @@ TEST_CASE("skip_ws", "[utils][utils::skip_ws]") {
 	CHECK(utils::skip_ws(str4.begin(), str4.end()) == str4.end() - 3);
 }
 
-
 TEST_CASE("reverse_skip_ws", "[utils][utils::reverse_skip_ws]") {
 	const auto str1 = std::string{""};
 	CHECK(utils::reverse_skip_ws(str1.begin(), str1.end()) == str1.begin());
@@ -37,16 +36,13 @@ TEST_CASE("reverse_skip_ws", "[utils][utils::reverse_skip_ws]") {
 	CHECK(utils::reverse_skip_ws(str4.begin(), str4.end()) == str4.begin() + 3);
 }
 
-
 TEST_CASE("ensure(false)", "[utils][utils::ensure]") {
 	CHECK_THROWS_AS(utils::ensure<std::exception>(false), std::exception);
 }
 
-
 TEST_CASE("ensure(true)", "[utils][utils::ensure]") {
 	CHECK_NOTHROW(utils::ensure<std::exception>(true));
 }
-
 
 } // namespace tests
 } // namespace terraces

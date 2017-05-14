@@ -4,7 +4,6 @@
 
 #include <gmpxx.h>
 
-
 namespace terraces {
 namespace tests {
 
@@ -17,5 +16,3 @@ TEST_CASE("demo-testcase", "[testing-demo]") {
 
 } // namespace tests
 } // namespace terraces
-
-

@@ -2,8 +2,8 @@
 #ifndef TERRACES_PARSER_HPP
 #define TERRACES_PARSER_HPP
 
-#include <string>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 
 #include "trees.hpp"
@@ -27,12 +27,10 @@ struct tree_set {
  */
 tree_set parse_nwk(const std::string& input);
 
-class bad_input_error: public std::runtime_error {
+class bad_input_error : public std::runtime_error {
 	using std::runtime_error::runtime_error;
 };
 
 } // namespace terraces
 
-
 #endif
-

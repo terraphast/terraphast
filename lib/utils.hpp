@@ -3,14 +3,13 @@
 #define TERRACES_UTILS_HPP
 
 #include <cctype>
-#include <utility>
 #include <iterator>
-
+#include <utility>
 
 namespace terraces {
 namespace utils {
 
-template<typename Iterator>
+template <typename Iterator>
 Iterator skip_ws(Iterator it, Iterator last) {
 	while (it != last and std::isspace(*it)) {
 		++it;
@@ -18,8 +17,7 @@ Iterator skip_ws(Iterator it, Iterator last) {
 	return it;
 }
 
-
-template<typename Iterator>
+template <typename Iterator>
 Iterator reverse_skip_ws(Iterator first, Iterator last) {
 	while (first != last) {
 		if (std::isspace(*std::prev(last))) {
@@ -31,17 +29,14 @@ Iterator reverse_skip_ws(Iterator first, Iterator last) {
 	return last;
 }
 
-
-template<typename Exception, typename... Args>
+template <typename Exception, typename... Args>
 void ensure(bool b, Args&&... args) {
 	if (not b) {
 		throw Exception{std::forward<Args>(args)...};
 	}
 }
 
-
 } // namespace utils
 } // namespace terraces
 
 #endif
-
