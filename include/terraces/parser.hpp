@@ -3,8 +3,8 @@
 #define TERRACES_PARSER_HPP
 
 #include <string>
-
 #include <stdexcept>
+#include <utility>
 
 #include "nodes.hpp"
 
@@ -19,7 +19,7 @@ namespace terraces {
  * which should however not impact normal users in ways other than
  * performance improvements.
  */
-tree parse_nwk(const std::string& input);
+std::pair<tree, name_map> parse_nwk(const std::string& input);
 
 class bad_input_error: public std::runtime_error {
 	using std::runtime_error::runtime_error;

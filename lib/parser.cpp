@@ -53,7 +53,7 @@ token next_token(Iterator& it, Iterator end) {
 
 } // namespace parsing
 
-tree parse_nwk(const std::string& input) {
+std::pair<tree, name_map> parse_nwk(const std::string& input) {
 	auto ret = tree{};
 	auto names = name_map{""};
 
@@ -83,6 +83,7 @@ tree parse_nwk(const std::string& input) {
 		case parsing::token_type::seperator: {
 			const auto parent = state.parent;
 			const auto self = ret.size();
+			state.self = self;
 			ret.emplace_back(parent, none, none);
 			ret.at(parent).data.at(2) = self;
 			names.emplace_back();
@@ -104,7 +105,7 @@ tree parse_nwk(const std::string& input) {
 		default: { throw std::logic_error{"dafuq?"}; }
 		}
 	}
-	return ret;
+	return {ret, names};
 }
 
 } // namespace terraces
