@@ -4,11 +4,17 @@
 
 #include <string>
 #include <stdexcept>
-#include <utility>
+#include <tuple>
 
 #include "nodes.hpp"
 
 namespace terraces {
+
+struct tree_set {
+	tree tree;
+	name_map names;
+	index_map indeces;
+};
 
 /**
  * Parses a string in Newick-format and returns an
@@ -19,7 +25,7 @@ namespace terraces {
  * which should however not impact normal users in ways other than
  * performance improvements.
  */
-std::pair<tree, name_map> parse_nwk(const std::string& input);
+tree_set parse_nwk(const std::string& input);
 
 class bad_input_error: public std::runtime_error {
 	using std::runtime_error::runtime_error;

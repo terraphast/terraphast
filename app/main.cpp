@@ -11,10 +11,10 @@ int main(int argc, char** argv) {
 		auto file = std::ifstream{argv[i]};
 		while(std::getline(file, line)) {
 			auto data = terraces::parse_nwk(line);
-			for (auto i = terraces::index{}; i < data.first.size(); ++i) {
+			for (auto i = terraces::index{}; i < data.tree.size(); ++i) {
 				std::cout
-					<< '\t' << i << " (" << data.second.at(i)
-					<< ") : " << data.first.at(i).data.at(0) << "\n";
+					<< '\t' << i << " (" << data.names.at(i)
+					<< ") : " << data.tree.at(i).data.at(0) << "\n";
 			}
 		}
 	}

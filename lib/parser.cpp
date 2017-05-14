@@ -54,9 +54,10 @@ token next_token(Iterator& it, Iterator end) {
 
 } // namespace parsing
 
-std::pair<tree, name_map> parse_nwk(const std::string& input) {
+tree_set parse_nwk(const std::string& input) {
 	auto ret = tree{};
 	auto names = name_map{""};
+	auto indeces = index_map{};
 
 	auto stack = parsing::parser_stack{};
 
@@ -90,7 +91,7 @@ std::pair<tree, name_map> parse_nwk(const std::string& input) {
 			names.emplace_back();
 			break;
 			// no need to update state as the tree is binary to
-			// begin with
+			// begin with, which means that we will now go up a level
 		}
 		case parsing::token_type::rparen: {
 			utils::ensure<bad_input_error>(not stack.empty(), "mismatched parenthesis");
@@ -100,13 +101,14 @@ std::pair<tree, name_map> parse_nwk(const std::string& input) {
 		}
 		case parsing::token_type::name: {
 			names.at(state.self) = token.name;
+			indeces[token.name] = state.self;
 			break;
 		}
 		case parsing::token_type::eof:
 		default: { throw std::logic_error{"dafuq?"}; }
 		}
 	}
-	return {ret, names};
+	return {std::move(ret), std::move(names), std::move(indeces)};
 }
 
 } // namespace terraces
