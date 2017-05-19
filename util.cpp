@@ -119,6 +119,7 @@ ntree_t* get_leaf_by_name(ntree_t *tree, char *label) {
 std::shared_ptr<Tree> root_at(ntree_t *leaf) {
     //if leaf->parent is null, leaf is the root => the tree is not binary, or the node is no leaf
     assert(leaf->parent != nullptr);
+    assert(leaf->children_count == 0);  //should be a leaf
     ntree_t *neighbour = leaf->parent;
     std::shared_ptr<Tree> root = std::make_shared<Tree>();
     std::shared_ptr<Tree> new_leaf = std::make_shared<Tree>();

@@ -26,10 +26,10 @@ TEST(GetNewickTreeTest, simple_tree) {
 TEST(get_leaf_by_name_Test, simiple_test) {
     ntree_t *tree = get_newk_tree("test/simple_tree.nwk");
 
-//    ASSERT_EQ(tree->children[0], get_leaf_by_name("A"));
-//    ASSERT_EQ(tree->children[1], get_leaf_by_name("B"));
-//    ASSERT_EQ(tree->children[2]->children[0], get_leaf_by_name("C"));
-//    ASSERT_EQ(tree->children[2]->children[1], get_leaf_by_name("D"));
+    ASSERT_EQ(tree->children[0], get_leaf_by_name(tree, "A"));
+    ASSERT_EQ(tree->children[1], get_leaf_by_name(tree, "B"));
+    ASSERT_EQ(tree->children[2]->children[0], get_leaf_by_name(tree, "C"));
+    ASSERT_EQ(tree->children[2]->children[1], get_leaf_by_name(tree, "D"));
 }
 
 TEST(Root_at_Test, simple_tree) {

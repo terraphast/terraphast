@@ -31,6 +31,8 @@ public:
         parent = p_parent;
     }
 
+    Tree() {}
+
 	//TODO getter and setter? //performance vs. code quality?
 	std::string label;
 	//double length;  //TODO do we need the length?
