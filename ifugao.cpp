@@ -5,9 +5,9 @@
 #include <map>
 
 long list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leaves, bool count_only, FILE &file) {
+		const std::set<Leaf> &leaves, bool count_only, FILE &file) {
 
-	std::vector<binary_tree> all_trees = combine_sets(
+	std::vector<Tree> all_trees = combine_sets(
 			apply_constraints(leaves, constraints), constraints);
 
 	if (!count_only) {
@@ -16,21 +16,77 @@ long list_trees(const std::vector<constraint> &constraints,
 	return all_trees.size();
 }
 
-std::vector<binary_tree> combine_sets(
-		const std::vector<std::shared_ptr<std::set<leaf_number> > > &set_array,
+std::vector<Tree> combine_sets(
+		const std::vector<std::shared_ptr<std::set<Leaf> > > &set_array,
 		const std::vector<constraint> &constraints) {
-	//TODO
-	return std::vector<binary_tree>();
+	std::shared_ptr<std::set<Leaf> > left_set(new std::set<Leaf>);
+	std::shared_ptr<std::set<Leaf> > right_set(new std::set<Leaf>);
+	std::vector<Tree> found_trees();
+	//initialize right set
+	for(auto set: set_array) {
+		right_set.insert(set);
+	}
+	auto right_iterator = right_set.begin();
+	auto right_end = right_set.end();
+	std::advance(right_end, -1);
+	
+	while(right_iterator!=right_end) {
+		left_set.insert(*right_iterator);
+		right_set.erase(right_iterator);
+		combine_sets_subcall(set_array, constraints, &found_trees);
+	}
+	
+	
+	/*
+		std::set<Leaf> set_to_move = set_array[current];
+		left_set.insert(set_to_move);
+		right_set.er
+	}
+	*/
+	
+	
+	
+	// index of last element
+	long last = set_array.size()-1;
+	auto left_set.end();
+	// first loop, fill array completely
+	/* Second loop, iterate until end is maximum value, then increase previous
+	 * value. 1 always stays in the set. This results in all combinations
+	 *       v-[max!]       v-[increase!]       v-[max!]
+	 * 1 2 3 5       -> 1 2 4            -> 1 2 5
+	 *   v-[increase!]     v-[increase!]     v-[max!]
+	 * 1 3            -> 1 4            -> 1 5       -> STOP
+	 */
+	bool stop = false;
+	
+	while(!stop) {
+		
+		combine_sets_subcall(set_array, constraints, found_trees, left_set, right_set);
+	}
+	
+	return found_trees;
 }
 
-std::vector<binary_tree> merge_subtrees(std::vector<binary_tree> &left,
-		std::vector<binary_tree> &right) {
+combine_sets_subcall(const std::vector<std::shared_ptr<std::set<Leaf> > > &set_array,
+		const std::vector<constraint> &constraints, std::vector<Tree> &found_trees, 
+		std::shared_ptr<std::set<Leaf> > left_set, std::shared_ptr<std::set<Leaf> > right_set) {
+	find_constraints()
+	
+	
+	left_subtrees = combine_sets_subcall(set_array, constraints, left_set);
+	right_subtrees = combine_sets_subcall(set_array, constraints, right_set);
+	
+	found_trees.push_back(merge_subtrees(left_subtrees, right_subtrees));
+}
 
-	std::vector<binary_tree> merged_trees;
+std::vector<Tree> merge_subtrees(std::vector<Tree> &left,
+		std::vector<Tree> &right) {
 
-	for (binary_tree &l : left) {
-		for (binary_tree &r : right) {
-			binary_tree new_tree;
+	std::vector<Tree> merged_trees;
+
+	for (Tree &l : left) {
+		for (Tree &r : right) {
+			Tree new_tree;
 			new_tree.is_leaf = false;
 			new_tree.label = nullptr;
 			new_tree.left_subtree = &l;
@@ -43,15 +99,15 @@ std::vector<binary_tree> merge_subtrees(std::vector<binary_tree> &left,
 	return merged_trees;
 }
 
-std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
-		const std::set<leaf_number> &leaves,
+std::vector<std::shared_ptr<std::set<Leaf> > > apply_constraints(
+		const std::set<Leaf> &leaves,
 		const std::vector<constraint> &constraints) {
 
-	std::vector<std::shared_ptr<std::set<leaf_number> > > sets;
+	std::vector<std::shared_ptr<std::set<Leaf> > > sets;
 
-	for (leaf_number l : leaves) {
+	for (Leaf l : leaves) {
 		// create an empty set for each leave
-		std::shared_ptr<std::set<leaf_number>> set(new std::set<leaf_number>);
+		std::shared_ptr<std::set<Leaf>> set(new std::set<Leaf>);
 		set->insert(l);
 		sets.push_back(set);
 	}
@@ -87,9 +143,9 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 	}
 	return sets;
 }
-
-static void extract_label_leave_mapping(const binary_tree* node,
-		std::map<char*, leaf_number, cmp_str>& mapping, leaf_number& counter) {
+/*
+static void extract_label_leave_mapping(const Tree* node,
+		std::map<char*, Leaf, cmp_str>& mapping, Leaf& counter) {
 
 	if (node != nullptr && node->is_leaf) {
 		mapping[node->label] = counter;
@@ -99,28 +155,28 @@ static void extract_label_leave_mapping(const binary_tree* node,
 		extract_label_leave_mapping(node->right_subtree, mapping, counter);
 	}
 }
-
-static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_rec(
-		const binary_tree *node, std::map<char*, leaf_number, cmp_str>& mapping,
+*/
+static std::tuple<Leaf, Leaf> extract_constraints_from_supertree_rec(
+		const Tree *node, std::map<char*, Leaf, cmp_str>& mapping,
 		std::vector<constraint> &constraints) {
 
 	assert(node != nullptr);
 
 	if (node->is_leaf) {
-		auto this_leaf_number = mapping[node->label];
-		return std::make_tuple(this_leaf_number, this_leaf_number);
+		auto this_Leaf = mapping[node->label];
+		return std::make_tuple(this_Leaf, this_Leaf);
 	}
 
 	// (l,r) of the left child node
-	leaf_number l_left_most;
-	leaf_number l_right_most;
+	Leaf l_left_most;
+	Leaf l_right_most;
 	std::tie(l_left_most, l_right_most) =
 			extract_constraints_from_supertree_rec(node->left_subtree, mapping,
 					constraints);
 
 	// (l,r) of the right child node
-	leaf_number r_left_most;
-	leaf_number r_right_most;
+	Leaf r_left_most;
+	Leaf r_right_most;
 	std::tie(r_left_most, r_right_most) =
 			extract_constraints_from_supertree_rec(node->right_subtree, mapping,
 					constraints);
@@ -146,18 +202,18 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_r
 	return std::make_tuple(l_left_most, r_right_most);
 }
 
-std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_from_supertree(
-		const binary_tree *supertree) {
-	std::set<leaf_number> leaf_numbers;
+std::tuple<std::set<Leaf>, std::vector<constraint> > extract_constraints_from_supertree(
+		const Tree *supertree) {
+	std::set<Leaf> Leafs;
 	std::vector<constraint> constraints;
 
-	std::map<char*, leaf_number, cmp_str> mapping;
-	leaf_number counter = 0;
-	extract_label_leave_mapping(supertree, mapping, counter);
+	std::map<char*, Leaf, cmp_str> mapping;
+	Leaf counter = 0;
+	//extract_label_leave_mapping(supertree, mapping, counter);
 
 	extract_constraints_from_supertree_rec(supertree, mapping, constraints);
 
-	std::set<leaf_number> leafs;
+	std::set<Leaf> leafs;
 	for (const auto& pair : mapping) {
 	    leafs.insert(pair.second);
 	}
@@ -165,7 +221,7 @@ std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_
 	return std::make_tuple(leafs, constraints);
 }
 
-std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
+std::vector<constraint> find_constraints(const std::set<Leaf> &leaves,
 		const std::vector<constraint> &constraints) {
 
 	std::vector<constraint> valid_constraints;
@@ -189,4 +245,4 @@ std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
 		}
 	}
 	return valid_constraints;
-}
+}<
