@@ -5,6 +5,9 @@
 # actual use. If that is what you want, just go through the usual
 # way steps for building a cmake-project.
 
+ln "pre-commit" ".git/hooks/pre-commit"
+chmod +x "pre-commit"
+
 if command -v "ninja" >/dev/null; then
 	echo "found ninja"
 	BUILD_BACKEND="-GNinja"
