@@ -1,3 +1,5 @@
+#include <memory>
+
 class Tree {
 public:
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right, std::shared_ptr<Tree> p_parent, std::string p_label) {
