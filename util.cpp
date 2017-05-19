@@ -71,8 +71,6 @@ rtree_t* generate_induced_tree(rtree_t *tree, const missingData *missing_data,
 	return nullptr;
 }
 
-rtree_t* ntree_to_rtree(ntree_t * root);
-
 std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data) {
 	long root_species_number = -1;
 	for (size_t i = 0; i < missing_data->numberOfSpecies; i++) {

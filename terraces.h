@@ -1,6 +1,7 @@
 #ifndef TERRACES_H
 #define TERRACES_H
 
+#include "tree.h"
 #include "ifugao.h"
 
 #include "input_parser.h"

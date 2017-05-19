@@ -1,6 +1,8 @@
 #ifndef IFUGAO_H
 #define IFUGAO_H
 
+#include "tree.h"
+
 #include <memory>
 #include <vector>
 #include <set>
@@ -57,7 +59,7 @@ std::vector<binary_tree> combine_sets(
  * @return All constraints of the given super tree and a set of leave numbers.
  */
 std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_from_supertree(
-		const binary_tree *supertree);
+		const std::shared_ptr<Tree> supertree);
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.

@@ -77,28 +77,22 @@ TEST(ApplyConstraintsTest, no_merges) {
 
 	constraints.push_back(cons1);
 
-	ASSERT_DEATH (apply_constraints(leaves, constraints), "Assertion (.)* failed.");
+	ASSERT_DEATH(apply_constraints(leaves, constraints),
+			"Assertion (.)* failed.");
 }
 
 TEST(ExtractConstraintsFromSupertree, example_from_slides) {
-	binary_tree l_1 = { .is_leaf = true, .label = "l1", .left_subtree = nullptr,
-			.right_subtree = nullptr };
-	binary_tree l_2 = { .is_leaf = true, .label = "l2", .left_subtree = nullptr,
-			.right_subtree = nullptr };
-	binary_tree l_3 = { .is_leaf = true, .label = "l3", .left_subtree = nullptr,
-			.right_subtree = nullptr };
-	binary_tree l_4 = { .is_leaf = true, .label = "l4", .left_subtree = nullptr,
-			.right_subtree = nullptr };
-	binary_tree c_1 = { .is_leaf = false, .label = "c1", .left_subtree = &l_1,
-			.right_subtree = &l_2 };
-	binary_tree c_2 = { .is_leaf = false, .label = "c2", .left_subtree = &l_3,
-			.right_subtree = &l_4 };
-	binary_tree r = { .is_leaf = false, .label = "r", .left_subtree = &c_1,
-			.right_subtree = &c_2 };
+	auto l_1 = std::make_shared<Tree>("l1");
+	auto l_2 = std::make_shared<Tree>("l2");
+	auto l_3 = std::make_shared<Tree>("l3");
+	auto l_4 = std::make_shared<Tree>("l4");
+	auto c_1 = std::make_shared<Tree>(l_1, l_2, "c1");
+	auto c_2 = std::make_shared<Tree>(l_3, l_4, "c2");
+	auto r = std::make_shared<Tree>(c_1, c_2, "r");
 
 	std::vector<constraint> constraints;
 	std::set<leaf_number> leafs;
-	std::tie(leafs, constraints) = extract_constraints_from_supertree(&r);
+	std::tie(leafs, constraints) = extract_constraints_from_supertree(r);
 
 	ASSERT_EQ(leafs.size(), 4);
 	ASSERT_EQ(*std::next(leafs.begin(), 0), 0);

@@ -56,11 +56,11 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 		sets.push_back(set);
 	}
 
-	int index_containing_left_constraint;
-	int index_containing_right_constraint;
+	leaf_number index_containing_left_constraint;
+	leaf_number index_containing_right_constraint;
 
 	for (constraint cons : constraints) {
-		for (int i = 0; i < sets.size(); i++) {
+		for (leaf_number i = 0; i < sets.size(); i++) {
 			if (sets[i]->find(cons.smaller_left) != sets[i]->end()) {
 				// set contains the left constraint
 				index_containing_left_constraint = i;
@@ -88,25 +88,25 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 	return sets;
 }
 
-static void extract_label_leave_mapping(const binary_tree* node,
-		std::map<char*, leaf_number, cmp_str>& mapping, leaf_number& counter) {
+static void extract_label_leave_mapping(const std::shared_ptr<Tree> node,
+		std::map<std::string, leaf_number>& mapping, leaf_number& counter) {
 
-	if (node != nullptr && node->is_leaf) {
+	if (node != nullptr && node->is_leaf()) {
 		mapping[node->label] = counter;
 		counter++;
 	} else {
-		extract_label_leave_mapping(node->left_subtree, mapping, counter);
-		extract_label_leave_mapping(node->right_subtree, mapping, counter);
+		extract_label_leave_mapping(node->left, mapping, counter);
+		extract_label_leave_mapping(node->right, mapping, counter);
 	}
 }
 
 static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_rec(
-		const binary_tree *node, std::map<char*, leaf_number, cmp_str>& mapping,
+		const std::shared_ptr<Tree> node, std::map<std::string, leaf_number>& mapping,
 		std::vector<constraint> &constraints) {
 
 	assert(node != nullptr);
 
-	if (node->is_leaf) {
+	if (node->is_leaf()) {
 		auto this_leaf_number = mapping[node->label];
 		return std::make_tuple(this_leaf_number, this_leaf_number);
 	}
@@ -115,14 +115,14 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_r
 	leaf_number l_left_most;
 	leaf_number l_right_most;
 	std::tie(l_left_most, l_right_most) =
-			extract_constraints_from_supertree_rec(node->left_subtree, mapping,
+			extract_constraints_from_supertree_rec(node->left, mapping,
 					constraints);
 
 	// (l,r) of the right child node
 	leaf_number r_left_most;
 	leaf_number r_right_most;
 	std::tie(r_left_most, r_right_most) =
-			extract_constraints_from_supertree_rec(node->right_subtree, mapping,
+			extract_constraints_from_supertree_rec(node->right, mapping,
 					constraints);
 
 	if (l_left_most != l_right_most) {
@@ -147,11 +147,11 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_r
 }
 
 std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_from_supertree(
-		const binary_tree *supertree) {
+		const std::shared_ptr<Tree> supertree) {
 	std::set<leaf_number> leaf_numbers;
 	std::vector<constraint> constraints;
 
-	std::map<char*, leaf_number, cmp_str> mapping;
+	std::map<std::string, leaf_number> mapping;
 	leaf_number counter = 0;
 	extract_label_leave_mapping(supertree, mapping, counter);
 
@@ -159,7 +159,7 @@ std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_
 
 	std::set<leaf_number> leafs;
 	for (const auto& pair : mapping) {
-	    leafs.insert(pair.second);
+		leafs.insert(pair.second);
 	}
 
 	return std::make_tuple(leafs, constraints);
