@@ -73,7 +73,7 @@ rtree_t* generate_induced_tree(rtree_t *tree, const missingData *missing_data,
 
 rtree_t* ntree_to_rtree(ntree_t * root);
 
-std::shared_ptr<Rtree> root_tree(ntree_t *tree, const missingData *missing_data) {
+std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data) {
 	long root_species_number = -1;
 	for (size_t i = 0; i < missing_data->numberOfSpecies; i++) {
 		bool contains_all_data = true;
@@ -116,13 +116,13 @@ ntree_t* get_leaf_by_name(ntree_t *tree, char *label) {
     return nullptr;
 }
 
-std::shared_ptr<Rtree> root_at(ntree_t *leaf) {
+std::shared_ptr<Tree> root_at(ntree_t *leaf) {
     //if leaf->parent is null, leaf is the root => the tree is not binary, or the node is no leaf
     assert(leaf->parent != nullptr);
     ntree_t *neighbour = leaf->parent;
-    std::shared_ptr<Rtree> root = std::make_shared<Rtree>();
-    std::shared_ptr<Rtree> new_leaf = std::make_shared<Rtree>();
-    std::shared_ptr<Rtree> new_neighbour = std::make_shared<Rtree>();
+    std::shared_ptr<Tree> root = std::make_shared<Tree>();
+    std::shared_ptr<Tree> new_leaf = std::make_shared<Tree>();
+    std::shared_ptr<Tree> new_neighbour = std::make_shared<Tree>();
 
     //initialize root
     root->label = "";
@@ -139,7 +139,7 @@ std::shared_ptr<Rtree> root_at(ntree_t *leaf) {
     return root;
 }
 
-void recursive_root(std::shared_ptr<Rtree> current,  ntree_t *current_ntree, ntree_t *parent) {
+void recursive_root(std::shared_ptr<Tree> current,  ntree_t *current_ntree, ntree_t *parent) {
     //when the children_count is 3, we are at the pseudoroot of the unrooted binary tree
     assert(current_ntree->children_count == 2 || current_ntree->children_count == 0 ||
            (current_ntree->children_count == 3 && current_ntree->parent == nullptr));
@@ -154,8 +154,8 @@ void recursive_root(std::shared_ptr<Rtree> current,  ntree_t *current_ntree, ntr
         return;
     }
 
-    current->left = std::make_shared<Rtree>();
-    current->right = std::make_shared<Rtree>();
+    current->left = std::make_shared<Tree>();
+    current->right = std::make_shared<Tree>();
 
     ntree_t *left_ntree;
     ntree_t *right_ntree;

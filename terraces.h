@@ -16,14 +16,32 @@ struct cmp_str {
 	}
 };
 
-class Rtree {
+class Tree {
 public:
+    Tree(std::shared_ptr<Tree> p_left, p_right, p_parent, std::string p_label) {
+        left = p_left;
+        right = p_right;
+        parent = p_parent;
+        label = p_label;
+    }
+
+    Tree(std::shared_ptr<Tree> p_left, p_right, p_parent) {
+        left = p_left;
+        right = p_right;
+        parent = p_parent;
+    }
+
 	//TODO getter and setter? //performance vs. code quality?
 	std::string label;
 	//double length;  //TODO do we need the length?
-	std::shared_ptr<Rtree> left;
-	std::shared_ptr<Rtree> right;
-	std::shared_ptr<Rtree> parent;
+    std::shared_ptr<Tree> left;
+    std::shared_ptr<Tree> right;
+    std::shared_ptr<Tree> parent;
+
+    inline bool is_leaf() {
+        return (left == nullptr && right == nullptr);
+    }
+
 	//unsigned int leaves;
 	//char * color;
 	//int mark;
@@ -191,7 +209,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
  */
 #ifndef DEBUG
 void d_print_tree(const ntree_t* tree);
-void d_print_tree(const std::shared_ptr<Rtree>* tree);
+void d_print_tree(const std::shared_ptr<Tree>* tree);
 void d_print_tree(const rtree_t* tree);
 void d_print_tree(const binary_tree* tree);
 #define d_printf(...) do { \

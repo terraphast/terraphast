@@ -57,7 +57,7 @@ void d_print_tree(const rtree_t *tree) {
 	d_print_tree_rec(tree, 1);
 }
 
-static void d_print_tree_rec(const std::shared_ptr<Rtree> tree, int depth) {
+static void d_print_tree_rec(const std::shared_ptr<Tree> tree, int depth) {
     fprintf(stderr, "Label: %s\n", tree->label.c_str());
     if (tree->left != nullptr) {
         for (int j = 0; j < depth * 4; j++) {
@@ -75,7 +75,7 @@ static void d_print_tree_rec(const std::shared_ptr<Rtree> tree, int depth) {
     }
 }
 
-void d_print_tree(const std::shared_ptr<Rtree> tree) {
+void d_print_tree(const std::shared_ptr<Tree> tree) {
 	d_printf("Dump RTree:\n");
 	d_print_tree_rec(tree, 1);
 }
@@ -147,7 +147,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	assert(tree != nullptr);
 	d_print_tree(tree);
 
-    std::shared_ptr<Rtree> rtree = root_tree(tree, m);
+    std::shared_ptr<Tree> rtree = root_tree(tree, m);
 
 	assert(rtree != nullptr);
 	d_print_tree(rtree);
