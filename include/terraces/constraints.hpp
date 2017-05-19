@@ -15,7 +15,9 @@ struct constraint {
 
 using constraints = std::vector<constraint>;
 
-std::vector<std::vector<index>> apply_constraints(std::vector<index>, std::vector<constraint>);
+constraints filter_constraints(std::vector<index>, constraints);
+
+std::vector<std::vector<index>> apply_constraints(std::vector<index>, constraints);
 
 } // namespace terraces
 
