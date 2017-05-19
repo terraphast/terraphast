@@ -5,7 +5,7 @@
 #include <istream>
 #include <stdexcept>
 #include <string>
-#include <tuple>
+#include <utility>
 
 #include "bitmatrix.hpp"
 #include "trees.hpp"
@@ -33,7 +33,11 @@ class bad_input_error : public std::runtime_error {
 	using std::runtime_error::runtime_error;
 };
 
-bitmatrix parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size);
+/**
+ * Parses a data-file and returns the associated bit-matrix as well
+ * as a suitable index for rooting (or `none` if none exists).
+ */
+std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size);
 
 } // namespace terraces
 

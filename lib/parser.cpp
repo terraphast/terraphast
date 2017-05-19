@@ -111,12 +111,13 @@ tree_set parse_nwk(const std::string& input) {
 	return {std::move(ret), std::move(names), std::move(indices)};
 }
 
-bitmatrix parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size) {
+std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size) {
 	auto cols = index{};
 	auto rows = index{}; // mostly a dummy;
 	input >> rows >> cols >> std::ws;
 	auto line = std::string{};
 	auto mat = bitmatrix{tree_size, cols};
+	auto suitable_root = none;
 	while (std::getline(input, line)) {
 		if (line.empty()) {
 			continue;
@@ -125,14 +126,22 @@ bitmatrix parse_bitmatrix(std::istream& input, const index_map& indices, index t
 		const auto species = indices.at({name_start, line.end()});
 		auto it = line.begin();
 		auto end = name_start;
+		auto all_data_available = true;
 		for (auto i = index{}; i < cols; ++i) {
 			it = utils::skip_ws(it, end);
 			utils::ensure<bad_input_error>(it != end, "bad table in input");
 			auto c = *it++;
-			mat.set(species, i, c == '1');
+			if (c == '1') {
+				mat.set(species, i, true);
+			} else {
+				all_data_available = false;
+			}
+		}
+		if (all_data_available) {
+			suitable_root = species;
 		}
 	}
-	return mat;
+	return {mat, suitable_root};
 }
 
 } // namespace terraces

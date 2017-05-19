@@ -15,7 +15,8 @@ int main(int argc, char** argv) try {
 	const auto data = terraces::parse_nwk(tree_string);
 
 	auto data_file = std::ifstream{argv[2]};
-	const auto mat = terraces::parse_bitmatrix(data_file, data.indices, data.tree.size());
+	const auto data_res = terraces::parse_bitmatrix(data_file, data.indices, data.tree.size());
+	const auto& mat = data_res.first;
 
 	for (auto i = terraces::index{}; i < data.tree.size(); ++i) {
 		std::cout << std::setw(3) << i << ": " << std::setw(1) << std::noboolalpha;
