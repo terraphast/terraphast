@@ -37,7 +37,8 @@ class bad_input_error : public std::runtime_error {
  * Parses a data-file and returns the associated bit-matrix as well
  * as a suitable index for rooting (or `none` if none exists).
  */
-std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size);
+std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices,
+                                            index tree_size);
 
 } // namespace terraces
 

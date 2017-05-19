@@ -111,7 +111,8 @@ tree_set parse_nwk(const std::string& input) {
 	return {std::move(ret), std::move(names), std::move(indices)};
 }
 
-std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices, index tree_size) {
+std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices,
+                                            index tree_size) {
 	auto cols = index{};
 	auto rows = index{}; // mostly a dummy;
 	input >> rows >> cols >> std::ws;
