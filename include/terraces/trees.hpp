@@ -3,6 +3,7 @@
 #define TERRACES_TREES_HPP
 
 #include <array>
+#include <cassert>
 #include <cstdint>
 #include <iosfwd>
 #include <limits>
@@ -60,6 +61,19 @@ using name_map = std::vector<std::string>;
 
 // maps the name of a species to it's index in the tree:
 using index_map = std::unordered_map<std::string, index>;
+
+/**
+ * Returns whether a node is the root-node
+ */
+inline bool is_root(const node& n) { return n.parent() == none; }
+
+/**
+ * Returns whether a node is a leaf.
+ */
+inline bool is_leaf(const node& n) {
+	assert((n.lchild() == n.rchild()) == (n.lchild() == none));
+	return n.lchild() == none;
+}
 
 } // namespace terraces
 
