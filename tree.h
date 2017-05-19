@@ -15,6 +15,10 @@ public:
 			label(p_label), left(p_left), right(p_right), parent(nullptr) {
 	}
 
+	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :
+			left(p_left), right(p_right), parent(nullptr) {
+	}
+
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
 			std::shared_ptr<Tree> p_parent) :
 			left(p_left), right(p_right), parent(p_parent) {

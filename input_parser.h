@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "newick-tools/newick-tools.h"
 #include "newick-tools/parse_ntree.h"
-#include "util.h"
 
 typedef struct input_data {
 	size_t number_of_species;

@@ -8,21 +8,14 @@
 #include <set>
 
 typedef Tree Leaf;
+typedef int leaf_number;
 
-/*
-struct Tree {
-	bool is_leaf; // 0 if node is an internal node, 1 if node is a leaf
-	char* label; // name of the leaf, NULL pointer for an internal node
-	Tree* left_subtree; // NULL pointer for leaf
-	Tree* right_subtree; // NULL pointer for leaf
-};
-*/
 //lca(smaller_left, smaller_right) < lca(bigger_left, bigger_right)
 struct constraint {
-	Leaf smaller_left;
-	Leaf bigger_left;
-	Leaf smaller_right;
-	Leaf bigger_right;
+	leaf_number smaller_left;
+	leaf_number bigger_left;
+	leaf_number smaller_right;
+	leaf_number bigger_right;
 };
 
 /**
@@ -35,7 +28,7 @@ struct constraint {
  * @return Number of all trees on the terrace.
  */
 long list_trees(const std::vector<constraint> &constraints,
-		const std::set<Leaf> &leaves, bool count_only, FILE &file);
+		const std::set<leaf_number> &leaves, bool count_only, FILE &file);
 
 /**
  * Applies the given constraints on a set of given leaves.
@@ -44,13 +37,13 @@ long list_trees(const std::vector<constraint> &constraints,
  * @param constraints Constraints to apply.
  * @return Merged sets containing the leaves.
  */
-std::vector<std::shared_ptr<std::set<Leaf> > > apply_constraints(
-		const std::set<Leaf> &leaves,
+std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
+		const std::set<leaf_number> &leaves,
 		const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
 std::vector<Tree> combine_sets(
-		const std::vector<std::set<Leaf> > &set_array,
+		const std::vector<std::shared_ptr<std::set<leaf_number> > > &set_array,
 		const std::vector<constraint> &constraints);
 
 /**
@@ -59,8 +52,8 @@ std::vector<Tree> combine_sets(
  * @param supertree All supertree from which the constraints will be extracted
  * @return All constraints of the given super tree and a set of leave numbers.
  */
-std::tuple<std::set<Leaf>, std::vector<constraint> > extract_constraints_from_supertree(
-		const Tree *supertree);
+std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_from_supertree(
+		const std::shared_ptr<Tree> supertree);
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
@@ -69,12 +62,12 @@ std::tuple<std::set<Leaf>, std::vector<constraint> > extract_constraints_from_su
  * @param constraints All constraints that could still be valid.
  * @return All constraints that are still valid.
  */
-std::vector<constraint> find_constraints(const std::set<Leaf> &leaves,
+std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
 		const std::vector<constraint> &constraints);
 
 /** merges two sub-trees */
-std::vector<Tree> merge_subtrees(std::vector<Tree> &left,
-		std::vector<Tree> &right);
+std::vector<std::shared_ptr<Tree> > merge_subtrees(std::vector<std::shared_ptr<Tree> > &left,
+		std::vector<std::shared_ptr<Tree> > &right);
 
 /** write the given tree to the gien file */
 void write_tree(Tree &tree, FILE &file);

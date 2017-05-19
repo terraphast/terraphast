@@ -5,6 +5,7 @@
 
 #include <limits.h>
 #include <iostream>
+#include <string>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wglobal-constructors"
@@ -161,22 +162,20 @@ TEST(FindConstraintsTest, example_from_slides) {
 }
 
 TEST(MergeSubtreesTest, simple_tree) {
-	binary_tree leaf_1 = { .is_leaf = true, .label = "leaf_1", .left_subtree =
-			nullptr, .right_subtree = nullptr };
-	binary_tree leaf_2 = { .is_leaf = true, .label = "leaf_2", .left_subtree =
-			nullptr, .right_subtree = nullptr };
+	auto leaf_1 = std::make_shared<Tree>("leaf_1");
+	auto leaf_2 = std::make_shared<Tree>("leaf_2");
 
-	std::vector<binary_tree> left, right;
+	std::vector<std::shared_ptr<Tree> > left, right;
 
 	left.push_back(leaf_1);
 	right.push_back(leaf_2);
 
-	std::vector<binary_tree> result = merge_subtrees(left, right);
+	std::vector<std::shared_ptr<Tree> > result = merge_subtrees(left, right);
 
 	ASSERT_EQ(result.size(), 1);
-	ASSERT_EQ(result[0].is_leaf, false);
-	ASSERT_STREQ(result[0].left_subtree->label, "leaf_1");
-	ASSERT_STREQ(result[0].right_subtree->label, "leaf_2");
+	ASSERT_EQ(result[0]->is_leaf(), false);
+	ASSERT_EQ(result[0]->left->label, std::string("leaf_1"));
+	ASSERT_EQ(result[0]->right->label, std::string("leaf_2"));
 }
 
 #pragma clang diagnostic pop

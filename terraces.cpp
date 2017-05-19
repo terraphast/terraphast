@@ -79,29 +79,6 @@ void d_print_tree(const std::shared_ptr<Tree> tree) {
 	d_printf("Dump RTree:\n");
 	d_print_tree_rec(tree, 1);
 }
-
-static void d_print_tree_rec(const binary_tree* tree, int depth) {
-	fprintf(stderr, "Label: %s\n", tree->label);
-	if (tree->left_subtree != nullptr) {
-		for (int j = 0; j < depth * 4; j++) {
-			fprintf(stderr, " ");
-		}
-		fprintf(stderr, "L:");
-		d_print_tree_rec(tree->left_subtree, depth + 1);
-	}
-	if (tree->right_subtree != nullptr) {
-		for (int j = 0; j < depth * 4; j++) {
-			fprintf(stderr, " ");
-		}
-		fprintf(stderr, "R:");
-		d_print_tree_rec(tree->right_subtree, depth + 1);
-	}
-}
-
-void d_print_tree(const binary_tree* tree) {
-	d_printf("Dump Binary Tree:\n");
-	d_print_tree_rec(tree, 1);
-}
 #endif /* DEBUG */
 
 int terraceAnalysis(missingData *m, const char *newickTreeString,
@@ -131,7 +108,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 
 	for (i = 0; i < m->numberOfSpecies; i++) {
 		for (j = 0; j < m->numberOfPartitions; j++) {
-			if (!(getDataMatrix(m, i, j) == 0 || getDataMatrix(m, i, j) == 1)) {
+			if (!(getDataMatrix(m, i, j) == (unsigned char)0 || getDataMatrix(m, i, j) == (unsigned char)1)) {
 				return TERRACE_MATRIX_ERROR;
 			}
 		}
