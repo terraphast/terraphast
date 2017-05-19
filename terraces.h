@@ -17,7 +17,18 @@ struct cmp_str {
 };
 
 class Tree {
+private:
+    unsigned long id;
+
+    //CAUTION: If you add a contructor, you must call Tree() first
 public:
+    //TODO getter and setter? //performance vs. code quality?
+    std::string label = "";
+    //double length;  //TODO do we need the length?
+    std::shared_ptr<Tree> left;
+    std::shared_ptr<Tree> right;
+    std::shared_ptr<Tree> parent;
+
     Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right, std::shared_ptr<Tree> p_parent, std::string p_label) {
         left = p_left;
         right = p_right;
@@ -31,14 +42,10 @@ public:
         parent = p_parent;
     }
 
-    Tree() {}
-
-	//TODO getter and setter? //performance vs. code quality?
-	std::string label;
-	//double length;  //TODO do we need the length?
-    std::shared_ptr<Tree> left;
-    std::shared_ptr<Tree> right;
-    std::shared_ptr<Tree> parent;
+    Tree() {
+        //static unsigned long counter = 0;
+        //id = ++counter;
+    }
 
     inline bool is_leaf() {
         return (left == nullptr && right == nullptr);

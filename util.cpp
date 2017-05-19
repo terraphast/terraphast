@@ -1,6 +1,7 @@
 #include "util.h"
 
 #include <assert.h>
+#include "terraces.h"
 
 /*
  * Create a shallow copy of the given node
@@ -92,11 +93,14 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data) 
         //rtree_t *temp_root = ntree_to_rtree(future_root);
         ntree_t *future_root = get_leaf_by_name(tree,
 				missing_data->speciesNames[root_species_number]);
-
+        if (future_root == nullptr) {
+            std::cout << "In root_tree(...): label " << missing_data->speciesNames[root_species_number] << " not found in tree" << std::endl;
+            return nullptr;
+        }
         return root_at(future_root);
 	} else {
 		//tree cannot be rooted consistently
-		return NULL;
+        return nullptr;
 	}
 }
 
@@ -107,13 +111,23 @@ ntree_t* get_leaf_by_name(ntree_t *tree, char *label) {
         return tree;
     } else {
         for (int i = 0; i < tree->children_count; i++) {
+            assert(tree->children[i]->parent != nullptr);
+            if (tree != tree->children[i]->parent) {
+                if (tree->children[i]->label != nullptr) {
+                    std::cout << "parent von " << tree->children[i]->label << " ist falsch\n";
+                } else {
+                    std::cout << "parent von " << tree->children[i] << "ist falsch\n";
+                }
+
+            }
+            //assert(tree == tree->children[i]->parent);
             ntree_t *temp = get_leaf_by_name(tree->children[i], label);
             if (temp != nullptr) {
                 return temp;
             }
         }
     }
-    return nullptr;
+    return nullptr; //label not found
 }
 
 std::shared_ptr<Tree> root_at(ntree_t *leaf) {
@@ -148,6 +162,8 @@ void recursive_root(std::shared_ptr<Tree> current,  ntree_t *current_ntree, ntre
     if (current_ntree->label == nullptr) {
         current->label = "";
     } else {
+        assert(current != nullptr);
+        assert(current_ntree != nullptr);
         current->label = current_ntree->label;
     }
 
@@ -195,4 +211,27 @@ void recursive_root(std::shared_ptr<Tree> current,  ntree_t *current_ntree, ntre
 
     recursive_root(current->left, left_ntree, current_ntree);
     recursive_root(current->right, right_ntree, current_ntree);
+}
+
+bool check_tree(ntree_t *tree) {
+    for (int i = 0; i < tree->children_count; i++) {
+        if (tree != tree->children[i]->parent) {
+            if (tree->children[i]->label != nullptr) {
+                std::cout << tree << ": parent of " << tree->children[i]->label << " is wrong: " << tree->children[i]->parent << std::endl;
+            } else {
+                std::cout << tree << ": parent of " << tree->children[i] << " is wrong: " << tree->children[i]->parent << std::endl;
+            }
+        }
+        check_tree(tree->children[i]);
+    }
+    return true;
+}
+
+void fix_tree(ntree_t *tree) {
+    int x = tree->children_count;
+    int y = 5 + x;
+    for (int i = 0; i < x; i++) {
+        tree->children[i]->parent = tree;
+        fix_tree(tree->children[i]);
+    }
 }
