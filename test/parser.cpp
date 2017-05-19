@@ -87,5 +87,34 @@ TEST_CASE("parsing a datafile with two species and two cols", "[parser],[data-pa
 	CHECK(root_species == 1);
 }
 
+TEST_CASE("parsing a complex datafile", "[parser],[data-parser]") {
+	auto stream = std::istringstream{"5 3\n"
+	                                 "0 1 0 foo\n"
+	                                 "1 1 1 bar\n"
+	                                 "0 1 0 bla\n"
+	                                 "1 0 1 blub\n"
+	                                 "1 1 0 gähn\n"};
+	const auto map =
+	        terraces::index_map{{"foo", 1}, {"bar", 2}, {"bla", 3}, {"blub", 4}, {"gähn", 5}};
+	const auto res = terraces::parse_bitmatrix(stream, map, 6);
+	const auto& mat = res.first;
+	const auto& root_species = res.second;
+
+	REQUIRE(mat.cols() == 3);
+	REQUIRE(mat.rows() == 6);
+
+	CHECK(mat.get(0, 0) == false);
+	CHECK(mat.get(0, 1) == false);
+	CHECK(mat.get(0, 2) == false);
+	CHECK(mat.get(1, 0) == false);
+	CHECK(mat.get(1, 1) == true);
+	CHECK(mat.get(1, 2) == false);
+	CHECK(mat.get(2, 0) == true);
+	CHECK(mat.get(2, 1) == true);
+	CHECK(mat.get(2, 2) == true);
+
+	CHECK(root_species == 2);
+}
+
 } // namespace tests
 } // namespace terraces
