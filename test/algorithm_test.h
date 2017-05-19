@@ -36,6 +36,50 @@ TEST(ApplyConstraintsTest, example_from_slides) {
 	ASSERT_EQ(sum, 15);
 }
 
+TEST(ApplyConstraintsTest, merge_all_sets) {
+
+	std::set<leaf_number> leaves = { 1, 2, 3, 4, 5 };
+
+	std::vector<constraint> constraints;
+
+	constraint cons1 = { 1, 3, 2, 2 };
+	constraint cons2 = { 4, 4, 5, 2 };
+	constraint cons3 = { 3, 3, 4, 2 };
+	constraint cons4 = { 1, 1, 3, 5 };
+
+	constraints.push_back(cons1);
+	constraints.push_back(cons2);
+	constraints.push_back(cons3);
+	constraints.push_back(cons4);
+
+	std::vector<std::shared_ptr<std::set<leaf_number> > > result =
+			apply_constraints(leaves, constraints);
+
+	ASSERT_EQ(result.size(), 1);
+
+	size_t sum = 0;
+	for (size_t i = 0; i < result.size(); i++) {
+		for (leaf_number n : *result[i]) {
+			sum += n;
+		}
+	}
+	// all elements still contained in the sets?
+	ASSERT_EQ(sum, 15);
+}
+
+TEST(ApplyConstraintsTest, no_merges) {
+
+	std::set<leaf_number> leaves = { 1, 2, 3, 4, 5 };
+
+	std::vector<constraint> constraints;
+
+	constraint cons1 = { 1, 3, 6, 6 };
+
+	constraints.push_back(cons1);
+
+	ASSERT_DEATH (apply_constraints(leaves, constraints), "Assertion (.)* failed.");
+}
+
 TEST(ExtractConstraintsFromSupertree, example_from_slides) {
 	binary_tree l_1 = { .is_leaf = true, .label = "l1", .left_subtree = nullptr,
 			.right_subtree = nullptr };
