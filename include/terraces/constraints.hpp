@@ -8,14 +8,14 @@
 namespace terraces {
 
 struct constraint {
-        index shared;
-        index left;
-        index right;
+	index shared;
+	index left;
+	index right;
 };
 
 using constraints = std::vector<constraint>;
 
-std::vector<std::vector<index> > apply_constraints(std::vector<index>, std::vector<constraint>);
+std::vector<std::vector<index>> apply_constraints(std::vector<index>, std::vector<constraint>);
 
 } // namespace terraces
 
