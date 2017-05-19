@@ -12,6 +12,8 @@ TEST_CASE("union_find", "[union_find]") {
 	merge(leaves, 0, 1);
 	CHECK(find(leaves, 0) == find(leaves, 1));
 	CHECK(find(leaves, 2) == 2);
+        std::vector<std::vector<index> > set = { { 0, 1 }, { 2 } };
+        CHECK(to_set_of_sets(leaves) == set);
 }
 
 } // namespace tests
