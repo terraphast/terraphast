@@ -11,7 +11,7 @@ std::vector<bipartition> sets_to_bipartitions(std::vector<std::vector<std::size_
 		std::vector<index> s1 = sets.at(0);
 		std::vector<index> s2;
 		// i represents bitmask for bipartition
-		for (std::size_t j = 1; j < sets.size(); j++) {
+		for (std::size_t j = sets.size() - 1; j > 0; j--) {
 			if (shifter & 0x01) {
 				s2.insert(s2.end(), sets.at(j).begin(), sets.at(j).end());
 			} else {
