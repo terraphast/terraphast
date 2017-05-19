@@ -11,6 +11,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <iostream>
 
 /**
  * This funktion generates the trees T|G_i, which is exactly the subtree of T induced by partition G_i
@@ -56,5 +57,18 @@ std::shared_ptr<Tree> root_at(ntree_t *root);
  */
 void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
 		ntree_t *parent);
+
+/**
+ * @brief check_tree do a dfs on the tree and check, if the childs parent is the current node.
+ * @param tree
+ * @return
+ */
+bool check_tree(ntree_t *tree);
+
+/**
+ * @brief fix_tree makes sure, that tree->child[i]->parent == tree
+ * @param tree
+ */
+void fix_tree(ntree_t *tree);
 
 #endif //include guard

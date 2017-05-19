@@ -94,5 +94,7 @@ input_data* parse_input_data(const char* data_file) {
 }
 
 ntree_t* get_newk_tree(const char* nwk_file) {
-    return ntree_parse_newick(nwk_file);
+    ntree_t *tree = ntree_parse_newick(nwk_file);
+    fix_tree(tree); //necessary since tree seems to be corrupt
+    return tree;
 }
