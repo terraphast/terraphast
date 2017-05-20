@@ -34,49 +34,31 @@ void d_print_tree(const ntree_t* tree) {
 	d_print_tree_rec(tree, 1);
 }
 
-static void d_print_tree_rec(const rtree_t *tree, int depth) {
-    fprintf(stderr, "Label: %s\n", tree->label);
-    if (tree->left != nullptr) {
-        for (int j = 0; j < depth * 4; j++) {
-            fprintf(stderr, " ");
-        }
-        fprintf(stderr, "L:");
-        d_print_tree_rec(tree->left, depth + 1);
-    }
-    if (tree->right != nullptr) {
-        for (int j = 0; j < depth * 4; j++) {
-            fprintf(stderr, " ");
-        }
-        fprintf(stderr, "R:");
-        d_print_tree_rec(tree->right, depth + 1);
-    }
-}
-
-void d_print_tree(const rtree_t *tree) {
-	d_printf("Dump RTree:\n");
-	d_print_tree_rec(tree, 1);
-}
-
 static void d_print_tree_rec(const std::shared_ptr<Tree> tree, int depth) {
-    fprintf(stderr, "Label: %s\n", tree->label.c_str());
-    if (tree->left != nullptr) {
-        for (int j = 0; j < depth * 4; j++) {
-            fprintf(stderr, " ");
-        }
-        fprintf(stderr, "L:");
-        d_print_tree_rec(tree->left, depth + 1);
-    }
-    if (tree->right != nullptr) {
-        for (int j = 0; j < depth * 4; j++) {
-            fprintf(stderr, " ");
-        }
-        fprintf(stderr, "R:");
-        d_print_tree_rec(tree->right, depth + 1);
-    }
+	fprintf(stderr, "Label: %s\n", tree->label.c_str());
+	assert(
+			depth == 1
+					|| (tree->parent != nullptr
+							&& (tree->parent->left == tree
+									|| tree->parent->right == tree)));
+	if (tree->left != nullptr) {
+		for (int j = 0; j < depth * 4; j++) {
+			fprintf(stderr, " ");
+		}
+		fprintf(stderr, "L:");
+		d_print_tree_rec(tree->left, depth + 1);
+	}
+	if (tree->right != nullptr) {
+		for (int j = 0; j < depth * 4; j++) {
+			fprintf(stderr, " ");
+		}
+		fprintf(stderr, "R:");
+		d_print_tree_rec(tree->right, depth + 1);
+	}
 }
 
 void d_print_tree(const std::shared_ptr<Tree> tree) {
-	d_printf("Dump RTree:\n");
+	d_printf("Dump Tree:\n");
 	d_print_tree_rec(tree, 1);
 }
 #endif /* DEBUG */
@@ -108,7 +90,8 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 
 	for (i = 0; i < m->numberOfSpecies; i++) {
 		for (j = 0; j < m->numberOfPartitions; j++) {
-			if (!(getDataMatrix(m, i, j) == (unsigned char)0 || getDataMatrix(m, i, j) == (unsigned char)1)) {
+			if (!(getDataMatrix(m, i, j) == static_cast<unsigned char>(0)
+					|| getDataMatrix(m, i, j) == static_cast<unsigned char>(1))) {
 				return TERRACE_MATRIX_ERROR;
 			}
 		}
@@ -124,7 +107,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	assert(tree != nullptr);
 	d_print_tree(tree);
 
-    std::shared_ptr<Tree> rtree = root_tree(tree, m);
+	std::shared_ptr<Tree> rtree = root_tree(tree, m);
 
 	assert(rtree != nullptr);
 	d_print_tree(rtree);

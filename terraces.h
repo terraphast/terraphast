@@ -10,13 +10,6 @@
 #include <gmp.h>
 #include <cstring>
 
-//TODO Move to separete header file
-struct cmp_str {
-	bool operator()(char const *a, char const *b) const {
-		return strcmp(a, b) < 0;
-	}
-};
-
 /* 
  Error Codes
 
@@ -177,8 +170,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
  */
 #ifndef DEBUG
 void d_print_tree(const ntree_t* tree);
-void d_print_tree(const std::shared_ptr<Tree>* tree);
-void d_print_tree(const rtree_t* tree);
+void d_print_tree(const std::shared_ptr<Tree> tree);
 #define d_printf(...) do { \
    fprintf(stderr, "DEBUG(%s, %d): ", __FILE__, __LINE__); \
    fprintf(stderr, __VA_ARGS__);\

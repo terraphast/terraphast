@@ -118,7 +118,6 @@ TEST(ExtractConstraintsFromSupertree, example_from_slides) {
 //TODO not implemented yet
 TEST(CombineSets, example1_from_slides) {
 	ntree_t *tree = get_newk_tree("test/dummy_tree1_rooted.nwk");
-	rtree_t *r_tree = ntree_to_rtree(tree);
 
 	const char *speciesNames[] = { "s1", "s2", "s3", "s4", "s5" };
 
@@ -130,11 +129,6 @@ TEST(CombineSets, example1_from_slides) {
 	mpz_t terraceSize0;
 	mpz_init(terraceSize0);
 	mpz_set_ui(terraceSize0, 0);
-
-	std::map<const char*, unsigned char, cmp_str> species_map;
-	for (unsigned char i = 0; i < example1->numberOfSpecies; i++) {
-		species_map[example1->speciesNames[i]] = i;
-	}
 
 //	d_print_tree(r_tree);
 //	std::vector<binary_tree> all_trees = combine_sets(

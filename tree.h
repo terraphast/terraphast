@@ -5,6 +5,9 @@
 
 class Tree {
 public:
+	Tree(const Tree& tree) : Tree(tree.left, tree.right, tree.parent, tree.label) {
+	}
+
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
 			std::shared_ptr<Tree> p_parent, std::string p_label) :
 			label(p_label), left(p_left), right(p_right), parent(p_parent) {

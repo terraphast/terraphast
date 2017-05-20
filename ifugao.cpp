@@ -20,23 +20,24 @@ std::vector<Tree> combine_sets(
 		const std::vector<std::shared_ptr<std::set<leaf_number> > > &set_array,
 		const std::vector<constraint> &constraints) {
 	std::shared_ptr<std::set<leaf_number> > left_set(new std::set<leaf_number>);
-	std::shared_ptr<std::set<leaf_number> > right_set(new std::set<leaf_number>);
+	std::shared_ptr<std::set<leaf_number> > right_set(
+			new std::set<leaf_number>);
 	std::vector<Tree> found_trees;
 	//initialize right set
 
 	//TODO
-//	for(std::shared_ptr<std::set<Leaf> > set: set_array) {
+	for (std::shared_ptr<std::set<leaf_number> > set : set_array) {
 //		right_set->insert(set);
-//	}
-//	auto right_iterator = right_set.begin();
-//	auto right_end = right_set.end();
-//	std::advance(right_end, -1);
-//
-//	while(right_iterator!=right_end) {
-//		left_set.insert(*right_iterator);
-//		right_set.erase(right_iterator);
+	}
+	auto right_iterator = right_set->begin();
+	auto right_end = right_set->end();
+	std::advance(right_end, -1);
+
+	while (right_iterator != right_end) {
+		left_set->insert(*right_iterator);
+		right_set->erase(right_iterator);
 //		combine_sets_subcall(set_array, constraints, &found_trees);
-//	}
+	}
 
 	/*
 	 std::set<Leaf> set_to_move = set_array[current];
@@ -48,7 +49,7 @@ std::vector<Tree> combine_sets(
 // index of last element
 	long last = set_array.size() - 1;
 	//TODO
-//	auto left_set.end();
+	auto hmm = left_set->end();
 	// first loop, fill array completely
 	/* Second loop, iterate until end is maximum value, then increase previous
 	 * value. 1 always stays in the set. This results in all combinations
@@ -60,28 +61,28 @@ std::vector<Tree> combine_sets(
 	bool stop = false;
 
 	while (!stop) {
-
-		//TODO uncomment
-		//combine_sets_subcall(set_array, constraints, found_trees, left_set, right_set);
+//		combine_sets_subcall(set_array, constraints, found_trees, left_set,
+//				right_set);
 	}
 
 	return found_trees;
 }
 
-//TODO
-/*combine_sets_subcall(const std::vector<std::shared_ptr<std::set<Leaf> > > &set_array,
+/*
+ //TODO
+ static std::vector<std::shared_ptr<Tree> > combine_sets_subcall(const std::vector<std::shared_ptr<std::set<Leaf> > > &set_array,
  const std::vector<constraint> &constraints, std::vector<Tree> &found_trees,
  std::shared_ptr<std::set<Leaf> > left_set, std::shared_ptr<std::set<Leaf> > right_set) {
  find_constraints()
 
-
- left_subtrees = combine_sets_subcall(set_array, constraints, left_set);
- right_subtrees = combine_sets_subcall(set_array, constraints, right_set);
+ std::vector<std::shared_ptr<Tree> > left_subtrees = combine_sets_subcall(set_array, constraints, left_set);
+ std::vector<std::shared_ptr<Tree> > right_subtrees = combine_sets_subcall(set_array, constraints, right_set);
 
  found_trees.push_back(merge_subtrees(left_subtrees, right_subtrees));
  }*/
 
-std::vector<std::shared_ptr<Tree> > merge_subtrees(std::vector<std::shared_ptr<Tree> > &left,
+std::vector<std::shared_ptr<Tree> > merge_subtrees(
+		std::vector<std::shared_ptr<Tree> > &left,
 		std::vector<std::shared_ptr<Tree> > &right) {
 
 	std::vector<std::shared_ptr<Tree> > merged_trees;
