@@ -15,8 +15,10 @@ STYLE="{
 }"
 
 function format_file() {
-	echo formatting "#1"
-	clang-format -style="$STYLE" -i "$1"
+	if !diff -u <(cat "$1") <(clang-format -style="$STYLE" $1) &> "/dev/null"; then
+		echo formatting "$1"
+		clang-format -style="$STYLE" -i "$1"
+	fi
 }
 
 for FILE in $(find include -iname "*.[hc]pp"); do format_file "$FILE"; done
