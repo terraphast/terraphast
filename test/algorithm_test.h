@@ -1,4 +1,6 @@
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "gmp.h"
 #include "gmock/gmock-matchers.h"
 
 #include "terraces.h"
@@ -9,6 +11,8 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wglobal-constructors"
+#pragma clang diagnostic ignored "-Wused-but-marked-unused"
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
 
 TEST(ApplyConstraintsTest, example_from_slides) {
 
@@ -27,7 +31,7 @@ TEST(ApplyConstraintsTest, example_from_slides) {
 
 	ASSERT_EQ(result.size(), 3);
 
-	size_t sum = 0;
+	leaf_number sum = 0;
 	for (size_t i = 0; i < result.size(); i++) {
 		for (leaf_number n : *result[i]) {
 			sum += n;
@@ -58,7 +62,7 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
 
 	ASSERT_EQ(result.size(), 1);
 
-	size_t sum = 0;
+	leaf_number sum = 0;
 	for (size_t i = 0; i < result.size(); i++) {
 		for (leaf_number n : *result[i]) {
 			sum += n;
@@ -80,6 +84,29 @@ TEST(ApplyConstraintsTest, no_merges) {
 
 	ASSERT_DEATH(apply_constraints(leaves, constraints),
 			"Assertion (.)* failed.");
+}
+
+TEST(ApplyConstraintsTest, merges_to_two_parts) {
+
+	std::set<leaf_number> leaves = { 1, 2, 3, 4 };
+
+	std::vector<constraint> constraints;
+
+	constraint cons1 = { 1, 1, 2, 3 };
+	constraint cons2 = { 1, 1, 3, 4 };
+
+	constraints.push_back(cons1);
+	constraints.push_back(cons2);
+
+	auto result = apply_constraints(leaves, constraints);
+
+	ASSERT_EQ(result.size(), 2);
+	ASSERT_EQ(result[0]->size(), 3);
+	ASSERT_TRUE(result[0]->count(1) == 1);
+	ASSERT_TRUE(result[0]->count(2) == 1);
+	ASSERT_TRUE(result[0]->count(3) == 1);
+	ASSERT_EQ(result[1]->size(), 1);
+	ASSERT_TRUE(result[1]->count(4) == 1);
 }
 
 TEST(ExtractConstraintsFromSupertree, example_from_slides) {
@@ -115,24 +142,113 @@ TEST(ExtractConstraintsFromSupertree, example_from_slides) {
 	ASSERT_EQ(constraints[1].bigger_right, 3);
 }
 
+TEST(GetNthPartitionTuple, example_with_two_parts) {
+
+	std::set<leaf_number> part1 = { 1, 2 };
+	std::set<leaf_number> part2 = { 3 };
+
+	std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
+
+	ASSERT_EQ(number_partition_tuples(partitions), 1);
+
+	std::shared_ptr<std::set<leaf_number> > part_one;
+	std::shared_ptr<std::set<leaf_number> > part_two;
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
+	ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
+	ASSERT_THAT(*part_two, testing::ElementsAre(3));
+}
+
+TEST(GetNthPartitionTuple, example_from_slides) {
+
+	std::set<leaf_number> part1 = { 1, 2 };
+	std::set<leaf_number> part2 = { 3 };
+	std::set<leaf_number> part3 = { 4, 5 };
+
+	std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part3));
+
+	ASSERT_EQ(number_partition_tuples(partitions), 3);
+
+	std::shared_ptr<std::set<leaf_number> > part_one;
+	std::shared_ptr<std::set<leaf_number> > part_two;
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
+	ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
+	ASSERT_THAT(*part_two, testing::ElementsAre(3, 4, 5));
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 2);
+	ASSERT_THAT(*part_one, testing::ElementsAre(3));
+	ASSERT_THAT(*part_two, testing::ElementsAre(1, 2, 4, 5));
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 3);
+	ASSERT_THAT(*part_one, testing::ElementsAre(1, 2, 3));
+	ASSERT_THAT(*part_two, testing::ElementsAre(4, 5));
+}
+
+TEST(GetNthPartitionTuple, with_four_partitions) {
+
+	std::set<leaf_number> part1 = { 1, 2 };
+	std::set<leaf_number> part2 = { 3 };
+	std::set<leaf_number> part3 = { 4, 5 };
+	std::set<leaf_number> part4 = { 6, 7, 8 };
+
+	std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part3));
+	partitions.push_back(std::make_shared<std::set<leaf_number>>(part4));
+
+	ASSERT_EQ(number_partition_tuples(partitions), 7);
+
+	std::shared_ptr<std::set<leaf_number> > part_one;
+	std::shared_ptr<std::set<leaf_number> > part_two;
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
+	ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
+	ASSERT_THAT(*part_two, testing::ElementsAre(3, 4, 5, 6, 7, 8));
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 2);
+	ASSERT_THAT(*part_one, testing::ElementsAre(3));
+	ASSERT_THAT(*part_two, testing::ElementsAre(1, 2, 4, 5, 6, 7, 8));
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 3);
+	ASSERT_THAT(*part_one, testing::ElementsAre(1, 2, 3));
+	ASSERT_THAT(*part_two, testing::ElementsAre(4, 5, 6, 7, 8));
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 4);
+	ASSERT_THAT(*part_one, testing::ElementsAre(4, 5));
+	ASSERT_THAT(*part_two, testing::ElementsAre(1, 2, 3, 6, 7, 8));
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 5);
+	ASSERT_THAT(*part_one, testing::ElementsAre(1, 2, 4, 5));
+	ASSERT_THAT(*part_two, testing::ElementsAre(3, 6, 7, 8));
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 6);
+	ASSERT_THAT(*part_one, testing::ElementsAre(3, 4, 5));
+	ASSERT_THAT(*part_two, testing::ElementsAre(1, 2, 6, 7, 8));
+	std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 7);
+	ASSERT_THAT(*part_one, testing::ElementsAre(1, 2, 3, 4, 5));
+	ASSERT_THAT(*part_two, testing::ElementsAre(6, 7, 8));
+}
+
 //TODO not implemented yet
 TEST(CombineSets, example1_from_slides) {
-	ntree_t *tree = get_newk_tree("test/dummy_tree1_rooted.nwk");
 
-	const char *speciesNames[] = { "s1", "s2", "s3", "s4", "s5" };
+	std::set<leaf_number> leaves = { 1, 2, 3, 4, 5 };
 
-	const unsigned char matrix1[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1 };
+	std::vector<constraint> constraints;
 
-	//let's initialize some missing data data structures now
-	missingData *example1 = initializeMissingData(5, 2, speciesNames);
-	copyDataMatrix(matrix1, example1);
-	mpz_t terraceSize0;
-	mpz_init(terraceSize0);
-	mpz_set_ui(terraceSize0, 0);
+	constraint cons1 = { 1, 3, 2, 2 };
+	constraint cons2 = { 4, 4, 5, 2 };
 
-//	d_print_tree(r_tree);
-//	std::vector<binary_tree> all_trees = combine_sets(
-//				apply_constraints(leaves, constraints), constraints);
+	constraints.push_back(cons1);
+	constraints.push_back(cons2);
+
+	auto result = apply_constraints(leaves, constraints);
+
+	for (auto &one_set : result) {
+		fprintf(stderr, "{");
+		for (auto &elem : *one_set) {
+			fprintf(stderr, "%d ", elem);
+		}
+		fprintf(stderr, "}");
+	}
+	fprintf(stderr, "\n");
 }
 
 TEST(FindConstraintsTest, example_from_slides) {

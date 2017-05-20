@@ -4,6 +4,27 @@
 #include <terraces.h>
 #include <map>
 
+std::tuple<std::shared_ptr<std::set<leaf_number> >,
+		std::shared_ptr<std::set<leaf_number> > > get_nth_partition_tuple(
+		std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions,
+		size_t n) {
+
+	auto part_one = std::make_shared<std::set<leaf_number> >();
+	auto part_two = std::make_shared<std::set<leaf_number> >();
+
+	assert(n > 0 && n <= number_partition_tuples(partitions));
+
+	for (size_t i = 0; i < partitions.size(); i++) {
+		if (is_bit_set(n, i)) {
+			part_one->insert(partitions[i]->begin(), partitions[i]->end());
+		} else {
+			part_two->insert(partitions[i]->begin(), partitions[i]->end());
+		}
+	}
+
+	return std::make_tuple(part_one, part_two);
+}
+
 long list_trees(const std::vector<constraint> &constraints,
 		const std::set<leaf_number> &leaves, bool count_only, FILE &file) {
 
@@ -111,25 +132,29 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 		sets.push_back(set);
 	}
 
-	int index_containing_left_constraint;
-	int index_containing_right_constraint;
+	bool found_left_constraint = false;
+	bool found_right_constraint = false;
+	size_t index_containing_left_constraint = 0;
+	size_t index_containing_right_constraint = 0;
 
 	for (constraint cons : constraints) {
-		for (int i = 0; i < sets.size(); i++) {
+		for (size_t i = 0; i < sets.size(); i++) {
 			if (sets[i]->find(cons.smaller_left) != sets[i]->end()) {
 				// set contains the left constraint
+				found_left_constraint = true;
 				index_containing_left_constraint = i;
 			}
 			if (sets[i]->find(cons.smaller_right) != sets[i]->end()) {
 				// set contains the right constraint
+				found_right_constraint = true;
 				index_containing_right_constraint = i;
 			}
 		}
 		assert(
-				index_containing_left_constraint >= 0
+				found_left_constraint
 						&& index_containing_left_constraint < sets.size());
 		assert(
-				index_containing_right_constraint >= 0
+				found_right_constraint
 						&& index_containing_right_constraint < sets.size());
 		if (index_containing_left_constraint
 				!= index_containing_right_constraint) {
