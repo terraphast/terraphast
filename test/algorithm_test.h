@@ -86,9 +86,62 @@ TEST(ApplyConstraintsTest, no_merges) {
 			"Assertion (.)* failed.");
 }
 
+TEST(GetAllBinaryTrees, with_tree_leafs) {
+
+	std::set<leaf_number> leafs = { 1, 2, 3 };
+
+	auto result = get_all_binary_trees(leafs);
+
+	ASSERT_EQ(result.size(), 3);
+
+	ASSERT_EQ(result[0]->to_newick_string(), "((3,1),2);");
+	ASSERT_EQ(result[1]->to_newick_string(),  "(3,(2,1));");
+	ASSERT_EQ(result[2]->to_newick_string(),  "((3,2),1);");
+}
+
+TEST(GetAllBinaryTrees, with_four_leafs) {
+
+	std::set<leaf_number> leafs = { 1, 2, 3, 4 };
+
+	auto result = get_all_binary_trees(leafs);
+
+	ASSERT_EQ(result.size(), 15);
+
+	ASSERT_EQ(result[0]->to_newick_string(), "(((4,1),2),3);");
+	ASSERT_EQ(result[1]->to_newick_string(), "((4,(2,1)),3);");
+	ASSERT_EQ(result[2]->to_newick_string(), "(((4,2),1),3);");
+	ASSERT_EQ(result[3]->to_newick_string(), "((4,2),(3,1));");
+	ASSERT_EQ(result[4]->to_newick_string(), "(((4,2),3),1);");
+	ASSERT_EQ(result[5]->to_newick_string(), "((4,1),(3,2));");
+	ASSERT_EQ(result[6]->to_newick_string(), "(4,((3,1),2));");
+	ASSERT_EQ(result[7]->to_newick_string(), "(4,(3,(2,1)));");
+	ASSERT_EQ(result[8]->to_newick_string(), "(4,((3,2),1));");
+	ASSERT_EQ(result[9]->to_newick_string(), "((4,(3,2)),1);");
+	ASSERT_EQ(result[10]->to_newick_string(), "(((4,1),3),2);");
+	ASSERT_EQ(result[11]->to_newick_string(), "((4,(3,1)),2);");
+	ASSERT_EQ(result[12]->to_newick_string(), "(((4,3),1),2);");
+	ASSERT_EQ(result[13]->to_newick_string(), "((4,3),(2,1));");
+	ASSERT_EQ(result[14]->to_newick_string(), "(((4,3),2),1);");
+}
+
+TEST(PrintNewick, with_four_leafs) {
+
+	auto l_1 = std::make_shared<Tree>("l1");
+	auto l_2 = std::make_shared<Tree>("l2");
+	auto l_3 = std::make_shared<Tree>("l3");
+	auto l_4 = std::make_shared<Tree>("l4");
+	auto c_1 = std::make_shared<Tree>(l_1, l_2, "c1");
+	auto c_2 = std::make_shared<Tree>(l_3, l_4, "c2");
+	auto r = std::make_shared<Tree>(c_1, c_2, "r");
+
+	auto result = r->to_newick_string();
+
+	ASSERT_EQ(result, "((l1,l2),(l3,l4));");
+}
+
 TEST(ApplyConstraintsTest, merges_to_two_parts) {
 
-	std::set<leaf_number> leaves = { 1, 2, 3, 4 };
+	std::set<leaf_number> leafs = { 1, 2, 3, 4 };
 
 	std::vector<constraint> constraints;
 
@@ -98,7 +151,7 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
 	constraints.push_back(cons1);
 	constraints.push_back(cons2);
 
-	auto result = apply_constraints(leaves, constraints);
+	auto result = apply_constraints(leafs, constraints);
 
 	ASSERT_EQ(result.size(), 2);
 	ASSERT_EQ(result[0]->size(), 3);

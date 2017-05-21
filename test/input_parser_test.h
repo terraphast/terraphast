@@ -28,6 +28,8 @@ TEST(GetNewickTreeTest, simple_tree) {
     ASSERT_STREQ("D", tree->children[2]->children[1]->label);
 	ASSERT_STREQ("A",
 			tree->children[2]->children[1]->parent->parent->children[0]->label);
+
+    ntree_destroy(tree);
 }
 
 TEST(get_leaf_by_name_Test, simiple_test) {
@@ -37,6 +39,8 @@ TEST(get_leaf_by_name_Test, simiple_test) {
     ASSERT_EQ(tree->children[1], get_leaf_by_name(tree, "B"));
     ASSERT_EQ(tree->children[2]->children[0], get_leaf_by_name(tree, "C"));
     ASSERT_EQ(tree->children[2]->children[1], get_leaf_by_name(tree, "D"));
+
+    ntree_destroy(tree);
 }
 
 TEST(Root_at_Test, simple_tree) {
@@ -50,6 +54,8 @@ TEST(Root_at_Test, simple_tree) {
     ASSERT_STREQ("C", root->right->left->label.c_str());
     ASSERT_STREQ("B", root->right->right->right->label.c_str());
     ASSERT_STREQ("A", root->right->right->left->label.c_str());
+
+    ntree_destroy(tree);
 }
 
 TEST(Tree_root_Test, simple_tree) {
@@ -73,6 +79,10 @@ TEST(Tree_root_Test, simple_tree) {
 
     std::shared_ptr<Tree> root1 = root_tree(tree, example1);
     std::shared_ptr<Tree> root2 = root_tree(tree, example2);
+
+    ntree_destroy(tree);
+    freeMissingData(example1);
+    freeMissingData(example2);
 }
 
 #pragma clang diagnostic pop

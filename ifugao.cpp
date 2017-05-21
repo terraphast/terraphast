@@ -31,44 +31,105 @@ size_t list_trees(const std::vector<constraint> &constraints,
 
 	auto all_trees = combine_sets(leafs, constraints);
 
-//	if (!count_only) {
+	if (!count_only) {
 		for (std::shared_ptr<Tree> t : all_trees) {
 			d_print_tree(t);
 		}
-//	}
+	}
 	return all_trees.size();
 
 }
 
-static std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
-		const std::set<leaf_number> &leafs) {
+static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree,
+		std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> &cover_map) {
+	if (tree == nullptr) {
+		return nullptr;
+	}
+	if (cover_map.count(tree) > 0) {
+		return cover_map[tree];
+	}
+
+	auto node = std::make_shared<Tree>();
+	node->label = tree->label;
+	cover_map[tree] = node;
+	cover_map[node] = node;
+
+	node->parent = deep_copy(tree->parent, cover_map);
+	node->left = deep_copy(tree->left, cover_map);
+	node->right = deep_copy(tree->right, cover_map);
+
+	return node;
+}
+
+static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree) {
+	std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> cover_map;
+	return deep_copy(tree, cover_map);
+}
+
+static std::shared_ptr<Tree> root(std::shared_ptr<Tree> t) {
+	if (t->parent == nullptr) {
+		return t;
+	}
+
+	return root(t->parent);
+}
+
+static std::vector<std::shared_ptr<Tree> > add_leaf_to_tree(
+		std::shared_ptr<Tree> current_tree, const leaf_number leaf) {
+
 	std::vector<std::shared_ptr<Tree> > result;
+
+	if (!current_tree->is_leaf()) {
+		auto result_left = add_leaf_to_tree(current_tree->left, leaf);
+		result.insert(result.end(), result_left.begin(), result_left.end());
+		auto result_right = add_leaf_to_tree(current_tree->right, leaf);
+		result.insert(result.end(), result_right.begin(), result_right.end());
+	}
+
+	auto tree_copy = deep_copy(current_tree);
+
+	auto to_insert = std::make_shared<Tree>(std::to_string(leaf));
+	auto new_tree = std::make_shared<Tree>(tree_copy, to_insert);
+	new_tree->parent = tree_copy->parent;
+	if (tree_copy->parent != nullptr) {
+		if (tree_copy->parent->left == tree_copy) {
+			tree_copy->parent->left = new_tree;
+		} else {
+			tree_copy->parent->right = new_tree;
+		}
+	}
+	tree_copy->parent = new_tree;
+	to_insert->parent = new_tree;
+
+	result.push_back(root(new_tree));
+
+	return result;
+}
+
+std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
+		const std::set<leaf_number> &leafs) {
+
+	std::vector<std::shared_ptr<Tree> > result;
+	if (leafs.size() == 0) {
+		return result;
+	}
+
+	auto itr = leafs.begin();
+	leaf_number next_leaf = *itr;
+	itr++;
+	std::set<leaf_number> rest_leafs(itr, leafs.end());
+
 	if (leafs.size() == 1) {
-		result.push_back(
-				std::make_shared<Tree>(std::to_string(*leafs.begin())));
+		auto t = std::make_shared<Tree>(std::to_string(next_leaf));
+		result.push_back(t);
 		return result;
 	}
-	if (leafs.size() == 2) {
-		auto leaf_itr = leafs.begin();
-		auto leaf_left = std::make_shared<Tree>(std::to_string(*leaf_itr));
-		leaf_itr++;
-		auto leaf_right = std::make_shared<Tree>(std::to_string(*leaf_itr));
-		auto tree = std::make_shared<Tree>(leaf_left, leaf_right);
-		leaf_left->parent = tree;
-		leaf_right->parent = tree;
-		result.push_back(tree);
-		return result;
-	}
-	for (auto it = ++leafs.begin(); it != leafs.end(); ++it) {
-		std::set<leaf_number> leftList(leafs.begin(), it);
-		std::set<leaf_number> rightList(it, leafs.end());
 
-		auto left = get_all_binary_trees(leftList);
-		auto right = get_all_binary_trees(rightList);
-
-		auto subtrees = merge_subtrees(left, right);
-		result.insert(result.end(), subtrees.begin(), subtrees.end());
+	for (auto t : get_all_binary_trees(rest_leafs)) {
+		auto new_trees = add_leaf_to_tree(t, next_leaf);
+		result.insert(result.end(), new_trees.begin(), new_trees.end());
 	}
+
 	return result;
 }
 
@@ -76,44 +137,12 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		const std::set<leaf_number> &leafs,
 		const std::vector<constraint> &constraints) {
 
-	fprintf(stderr, "Input: {");
-	bool first = true;
-	for (auto &elem : leafs) {
-		if (!first) {
-			fprintf(stderr, ",");
-		}
-		first = false;
-		fprintf(stderr, "%d", elem);
-	}
-	fprintf(stderr, "} ");
-
 	if (constraints.empty()) {
 		auto result = get_all_binary_trees(leafs);
-		fprintf(stderr, "END %lu\n", result.size());
 		return result;
 	}
 
 	auto partitions = apply_constraints(leafs, constraints);
-
-	fprintf(stderr, "Partitions: {");
-	bool first2 = true;
-	for (auto &one_set : partitions) {
-		if (!first2) {
-			fprintf(stderr, ",");
-		}
-		first2 = false;
-		fprintf(stderr, "{");
-		bool first_inner = true;
-		for (auto &elem : *one_set) {
-			if (!first_inner) {
-				fprintf(stderr, ",");
-			}
-			first_inner = false;
-			fprintf(stderr, "%d", elem);
-		}
-		fprintf(stderr, "}");
-	}
-	fprintf(stderr, "]\n");
 
 	std::vector<std::shared_ptr<Tree> > result;
 
@@ -161,7 +190,7 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 	std::vector<std::shared_ptr<std::set<leaf_number> > > sets;
 
 	for (leaf_number l : leaves) {
-// create an empty set for each leave
+		// create an empty set for each leave
 		std::shared_ptr<std::set<leaf_number>> set(new std::set<leaf_number>);
 		set->insert(l);
 		sets.push_back(set);
@@ -294,7 +323,7 @@ std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
 				valid_constraints.push_back(cons);
 			}
 		} else {
-			// smaller_right == bigger_right
+// smaller_right == bigger_right
 			if (leaves.find(cons.smaller_left) != leaves.end()
 					&& leaves.find(cons.smaller_right) != leaves.end()
 					&& leaves.find(cons.bigger_left) != leaves.end()) {

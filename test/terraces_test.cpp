@@ -45,6 +45,8 @@ TEST(Util, generate_induced_tree) {
 	ASSERT_EQ("s4", part1->right->left->label);
 	ASSERT_EQ("s5", part1->right->right->label);
 
+    ntree_destroy(tree);
+    freeMissingData(example1);
 }
 
 #pragma clang diagnostic pop
