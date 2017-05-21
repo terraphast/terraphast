@@ -7,7 +7,8 @@ constraints filter_constraints(std::vector<index> leaves, constraints c) {
 	constraints new_c;
 	for (size_t i = 0; i < c.size(); i++) {
 		if ((std::find(leaves.begin(), leaves.end(), c.at(i).shared) != leaves.end()) &&
-		    (std::find(leaves.begin(), leaves.end(), c.at(i).left) != leaves.end())) {
+		    (std::find(leaves.begin(), leaves.end(), c.at(i).left) != leaves.end()) &&
+		    (std::find(leaves.begin(), leaves.end(), c.at(i).right) != leaves.end())) {
 			new_c.push_back(c.at(i));
 		}
 	}
