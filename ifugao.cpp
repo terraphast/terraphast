@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <terraces.h>
 #include <map>
+#include <string>
 
 std::tuple<std::shared_ptr<std::set<leaf_number> >,
 		std::shared_ptr<std::set<leaf_number> > > get_nth_partition_tuple(
@@ -25,82 +26,114 @@ std::tuple<std::shared_ptr<std::set<leaf_number> >,
 	return std::make_tuple(part_one, part_two);
 }
 
-long list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leaves, bool count_only, FILE &file) {
+size_t list_trees(const std::vector<constraint> &constraints,
+		const std::set<leaf_number> &leafs, bool count_only, FILE &file) {
 
-	std::vector<Tree> all_trees = combine_sets(
-			apply_constraints(leaves, constraints), constraints);
+	auto all_trees = combine_sets(leafs, constraints);
 
-	if (!count_only) {
-		// TODO: print all trees to file
-	}
+//	if (!count_only) {
+		for (std::shared_ptr<Tree> t : all_trees) {
+			d_print_tree(t);
+		}
+//	}
 	return all_trees.size();
+
 }
 
-std::vector<Tree> combine_sets(
-		const std::vector<std::shared_ptr<std::set<leaf_number> > > &set_array,
+static std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
+		const std::set<leaf_number> &leafs) {
+	std::vector<std::shared_ptr<Tree> > result;
+	if (leafs.size() == 1) {
+		result.push_back(
+				std::make_shared<Tree>(std::to_string(*leafs.begin())));
+		return result;
+	}
+	if (leafs.size() == 2) {
+		auto leaf_itr = leafs.begin();
+		auto leaf_left = std::make_shared<Tree>(std::to_string(*leaf_itr));
+		leaf_itr++;
+		auto leaf_right = std::make_shared<Tree>(std::to_string(*leaf_itr));
+		auto tree = std::make_shared<Tree>(leaf_left, leaf_right);
+		leaf_left->parent = tree;
+		leaf_right->parent = tree;
+		result.push_back(tree);
+		return result;
+	}
+	for (auto it = ++leafs.begin(); it != leafs.end(); ++it) {
+		std::set<leaf_number> leftList(leafs.begin(), it);
+		std::set<leaf_number> rightList(it, leafs.end());
+
+		auto left = get_all_binary_trees(leftList);
+		auto right = get_all_binary_trees(rightList);
+
+		auto subtrees = merge_subtrees(left, right);
+		result.insert(result.end(), subtrees.begin(), subtrees.end());
+	}
+	return result;
+}
+
+std::vector<std::shared_ptr<Tree> > combine_sets(
+		const std::set<leaf_number> &leafs,
 		const std::vector<constraint> &constraints) {
-	std::shared_ptr<std::set<leaf_number> > left_set(new std::set<leaf_number>);
-	std::shared_ptr<std::set<leaf_number> > right_set(
-			new std::set<leaf_number>);
-	std::vector<Tree> found_trees;
-	//initialize right set
 
-	//TODO
-	for (std::shared_ptr<std::set<leaf_number> > set : set_array) {
-//		right_set->insert(set);
+	fprintf(stderr, "Input: {");
+	bool first = true;
+	for (auto &elem : leafs) {
+		if (!first) {
+			fprintf(stderr, ",");
+		}
+		first = false;
+		fprintf(stderr, "%d", elem);
 	}
-	auto right_iterator = right_set->begin();
-	auto right_end = right_set->end();
-	std::advance(right_end, -1);
+	fprintf(stderr, "} ");
 
-	while (right_iterator != right_end) {
-		left_set->insert(*right_iterator);
-		right_set->erase(right_iterator);
-//		combine_sets_subcall(set_array, constraints, &found_trees);
+	if (constraints.empty()) {
+		auto result = get_all_binary_trees(leafs);
+		fprintf(stderr, "END %lu\n", result.size());
+		return result;
 	}
 
-	/*
-	 std::set<Leaf> set_to_move = set_array[current];
-	 left_set.insert(set_to_move);
-	 right_set.er
-	 }
-	 */
+	auto partitions = apply_constraints(leafs, constraints);
 
-// index of last element
-	long last = set_array.size() - 1;
-	//TODO
-	auto hmm = left_set->end();
-	// first loop, fill array completely
-	/* Second loop, iterate until end is maximum value, then increase previous
-	 * value. 1 always stays in the set. This results in all combinations
-	 *       v-[max!]       v-[increase!]       v-[max!]
-	 * 1 2 3 5       -> 1 2 4            -> 1 2 5
-	 *   v-[increase!]     v-[increase!]     v-[max!]
-	 * 1 3            -> 1 4            -> 1 5       -> STOP
-	 */
-	bool stop = false;
+	fprintf(stderr, "Partitions: {");
+	bool first2 = true;
+	for (auto &one_set : partitions) {
+		if (!first2) {
+			fprintf(stderr, ",");
+		}
+		first2 = false;
+		fprintf(stderr, "{");
+		bool first_inner = true;
+		for (auto &elem : *one_set) {
+			if (!first_inner) {
+				fprintf(stderr, ",");
+			}
+			first_inner = false;
+			fprintf(stderr, "%d", elem);
+		}
+		fprintf(stderr, "}");
+	}
+	fprintf(stderr, "]\n");
 
-	while (!stop) {
-//		combine_sets_subcall(set_array, constraints, found_trees, left_set,
-//				right_set);
+	std::vector<std::shared_ptr<Tree> > result;
+
+	for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
+		std::shared_ptr<std::set<leaf_number> > part_left;
+		std::shared_ptr<std::set<leaf_number> > part_right;
+		std::tie(part_left, part_right) = get_nth_partition_tuple(partitions,
+				i);
+
+		auto constraints_left = find_constraints(*part_left, constraints);
+		auto constraints_right = find_constraints(*part_right, constraints);
+
+		auto subtrees_left = combine_sets(*part_left, constraints_left);
+		auto subtrees_right = combine_sets(*part_right, constraints_right);
+		auto trees = merge_subtrees(subtrees_left, subtrees_right);
+		result.insert(result.end(), trees.begin(), trees.end());
 	}
 
-	return found_trees;
+	return result;
 }
-
-/*
- //TODO
- static std::vector<std::shared_ptr<Tree> > combine_sets_subcall(const std::vector<std::shared_ptr<std::set<Leaf> > > &set_array,
- const std::vector<constraint> &constraints, std::vector<Tree> &found_trees,
- std::shared_ptr<std::set<Leaf> > left_set, std::shared_ptr<std::set<Leaf> > right_set) {
- find_constraints()
-
- std::vector<std::shared_ptr<Tree> > left_subtrees = combine_sets_subcall(set_array, constraints, left_set);
- std::vector<std::shared_ptr<Tree> > right_subtrees = combine_sets_subcall(set_array, constraints, right_set);
-
- found_trees.push_back(merge_subtrees(left_subtrees, right_subtrees));
- }*/
 
 std::vector<std::shared_ptr<Tree> > merge_subtrees(
 		std::vector<std::shared_ptr<Tree> > &left,
@@ -111,6 +144,8 @@ std::vector<std::shared_ptr<Tree> > merge_subtrees(
 	for (std::shared_ptr<Tree> &l : left) {
 		for (std::shared_ptr<Tree> &r : right) {
 			auto new_tree = std::make_shared<Tree>(l, r);
+			l->parent = new_tree;
+			r->parent = new_tree;
 			merged_trees.push_back(new_tree);
 		}
 	}
@@ -126,7 +161,7 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 	std::vector<std::shared_ptr<std::set<leaf_number> > > sets;
 
 	for (leaf_number l : leaves) {
-		// create an empty set for each leave
+// create an empty set for each leave
 		std::shared_ptr<std::set<leaf_number>> set(new std::set<leaf_number>);
 		set->insert(l);
 		sets.push_back(set);
@@ -191,14 +226,14 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_r
 		return std::make_tuple(this_Leaf, this_Leaf);
 	}
 
-	// (l,r) of the left child node
+// (l,r) of the left child node
 	leaf_number l_left_most;
 	leaf_number l_right_most;
 	std::tie(l_left_most, l_right_most) =
 			extract_constraints_from_supertree_rec(node->left, mapping,
 					constraints);
 
-	// (l,r) of the right child node
+// (l,r) of the right child node
 	leaf_number r_left_most;
 	leaf_number r_right_most;
 	std::tie(r_left_most, r_right_most) =

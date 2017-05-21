@@ -226,8 +226,7 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
 	ASSERT_THAT(*part_two, testing::ElementsAre(6, 7, 8));
 }
 
-//TODO not implemented yet
-TEST(CombineSets, example1_from_slides) {
+TEST(ListTrees, example_from_slides) {
 
 	std::set<leaf_number> leaves = { 1, 2, 3, 4, 5 };
 
@@ -239,16 +238,10 @@ TEST(CombineSets, example1_from_slides) {
 	constraints.push_back(cons1);
 	constraints.push_back(cons2);
 
-	auto result = apply_constraints(leaves, constraints);
+	FILE f;
+	auto n_trees = list_trees(constraints, leaves, true, f);
 
-	for (auto &one_set : result) {
-		fprintf(stderr, "{");
-		for (auto &elem : *one_set) {
-			fprintf(stderr, "%d ", elem);
-		}
-		fprintf(stderr, "}");
-	}
-	fprintf(stderr, "\n");
+	ASSERT_EQ(n_trees, 9);
 }
 
 TEST(FindConstraintsTest, example_from_slides) {

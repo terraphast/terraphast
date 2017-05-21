@@ -8,7 +8,6 @@
 #include <set>
 #include <assert.h>
 
-typedef Tree Leaf;
 typedef int leaf_number;
 
 //lca(smaller_left, smaller_right) < lca(bigger_left, bigger_right)
@@ -23,13 +22,13 @@ struct constraint {
  * Calculates the number of trees on the terrace.
  *
  * @param constraints All constraints to fulfill.
- * @param leaves All leaves of the tree.
+ * @param leafs All leaves of the tree.
  * @param count_only Return only the number of trees iff count_only = 1.
  * @param file File to write all trees in newick format into, iff count_only = 0.
  * @return Number of all trees on the terrace.
  */
-long list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leaves, bool count_only, FILE &file);
+size_t list_trees(const std::vector<constraint> &constraints,
+		const std::set<leaf_number> &leafs, bool count_only, FILE &file);
 
 /**
  * Applies the given constraints on a set of given leaves.
@@ -43,8 +42,8 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 		const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
-std::vector<Tree> combine_sets(
-		const std::vector<std::shared_ptr<std::set<leaf_number> > > &set_array,
+std::vector<std::shared_ptr<Tree> > combine_sets(
+		const std::set<leaf_number> &set_array,
 		const std::vector<constraint> &constraints);
 
 /**
