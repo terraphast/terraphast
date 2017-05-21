@@ -9,6 +9,7 @@
 #include <assert.h>
 
 typedef int leaf_number;
+typedef std::shared_ptr<std::set<leaf_number> > leaf_set;
 
 //lca(smaller_left, smaller_right) < lca(bigger_left, bigger_right)
 struct constraint {
@@ -19,30 +20,45 @@ struct constraint {
 };
 
 /**
+ * Method calling overview:
+ * 
+ *  list_trees
+ *    combine_sets
+ *      [recursion stop]
+ *        get_all_binary_trees
+ *      apply_constraints
+ *     
+ *   d_print_tree
+ * 
+ */
+
+
+/**
  * Calculates the number of trees on the terrace.
  *
  * @param constraints All constraints to fulfill.
- * @param leafs All leaves of the tree.
+ * @param leaves All leaves of the tree.
  * @param file File to write all trees in newick format into, iff file != nullptr.
  * @return Number of all trees on the terrace.
  */
 size_t list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leafs,  FILE *file);
+		const std::set<leaf_number> &leaves, FILE *file);
 
 /**
- * Applies the given constraints on a set of given leaves.
+ * Applies the given constraints on a set of given leaves, by merging them if
+ * they two of them are on the left side of a constraint.
  *
  * @param leaves Leaves to apply the constraints on.
  * @param constraints Constraints to apply.
- * @return Merged sets containing the leaves.
+ * @return Sets merged from given sets according to the given contraints.
  */
 std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 		const std::set<leaf_number> &leaves,
 		const std::vector<constraint> &constraints);
 
-/** Combines all sets (constraints need to be applied already) */
+/** Combines all sets (constraints need to be applied already) */     
 std::vector<std::shared_ptr<Tree> > combine_sets(
-		const std::set<leaf_number> &set_array,
+		const std::set<leaf_number> &leaves,
 		const std::vector<constraint> &constraints);
 
 /**
@@ -86,9 +102,11 @@ inline bool is_bit_set(size_t num, size_t n) {
 }
 
 /**
- * Returns the number of partition tuples that can be formed from the given list of partitions
+ * Returns the number of partition tuples that can be formed by combining the
+ * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
+ * the list.
  * @param partitions the list of partitions
- * @return the number of partition tuples that can be formed from the given list of partitions
+ * @return the number of partition tuples that can be formed from the given list
  */
 inline size_t number_partition_tuples(
 		std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions) {

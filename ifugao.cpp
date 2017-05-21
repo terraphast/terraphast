@@ -1,6 +1,7 @@
 #include "ifugao.h"
 
 #include <assert.h>
+#include <iostream>
 #include <terraces.h>
 #include <map>
 #include <string>
@@ -27,10 +28,9 @@ std::tuple<std::shared_ptr<std::set<leaf_number> >,
 }
 
 size_t list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leafs, FILE *file) {
-
-	auto all_trees = combine_sets(leafs, constraints);
-
+		const std::set<leaf_number> &leaves, bool count_only, FILE *file) {
+	auto all_trees = combine_sets(leaves, constraints);
+	
 	if (file != nullptr) {
 		for (std::shared_ptr<Tree> t : all_trees) {
 			fprintf(file, "%s\n", t->to_newick_string().c_str());
@@ -107,25 +107,24 @@ static std::vector<std::shared_ptr<Tree> > add_leaf_to_tree(
 }
 
 std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
-		const std::set<leaf_number> &leafs) {
-
+		const std::set<leaf_number> &leaves) {
 	std::vector<std::shared_ptr<Tree> > result;
-	if (leafs.size() == 0) {
+	if (leaves.size() == 0) {
 		return result;
 	}
 
-	auto itr = leafs.begin();
+	auto itr = leaves.begin();
 	leaf_number next_leaf = *itr;
 	itr++;
-	std::set<leaf_number> rest_leafs(itr, leafs.end());
+	std::set<leaf_number> rest_leaves(itr, leaves.end());
 
-	if (leafs.size() == 1) {
+	if (leaves.size() == 1) {
 		auto t = std::make_shared<Tree>(std::to_string(next_leaf));
 		result.push_back(t);
 		return result;
 	}
 
-	for (auto t : get_all_binary_trees(rest_leafs)) {
+	for (auto t : get_all_binary_trees(rest_leaves)) {
 		auto new_trees = add_leaf_to_tree(t, next_leaf);
 		result.insert(result.end(), new_trees.begin(), new_trees.end());
 	}
@@ -134,23 +133,68 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
 }
 
 std::vector<std::shared_ptr<Tree> > combine_sets(
-		const std::set<leaf_number> &leafs,
+		const std::set<leaf_number> &leaves,
 		const std::vector<constraint> &constraints) {
-
-	if (constraints.empty()) {
-		auto result = get_all_binary_trees(leafs);
-		return result;
+	{ // debug output
+		fprintf(stderr, "Input: {");
+		bool first = true;
+		for (auto &elem : leaves) {
+			if (!first) {
+				fprintf(stderr, ",");
+			}
+			first = false;
+			fprintf(stderr, "%d", elem);
+		}
+		fprintf(stderr, "} ");
 	}
-
-	auto partitions = apply_constraints(leafs, constraints);
-
+	
+	{ // possible recursion stops
+		if(leaves.size() <= 2) {
+			if(leaves.size() == 2) {
+				//TODO create Tree and return
+			} else {
+				//TODO error (should never happen)
+			}
+		}
+		
+		if (constraints.empty()) {
+			auto result = get_all_binary_trees(leaves);
+			fprintf(stderr, "END %lu\n", result.size());
+			return result;
+		}
+	}
+	
+	// all requirments fulfilled, get partitions by applying constraints to leaves
+	auto partitions = apply_constraints(leaves, constraints);
+	
+	{// debug output
+		fprintf(stderr, "Partitions: {");
+		bool first = true;
+		for (auto &one_set : partitions) {
+			if (!first) {
+				fprintf(stderr, ",");
+			}
+			first = false;
+			fprintf(stderr, "{");
+			bool first_inner = true;
+			for (auto &elem : *one_set) {
+				if (!first_inner) {
+					fprintf(stderr, ",");
+				}
+				first_inner = false;
+				fprintf(stderr, "%d", elem);
+			}
+			fprintf(stderr, "}");
+		}
+		fprintf(stderr, "]\n");
+	}
+	
 	std::vector<std::shared_ptr<Tree> > result;
-
+	
 	for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
 		std::shared_ptr<std::set<leaf_number> > part_left;
 		std::shared_ptr<std::set<leaf_number> > part_right;
-		std::tie(part_left, part_right) = get_nth_partition_tuple(partitions,
-				i);
+		std::tie(part_left, part_right) = get_nth_partition_tuple(partitions, i);
 
 		auto constraints_left = find_constraints(*part_left, constraints);
 		auto constraints_right = find_constraints(*part_right, constraints);
@@ -190,7 +234,7 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 	std::vector<std::shared_ptr<std::set<leaf_number> > > sets;
 
 	for (leaf_number l : leaves) {
-		// create an empty set for each leave
+		// create an empty set for each leaf
 		std::shared_ptr<std::set<leaf_number>> set(new std::set<leaf_number>);
 		set->insert(l);
 		sets.push_back(set);
@@ -292,7 +336,6 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_r
 
 std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_from_supertree(
 		const std::shared_ptr<Tree> supertree) {
-	std::set<leaf_number> Leafs;
 	std::vector<constraint> constraints;
 
 	std::map<std::string, leaf_number> mapping;
@@ -301,12 +344,12 @@ std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_
 
 	extract_constraints_from_supertree_rec(supertree, mapping, constraints);
 
-	std::set<leaf_number> leafs;
+	std::set<leaf_number> leaves;
 	for (const auto& pair : mapping) {
-		leafs.insert(pair.second);
+		leaves.insert(pair.second);
 	}
 
-	return std::make_tuple(leafs, constraints);
+	return std::make_tuple(leaves, constraints);
 }
 
 std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
@@ -323,7 +366,7 @@ std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
 				valid_constraints.push_back(cons);
 			}
 		} else {
-// smaller_right == bigger_right
+			// smaller_right == bigger_right
 			if (leaves.find(cons.smaller_left) != leaves.end()
 					&& leaves.find(cons.smaller_right) != leaves.end()
 					&& leaves.find(cons.bigger_left) != leaves.end()) {
