@@ -40,7 +40,7 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data);
  * @param tree a pointer to the root of the tree
  * @return a pointer to the leaf
  */
-ntree_t* get_leaf_by_name(ntree_t *tree, char *label);
+ntree_t* get_leaf_by_name(ntree_t *tree, const char *label);
 
 /**
  * private function that roots the tree at a given leaf-edge
@@ -60,14 +60,14 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
 
 /**
  * @brief check_tree do a dfs on the tree and check, if the childs parent is the current node.
- * @param tree
- * @return
+ * @param tree the tree to check
+ * @return true if the tree is correct
  */
 bool check_tree(ntree_t *tree);
 
 /**
  * @brief fix_tree makes sure, that tree->child[i]->parent == tree
- * @param tree
+ * @param tree the tree to fix
  */
 void fix_tree(ntree_t *tree);
 

@@ -23,12 +23,11 @@ struct constraint {
  *
  * @param constraints All constraints to fulfill.
  * @param leafs All leaves of the tree.
- * @param count_only Return only the number of trees iff count_only = 1.
- * @param file File to write all trees in newick format into, iff count_only = 0.
+ * @param file File to write all trees in newick format into, iff file != nullptr.
  * @return Number of all trees on the terrace.
  */
 size_t list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leafs, bool count_only, FILE &file);
+		const std::set<leaf_number> &leafs,  FILE *file);
 
 /**
  * Applies the given constraints on a set of given leaves.

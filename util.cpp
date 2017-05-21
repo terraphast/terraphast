@@ -80,7 +80,7 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree,
 	}
 }
 
-ntree_t* get_leaf_by_name(ntree_t *tree, char *label) {
+ntree_t* get_leaf_by_name(ntree_t *tree, const char *label) {
 	assert(tree != nullptr);
 	assert(label != nullptr);
 	if (tree->label != nullptr && strcmp(tree->label, label) == 0) {
@@ -217,7 +217,6 @@ bool check_tree(ntree_t *tree) {
 
 void fix_tree(ntree_t *tree) {
 	int x = tree->children_count;
-	int y = 5 + x;
 	for (int i = 0; i < x; i++) {
 		tree->children[i]->parent = tree;
 		fix_tree(tree->children[i]);

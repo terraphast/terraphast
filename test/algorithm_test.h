@@ -8,6 +8,8 @@
 #include <limits.h>
 #include <iostream>
 #include <string>
+#include <cstdio>
+#include <cstdlib>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wglobal-constructors"
@@ -95,8 +97,8 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
 	ASSERT_EQ(result.size(), 3);
 
 	ASSERT_EQ(result[0]->to_newick_string(), "((3,1),2);");
-	ASSERT_EQ(result[1]->to_newick_string(),  "(3,(2,1));");
-	ASSERT_EQ(result[2]->to_newick_string(),  "((3,2),1);");
+	ASSERT_EQ(result[1]->to_newick_string(), "(3,(2,1));");
+	ASSERT_EQ(result[2]->to_newick_string(), "((3,2),1);");
 }
 
 TEST(GetAllBinaryTrees, with_four_leafs) {
@@ -291,10 +293,44 @@ TEST(ListTrees, example_from_slides) {
 	constraints.push_back(cons1);
 	constraints.push_back(cons2);
 
-	FILE f;
-	auto n_trees = list_trees(constraints, leaves, true, f);
+	auto n_trees = list_trees(constraints, leaves, nullptr);
 
 	ASSERT_EQ(n_trees, 9);
+}
+
+TEST(ListTrees, example_from_slides_with_printing_stuff) {
+
+	size_t buffer_size = 10000000;
+
+	auto buffer = new char[buffer_size];
+	std::string expected = "((2,1),((5,3),4));\n";
+	expected += "((2,1),(5,(4,3)));\n";
+	expected += "((2,1),((5,4),3));\n";
+	expected += "(3,(1,(2,(5,4))));\n";
+	expected += "(3,(2,((5,1),4)));\n";
+	expected += "(3,(2,(5,(4,1))));\n";
+	expected += "(3,(2,((5,4),1)));\n";
+	expected += "(3,((2,1),(5,4)));\n";
+	expected += "(((2,1),3),(5,4));\n";
+
+	std::set<leaf_number> leaves = { 1, 2, 3, 4, 5 };
+
+	std::vector<constraint> constraints;
+
+	constraint cons1 = { 1, 3, 2, 2 };
+	constraint cons2 = { 4, 4, 5, 2 };
+
+	constraints.push_back(cons1);
+	constraints.push_back(cons2);
+
+	auto f = fmemopen(buffer, buffer_size, "w");
+	ASSERT_TRUE(f != nullptr);
+	list_trees(constraints, leaves, f);
+	fclose(f);
+
+	ASSERT_EQ(std::string(buffer), expected);
+
+	delete[] buffer;
 }
 
 TEST(FindConstraintsTest, example_from_slides) {

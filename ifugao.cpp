@@ -27,13 +27,13 @@ std::tuple<std::shared_ptr<std::set<leaf_number> >,
 }
 
 size_t list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leafs, bool count_only, FILE &file) {
+		const std::set<leaf_number> &leafs, FILE *file) {
 
 	auto all_trees = combine_sets(leafs, constraints);
 
-	if (!count_only) {
+	if (file != nullptr) {
 		for (std::shared_ptr<Tree> t : all_trees) {
-			d_print_tree(t);
+			fprintf(file, "%s\n", t->to_newick_string().c_str());
 		}
 	}
 	return all_trees.size();

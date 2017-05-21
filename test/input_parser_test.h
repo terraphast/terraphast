@@ -16,11 +16,6 @@ TEST(GetNewickTreeTest, simple_tree) {
     ntree_t *tree = get_newk_tree("test/simple_tree.nwk");
     assert(tree != nullptr);
     assert(check_tree(tree));
-    ntree_t *ch0 = tree->children[0];
-    ntree_t *ch1 = tree->children[1];
-    ntree_t *ch2 = tree->children[2];
-    ntree_t *ch2ch0 = tree->children[2]->children[0];
-    ntree_t *ch2ch1 = tree->children[2]->children[1];
     ASSERT_EQ(tree->parent, nullptr);
 	ASSERT_STREQ("A", tree->children[0]->label);
 	ASSERT_STREQ("B", tree->children[1]->label);
