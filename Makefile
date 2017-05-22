@@ -5,7 +5,8 @@ CXX = clang++ -std=c++14
 
 GOOGLE_LIB_SRC_ROOT = lib/googletest
 GOOGLE_LIB_BIN_ROOT = $(GOOGLE_LIB_SRC_ROOT)/build
-GOOGLE_LIB_PATH = $(GOOGLE_LIB_BIN_ROOT)/googlemock/gtest
+GOOGLE_LIB_PATH = $(GOOGLE_LIB_BIN_ROOT)/googlemock/gtest 
+GOOGLE_LIB_GMOCK_PATH = $(GOOGLE_LIB_BIN_ROOT)/googlemock
 GOOGLE_MAIN_LIB = $(GOOGLE_LIB_PATH)/libgtest.a
 
 CXXFLAGS = -I. -isystem $(GOOGLE_LIB_SRC_ROOT)/googletest/include -isystem $(GOOGLE_LIB_SRC_ROOT)/googlemock/include \
@@ -30,7 +31,7 @@ terraces : $(objs) main.o
 	$(CXX) -o terraces $(objs) main.o $(LIBRARIES) 
 
 terraces_test : $(objs) $(GOOGLE_MAIN_LIB) test/terraces_test.o
-	$(CXX) -o terraces_test $(objs) test/terraces_test.o $(LIBRARIES) -L$(GOOGLE_LIB_PATH) -lgtest -lpthread
+	$(CXX) -o terraces_test $(objs) test/terraces_test.o $(LIBRARIES) -L$(GOOGLE_LIB_PATH) -L$(GOOGLE_LIB_GMOCK_PATH) -lgtest -lgmock -lpthread
 
 $(GOOGLE_MAIN_LIB) : 
 	mkdir -p $(GOOGLE_LIB_BIN_ROOT); cd $(GOOGLE_LIB_BIN_ROOT); cmake ..; make

@@ -8,7 +8,8 @@
 #include <set>
 #include <assert.h>
 
-typedef int leaf_number;
+//TODO bad performance when doing string comparison all the time I guess...
+typedef std::string leaf_number;
 
 //lca(smaller_left, smaller_right) < lca(bigger_left, bigger_right)
 struct constraint {
@@ -27,7 +28,7 @@ struct constraint {
  * @return Number of all trees on the terrace.
  */
 size_t list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leafs,  FILE *file);
+		const std::set<leaf_number> &leafs, FILE *file);
 
 /**
  * Applies the given constraints on a set of given leaves.
