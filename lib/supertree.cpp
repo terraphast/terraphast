@@ -53,11 +53,11 @@ std::vector<std::vector<index>> map_sets(std::vector<index> leaves,
 }
 
 bool check_supertree(index number, constraints c) {
-        std::vector<index> leaves(number);
-        for (size_t i = 0; i < number; i++) {
-                leaves.at(i) = i;
-        }
-        return check_supertree(leaves, c);
+	std::vector<index> leaves(number);
+	for (size_t i = 0; i < number; i++) {
+		leaves.at(i) = i;
+	}
+	return check_supertree(leaves, c);
 }
 
 bool check_supertree(std::vector<index> leaves, constraints c) {
@@ -66,7 +66,7 @@ bool check_supertree(std::vector<index> leaves, constraints c) {
 	}
 
 	if (c.size() == 0) {
-                return true;
+		return true;
 	}
 
 	constraints new_c = map_constraints(leaves, c);
@@ -83,25 +83,25 @@ bool check_supertree(std::vector<index> leaves, constraints c) {
 
 		std::vector<struct supertree_node*> left_supertree =
 		        construct_supertree(left_set, left_bips);
-                if (left_supertree.size() > 1) {
-                        return true;
-                }
+		if (left_supertree.size() > 1) {
+			return true;
+		}
 		std::vector<struct supertree_node*> right_supertree =
 		        construct_supertree(right_set, right_bips);
-                if (left_supertree.size() > 1) {
-                        return true;
-                }
+		if (left_supertree.size() > 1) {
+			return true;
+		}
 	}
 
 	return false;
 }
 
 size_t count_supertree(index number, constraints c) {
-        std::vector<index> leaves(number);
-        for (size_t i = 0; i < number; i++) {
-                leaves.at(i) = i;
-        }
-        return count_supertree(leaves, c);
+	std::vector<index> leaves(number);
+	for (size_t i = 0; i < number; i++) {
+		leaves.at(i) = i;
+	}
+	return count_supertree(leaves, c);
 }
 
 size_t count_supertree(std::vector<index> leaves, constraints c) {
@@ -112,11 +112,11 @@ size_t count_supertree(std::vector<index> leaves, constraints c) {
 	}
 
 	if (c.size() == 0) {
-                size_t res = 1;
-                for (size_t i = 3; i <= leaves.size() + 1; i++) {
-		        res *= (2*i - 5);
-                }
-                return res;
+		size_t res = 1;
+		for (size_t i = 3; i <= leaves.size() + 1; i++) {
+			res *= (2 * i - 5);
+		}
+		return res;
 	}
 
 	constraints new_c = map_constraints(leaves, c);
@@ -133,21 +133,21 @@ size_t count_supertree(std::vector<index> leaves, constraints c) {
 
 		std::vector<struct supertree_node*> left_supertree =
 		        construct_supertree(left_set, left_bips);
-                number += left_supertree.size();
+		number += left_supertree.size();
 		std::vector<struct supertree_node*> right_supertree =
 		        construct_supertree(right_set, right_bips);
-                number += right_supertree.size();
+		number += right_supertree.size();
 	}
 
 	return number - bips.size();
 }
 
 std::vector<struct supertree_node*> construct_supertree(index number, constraints c) {
-        std::vector<index> leaves(number);
-        for (size_t i = 0; i < number; i++) {
-                leaves.at(i) = i;
-        }
-        return construct_supertree(leaves, c);
+	std::vector<index> leaves(number);
+	for (size_t i = 0; i < number; i++) {
+		leaves.at(i) = i;
+	}
+	return construct_supertree(leaves, c);
 }
 
 std::vector<struct supertree_node*> construct_supertree(std::vector<index> leaves, constraints c) {
