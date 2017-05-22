@@ -158,15 +158,7 @@ TEST(ExtractConstraintsFromSupertree, example_from_slides) {
 	auto c_2 = std::make_shared<Tree>(l_3, l_4, "c2");
 	auto r = std::make_shared<Tree>(c_1, c_2, "r");
 
-	std::vector<constraint> constraints;
-	std::set<leaf_number> leafs;
-	std::tie(leafs, constraints) = extract_constraints_from_supertree(r);
-
-	//ASSERT_EQ(leafs.size(), 4);
-//	ASSERT_EQ(*std::next(leafs.begin(), 0), 0);
-//	ASSERT_EQ(*std::next(leafs.begin(), 1), 1);
-//	ASSERT_EQ(*std::next(leafs.begin(), 2), 2);
-//	ASSERT_EQ(*std::next(leafs.begin(), 3), 3);
+	auto constraints = extract_constraints_from_supertree(r);
 
 	ASSERT_EQ(constraints.size(), 2);
 	//lca(l1, l2) < lca(l1, l4)

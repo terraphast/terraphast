@@ -278,20 +278,13 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_r
 	return std::make_tuple(l_left_most, r_right_most);
 }
 
-std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_from_supertree(
+std::vector<constraint> extract_constraints_from_supertree(
 		const std::shared_ptr<Tree> supertree) {
-	std::set<leaf_number> Leafs;
 	std::vector<constraint> constraints;
 
 	extract_constraints_from_supertree_rec(supertree,  constraints);
 
-	std::set<leaf_number> leafs;
-	//TODO
-//	for (const auto& pair : mapping) {
-//		leafs.insert(pair.second);
-//	}
-
-	return std::make_tuple(leafs, constraints);
+	return constraints;
 }
 
 std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,

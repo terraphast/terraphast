@@ -50,9 +50,9 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
  * Returns a vector containing all constraints infered from the given supertree.
  *
  * @param supertree All supertree from which the constraints will be extracted
- * @return All constraints of the given super tree and a set of leave numbers.
+ * @return All constraints of the given super tree.
  */
-std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_from_supertree(
+std::vector<constraint> extract_constraints_from_supertree(
 		const std::shared_ptr<Tree> supertree);
 
 std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
