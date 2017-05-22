@@ -16,6 +16,7 @@ public:
 
 	bool get(index row, index col) const;
 	void set(index row, index col, bool val);
+	void copy_row(index from, index to, const bitmatrix& input);
 
 private:
 	index m_rows;
