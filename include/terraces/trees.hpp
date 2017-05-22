@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <iosfwd>
 #include <limits>
+#include <stack>
 #include <unordered_map>
 #include <vector>
 
@@ -62,7 +63,7 @@ public:
 	node& get() const { return m_tree->at(m_node); }
 	node& operator*() const { return get(); }
 
-	index get_index() const {return m_node;}
+	index get_index() const { return m_node; }
 
 	bool has_parent() const { return get().parent() != none; }
 	void go_parent() { m_node = get().parent(); }
@@ -99,16 +100,40 @@ inline bool is_leaf(const node& n) {
 }
 
 template <typename F>
-void foreach_postorder(const tree& t, index root_idx, F cb) {
-	// index root_idx = t.size() - 1;
-	// assert(is_root(t[root_idx]));
+void foreach_postorder(const tree& t, F cb) {
+	index root_idx = t.size() - 1;
+	assert(is_root(t[root_idx]));
 
-	auto root_node = t[root_idx];
-	if (!is_leaf(root_node)) {
-		foreach_postorder(t, root_node.lchild(), cb);
-		foreach_postorder(t, root_node.rchild(), cb);
+	enum class visited { none, left, both };
+
+	std::stack<std::pair<index, visited>> stack;
+	stack.push(std::make_pair(root_idx, visited::none));
+	while (!stack.empty()) {
+		auto current = stack.top();
+		auto cur_idx = current.first;
+		stack.pop();
+		auto cur_node = t[cur_idx];
+		if (is_leaf(cur_node)) {
+			cb(current.first);
+		} else {
+			switch (current.second) {
+			// descend into left tree
+			case visited::none:
+				stack.push(std::make_pair(cur_idx, visited::left));
+				stack.push(std::make_pair(cur_node.lchild(), visited::none));
+				break;
+			// descend into right tree
+			case visited::left:
+				stack.push(std::make_pair(cur_idx, visited::both));
+				stack.push(std::make_pair(cur_node.rchild(), visited::none));
+				break;
+			// move up again
+			case visited::both:
+				cb(cur_idx);
+				break;
+			}
+		}
 	}
-	cb(root_idx);
 }
 
 } // namespace terraces
