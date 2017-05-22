@@ -21,8 +21,8 @@ void reroot_inplace(tree& t, index root_leaf) {
 	
 	node old_root = t[0];
 	node leaf_node = t[root_leaf];
-	leaf_node.parent() = 0;
 	node new_root = node{none, leaf_node.parent(), root_leaf};
+	t[root_leaf].parent() = 0;
 
 	std::cout << "GIVEN LEAF AFTERWARDS: " << leaf_node << "\n";
 
@@ -48,9 +48,11 @@ void reroot_inplace(tree& t, index root_leaf) {
 		if (coming_from_left) {
 			current_node.parent() = current_node.lchild();
 			current_node.lchild() = original_parent_index;
+			t[current_node.lchild()].parent() = current_node_index;
 		} else {
 			current_node.parent() = current_node.rchild();
 			current_node.rchild() = original_parent_index;
+			t[current_node.rchild()].parent() = current_node_index;
 		}
 		if (is_first_node) {
 			current_node.parent() = 0;
