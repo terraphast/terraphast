@@ -61,10 +61,12 @@ bool check_supertree(index number, constraints c) {
 }
 
 bool check_supertree(std::vector<index> leaves, constraints c) {
+        // only one tree possible for two leaves
 	if (leaves.size() <= 2) {
 		return false;
 	}
 
+        // on a terrace if more than two leaves and no contraints
 	if (c.size() == 0) {
 		return true;
 	}
@@ -74,26 +76,22 @@ bool check_supertree(std::vector<index> leaves, constraints c) {
 	sets = map_sets(leaves, sets);
 	std::vector<bipartition> bips = sets_to_bipartitions(sets);
 
-	for (size_t i = 0; i < bips.size(); i++) {
-		std::vector<index> left_set = std::get<0>(bips.at(i));
-		std::vector<index> right_set = std::get<1>(bips.at(i));
+        // on a terrace if more than one bipartition
+        if (bips.size() > 1) {
+                return true;
+        }
 
-		constraints left_bips = filter_constraints(left_set, c);
-		constraints right_bips = filter_constraints(right_set, c);
+	std::vector<index> left_set = std::get<0>(bips.at(0));
+	std::vector<index> right_set = std::get<1>(bips.at(0));
 
-		std::vector<struct supertree_node*> left_supertree =
-		        construct_supertree(left_set, left_bips);
-		if (left_supertree.size() > 1) {
-			return true;
-		}
-		std::vector<struct supertree_node*> right_supertree =
-		        construct_supertree(right_set, right_bips);
-		if (left_supertree.size() > 1) {
-			return true;
-		}
+	constraints left_bips = filter_constraints(left_set, c);
+	constraints right_bips = filter_constraints(right_set, c);
+
+        if (check_supertree(left_set, left_bips)) {
+                return true;
+        } else {
+                return check_supertree(right_set, right_bips);
 	}
-
-	return false;
 }
 
 size_t count_supertree(index number, constraints c) {
@@ -108,7 +106,7 @@ size_t count_supertree(std::vector<index> leaves, constraints c) {
 	size_t number = 0;
 
 	if (leaves.size() == 1) {
-		return 0;
+		return 1;
 	}
 
 	if (c.size() == 0) {
@@ -131,12 +129,8 @@ size_t count_supertree(std::vector<index> leaves, constraints c) {
 		constraints left_bips = filter_constraints(left_set, c);
 		constraints right_bips = filter_constraints(right_set, c);
 
-		std::vector<struct supertree_node*> left_supertree =
-		        construct_supertree(left_set, left_bips);
-		number += left_supertree.size();
-		std::vector<struct supertree_node*> right_supertree =
-		        construct_supertree(right_set, right_bips);
-		number += right_supertree.size();
+                number += count_supertree(left_set, left_bips);
+                number += count_supertree(right_set, right_bips);
 	}
 
 	return number - bips.size();
