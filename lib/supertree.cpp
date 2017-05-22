@@ -27,16 +27,16 @@ std::string pretty_preorder(struct supertree_node* s) {
 
 constraints map_constraints(std::vector<index> leaves, constraints c) {
 	std::map<index, index> m;
-	constraints res = c;
 	for (size_t i = 0; i < leaves.size(); i++) {
 		m[leaves.at(i)] = i;
 	}
 	for (size_t i = 0; i < c.size(); i++) {
-		res.at(i).shared = m[c.at(i).shared];
-		res.at(i).left = m[c.at(i).left];
-		res.at(i).right = m[c.at(i).right];
+		auto& constraint = c.at(i);
+		constraint.left = m[constraint.left];
+		constraint.right = m[constraint.right];
+		constraint.shared = m[constraint.shared];
 	}
-	return res;
+	return c;
 }
 
 std::vector<std::vector<index>> map_sets(std::vector<index> leaves,

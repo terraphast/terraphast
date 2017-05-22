@@ -1,6 +1,8 @@
 #ifndef TERRACES_CONSTRAINTS_HPP
 #define TERRACES_CONSTRAINTS_HPP
 
+#include <iosfwd>
+#include <tuple>
 #include <vector>
 
 #include "trees.hpp"
@@ -12,6 +14,10 @@ struct constraint {
 	index left;
 	index right;
 };
+
+bool operator==(const constraint& c1, const constraint& c2);
+
+std::ostream& operator<<(std::ostream& s, const constraint& c);
 
 using constraints = std::vector<constraint>;
 

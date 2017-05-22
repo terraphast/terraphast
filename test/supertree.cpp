@@ -7,24 +7,12 @@
 namespace terraces {
 namespace tests {
 
-// static bool operator==(const constraint& c1, const constraint& c2) {
-//        return c1.shared == c2.shared && c1.left == c2.left && c1.right == c2.right;
-//}
-//
-// static bool operator==(const constraints& c1, const constraints& c2) {
-//        bool res = true;
-//        for (size_t i = 0; i < c1.size(); i++) {
-//                res &= (c1.at(i) == c2.at(i));
-//        }
-//        return res;
-//}
-//
-// TEST_CASE("mapping", "[mapping]") {
-//        std::vector<index> leaves = { 2, 8, 5 };
-//        constraints c = { {0, 2, 3}, {6, 7, 8}, {2, 5, 8} };
-//        constraints t = { {0, 0, 3}, {6, 7, 2}, {0, 1, 2} };
-//        CHECK(map_constraints(leaves, c) == t);
-//}
+TEST_CASE("mapping", "[mapping]") {
+	std::vector<index> leaves = {0, 2, 3, 5, 6, 7, 8};
+	constraints c = {{0, 2, 3}, {6, 7, 8}, {2, 5, 8}};
+	constraints t = {{0, 1, 2}, {4, 5, 6}, {1, 3, 6}};
+	CHECK(map_constraints(leaves, c) == t);
+}
 
 TEST_CASE("check_supertree1", "[supertree]") {
 	constraints c = {};

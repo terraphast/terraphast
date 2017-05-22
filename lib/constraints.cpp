@@ -1,7 +1,19 @@
 #include <terraces/constraints.hpp>
+
+#include <ostream>
+
 #include <terraces/union_find.hpp>
 
 namespace terraces {
+
+bool operator==(const constraint& c1, const constraint& c2) {
+	return std::tie(c1.shared, c1.left, c1.right) == std::tie(c2.shared, c2.left, c2.right);
+}
+
+std::ostream& operator<<(std::ostream& s, const constraint& c) {
+	return s << "((" << c.left << ", " << c.shared << ") < (" << c.right << ", " << c.shared
+	         << "))";
+}
 
 constraints filter_constraints(std::vector<index> leaves, constraints c) {
 	constraints new_c;
