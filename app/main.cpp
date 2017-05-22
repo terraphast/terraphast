@@ -19,6 +19,8 @@ int main(int argc, char** argv) try {
 	const auto data_res = terraces::parse_bitmatrix(data_file, data.indices, data.tree.size());
 	const auto& mat = data_res.first;
 
+	std::cout << "New root: " << data_res.second << '\n';
+
 	terraces::reroot_inplace(data.tree, data_res.second);
 
 	for (auto i = terraces::index{}; i < data.tree.size(); ++i) {
