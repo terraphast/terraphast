@@ -14,21 +14,17 @@ namespace rooting {
 } // namespace rooting
 
 void reroot_inplace(tree& t, index root_leaf) {
-	if (t[root_leaf].lchild() != none || t[root_leaf].rchild() != none) {
-		std::string msg =  "The given index root_leaf does not point ot a leaf";
-		throw std::invalid_argument( msg );
-	}
+	utils::ensure<std::invalid_argument>(t[root_leaf].lchild() == none, 
+										 "The given index root_leaf is no leaf index.");
+	utils::ensure<std::invalid_argument>(t[root_leaf].rchild() == none, 
+										 "The given index root_leaf is no leaf index.");
 	
 	node old_root = t[0];
-	node leaf_node = t[root_leaf];
-	node new_root = node{none, leaf_node.parent(), root_leaf};
+	node new_root = node{none, t[root_leaf].parent(), root_leaf};
 	t[root_leaf].parent() = 0;
-
-	std::cout << "GIVEN LEAF AFTERWARDS: " << leaf_node << "\n";
 
 	
 	bool coming_from_left = true;
-	// We currently possess heap structure!
 	if (root_leaf == t[t[root_leaf].parent()].rchild()) {
 		coming_from_left = false;
 	}
@@ -44,7 +40,6 @@ void reroot_inplace(tree& t, index root_leaf) {
 		std::cout << "current_node's parent BEGIN: " << current_node.parent() << "\n";
 		std::cout << "current_node's lchild BEGIN: " << current_node.lchild() << "\n";
 		std::cout << "current_node's rchild BEGIN: " << current_node.rchild() << "\n";
-		
 		if (coming_from_left) {
 			current_node.parent() = current_node.lchild();
 			current_node.lchild() = original_parent_index;
