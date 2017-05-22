@@ -15,8 +15,8 @@ constraints filter_constraints(std::vector<index> leaves, constraints c) {
 	return new_c;
 }
 
-std::vector<std::vector<index>> apply_constraints(std::vector<index> species, constraints c) {
-	union_find leaves = make_set(species.size());
+std::vector<std::vector<index>> apply_constraints(index number, constraints c) {
+	union_find leaves = make_set(number);
 	for (size_t i = 0; i < c.size(); i++) {
 		merge(leaves, c.at(i).shared, c.at(i).left);
 	}

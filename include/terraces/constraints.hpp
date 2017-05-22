@@ -17,7 +17,7 @@ using constraints = std::vector<constraint>;
 
 constraints filter_constraints(std::vector<index>, constraints);
 
-std::vector<std::vector<index>> apply_constraints(std::vector<index>, constraints);
+std::vector<std::vector<index>> apply_constraints(index, constraints);
 
 } // namespace terraces
 
