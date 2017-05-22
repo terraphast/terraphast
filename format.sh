@@ -15,7 +15,7 @@ STYLE="{
 }"
 
 function format_file() {
-	if !diff -u <(cat "$1") <(clang-format -style="$STYLE" $1) &> "/dev/null"; then
+	if ! diff -u <(cat "$1") <(clang-format -style="$STYLE" $1) &> "/dev/null"; then
 		echo formatting "$1"
 		clang-format -style="$STYLE" -i "$1"
 	fi
