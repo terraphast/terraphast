@@ -3,6 +3,7 @@
 #include <iostream>
 #include <terraces/rooting.hpp>
 #include "utils.hpp"
+#include <iostream>
 
 namespace terraces {
 
@@ -20,29 +21,59 @@ void reroot_inplace(tree& t, index root_leaf) {
 	
 	node old_root = t[0];
 	node leaf_node = t[root_leaf];
+	leaf_node.parent() = 0;
 	node new_root = node{none, leaf_node.parent(), root_leaf};
+
+	std::cout << "GIVEN LEAF AFTERWARDS: " << leaf_node << "\n";
+
 	
+	bool coming_from_left = true;
+	// We currently possess heap structure!
+	if (root_leaf == t[t[root_leaf].parent()].rchild()) {
+		coming_from_left = false;
+	}
+	
+	bool is_first_node = true;
+	index current_node_index = t[root_leaf].parent();
+	node current_node = t[current_node_index];
+	index original_parent_index = current_node.parent();
+	std::cout << "Going upwards...";
+	while (current_node_index != 0) {
+		std::cout << "current_node_index BEGIN: " << current_node_index << "\n";
+		std::cout << "current_parent_index BEGIN: " << original_parent_index << "\n";
+		std::cout << "current_node's parent BEGIN: " << current_node.parent() << "\n";
+		std::cout << "current_node's lchild BEGIN: " << current_node.lchild() << "\n";
+		std::cout << "current_node's rchild BEGIN: " << current_node.rchild() << "\n";
+		
+		if (coming_from_left) {
+			current_node.parent() = current_node.lchild();
+			current_node.lchild() = original_parent_index;
+		} else {
+			current_node.parent() = current_node.rchild();
+			current_node.rchild() = original_parent_index;
+		}
+		if (is_first_node) {
+			current_node.parent() = 0;
+		}
+		if (t[original_parent_index].rchild() == current_node_index) {
+			coming_from_left = false;
+		} else {
+			coming_from_left = true;
+		}
+		std::cout << "current_node's parent END: " << current_node.parent() << "\n";
+		std::cout << "current_node's lchild END: " << current_node.lchild() << "\n";
+		std::cout << "current_node's rchild END: " << current_node.rchild() << "\n";
+		current_node_index = original_parent_index;
+		current_node = t[current_node_index];
+		original_parent_index = current_node.parent();
+		std::cout << "current_node_index END: " << current_node_index << "\n";
+		std::cout << "current_parent_index END: " << original_parent_index << "\n";
+	}
+	std::cout << "finished\n";
+
 	t[old_root.lchild()].parent() = old_root.rchild();
 	t[old_root.rchild()].lchild() = old_root.lchild();
-
-	rooting::node_stack inner_nodes = rooting::node_stack{};
-
-	index current_node = t[root_leaf].parent();
-	while (current_node != 0) {
-		inner_nodes.push(current_node);
-		current_node = t[current_node].parent();
-	}
-	
-	while (inner_nodes.size() > 0) {
-		index i = inner_nodes.top();
-		index old_parent = t[i].parent();
-		t[i].parent() = t[i].lchild();
-		t[i].lchild() = old_parent;
-		inner_nodes.pop();
-	}
-
-	old_root = new_root;
-	t[root_leaf].parent() = 0;
+	t[0] = new_root;
 }
 
 } // namespace terraces

@@ -1,5 +1,6 @@
 
 #include <catch.hpp>
+#include <iostream>
 
 #include <terraces/rooting.hpp>
 #include <terraces/trees.hpp>
@@ -13,7 +14,9 @@ TEST_CASE("rerooting basic", "[rerooting]") {
 	reroot_inplace(t, root_leaf);
 
 	// TODO: implement the algorithm, make this work and add further tests:
-	// CHECK(((t[0].lchild() == root_leaf) or (t[0].rchild() == root_leaf)));
+	CHECK(((t[0].lchild() == root_leaf) or (t[0].rchild() == root_leaf)));
+	std::cout << t[0] << "\n" << t[1] << "\n" << t[2] << "\n" << t[3] << "\n" << t[4];
+	std::cout << t[0].parent() + 1;
 }
 
 } // namespace tests
