@@ -34,7 +34,32 @@ constraints map_constraints(std::vector<index>, constraints);
 std::vector<std::vector<index>> map_sets(std::vector<index>, std::vector<std::vector<index>>);
 
 /**
- * Generate the supertree given a vector of indices and a vector of contraints
+ * Check if on a terrace given a number and a vector of constraints. Entry point for terrace checking.
+ */
+bool check_supertree(index, constraints);
+
+/**
+ * Check if on a terrace given a number and a vector of constraints.
+ */
+bool check_supertree(std::vector<index>, constraints);
+
+/**
+ * Count trees given a number and a vector of constraints. Entry point for tree counting.
+ */
+size_t count_supertree(index, constraints);
+
+/**
+ * Count trees.
+ */
+size_t count_supertree(std::vector<index>, constraints);
+
+/**
+ * Generate the supertree given a number and a vector of contraints. Entry point for tree enumeration.
+ */
+std::vector<struct supertree_node*> construct_supertree(index, constraints);
+
+/**
+ * Generate the supertree given a vector of indices and a vector of contraints. 
  */
 std::vector<struct supertree_node*> construct_supertree(std::vector<index>, constraints);
 

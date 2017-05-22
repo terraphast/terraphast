@@ -21,7 +21,8 @@ using constraints = std::vector<constraint>;
 constraints filter_constraints(std::vector<index>, constraints);
 
 /**
- * Apply all given contraints to the given vector of indices. This is done via a union-find structure.
+ * Apply all given contraints to the given vector of indices. This is done via a union-find
+ * structure.
  */
 std::vector<std::vector<index>> apply_constraints(index, constraints);
 
