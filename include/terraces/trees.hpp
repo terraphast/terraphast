@@ -55,6 +55,29 @@ std::ostream& operator<<(std::ostream& s, const node& n);
 // type will most likely change:
 using tree = std::vector<node>;
 
+class tree_cursor {
+public:
+	tree_cursor(tree& t, index n) : m_tree{&t}, m_node{n} {}
+
+	node& get() const { return m_tree->at(m_node); }
+	node& operator*() const { return get(); }
+
+	index get_index() const {return m_node;}
+
+	bool has_parent() const { return get().parent() != none; }
+	void go_parent() { m_node = get().parent(); }
+
+	bool has_lchild() const { return get().lchild() != none; }
+	void go_lchild() { m_node = get().lchild(); }
+
+	bool has_rchild() const { return get().rchild() != none; }
+	void go_rchild() { m_node = get().rchild(); }
+
+private:
+	tree* m_tree;
+	index m_node;
+};
+
 // to look up the name associated with an index, simply
 // reuse the index to check in a std::vector:
 using name_map = std::vector<std::string>;
