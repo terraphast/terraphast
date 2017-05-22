@@ -9,6 +9,9 @@ namespace terraces {
 
 using bipartition = std::tuple<std::vector<std::size_t>, std::vector<std::size_t>>;
 
+/**
+ * Generate all possible bipartitions from a set of sets of indices
+ */
 std::vector<bipartition> sets_to_bipartitions(std::vector<std::vector<std::size_t>>&);
 
 } // namespace terraces

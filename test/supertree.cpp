@@ -27,30 +27,30 @@ namespace tests {
 //}
 
 TEST_CASE("supertree1", "[supertree]") {
-        std::vector<index> leaves = {0, 1, 2, 3, 4, 5, 6};
+	std::vector<index> leaves = {0, 1, 2, 3, 4, 5, 6};
 	constraints c = {};
-        std::vector<struct supertree_node*> s = construct_supertree(leaves, c);
+	std::vector<struct supertree_node*> s = construct_supertree(leaves, c);
 	CHECK(s.size() == 10395);
 }
 
 TEST_CASE("supertree2", "[supertree]") {
-        std::vector<index> leaves = {0, 1, 2};
+	std::vector<index> leaves = {0, 1, 2};
 	constraints c = {{0, 1, 2}};
-        std::vector<struct supertree_node*> s = construct_supertree(leaves, c);
+	std::vector<struct supertree_node*> s = construct_supertree(leaves, c);
 	CHECK(s.size() == 1);
 }
 
 TEST_CASE("supertree3", "[supertree]") {
-        std::vector<index> leaves = {0, 1, 2, 3};
+	std::vector<index> leaves = {0, 1, 2, 3};
 	constraints c = {{0, 1, 2}, {2, 3, 4}};
-        std::vector<struct supertree_node*> s = construct_supertree(leaves, c);
+	std::vector<struct supertree_node*> s = construct_supertree(leaves, c);
 	CHECK(s.size() == 1);
 }
 
 TEST_CASE("supertree4", "[supertree]") {
-        std::vector<index> leaves = {0, 1, 2, 3, 4};
+	std::vector<index> leaves = {0, 1, 2, 3, 4};
 	constraints c = {{1, 0, 2}, {3, 4, 1}};
-        std::vector<struct supertree_node*> s = construct_supertree(leaves, c);
+	std::vector<struct supertree_node*> s = construct_supertree(leaves, c);
 	CHECK(s.size() == 9);
 }
 
