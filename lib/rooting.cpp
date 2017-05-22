@@ -28,8 +28,7 @@ void reroot_inplace(tree& t, index root_leaf) {
 	rooting::node_stack inner_nodes = rooting::node_stack{};
 
 	index current_node = t[root_leaf].parent();
-	while (current_node != 0) { // TODO: stop before 0
-		std::cout << "Adding node " << current_node << "to rooting stack." << "\n";
+	while (current_node != 0) {
 		inner_nodes.push(current_node);
 		current_node = t[current_node].parent();
 	}
