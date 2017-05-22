@@ -75,6 +75,19 @@ inline bool is_leaf(const node& n) {
 	return n.lchild() == none;
 }
 
+template <typename F>
+void foreach_postorder(const tree& t, index root_idx, F cb) {
+	// index root_idx = t.size() - 1;
+	// assert(is_root(t[root_idx]));
+
+	auto root_node = t[root_idx];
+	if (!is_leaf(root_node)) {
+		foreach_postorder(t, root_node.lchild(), cb);
+		foreach_postorder(t, root_node.rchild(), cb);
+	}
+	cb(root_idx);
+}
+
 } // namespace terraces
 
 #endif
