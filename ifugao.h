@@ -9,7 +9,7 @@
 #include <assert.h>
 
 typedef int leaf_number;
-typedef std::shared_ptr<std::set<leaf_number> > leaf_set;
+typedef std::set<leaf_number> leaf_set;
 
 //lca(smaller_left, smaller_right) < lca(bigger_left, bigger_right)
 struct constraint {
@@ -42,7 +42,7 @@ struct constraint {
  * @return Number of all trees on the terrace.
  */
 size_t list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leaves, FILE *file);
+		const leaf_set &leaves, FILE *file);
 
 /**
  * Applies the given constraints on a set of given leaves, by merging them if
@@ -52,13 +52,13 @@ size_t list_trees(const std::vector<constraint> &constraints,
  * @param constraints Constraints to apply.
  * @return Sets merged from given sets according to the given contraints.
  */
-std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
-		const std::set<leaf_number> &leaves,
+std::vector<std::shared_ptr<leaf_set > > apply_constraints(
+		const leaf_set &leaves,
 		const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */     
 std::vector<std::shared_ptr<Tree> > combine_sets(
-		const std::set<leaf_number> &leaves,
+		const leaf_set &leaves,
 		const std::vector<constraint> &constraints);
 
 /**
@@ -67,11 +67,11 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
  * @param supertree All supertree from which the constraints will be extracted
  * @return All constraints of the given super tree and a set of leave numbers.
  */
-std::tuple<std::set<leaf_number>, std::vector<constraint> > extract_constraints_from_supertree(
+std::tuple<leaf_set, std::vector<constraint> > extract_constraints_from_supertree(
 		const std::shared_ptr<Tree> supertree);
 
 std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
-		const std::set<leaf_number> &leafs);
+		const leaf_set &leafs);
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
@@ -80,7 +80,7 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
  * @param constraints All constraints that could still be valid.
  * @return All constraints that are still valid.
  */
-std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
+std::vector<constraint> find_constraints(const leaf_set &leaves,
 		const std::vector<constraint> &constraints);
 
 /** merges two sub-trees */
@@ -109,7 +109,7 @@ inline bool is_bit_set(size_t num, size_t n) {
  * @return the number of partition tuples that can be formed from the given list
  */
 inline size_t number_partition_tuples(
-		std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions) {
+		std::vector<std::shared_ptr<leaf_set > > &partitions) {
 	assert(partitions.size() > 1);
 
 	return (1 << (partitions.size() - 1)) - 1;
@@ -121,9 +121,9 @@ inline size_t number_partition_tuples(
  * @param n the target n-th partition tuple to select, ranging from [1,2^(p-1)-1] where p is the number of partitions
  * @return the n-th partition tuple formed from the given partition list
  */
-std::tuple<std::shared_ptr<std::set<leaf_number> >,
-		std::shared_ptr<std::set<leaf_number> > > get_nth_partition_tuple(
-		std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions,
+std::tuple<std::shared_ptr<leaf_set >,
+		std::shared_ptr<leaf_set > > get_nth_partition_tuple(
+		std::vector<std::shared_ptr<leaf_set > > &partitions,
 		size_t n);
 
 #endif /* IFUGAO_H */
