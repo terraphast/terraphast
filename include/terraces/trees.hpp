@@ -62,7 +62,7 @@ public:
 	node& get() const { return m_tree->at(m_node); }
 	node& operator*() const { return get(); }
 
-	index get_index() const {return m_node;}
+	index get_index() const { return m_node; }
 
 	bool has_parent() const { return get().parent() != none; }
 	void go_parent() { m_node = get().parent(); }
