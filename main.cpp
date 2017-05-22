@@ -82,6 +82,7 @@ void example1() {
 		d_printf("Error %i\n", errorCode);
 	}
 
+    std::cout << "terraceSize0: " << mpz_get_ui(terraceSize0) << std::endl; //Debug
 	//the terraces for example input trees 0 and 1 must be of the same size and equal to 15
 	assert(
 			(mpz_cmp(terraceSize0, terraceSize1) == 0) && (mpz_cmp_ui(terraceSize0, 15) == 0));

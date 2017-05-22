@@ -7,6 +7,7 @@
 #include <vector>
 #include <set>
 #include <assert.h>
+#include <iostream>
 
 //TODO bad performance when doing string comparison all the time I guess...
 typedef std::string leaf_number;

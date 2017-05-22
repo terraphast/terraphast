@@ -139,6 +139,7 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 
 	if (constraints.empty()) {
 		auto result = get_all_binary_trees(leafs);
+        std::cout << "constraints empty, size: " << result.size() << "\n"; //debug
 		return result;
 	}
 
@@ -159,6 +160,7 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		auto subtrees_right = combine_sets(*part_right, constraints_right);
 		auto trees = merge_subtrees(subtrees_left, subtrees_right);
 		result.insert(result.end(), trees.begin(), trees.end());
+        std::cout << "insert called, size: " << result.size() << "\n"; //debug
 	}
 
 	return result;
