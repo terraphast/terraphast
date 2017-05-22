@@ -3,10 +3,8 @@
 
 #include <terraces/bitmatrix.hpp>
 
-
 namespace terraces {
 namespace tests {
-
 
 TEST_CASE("bitmatrix-construction", "[bitmatrix]") {
 	auto mat = bitmatrix{10, 5};
