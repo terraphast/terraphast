@@ -18,6 +18,11 @@ int main(int argc, char** argv) try {
 	const auto data_res = terraces::parse_bitmatrix(data_file, data.indices, data.tree.size());
 	const auto& mat = data_res.first;
 
+	if (data_res.second == terraces::none) {
+		std::cerr << "Error: No \"rootable\" leaf\n";
+		return 1;
+	}
+
 	for (auto i = terraces::index{}; i < data.tree.size(); ++i) {
 		std::cout << std::setw(3) << i << ": " << std::setw(1) << std::noboolalpha;
 		for (auto j = terraces::index{}; j < mat.cols(); ++j) {
@@ -28,4 +33,5 @@ int main(int argc, char** argv) try {
 	}
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << '\n';
+	return 2;
 }
