@@ -99,6 +99,21 @@ inline bool is_leaf(const node& n) {
 	return n.lchild() == none;
 }
 
+/**
+ * Returns whether a tree is a valid rooted tree.
+ * This means it is valid and the last node is its root.
+ */
+bool is_rooted_tree(const tree& t);
+
+/**
+ * Returns whether a tree is valid.
+ * This means it has no cycles and only nodes of degree 1 and 3 (and the root)
+ */
+bool is_valid_tree(const tree& t);
+
+/**
+ * Traverses a tree in post-order while calling a given callback on every node.
+ */
 template <typename F>
 void foreach_postorder(const tree& t, F cb) {
 	index root_idx = t.size() - 1;
