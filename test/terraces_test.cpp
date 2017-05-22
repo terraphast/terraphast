@@ -67,7 +67,7 @@ TEST(TerraceAnalysis, generate_induced_tree) {
 	d_print_tree(r_tree);
 	auto leafs = extract_leaf_labels_from_supertree(r_tree);
 
-	auto constraints = extract_constraints_from_supertree(r_tree);
+	auto constraints = extract_constraints_from_tree(r_tree);
 	for (auto &c : constraints) {
 		d_printf("lca(%s, %s) < lca(%s, %s)\n", c.smaller_left.c_str(),
 				c.smaller_right.c_str(), c.bigger_left.c_str(),

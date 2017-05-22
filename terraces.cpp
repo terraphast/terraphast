@@ -116,7 +116,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
         leafs.insert(leaf_number(m->speciesNames[k]));
     }
-    size_t num_trees = list_trees(extract_constraints_from_supertree(rtree), leafs, allTreesOnTerrace);
+    size_t num_trees = list_trees(extract_constraints_from_tree(rtree), leafs, allTreesOnTerrace);
     mpz_set_ui(*terraceSize, num_trees);
 
 

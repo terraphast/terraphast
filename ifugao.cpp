@@ -139,7 +139,7 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 
 	if (constraints.empty()) {
 		auto result = get_all_binary_trees(leafs);
-        std::cout << "constraints empty, size: " << result.size() << "\n"; //debug
+		std::cout << "constraints empty, size: " << result.size() << "\n"; //debug
 		return result;
 	}
 
@@ -160,7 +160,7 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		auto subtrees_right = combine_sets(*part_right, constraints_right);
 		auto trees = merge_subtrees(subtrees_left, subtrees_right);
 		result.insert(result.end(), trees.begin(), trees.end());
-        std::cout << "insert called, size: " << result.size() << "\n"; //debug
+		std::cout << "insert called, size: " << result.size() << "\n"; //debug
 	}
 
 	return result;
@@ -234,7 +234,7 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 	return sets;
 }
 
-static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_rec(
+static std::tuple<leaf_number, leaf_number> extract_constraints_from_tree_rec(
 		const std::shared_ptr<Tree> node,
 		std::vector<constraint> &constraints) {
 
@@ -249,13 +249,13 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_supertree_r
 	leaf_number l_left_most;
 	leaf_number l_right_most;
 	std::tie(l_left_most, l_right_most) =
-			extract_constraints_from_supertree_rec(node->left, constraints);
+			extract_constraints_from_tree_rec(node->left, constraints);
 
 	// (l,r) of the right child node
 	leaf_number r_left_most;
 	leaf_number r_right_most;
 	std::tie(r_left_most, r_right_most) =
-			extract_constraints_from_supertree_rec(node->right, constraints);
+			extract_constraints_from_tree_rec(node->right, constraints);
 
 	if (l_left_most != l_right_most) {
 		constraint c;
@@ -299,11 +299,11 @@ std::set<leaf_number> extract_leaf_labels_from_supertree(
 	return result;
 }
 
-std::vector<constraint> extract_constraints_from_supertree(
+std::vector<constraint> extract_constraints_from_tree(
 		const std::shared_ptr<Tree> supertree) {
 	std::vector<constraint> constraints;
 
-	extract_constraints_from_supertree_rec(supertree, constraints);
+	extract_constraints_from_tree_rec(supertree, constraints);
 
 	return constraints;
 }
