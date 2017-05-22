@@ -16,6 +16,10 @@ struct supertree_node* new_node(std::vector<index>);
 
 std::string pretty_preorder(struct supertree_node*);
 
+constraints map_constraints(std::vector<index>, constraints);
+
+std::vector<std::vector<index>> map_sets(std::vector<index>, std::vector<std::vector<index>>);
+
 std::vector<struct supertree_node*> construct_supertree(std::vector<index>, constraints);
 
 } // namespace terraces
