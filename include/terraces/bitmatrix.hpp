@@ -16,7 +16,10 @@ public:
 
 	bool get(index row, index col) const;
 	void set(index row, index col, bool val);
+	/** Copies the row 'from' of input to row 'to' of this matrix. */
 	void copy_row(index from, index to, const bitmatrix& input);
+	/** Writes the bit rows 'in1' and 'in2' to row 'out'. */
+	void row_or(index in1, index in2, index out);
 
 private:
 	index m_rows;
