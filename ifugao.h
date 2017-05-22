@@ -98,6 +98,9 @@ inline size_t number_partition_tuples(
 	return (1 << (partitions.size() - 1)) - 1;
 }
 
+//TODO Doc
+std::set<leaf_number> extract_leaf_labels_from_supertree(std::shared_ptr<Tree> tree);
+
 /**
  * Returns the n-th partition tuple of the given partition list
  * @param partitions the list of partitions
