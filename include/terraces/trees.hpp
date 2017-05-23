@@ -91,6 +91,8 @@ private:
 // reuse the index to check in a std::vector:
 using name_map = std::vector<std::string>;
 
+std::ostream& operator<<(std::ostream& s, std::pair<const tree&, const name_map&> t);
+
 // maps the name of a species to it's index in the tree:
 using index_map = std::unordered_map<std::string, index>;
 
