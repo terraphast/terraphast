@@ -116,6 +116,7 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 	auto cols = index{};
 	auto rows = index{}; // mostly a dummy;
 	input >> rows >> cols >> std::ws;
+	utils::ensure<bad_input_error>(rows <= tree_size, "mismatching tree-sizes");
 	auto line = std::string{};
 	auto mat = bitmatrix{tree_size, cols};
 	auto suitable_root = none;

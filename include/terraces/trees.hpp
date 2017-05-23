@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <iosfwd>
 #include <limits>
+#include <stack>
 #include <unordered_map>
 #include <vector>
 
@@ -47,6 +48,12 @@ struct node {
 
 	index rchild() const { return data[2]; }
 	index& rchild() { return data[2]; }
+
+	bool operator==(const node& o) const {
+		return std::equal(data.begin(), data.end(), o.data.begin(), o.data.end());
+	}
+
+	bool operator!=(const node& o) const { return !(o == *this); }
 };
 
 std::ostream& operator<<(std::ostream& s, const node& n);
@@ -54,6 +61,8 @@ std::ostream& operator<<(std::ostream& s, const node& n);
 // The same thing as above applies: The details of this
 // type will most likely change:
 using tree = std::vector<node>;
+
+std::ostream& operator<<(std::ostream& ss, const tree& t);
 
 class tree_cursor {
 public:
@@ -96,6 +105,77 @@ inline bool is_root(const node& n) { return n.parent() == none; }
 inline bool is_leaf(const node& n) {
 	assert((n.lchild() == n.rchild()) == (n.lchild() == none));
 	return n.lchild() == none;
+}
+
+/**
+ * Returns whether a tree is a valid rooted tree.
+ * This means it is valid and the last node is its root.
+ */
+bool is_rooted_tree(const tree& t);
+
+/**
+ * Returns whether a tree is valid.
+ * This means it has no cycles and only nodes of degree 1 and 3 (and the root)
+ */
+bool is_valid_tree(const tree& t);
+
+/**
+ * Traverses a tree in post-order while calling a given callback on every node.
+ */
+template <typename F>
+void foreach_postorder(const tree& t, F cb) {
+	index root_idx = 0;
+	assert(is_root(t[root_idx]));
+
+	enum class visited { none, left, both };
+
+	std::stack<std::pair<index, visited>> stack;
+	stack.push(std::make_pair(root_idx, visited::none));
+	while (!stack.empty()) {
+		auto current = stack.top();
+		auto cur_idx = current.first;
+		stack.pop();
+		auto cur_node = t[cur_idx];
+		if (is_leaf(cur_node)) {
+			cb(current.first);
+		} else {
+			switch (current.second) {
+			// descend into left tree
+			case visited::none:
+				stack.push(std::make_pair(cur_idx, visited::left));
+				stack.push(std::make_pair(cur_node.lchild(), visited::none));
+				break;
+			// descend into right tree
+			case visited::left:
+				stack.push(std::make_pair(cur_idx, visited::both));
+				stack.push(std::make_pair(cur_node.rchild(), visited::none));
+				break;
+			// move up again
+			case visited::both:
+				cb(cur_idx);
+				break;
+			}
+		}
+	}
+}
+
+template <typename F>
+void foreach_preorder(const tree& t, F cb) {
+	index root_idx = 0;
+	assert(is_root(t[root_idx]));
+
+	std::stack<index> stack;
+	stack.push(root_idx);
+	while (!stack.empty()) {
+		auto node = t[stack.top()];
+		cb(stack.top());
+		stack.pop();
+		// recursive descent
+		if (!is_leaf(node)) {
+			stack.push(node.rchild());
+			stack.push(node.lchild());
+		}
+	}
 }
 
 } // namespace terraces

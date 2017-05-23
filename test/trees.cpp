@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include <iostream>
+#include <algorithm>
 
 #include <terraces/trees.hpp>
 
@@ -64,6 +64,92 @@ TEST_CASE("is_leaf(leaf)", "[trees]") {
 TEST_CASE("is_leaf(non_leaf)", "[trees]") {
 	auto non_leaf_node = terraces::node{0, 1, 2};
 	CHECK(!terraces::is_leaf(non_leaf_node));
+}
+
+TEST_CASE("is_valid_tree(valid)", "[trees]") {
+	tree t{
+	        {9, none, none}, {10, 9, 6},      {10, 3, 4},      {2, 5, 8},
+	        {2, none, none}, {3, none, none}, {1, none, none}, {9, none, none},
+	        {3, none, none}, {1, 0, 7},       {none, 1, 2},
+	};
+	for (auto& n : t) {
+		std::random_shuffle(n.data.begin(), n.data.end());
+	}
+	CHECK(is_valid_tree(t));
+}
+
+TEST_CASE("is_rooted_tree(valid)", "[trees]") {
+	tree t{
+	        {none, 1, 2},    {0, 9, 6},       {0, 3, 4},       {2, 5, 8},
+	        {2, none, none}, {3, none, none}, {1, none, none}, {9, none, none},
+	        {3, none, none}, {1, 10, 7},      {9, none, none},
+	};
+	CHECK(is_rooted_tree(t));
+}
+
+TEST_CASE("is_valid_tree(invalid_degree)", "[trees]") {
+	tree t{{none, none, none}, {0, 1, none}};
+	CHECK(!is_valid_tree(t));
+}
+
+TEST_CASE("is_valid_tree(two_roots)", "[trees]") {
+	tree t{{0, 1, none}, {0, 1, none}};
+	CHECK(!is_valid_tree(t));
+}
+
+TEST_CASE("is_valid_tree(cycle)", "[trees]") {
+	tree t{{1, 2, none}, {0, 2, 3}, {0, 1, 3}, {1, 2, none}};
+	CHECK(!is_valid_tree(t));
+}
+
+TEST_CASE("is_valid_tree(dag)", "[trees]") {
+	tree t{{1, 2, none}, {0, none, 3}, {0, none, 3}, {1, 2, none}};
+	CHECK(!is_valid_tree(t));
+}
+
+TEST_CASE("is_rooted_tree(invalid)", "[trees]") {
+	tree t{{none, 2, 3}, {2, none, none}, {0, 1, none}, {1, none, none}};
+	CHECK(!is_valid_tree(t));
+}
+
+TEST_CASE("foreach_postorder(example)", "[trees]") {
+	tree t{
+	        {none, 1, 2},    {0, 9, 6},       {0, 3, 4},       {2, 5, 8},
+	        {2, none, none}, {3, none, none}, {1, none, none}, {9, none, none},
+	        {3, none, none}, {1, 10, 7},      {9, none, none},
+	};
+	std::vector<index> expected{10, 7, 9, 6, 1, 5, 8, 3, 4, 2, 0};
+	std::vector<index> result;
+	foreach_postorder(t, [&](index i) { result.push_back(i); });
+	CHECK(std::equal(expected.begin(), expected.end(), result.begin(), result.end()));
+}
+
+TEST_CASE("foreach_preorder(example)", "[trees]") {
+	tree t{
+	        {none, 1, 2},    {0, 9, 6},       {0, 3, 4},       {2, 5, 8},
+	        {2, none, none}, {3, none, none}, {1, none, none}, {9, none, none},
+	        {3, none, none}, {1, 10, 7},      {9, none, none},
+	};
+	std::vector<index> expected{0, 1, 9, 10, 7, 6, 2, 3, 5, 8, 4};
+	std::vector<index> result;
+	foreach_preorder(t, [&](index i) { result.push_back(i); });
+	CHECK(std::equal(expected.begin(), expected.end(), result.begin(), result.end()));
+}
+
+TEST_CASE("foreach_postorder(trivial)", "[trees]") {
+	tree t{{none, none, none}};
+	std::vector<index> result;
+	foreach_postorder(t, [&](index i) { result.push_back(i); });
+	CHECK(result.size() == 1);
+	CHECK(result[0] == 0);
+}
+
+TEST_CASE("foreach_preorder(trivial)", "[trees]") {
+	tree t{{none, none, none}};
+	std::vector<index> result;
+	foreach_preorder(t, [&](index i) { result.push_back(i); });
+	CHECK(result.size() == 1);
+	CHECK(result[0] == 0);
 }
 
 } // namespace tests

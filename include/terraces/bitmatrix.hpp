@@ -16,6 +16,8 @@ public:
 
 	bool get(index row, index col) const;
 	void set(index row, index col, bool val);
+	/** Writes the bit rows 'in1' and 'in2' to row 'out'. */
+	void row_or(index in1, index in2, index out);
 
 private:
 	index m_rows;
