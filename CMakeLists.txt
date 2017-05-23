@@ -17,7 +17,7 @@ enable_testing()
 
 Option(DEV_ENVIRONMENT "DEV_ENVIRONMENT" OFF)
 if(DEV_ENVIRONMENT)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_DEBUG -Werror")
 endif()
 
 # Get Libraries
