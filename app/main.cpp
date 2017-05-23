@@ -4,6 +4,7 @@
 
 #include <terraces/parser.hpp>
 #include <terraces/trees.hpp>
+#include <terraces/rooting.hpp>
 
 int main(int argc, char** argv) try {
 	if (argc != 3) {
@@ -12,16 +13,15 @@ int main(int argc, char** argv) try {
 	auto tree_file = std::ifstream{argv[1]};
 	auto tree_string = std::string{};
 	std::getline(tree_file, tree_string);
-	const auto data = terraces::parse_nwk(tree_string);
+	auto data = terraces::parse_nwk(tree_string);
 
 	auto data_file = std::ifstream{argv[2]};
 	const auto data_res = terraces::parse_bitmatrix(data_file, data.indices, data.tree.size());
 	const auto& mat = data_res.first;
 
-	if (data_res.second == terraces::none) {
-		std::cerr << "Error: No \"rootable\" leaf\n";
-		return 1;
-	}
+	std::cout << "New root: " << data_res.second << '\n';
+
+	terraces::reroot_inplace(data.tree, data_res.second);
 
 	for (auto i = terraces::index{}; i < data.tree.size(); ++i) {
 		std::cout << std::setw(3) << i << ": " << std::setw(1) << std::noboolalpha;
@@ -33,5 +33,4 @@ int main(int argc, char** argv) try {
 	}
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << '\n';
-	return 2;
 }
