@@ -13,6 +13,7 @@
 #include <string>
 #include <iostream>
 
+
 /**
  * This funktion generates the trees T|G_i, which is exactly the subtree of T induced by partition G_i
  * @param tree the rooted binary supertree
@@ -32,7 +33,7 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
  * @param missing_data the data for the missing sequences on each partition
  * @return the new root of the tree, or NULL if the tree cannot be rooted (e.g. if there is no species that has data for every partition)
  */
-std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data);
+std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data, std::string &root_species_name);
 
 /**
  * Returns a pointer to the leaf that has the label <label>

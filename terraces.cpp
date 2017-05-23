@@ -107,7 +107,9 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	assert(tree != nullptr);
 	d_print_tree(tree);
 
-	std::shared_ptr<Tree> rtree = root_tree(tree, m);
+    std::string root_species_name;
+    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
+    std::cout << "root: " << root_species_name << std::endl; //debug
 
 	assert(rtree != nullptr);
 	d_print_tree(rtree);
@@ -116,8 +118,9 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	for (size_t k = 0; k < m->numberOfSpecies; k++) {
 		leafs.insert(leaf_number(m->speciesNames[k]));
 	}
+
 	size_t num_trees = list_trees(extract_constraints_from_supertree(rtree, m), leafs,
-			allTreesOnTerrace);
+            allTreesOnTerrace, root_species_name);
 	mpz_set_ui(*terraceSize, num_trees);
 
 	/* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */

@@ -43,7 +43,7 @@ struct constraint {
  * @return Number of all trees on the terrace.
  */
 size_t list_trees(const std::vector<constraint> &constraints,
-		const leaf_set &leaves, FILE *file);
+        const leaf_set &leaves, FILE *file, std::string &root_species_name);
 
 /**
  * Applies the given constraints on a set of given leaves, by merging them if
@@ -58,7 +58,7 @@ std::vector<std::shared_ptr<leaf_set> > apply_constraints(
 
 /** Combines all sets (constraints need to be applied already) */
 std::vector<std::shared_ptr<Tree> > combine_sets(const leaf_set &leaves,
-		const std::vector<constraint> &constraints);
+        const std::vector<constraint> &constraints, std::string &root_species_name);
 
 /**
  * Returns a vector containing all constraints infered from the given supertree.

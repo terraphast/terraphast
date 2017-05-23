@@ -276,6 +276,7 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
 TEST(ListTrees, example_from_slides) {
 
 	std::set<leaf_number> leaves = { "1", "2", "3", "4", "5" };
+    std::string root_species_name("0"); //just to make the test compile.
 
 	std::vector<constraint> constraints;
 
@@ -285,7 +286,7 @@ TEST(ListTrees, example_from_slides) {
 	constraints.push_back(cons1);
 	constraints.push_back(cons2);
 
-	auto n_trees = list_trees(constraints, leaves, nullptr);
+    auto n_trees = list_trees(constraints, leaves, nullptr, root_species_name);
 
 	ASSERT_EQ(n_trees, 9);
 }
@@ -293,6 +294,8 @@ TEST(ListTrees, example_from_slides) {
 TEST(ListTrees, example_from_slides_with_printing_stuff) {
 
 	size_t buffer_size = 10000000;
+
+    std::string root_species_name("asdf");  //just to make the test compile
 
 	auto buffer = new char[buffer_size];
 	std::string expected = "((2,1),((5,3),4));\n";
@@ -317,7 +320,7 @@ TEST(ListTrees, example_from_slides_with_printing_stuff) {
 
 	auto f = fmemopen(buffer, buffer_size, "w");
 	ASSERT_TRUE(f != nullptr);
-	list_trees(constraints, leaves, f);
+    list_trees(constraints, leaves, f, root_species_name);
 	fclose(f);
 
 	ASSERT_EQ(std::string(buffer), expected);

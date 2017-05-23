@@ -48,7 +48,7 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
 }
 
 std::shared_ptr<Tree> root_tree(ntree_t *tree,
-		const missingData *missing_data) {
+        const missingData *missing_data, std::string &root_species_name) {
 	long root_species_number = -1;
 	for (size_t i = 0; i < missing_data->numberOfSpecies; i++) {
 		bool contains_all_data = true;
@@ -67,6 +67,7 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree,
 		//rtree_t *temp_root = ntree_to_rtree(future_root);
 		ntree_t *future_root = get_leaf_by_name(tree,
 				missing_data->speciesNames[root_species_number]);
+        root_species_name = missing_data->speciesNames[root_species_number];
 		if (future_root == nullptr) {
 			std::cout << "In root_tree(...): label "
 					<< missing_data->speciesNames[root_species_number]

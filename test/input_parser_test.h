@@ -72,8 +72,10 @@ TEST(Tree_root_Test, simple_tree) {
     copyDataMatrix(matrix1, example1);
     copyDataMatrix(matrix2, example2);
 
-    std::shared_ptr<Tree> root1 = root_tree(tree, example1);
-    std::shared_ptr<Tree> root2 = root_tree(tree, example2);
+    std::string root_species_name_1;
+    std::string root_species_name_2;
+    std::shared_ptr<Tree> root1 = root_tree(tree, example1, root_species_name_1);
+    std::shared_ptr<Tree> root2 = root_tree(tree, example2, root_species_name_2);
 
     ntree_destroy(tree);
     freeMissingData(example1);

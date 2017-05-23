@@ -21,7 +21,8 @@ TEST(Util, generate_induced_tree) {
 	missingData *example1 = initializeMissingData(5, 2, speciesNames);
 	copyDataMatrix(matrix1, example1);
 
-	std::shared_ptr<Tree> r_tree = root_tree(tree, example1);
+    std::string root_species_name;
+    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name);
 	std::map<std::string, unsigned char> species_map;
 	for (unsigned char i = 0; i < example1->numberOfSpecies; i++) {
 		species_map[std::string(example1->speciesNames[i])] = i;
@@ -59,7 +60,8 @@ TEST(ExtractConstraintsFromSuperTree, example_from_slides) {
 	missingData *example1 = initializeMissingData(5, 2, speciesNames);
 	copyDataMatrix(matrix1, example1);
 
-	std::shared_ptr<Tree> r_tree = root_tree(tree, example1);
+    std::string root_species_name;
+    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name);
 	auto constraints = extract_constraints_from_supertree(r_tree, example1);
 
 	ASSERT_EQ(constraints.size(), 2);
@@ -89,7 +91,8 @@ TEST(TerraceAnalysis, generate_induced_tree) {
 	missingData *example1 = initializeMissingData(5, 2, speciesNames);
 	copyDataMatrix(matrix1, example1);
 
-	std::shared_ptr<Tree> r_tree = root_tree(tree, example1);
+    std::string root_species_name;
+    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name);
 //	d_print_tree(r_tree);
 	auto leafs = extract_leaf_labels_from_supertree(r_tree);
 	auto constraints = extract_constraints_from_supertree(r_tree, example1);
@@ -99,7 +102,7 @@ TEST(TerraceAnalysis, generate_induced_tree) {
 				c.bigger_right.c_str());
 	}
 
-	auto result = combine_sets(leafs, constraints);
+    auto result = combine_sets(leafs, constraints, root_species_name);
 	d_printf("%s\n", r_tree->to_newick_string().c_str());
 	d_printf("%lu\n", result.size());
 	for (auto &r : result) {

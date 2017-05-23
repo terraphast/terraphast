@@ -27,9 +27,9 @@ std::tuple<std::shared_ptr<std::set<leaf_number> >,
 }
 
 size_t list_trees(const std::vector<constraint> &constraints,
-		const std::set<leaf_number> &leafs, FILE *file) {
+        const std::set<leaf_number> &leafs, FILE *file, std::string &root_species_name) {
 
-	auto all_trees = combine_sets(leafs, constraints);
+    auto all_trees = combine_sets(leafs, constraints, root_species_name);
 
 	if (file != nullptr) {
 		for (std::shared_ptr<Tree> t : all_trees) {
@@ -135,7 +135,7 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
 
 std::vector<std::shared_ptr<Tree> > combine_sets(
 		const std::set<leaf_number> &leafs,
-		const std::vector<constraint> &constraints) {
+        const std::vector<constraint> &constraints, std::string &root_species_name) {
 
 	fprintf(stderr, "INPUT: {");
 	bool first = true;
@@ -204,8 +204,8 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		auto constraints_left = find_constraints(*part_left, constraints);
 		auto constraints_right = find_constraints(*part_right, constraints);
 
-		auto subtrees_left = combine_sets(*part_left, constraints_left);
-		auto subtrees_right = combine_sets(*part_right, constraints_right);
+        auto subtrees_left = combine_sets(*part_left, constraints_left, root_species_name);
+        auto subtrees_right = combine_sets(*part_right, constraints_right, root_species_name);
 		auto trees = merge_subtrees(subtrees_left, subtrees_right);
 
 		fprintf(stderr, "    (L:{");
@@ -234,6 +234,11 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		result.insert(result.end(), trees.begin(), trees.end());
 	}
 
+    for (int i = 0; i < result.size(); i++) {
+        if (result[i]->left->label.compare(root_species_name) != 0 && result[i]->right->label.compare(root_species_name) != 0) {
+            result.erase(result.begin() + i);    //this is super inefficient. TODO replace with something efficient
+        }
+    }
 	return result;
 }
 
