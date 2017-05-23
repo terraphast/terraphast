@@ -36,6 +36,24 @@ TEST_CASE("rerooting advanced at 1", "[rerooting]") {
 	CHECK(((t[0].lchild() == root_leaf) or (t[0].rchild() == root_leaf)));
 }
 
+TEST_CASE("rerooting advanced at 2 (should fail)", "[rerooting]") {
+	auto t = tree{{none, 1, 2}, {0, none, none}, {0, 3, 4},
+	              {2, 5, 6},    {2, none, none}, {3, none, none},
+	              {3, 7, 8},    {6, none, none}, {6, none, none}};
+
+	const auto root_leaf = 2;
+	CHECK_THROWS_AS( reroot_inplace(t, root_leaf), std::invalid_argument );
+}
+
+TEST_CASE("rerooting advanced at 3 (should fail)", "[rerooting]") {
+	auto t = tree{{none, 1, 2}, {0, none, none}, {0, 3, 4},
+	              {2, 5, 6},    {2, none, none}, {3, none, none},
+	              {3, 7, 8},    {6, none, none}, {6, none, none}};
+
+	const auto root_leaf = 3;
+	CHECK_THROWS_AS( reroot_inplace(t, root_leaf), std::invalid_argument );
+}
+
 TEST_CASE("rerooting advanced at 4", "[rerooting]") {
 	auto t = tree{{none, 1, 2}, {0, none, none}, {0, 3, 4},
 	              {2, 5, 6},    {2, none, none}, {3, none, none},
@@ -54,6 +72,15 @@ TEST_CASE("rerooting advanced at 5", "[rerooting]") {
 	const auto root_leaf = 5;
 	reroot_inplace(t, root_leaf);
 	CHECK(((t[0].lchild() == root_leaf) or (t[0].rchild() == root_leaf)));
+}
+
+TEST_CASE("rerooting advanced at 6 (should fail)", "[rerooting]") {
+	auto t = tree{{none, 1, 2}, {0, none, none}, {0, 3, 4},
+	              {2, 5, 6},    {2, none, none}, {3, none, none},
+	              {3, 7, 8},    {6, none, none}, {6, none, none}};
+
+	const auto root_leaf = 6;
+	CHECK_THROWS_AS( reroot_inplace(t, root_leaf), std::invalid_argument );
 }
 
 TEST_CASE("rerooting advanced at 7", "[rerooting]") {
