@@ -6,16 +6,6 @@
 
 namespace terraces {
 
-std::ostream& operator<<(std::ostream& ss, const tree& t) {
-	ss << "TREE [\n";
-	for (auto node : t) {
-		ss << "\t{" << node.parent() << ", " << node.lchild() << ", " << node.rchild()
-		   << "}\n";
-	}
-	ss << "]\n";
-	return ss;
-}
-
 void reroot_inplace(tree& t, index root_leaf) {
 	utils::ensure<std::invalid_argument>(t[root_leaf].lchild() == none,
 	                                     "The given index root_leaf is no leaf index.");

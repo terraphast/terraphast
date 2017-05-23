@@ -62,6 +62,8 @@ std::ostream& operator<<(std::ostream& s, const node& n);
 // type will most likely change:
 using tree = std::vector<node>;
 
+std::ostream& operator<<(std::ostream& ss, const tree& t);
+
 class tree_cursor {
 public:
 	tree_cursor(tree& t, index n) : m_tree{&t}, m_node{n} {}
