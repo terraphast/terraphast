@@ -15,6 +15,8 @@ struct constraint {
 
 using constraints = std::vector<constraint>;
 
+constraints compute_constraints(const std::vector<tree>& trees);
+
 } // namespace terraces
 
 #endif
