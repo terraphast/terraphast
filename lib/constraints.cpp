@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& s, const constraint& c) {
 	         << "))";
 }
 
-constraints filter_constraints(std::vector<index> leaves, constraints c) {
+constraints filter_constraints(const std::vector<index>& leaves, const constraints& c) {
 	constraints new_c;
 	for (size_t i = 0; i < c.size(); i++) {
 		if ((std::find(leaves.begin(), leaves.end(), c.at(i).shared) != leaves.end()) &&
@@ -27,7 +27,7 @@ constraints filter_constraints(std::vector<index> leaves, constraints c) {
 	return new_c;
 }
 
-std::vector<std::vector<index>> apply_constraints(index number, constraints c) {
+std::vector<std::vector<index>> apply_constraints(index number, const constraints& c) {
 	union_find leaves = make_set(number);
 	for (size_t i = 0; i < c.size(); i++) {
 		merge(leaves, c.at(i).shared, c.at(i).left);

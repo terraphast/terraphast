@@ -26,7 +26,7 @@ std::string pretty_preorder(struct supertree_node*);
  * Map the given constraints according to the given vector of indices.
  * If the vector of indices is {2, 5, 6} for example, we get the mapping 2->0, 5->1, 6->2.
  */
-constraints map_constraints(std::vector<index>, constraints);
+constraints map_constraints(const std::vector<index>&, constraints);
 
 /**
  * Contrary function to map_constraints.
@@ -37,33 +37,33 @@ std::vector<std::vector<index>> map_sets(std::vector<index>, std::vector<std::ve
  * Check if on a terrace given a number and a vector of constraints. Entry point for terrace
  * checking.
  */
-bool check_supertree(index, constraints);
+bool check_supertree(index, const constraints&);
 
 /**
  * Check if on a terrace given a number and a vector of constraints.
  */
-bool check_supertree(std::vector<index>, constraints);
+bool check_supertree(const std::vector<index>&, const constraints&);
 
 /**
  * Count trees given a number and a vector of constraints. Entry point for tree counting.
  */
-size_t count_supertree(index, constraints);
+size_t count_supertree(index, const constraints&);
 
 /**
  * Count trees.
  */
-size_t count_supertree(std::vector<index>, constraints);
+size_t count_supertree(const std::vector<index>&, const constraints&);
 
 /**
  * Generate the supertree given a number and a vector of contraints. Entry point for tree
  * enumeration.
  */
-std::vector<struct supertree_node*> construct_supertree(index, constraints);
+std::vector<struct supertree_node*> construct_supertree(index, const constraints&);
 
 /**
  * Generate the supertree given a vector of indices and a vector of contraints.
  */
-std::vector<struct supertree_node*> construct_supertree(std::vector<index>, constraints);
+std::vector<struct supertree_node*> construct_supertree(const std::vector<index>&, const constraints&);
 
 } // namespace terraces
 

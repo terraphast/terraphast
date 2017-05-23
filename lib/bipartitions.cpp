@@ -4,7 +4,7 @@
 
 namespace terraces {
 
-bipartition_iterator::bipartition_iterator(std::vector<std::vector<index>> sets)
+bipartition_iterator::bipartition_iterator(const std::vector<std::vector<index>>& sets)
         : bip{1}, sets{sets} {}
 
 bipartition bipartition_iterator::get_bipartition() {

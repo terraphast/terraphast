@@ -25,7 +25,7 @@ std::string pretty_preorder(struct supertree_node* s) {
 	return res;
 }
 
-constraints map_constraints(std::vector<index> leaves, constraints c) {
+constraints map_constraints(const std::vector<index>& leaves, constraints c) {
 	std::map<index, index> m;
 	for (size_t i = 0; i < leaves.size(); i++) {
 		m[leaves.at(i)] = i;
@@ -52,7 +52,7 @@ std::vector<std::vector<index>> map_sets(std::vector<index> leaves,
 	return res;
 }
 
-bool check_supertree(index number, constraints c) {
+bool check_supertree(index number, const constraints& c) {
 	std::vector<index> leaves(number);
 	for (size_t i = 0; i < number; i++) {
 		leaves.at(i) = i;
@@ -60,7 +60,7 @@ bool check_supertree(index number, constraints c) {
 	return check_supertree(leaves, c);
 }
 
-bool check_supertree(std::vector<index> leaves, constraints c) {
+bool check_supertree(const std::vector<index>& leaves, const constraints& c) {
 	// only one tree possible for two leaves
 	if (leaves.size() <= 2) {
 		return false;
@@ -93,7 +93,7 @@ bool check_supertree(std::vector<index> leaves, constraints c) {
 	}
 }
 
-size_t count_supertree(index number, constraints c) {
+size_t count_supertree(index number, const constraints& c) {
 	std::vector<index> leaves(number);
 	for (size_t i = 0; i < number; i++) {
 		leaves.at(i) = i;
@@ -101,7 +101,7 @@ size_t count_supertree(index number, constraints c) {
 	return count_supertree(leaves, c);
 }
 
-size_t count_supertree(std::vector<index> leaves, constraints c) {
+size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
 	size_t number = 0;
 
 	if (leaves.size() == 1) {
@@ -139,7 +139,7 @@ size_t count_supertree(std::vector<index> leaves, constraints c) {
 	return number - bip_count;
 }
 
-std::vector<struct supertree_node*> construct_supertree(index number, constraints c) {
+std::vector<struct supertree_node*> construct_supertree(index number, const constraints& c) {
 	std::vector<index> leaves(number);
 	for (size_t i = 0; i < number; i++) {
 		leaves.at(i) = i;
@@ -147,7 +147,7 @@ std::vector<struct supertree_node*> construct_supertree(index number, constraint
 	return construct_supertree(leaves, c);
 }
 
-std::vector<struct supertree_node*> construct_supertree(std::vector<index> leaves, constraints c) {
+std::vector<struct supertree_node*> construct_supertree(const std::vector<index>& leaves, const constraints& c) {
 	std::vector<struct supertree_node*> list;
 
 	if (leaves.size() == 1) {
