@@ -3,12 +3,21 @@
 #include <terraces/rooting.hpp>
 #include "utils.hpp"
 #include <iostream>
+#include <sstream>
 
 namespace terraces {
 
 namespace rooting {
 
-	using node_stack = std::stack< index, std::vector<index>>;
+	std::string print_tree(tree& t) {
+		std::stringstream ss;
+		ss << "TREE [\n";
+		for (auto node : t) {
+			ss << "{" << node.parent() << ", " << node.lchild() << ", " << node.rchild() << "}\n";
+		}
+		ss << "]";
+		return ss.str();
+	}
 
 } // namespace rooting
 
@@ -18,7 +27,7 @@ void reroot_inplace(tree& t, index root_leaf) {
 	utils::ensure<std::invalid_argument>(t[root_leaf].rchild() == none, 
 										 "The given index root_leaf is no leaf index.");
 	
-	node old_root = t[0]; 			// Copy
+	node old_root = t[0]; // Copy
 	
 	bool root_leaf_is_child_of_root = (old_root.lchild() == root_leaf || old_root.rchild() == root_leaf);
 	if (root_leaf_is_child_of_root) {
@@ -44,9 +53,9 @@ void reroot_inplace(tree& t, index root_leaf) {
 		node& current_node = t[current_node_index];
 		index original_parent_index = current_node.parent();
 		is_last_node = (original_parent_index == 0);
-		std::cout << "IS LAST " << is_last_node << "\n";
-		std::cout << "IS FIRST " << is_first_node << "\n";
-		std::cout << "FROM LEFT? " << coming_from_left << "\n";
+//		std::cout << "IS LAST " << is_last_node << "\n";
+//		std::cout << "IS FIRST " << is_first_node << "\n";
+//		std::cout << "FROM LEFT? " << coming_from_left << "\n";
 
 		// standard case: Swap child and parent indices.
 		if (coming_from_left) {
@@ -101,10 +110,10 @@ void reroot_inplace(tree& t, index root_leaf) {
 		current_node_index = original_parent_index;
 	}
 	std::cout << "finished\n";
-	std::cout << "FROM LEFT END? " << coming_from_left << "\n";
+//	std::cout << "FROM LEFT END? " << coming_from_left << "\n";
 
 	t[0] = new_root;
-	std::cout << "ROOT END:" << t[0] << "\n";
+//	std::cout << "ROOT END:" << t[0] << "\n";
 }
 
 } // namespace terraces
