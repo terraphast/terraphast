@@ -91,7 +91,14 @@ private:
 // reuse the index to check in a std::vector:
 using name_map = std::vector<std::string>;
 
-std::ostream& operator<<(std::ostream& s, std::pair<const tree&, const name_map&> t);
+struct newick_t {
+	const tree* t;
+	const name_map* names;
+};
+
+inline newick_t as_newick(const tree& t, const name_map& names) { return {&t, &names}; }
+
+std::ostream& operator<<(std::ostream& s, newick_t t);
 
 // maps the name of a species to it's index in the tree:
 using index_map = std::unordered_map<std::string, index>;

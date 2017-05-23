@@ -156,7 +156,7 @@ TEST_CASE("tree_printing", "[trees][tree-printing]") {
 	auto t = tree{{none, 1, 2}, {0, none, none}, {0, 3, 4}, {2, none, none}, {2, none, none}};
 	const auto names = name_map{"root", "foo", "", "bar", "baz"};
 	std::ostringstream stream;
-	stream << std::make_pair(t, names);
+	stream << as_newick(t, names);
 	CHECK(stream.str() == "(foo, (bar, baz))root;");
 }
 

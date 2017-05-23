@@ -88,9 +88,9 @@ std::ostream& operator<<(std::ostream& ss, const tree& t) {
 	return ss;
 }
 
-std::ostream& operator<<(std::ostream& s, std::pair<const tree&, const name_map&> tree_pair) {
-	const auto& t = tree_pair.first;
-	const auto& names = tree_pair.second;
+std::ostream& operator<<(std::ostream& s, newick_t tree_pair) {
+	const auto& t = *tree_pair.t;
+	const auto& names = *tree_pair.names;
 	using state = std::pair<index, std::uint8_t>;
 	auto stack = std::stack<state, std::vector<state>>{};
 	stack.emplace(0u, 0u);

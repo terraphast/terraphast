@@ -32,7 +32,7 @@ int main(int argc, char** argv) try {
 		          << ") : " << data.names.at(i) << '\n';
 	}
 
-	std::cout << "In Newick-Format:\n" << std::make_pair(data.tree, data.names) << '\n';
+	std::cout << "In Newick-Format:\n" << as_newick(data.tree, data.names) << '\n';
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << '\n';
 }
