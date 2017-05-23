@@ -8,9 +8,12 @@
 namespace terraces {
 
 struct constraint {
-	index shared;
 	index left;
+	index shared;
 	index right;
+
+	constraint(index left, index shared, index right)
+	        : left{left}, shared{shared}, right{right} {}
 };
 
 using constraints = std::vector<constraint>;
