@@ -110,6 +110,7 @@ std::ostream& operator<<(std::ostream& s, std::pair<const tree&, const name_map&
 			stack.emplace(t.at(i).rchild(), 0);
 		} else if (visited == 2u) {
 			s << ')' << names.at(i);
+			stack.pop();
 		}
 	}
 	return s << ';';
