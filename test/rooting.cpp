@@ -42,7 +42,7 @@ TEST_CASE("rerooting advanced at 2 (should fail)", "[rerooting]") {
 	              {3, 7, 8},    {6, none, none}, {6, none, none}};
 
 	const auto root_leaf = 2;
-	CHECK_THROWS_AS( reroot_inplace(t, root_leaf), std::invalid_argument );
+	CHECK_THROWS_AS(reroot_inplace(t, root_leaf), std::invalid_argument);
 }
 
 TEST_CASE("rerooting advanced at 3 (should fail)", "[rerooting]") {
@@ -51,7 +51,7 @@ TEST_CASE("rerooting advanced at 3 (should fail)", "[rerooting]") {
 	              {3, 7, 8},    {6, none, none}, {6, none, none}};
 
 	const auto root_leaf = 3;
-	CHECK_THROWS_AS( reroot_inplace(t, root_leaf), std::invalid_argument );
+	CHECK_THROWS_AS(reroot_inplace(t, root_leaf), std::invalid_argument);
 }
 
 TEST_CASE("rerooting advanced at 4", "[rerooting]") {
@@ -80,7 +80,7 @@ TEST_CASE("rerooting advanced at 6 (should fail)", "[rerooting]") {
 	              {3, 7, 8},    {6, none, none}, {6, none, none}};
 
 	const auto root_leaf = 6;
-	CHECK_THROWS_AS( reroot_inplace(t, root_leaf), std::invalid_argument );
+	CHECK_THROWS_AS(reroot_inplace(t, root_leaf), std::invalid_argument);
 }
 
 TEST_CASE("rerooting advanced at 7", "[rerooting]") {
