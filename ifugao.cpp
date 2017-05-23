@@ -27,9 +27,9 @@ std::tuple<std::shared_ptr<std::set<leaf_number> >,
 }
 
 size_t list_trees(const std::vector<constraint> &constraints,
-        const std::set<leaf_number> &leafs, FILE *file, std::string &root_species_name) {
+		const std::set<leaf_number> &leafs, FILE *file) {
 
-    auto all_trees = combine_sets(leafs, constraints, root_species_name);
+	auto all_trees = combine_sets(leafs, constraints);
 
 	if (file != nullptr) {
 		for (std::shared_ptr<Tree> t : all_trees) {
@@ -38,32 +38,6 @@ size_t list_trees(const std::vector<constraint> &constraints,
 	}
 	return all_trees.size();
 
-}
-
-static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree,
-		std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> &cover_map) {
-	if (tree == nullptr) {
-		return nullptr;
-	}
-	if (cover_map.count(tree) > 0) {
-		return cover_map[tree];
-	}
-
-	auto node = std::make_shared<Tree>();
-	node->label = tree->label;
-	cover_map[tree] = node;
-	cover_map[node] = node;
-
-	node->parent = deep_copy(tree->parent, cover_map);
-	node->left = deep_copy(tree->left, cover_map);
-	node->right = deep_copy(tree->right, cover_map);
-
-	return node;
-}
-
-static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree) {
-	std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> cover_map;
-	return deep_copy(tree, cover_map);
 }
 
 static std::shared_ptr<Tree> root(std::shared_ptr<Tree> t) {
@@ -133,66 +107,43 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
 	return result;
 }
 
+std::vector<std::shared_ptr<Tree> > __combine_sets(
+		const std::set<leaf_number> &leafs,
+		const std::vector<constraint> &constraints,
+		const leaf_number root_species_name) {
+
+	assert(leafs.count(root_species_name) > 0);
+
+	auto part_left = std::make_shared<std::set<leaf_number> >();
+	auto part_right = std::make_shared<std::set<leaf_number> >();
+
+	part_left->insert(root_species_name);
+	part_right->insert(leafs.begin(), leafs.end());
+	part_right->erase(root_species_name);
+
+	auto constraints_left = find_constraints(*part_left, constraints);
+	auto constraints_right = find_constraints(*part_right, constraints);
+
+	auto subtrees_left = combine_sets(*part_left, constraints_left);
+	auto subtrees_right = combine_sets(*part_right, constraints_right);
+	auto trees = merge_subtrees(subtrees_left, subtrees_right);
+
+	std::vector<std::shared_ptr<Tree> > result;
+	result.insert(result.end(), trees.begin(), trees.end());
+
+	return result;
+}
+
 std::vector<std::shared_ptr<Tree> > combine_sets(
 		const std::set<leaf_number> &leafs,
-        const std::vector<constraint> &constraints, std::string &root_species_name) {
-
-	fprintf(stderr, "INPUT: {");
-	bool first = true;
-	for (auto &e : leafs) {
-		if (first) {
-			first = false;
-		} else {
-			fprintf(stderr, ",");
-		}
-		fprintf(stderr, "%s", e.c_str());
-	}
-	fprintf(stderr, "} ");
-
-	fprintf(stderr, "CONSTRAINTS: {");
-	bool first2 = true;
-	for (auto &c : constraints) {
-		if (first2) {
-			first2 = false;
-		} else {
-			fprintf(stderr, ",");
-		}
-		fprintf(stderr, "(%s,%s)<(%s,%s)", c.smaller_left.c_str(),
-				c.smaller_right.c_str(), c.bigger_left.c_str(),
-				c.bigger_right.c_str());
-	}
-	fprintf(stderr, "}");
+		const std::vector<constraint> &constraints) {
 
 	if (constraints.empty()) {
 		auto result = get_all_binary_trees(leafs);
-		fprintf(stderr, "\n");
 		return result;
 	}
 
 	auto partitions = apply_constraints(leafs, constraints);
-
-	fprintf(stderr, " PARTS: {");
-	bool first3 = true;
-	for (auto &p : partitions) {
-		if (first3) {
-			first3 = false;
-		} else {
-			fprintf(stderr, ",");
-		}
-		fprintf(stderr, "{");
-		bool first4 = true;
-		for (auto &e : *p) {
-			if (first4) {
-				first4 = false;
-			} else {
-				fprintf(stderr, ",");
-			}
-			fprintf(stderr, "%s", e.c_str());
-		}
-		fprintf(stderr, "}");
-	}
-	fprintf(stderr, "}\n");
-
 	std::vector<std::shared_ptr<Tree> > result;
 
 	for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
@@ -204,41 +155,13 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		auto constraints_left = find_constraints(*part_left, constraints);
 		auto constraints_right = find_constraints(*part_right, constraints);
 
-        auto subtrees_left = combine_sets(*part_left, constraints_left, root_species_name);
-        auto subtrees_right = combine_sets(*part_right, constraints_right, root_species_name);
+		auto subtrees_left = combine_sets(*part_left, constraints_left);
+		auto subtrees_right = combine_sets(*part_right, constraints_right);
 		auto trees = merge_subtrees(subtrees_left, subtrees_right);
 
-		fprintf(stderr, "    (L:{");
-		bool first5 = true;
-		for (auto &e : *part_left) {
-			if (first5) {
-				first5 = false;
-			} else {
-				fprintf(stderr, ",");
-			}
-			fprintf(stderr, "%s", e.c_str());
-		}
-		fprintf(stderr, "},R:{");
-		bool first6 = true;
-		for (auto &e : *part_right) {
-			if (first6) {
-				first6 = false;
-			} else {
-				fprintf(stderr, ",");
-			}
-			fprintf(stderr, "%s", e.c_str());
-		}
-		fprintf(stderr, "})");
-
-		fprintf(stderr, "%lu\n", trees.size());
 		result.insert(result.end(), trees.begin(), trees.end());
 	}
 
-    for (int i = 0; i < result.size(); i++) {
-        if (result[i]->left->label.compare(root_species_name) != 0 && result[i]->right->label.compare(root_species_name) != 0) {
-            result.erase(result.begin() + i);    //this is super inefficient. TODO replace with something efficient
-        }
-    }
 	return result;
 }
 

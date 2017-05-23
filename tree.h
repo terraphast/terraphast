@@ -56,4 +56,6 @@ public:
 	std::string to_newick_string();
 };
 
+std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree);
+
 #endif /* TREE_H */
