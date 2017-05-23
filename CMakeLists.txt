@@ -1,6 +1,6 @@
 project(terrace-searcher)
 
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.5)
 
 
 # create sane environment
@@ -17,7 +17,7 @@ enable_testing()
 
 Option(DEV_ENVIRONMENT "DEV_ENVIRONMENT" OFF)
 if(DEV_ENVIRONMENT)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_DEBUG -Werror")
 endif()
 
 # Get Libraries
