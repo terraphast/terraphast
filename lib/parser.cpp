@@ -108,6 +108,9 @@ tree_set parse_nwk(const std::string& input) {
 		default: { throw std::logic_error{"dafuq?"}; }
 		}
 	}
+	if (not names.front().empty() and names.front().back() == ';') {
+		names.front().pop_back();
+	}
 	return {std::move(ret), std::move(names), std::move(indices)};
 }
 
