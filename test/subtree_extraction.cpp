@@ -30,7 +30,7 @@ TEST_CASE("subtree extraction: example", "[subtree_extraction]") {
 	tree t{{none, 4, 5}, {2, none, none}, {4, 6, 1},      {4, none, none},
 	       {0, 2, 3},    {0, none, none}, {2, none, none}};
 
-	bitmatrix bm{t.size(), 1};
+	bitmatrix bm{t.size(), 2};
 	bm.set(0, 1, true);
 	bm.set(1, 0, true);
 	bm.set(1, 1, true);
