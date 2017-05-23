@@ -7,19 +7,16 @@
 
 namespace terraces {
 
-namespace rooting {
 
-	std::string print_tree(tree& t) {
-		std::stringstream ss;
+	std::ostream& operator<<(std::ostream& ss, const tree& t) {
 		ss << "TREE [\n";
 		for (auto node : t) {
-			ss << "{" << node.parent() << ", " << node.lchild() << ", " << node.rchild() << "}\n";
+			ss << "\t{" << node.parent() << ", " << node.lchild() << ", " << node.rchild() << "}\n";
 		}
-		ss << "]";
-		return ss.str();
+		ss << "]\n";
+		return ss;
 	}
-
-} // namespace rooting
+	
 
 void reroot_inplace(tree& t, index root_leaf) {
 	utils::ensure<std::invalid_argument>(t[root_leaf].lchild() == none, 
@@ -78,6 +75,7 @@ void reroot_inplace(tree& t, index root_leaf) {
 			} else {
 				current_node.rchild() = original_parent_index;
 			}
+			is_first_node = false;
 		}
 		
 		// Directly under old_root: We're now the parent of the root's other child.
