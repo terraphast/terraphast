@@ -80,9 +80,9 @@ TEST_CASE("is_valid_tree(valid)", "[trees]") {
 
 TEST_CASE("is_rooted_tree(valid)", "[trees]") {
 	tree t{
-	        {9, none, none}, {10, 9, 6},      {10, 3, 4},      {2, 5, 8},
+	        {none, 1, 2},    {0, 9, 6},       {0, 3, 4},       {2, 5, 8},
 	        {2, none, none}, {3, none, none}, {1, none, none}, {9, none, none},
-	        {3, none, none}, {1, 0, 7},       {none, 1, 2},
+	        {3, none, none}, {1, 10, 7},      {9, none, none},
 	};
 	CHECK(is_rooted_tree(t));
 }
@@ -114,11 +114,11 @@ TEST_CASE("is_rooted_tree(invalid)", "[trees]") {
 
 TEST_CASE("foreach_postorder(example)", "[trees]") {
 	tree t{
-	        {9, none, none}, {10, 9, 6},      {10, 3, 4},      {2, 5, 8},
+	        {none, 1, 2},    {0, 9, 6},       {0, 3, 4},       {2, 5, 8},
 	        {2, none, none}, {3, none, none}, {1, none, none}, {9, none, none},
-	        {3, none, none}, {1, 0, 7},       {none, 1, 2},
+	        {3, none, none}, {1, 10, 7},      {9, none, none},
 	};
-	std::vector<index> expected{0, 7, 9, 6, 1, 5, 8, 3, 4, 2, 10};
+	std::vector<index> expected{10, 7, 9, 6, 1, 5, 8, 3, 4, 2, 0};
 	std::vector<index> result;
 	foreach_postorder(t, [&](index i) { result.push_back(i); });
 	CHECK(std::equal(expected.begin(), expected.end(), result.begin(), result.end()));
@@ -126,11 +126,11 @@ TEST_CASE("foreach_postorder(example)", "[trees]") {
 
 TEST_CASE("foreach_preorder(example)", "[trees]") {
 	tree t{
-	        {9, none, none}, {10, 9, 6},      {10, 3, 4},      {2, 5, 8},
+	        {none, 1, 2},    {0, 9, 6},       {0, 3, 4},       {2, 5, 8},
 	        {2, none, none}, {3, none, none}, {1, none, none}, {9, none, none},
-	        {3, none, none}, {1, 0, 7},       {none, 1, 2},
+	        {3, none, none}, {1, 10, 7},      {9, none, none},
 	};
-	std::vector<index> expected{10, 1, 9, 0, 7, 6, 2, 3, 5, 8, 4};
+	std::vector<index> expected{0, 1, 9, 10, 7, 6, 2, 3, 5, 8, 4};
 	std::vector<index> result;
 	foreach_preorder(t, [&](index i) { result.push_back(i); });
 	CHECK(std::equal(expected.begin(), expected.end(), result.begin(), result.end()));

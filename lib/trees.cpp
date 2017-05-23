@@ -24,7 +24,7 @@ bool is_rooted_tree(const tree& t) {
 		}
 	}
 
-	return is_root(t[t.size() - 1]);
+	return is_root(t[0]);
 }
 
 bool is_valid_tree(const tree& t) {

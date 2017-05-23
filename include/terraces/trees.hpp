@@ -122,7 +122,7 @@ bool is_valid_tree(const tree& t);
  */
 template <typename F>
 void foreach_postorder(const tree& t, F cb) {
-	index root_idx = t.size() - 1;
+	index root_idx = 0;
 	assert(is_root(t[root_idx]));
 
 	enum class visited { none, left, both };
@@ -159,7 +159,7 @@ void foreach_postorder(const tree& t, F cb) {
 
 template <typename F>
 void foreach_preorder(const tree& t, F cb) {
-	index root_idx = t.size() - 1;
+	index root_idx = 0;
 	assert(is_root(t[root_idx]));
 
 	std::stack<index> stack;
