@@ -32,15 +32,11 @@ void reroot_inplace(tree& t, index root_leaf) {
 	bool is_first_node = true;
 	bool is_last_node = false;
 	index current_node_index = t[root_leaf].parent();
-	// std::cout << "Going upwards...\n";
 	while (current_node_index != 0) {
 
 		node& current_node = t[current_node_index];
 		index original_parent_index = current_node.parent();
 		is_last_node = (original_parent_index == 0);
-		//		std::cout << "IS LAST " << is_last_node << "\n";
-		//		std::cout << "IS FIRST " << is_first_node << "\n";
-		//		std::cout << "FROM LEFT? " << coming_from_left << "\n";
 
 		// standard case: Swap child and parent indices.
 		if (coming_from_left) {
@@ -97,11 +93,8 @@ void reroot_inplace(tree& t, index root_leaf) {
 		}
 		current_node_index = original_parent_index;
 	}
-	// std::cout << "finished\n";
-	//	std::cout << "FROM LEFT END? " << coming_from_left << "\n";
 
 	t[0] = new_root;
-	//	std::cout << "ROOT END:" << t[0] << "\n";
 }
 
 } // namespace terraces
