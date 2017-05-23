@@ -2,6 +2,7 @@
 #define TERRACES_BIPARTITIONS_HPP
 
 #include <cmath>
+#include <gmpxx.h>
 
 #include "trees.hpp"
 
@@ -9,10 +10,16 @@ namespace terraces {
 
 using bipartition = std::tuple<std::vector<std::size_t>, std::vector<std::size_t>>;
 
-/**
- * Generate all possible bipartitions from a set of sets of indices
- */
-std::vector<bipartition> sets_to_bipartitions(std::vector<std::vector<std::size_t>>&);
+class bipartition_iterator {
+public:
+        bipartition_iterator(std::vector<std::vector<index>>);
+        bipartition get_bipartition();
+        void increase();
+private:
+        mpz_class bip;
+        std::vector<std::vector<index>> sets;
+};
+
 
 } // namespace terraces
 

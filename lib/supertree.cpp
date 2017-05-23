@@ -74,15 +74,14 @@ bool check_supertree(std::vector<index> leaves, constraints c) {
 	constraints new_c = map_constraints(leaves, c);
 	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
 	sets = map_sets(leaves, sets);
-	std::vector<bipartition> bips = sets_to_bipartitions(sets);
 
 	// on a terrace if more than one bipartition
-	if (bips.size() > 1) {
+	if (sets.size() > 2) {
 		return true;
 	}
 
-	std::vector<index> left_set = std::get<0>(bips.at(0));
-	std::vector<index> right_set = std::get<1>(bips.at(0));
+	std::vector<index> left_set = sets.at(0);
+	std::vector<index> right_set = sets.at(1);
 
 	constraints left_bips = filter_constraints(left_set, c);
 	constraints right_bips = filter_constraints(right_set, c);
@@ -120,20 +119,24 @@ size_t count_supertree(std::vector<index> leaves, constraints c) {
 	constraints new_c = map_constraints(leaves, c);
 	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
 	sets = map_sets(leaves, sets);
-	std::vector<bipartition> bips = sets_to_bipartitions(sets);
 
-	for (size_t i = 0; i < bips.size(); i++) {
-		std::vector<index> left_set = std::get<0>(bips.at(i));
-		std::vector<index> right_set = std::get<1>(bips.at(i));
+        size_t bip_count = (1 << (sets.size() - 1)) - 1;
+        bipartition_iterator bip_it(sets);
+
+	for (size_t i = 0; i < bip_count; i++) {
+		std::vector<index> left_set = std::get<0>(bip_it.get_bipartition());
+		std::vector<index> right_set = std::get<1>(bip_it.get_bipartition());
 
 		constraints left_bips = filter_constraints(left_set, c);
 		constraints right_bips = filter_constraints(right_set, c);
 
 		number += count_supertree(left_set, left_bips);
 		number += count_supertree(right_set, right_bips);
+
+                bip_it.increase();
 	}
 
-	return number - bips.size();
+	return number - bip_count;
 }
 
 std::vector<struct supertree_node*> construct_supertree(index number, constraints c) {
@@ -155,11 +158,12 @@ std::vector<struct supertree_node*> construct_supertree(std::vector<index> leave
 	constraints new_c = map_constraints(leaves, c);
 	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
 	sets = map_sets(leaves, sets);
-	std::vector<bipartition> bips = sets_to_bipartitions(sets);
 
-	for (size_t i = 0; i < bips.size(); i++) {
-		std::vector<index> left_set = std::get<0>(bips.at(i));
-		std::vector<index> right_set = std::get<1>(bips.at(i));
+        bipartition_iterator bip_it(sets);
+
+	for (size_t i = 0; i < (1 << (sets.size() - 1)) - 1; i++) {
+                std::vector<index> left_set = std::get<0>(bip_it.get_bipartition());
+                std::vector<index> right_set = std::get<1>(bip_it.get_bipartition());
 
 		constraints left_bips = filter_constraints(left_set, c);
 		constraints right_bips = filter_constraints(right_set, c);
@@ -181,6 +185,8 @@ std::vector<struct supertree_node*> construct_supertree(std::vector<index> leave
 				list.push_back(node);     // add this tree to list
 			}
 		}
+
+                bip_it.increase();
 	}
 	return list;
 }

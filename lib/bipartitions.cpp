@@ -1,27 +1,26 @@
 #include <terraces/bipartitions.hpp>
 
+#include <iostream>
+
 namespace terraces {
 
-std::vector<bipartition> sets_to_bipartitions(std::vector<std::vector<std::size_t>>& sets) {
-	std::vector<bipartition> bips;
-	std::size_t n = sets.size();
-	// iterate over possible bipartitions
-	for (std::size_t i = 1; i < pow(2, n - 1); i++) {
-		std::size_t shifter = i;
-		std::vector<index> s1 = sets.at(0);
-		std::vector<index> s2;
-		// i represents bitmask for bipartition
-		for (std::size_t j = sets.size() - 1; j > 0; j--) {
-			if (shifter & 0x01) {
-				s2.insert(s2.end(), sets.at(j).begin(), sets.at(j).end());
-			} else {
-				s1.insert(s1.end(), sets.at(j).begin(), sets.at(j).end());
-			}
-			shifter >>= 1;
-		}
-		bips.push_back({s1, s2});
-	}
-	return bips;
+bipartition_iterator::bipartition_iterator(std::vector<std::vector<index>> sets) : bip { 1 }, sets { sets } {}
+
+bipartition bipartition_iterator::get_bipartition() {
+        std::vector<index> s1 = sets.at(0);
+        std::vector<index> s2;
+        for (size_t i = sets.size() - 1; i > 0; i--) {
+                if (mpz_tstbit(bip.__get_mp(), i - 1)) {
+			s2.insert(s2.end(), sets.at(i).begin(), sets.at(i).end());
+		} else {
+			s1.insert(s1.end(), sets.at(i).begin(), sets.at(i).end());
+                }
+        }
+        return { s1, s2 };
+}
+
+void bipartition_iterator::increase() {
+        bip++;
 }
 
 } // namespace terraces
