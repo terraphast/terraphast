@@ -6,7 +6,6 @@
 
 namespace terraces {
 
-
 void reroot_inplace(tree& t, index root_leaf) {
 	utils::ensure<std::invalid_argument>(t[root_leaf].lchild() == none,
 	                                     "The given index root_leaf is no leaf index.");

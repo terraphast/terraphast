@@ -1,7 +1,6 @@
 #include <ostream>
 #include <terraces/rooting.hpp>
 
-
 namespace terraces {
 
 std::ostream& operator<<(std::ostream& ss, const tree& t) {
@@ -13,5 +12,4 @@ std::ostream& operator<<(std::ostream& ss, const tree& t) {
 	ss << "]\n";
 	return ss;
 }
-
 }
