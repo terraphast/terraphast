@@ -1,6 +1,6 @@
 project(terrace-searcher)
 
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.5)
 
 
 # create sane environment
