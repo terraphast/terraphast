@@ -88,4 +88,32 @@ std::ostream& operator<<(std::ostream& ss, const tree& t) {
 	return ss;
 }
 
+std::ostream& operator<<(std::ostream& s, newick_t tree_pair) {
+	const auto& t = *tree_pair.t;
+	const auto& names = *tree_pair.names;
+	using state = std::pair<index, std::uint8_t>;
+	auto stack = std::stack<state, std::vector<state>>{};
+	stack.emplace(0u, 0u);
+	while (not stack.empty()) {
+		const auto i = stack.top().first;
+		auto& visited = stack.top().second;
+		if (is_leaf(t.at(i))) {
+			s << names.at(i);
+			stack.pop();
+		} else if (visited == 0u) {
+			visited = 1u;
+			s << '(';
+			stack.emplace(t.at(i).lchild(), 0);
+		} else if (visited == 1u) {
+			visited = 2u;
+			s << ", ";
+			stack.emplace(t.at(i).rchild(), 0);
+		} else if (visited == 2u) {
+			s << ')' << names.at(i);
+			stack.pop();
+		}
+	}
+	return s << ';';
+}
+
 } // namespace terraces
