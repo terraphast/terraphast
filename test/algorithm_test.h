@@ -163,7 +163,7 @@ TEST(ExtractLeafLabelsFromSupertree, example_from_slides) {
 	ASSERT_THAT(leafs, testing::ElementsAre("l1", "l2", "l3", "l4"));
 }
 
-TEST(ExtractConstraintsFromSupertree, example_from_slides) {
+TEST(ExtractConstraintsFromTree, example_from_slides) {
 	auto l_1 = std::make_shared<Tree>("l1");
 	auto l_2 = std::make_shared<Tree>("l2");
 	auto l_3 = std::make_shared<Tree>("l3");

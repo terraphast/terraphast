@@ -112,13 +112,13 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 	assert(rtree != nullptr);
 	d_print_tree(rtree);
 
-    leaf_set leafs;
-    for (size_t k = 0; k < m->numberOfSpecies; k++) {
-        leafs.insert(leaf_number(m->speciesNames[k]));
-    }
-    size_t num_trees = list_trees(extract_constraints_from_tree(rtree), leafs, allTreesOnTerrace);
-    mpz_set_ui(*terraceSize, num_trees);
-
+	leaf_set leafs;
+	for (size_t k = 0; k < m->numberOfSpecies; k++) {
+		leafs.insert(leaf_number(m->speciesNames[k]));
+	}
+	size_t num_trees = list_trees(extract_constraints_from_supertree(rtree, m), leafs,
+			allTreesOnTerrace);
+	mpz_set_ui(*terraceSize, num_trees);
 
 	/* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
 
@@ -242,4 +242,37 @@ unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
 	assert(value == 0 || value == 1);
 
 	return value;
+}
+
+std::vector<constraint> extract_constraints_from_supertree(
+		const std::shared_ptr<Tree> supertree,
+		const missingData* missing_data) {
+
+	std::map<std::string, unsigned char> species_map;
+	for (unsigned char i = 0; i < missing_data->numberOfSpecies; i++) {
+		species_map[std::string(missing_data->speciesNames[i])] = i;
+	}
+
+	std::map<std::string, constraint> constraint_map;
+
+	for (size_t i = 0; i < missing_data->numberOfPartitions; i++) {
+		auto partition = generate_induced_tree(supertree, missing_data,
+				species_map, i);
+		d_print_tree(partition);
+		for (auto &c : extract_constraints_from_tree(partition)) {
+			//avoid duplications
+			std::string key = c.smaller_left + c.smaller_right + c.bigger_left
+					+ c.bigger_right;
+			if (constraint_map.count(key) == 0) {
+				constraint_map[key] = c;
+			}
+		}
+	}
+
+	std::vector<constraint> result;
+	for(auto &e : constraint_map) {
+		result.push_back(e.second);
+	}
+
+	return result;
 }

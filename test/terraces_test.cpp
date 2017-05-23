@@ -20,9 +20,6 @@ TEST(Util, generate_induced_tree) {
 	//let's initialize some missing data data structures now
 	missingData *example1 = initializeMissingData(5, 2, speciesNames);
 	copyDataMatrix(matrix1, example1);
-	mpz_t terraceSize0;
-	mpz_init(terraceSize0);
-	mpz_set_ui(terraceSize0, 0);
 
 	std::shared_ptr<Tree> r_tree = root_tree(tree, example1);
 	std::map<std::string, unsigned char> species_map;
@@ -49,7 +46,9 @@ TEST(Util, generate_induced_tree) {
 	freeMissingData(example1);
 }
 
-TEST(TerraceAnalysis, generate_induced_tree) {
+
+// Test a simple tree file
+TEST(ExtractConstraintsFromSuperTree, example_from_slides) {
 	ntree_t *tree = get_newk_tree("test/dummy_tree1.nwk");
 
 	const char *speciesNames[] = { "s1", "s2", "s3", "s4", "s5" };
@@ -59,39 +58,49 @@ TEST(TerraceAnalysis, generate_induced_tree) {
 	//let's initialize some missing data data structures now
 	missingData *example1 = initializeMissingData(5, 2, speciesNames);
 	copyDataMatrix(matrix1, example1);
-	mpz_t terraceSize0;
-	mpz_init(terraceSize0);
-	mpz_set_ui(terraceSize0, 0);
 
 	std::shared_ptr<Tree> r_tree = root_tree(tree, example1);
-	d_print_tree(r_tree);
-	auto leafs = extract_leaf_labels_from_supertree(r_tree);
+	auto constraints = extract_constraints_from_supertree(r_tree, example1);
 
-	auto constraints = extract_constraints_from_tree(r_tree);
+	ASSERT_EQ(constraints.size(), 2);
+
+	ASSERT_EQ(constraints[0].smaller_left, "s1");
+	ASSERT_EQ(constraints[0].smaller_right, "s2");
+	ASSERT_EQ(constraints[0].bigger_left, "s3");
+	ASSERT_EQ(constraints[0].bigger_right, "s2");
+
+	ASSERT_EQ(constraints[1].smaller_left, "s4");
+	ASSERT_EQ(constraints[1].smaller_right, "s5");
+	ASSERT_EQ(constraints[1].bigger_left, "s3");
+	ASSERT_EQ(constraints[1].bigger_right, "s5");
+
+	ntree_destroy(tree);
+	freeMissingData(example1);
+}
+
+TEST(TerraceAnalysis, generate_induced_tree) {
+	ntree_t *tree = get_newk_tree("test/dummy_tree2.nwk");
+
+	const char *speciesNames[] = { "s1", "s2", "s3", "s4", "s5" };
+
+	const unsigned char matrix1[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1 };
+
+	//let's initialize some missing data data structures now
+	missingData *example1 = initializeMissingData(5, 2, speciesNames);
+	copyDataMatrix(matrix1, example1);
+
+	std::shared_ptr<Tree> r_tree = root_tree(tree, example1);
+//	d_print_tree(r_tree);
+	auto leafs = extract_leaf_labels_from_supertree(r_tree);
+	auto constraints = extract_constraints_from_supertree(r_tree, example1);
 	for (auto &c : constraints) {
 		d_printf("lca(%s, %s) < lca(%s, %s)\n", c.smaller_left.c_str(),
 				c.smaller_right.c_str(), c.bigger_left.c_str(),
 				c.bigger_right.c_str());
 	}
 
-	std::map<std::string, unsigned char> species_map;
-	for (unsigned char i = 0; i < example1->numberOfSpecies; i++) {
-		species_map[std::string(example1->speciesNames[i])] = i;
-	}
-
-	auto part0 = generate_induced_tree(r_tree, example1, species_map, 1);
-	auto part0_leafs = extract_leaf_labels_from_supertree(part0);
-	for (auto &c : part0_leafs) {
-		d_printf("%s\n", c.c_str());
-	}
-
-	auto part0_constraints = find_constraints(part0_leafs, constraints);
-	for (auto &c : part0_constraints) {
-		d_printf("lca(%s, %s) < lca(%s, %s)\n", c.smaller_left.c_str(),
-				c.smaller_right.c_str(), c.bigger_left.c_str(),
-				c.bigger_right.c_str());
-	}
-	auto result = combine_sets(leafs, part0_constraints);
+	auto result = combine_sets(leafs, constraints);
+	d_printf("%s\n", r_tree->to_newick_string().c_str());
 	d_printf("%lu\n", result.size());
 	for (auto &r : result) {
 		d_printf("%s\n", r->to_newick_string().c_str());

@@ -70,7 +70,8 @@ typedef struct {
 	size_t numberOfSpecies;
 	size_t numberOfPartitions;
 	unsigned char *missingDataMatrix;
-	char **speciesNames;bool allocatedNameArray;
+	char **speciesNames;
+	bool allocatedNameArray;
 } missingData;
 
 /**
@@ -136,6 +137,16 @@ unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
  */
 
 void copyDataMatrix(const unsigned char *matrix, missingData *m);
+
+/**
+ * Returns a vector containing all constraints infered from the given supertree.
+ *
+ * @param supertree the supertree we want to extract constraints from
+ * @param missing_data the missing data information
+ * @return All constraints of the given supertree.
+ */
+std::vector<constraint> extract_constraints_from_supertree(
+		const std::shared_ptr<Tree> supertree, const missingData* missing_data);
 
 /**
  * Function that tells us, given a tree, and a missing data matrix as well as its dimensions,

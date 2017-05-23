@@ -137,13 +137,61 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		const std::set<leaf_number> &leafs,
 		const std::vector<constraint> &constraints) {
 
+	fprintf(stderr, "INPUT: {");
+	bool first = true;
+	for (auto &e : leafs) {
+		if (first) {
+			first = false;
+		} else {
+			fprintf(stderr, ",");
+		}
+		fprintf(stderr, "%s", e.c_str());
+	}
+	fprintf(stderr, "} ");
+
+	fprintf(stderr, "CONSTRAINTS: {");
+	bool first2 = true;
+	for (auto &c : constraints) {
+		if (first2) {
+			first2 = false;
+		} else {
+			fprintf(stderr, ",");
+		}
+		fprintf(stderr, "(%s,%s)<(%s,%s)", c.smaller_left.c_str(),
+				c.smaller_right.c_str(), c.bigger_left.c_str(),
+				c.bigger_right.c_str());
+	}
+	fprintf(stderr, "}");
+
 	if (constraints.empty()) {
 		auto result = get_all_binary_trees(leafs);
-		std::cout << "constraints empty, size: " << result.size() << "\n"; //debug
+		fprintf(stderr, "\n");
 		return result;
 	}
 
 	auto partitions = apply_constraints(leafs, constraints);
+
+	fprintf(stderr, " PARTS: {");
+	bool first3 = true;
+	for (auto &p : partitions) {
+		if (first3) {
+			first3 = false;
+		} else {
+			fprintf(stderr, ",");
+		}
+		fprintf(stderr, "{");
+		bool first4 = true;
+		for (auto &e : *p) {
+			if (first4) {
+				first4 = false;
+			} else {
+				fprintf(stderr, ",");
+			}
+			fprintf(stderr, "%s", e.c_str());
+		}
+		fprintf(stderr, "}");
+	}
+	fprintf(stderr, "}\n");
 
 	std::vector<std::shared_ptr<Tree> > result;
 
@@ -159,8 +207,31 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		auto subtrees_left = combine_sets(*part_left, constraints_left);
 		auto subtrees_right = combine_sets(*part_right, constraints_right);
 		auto trees = merge_subtrees(subtrees_left, subtrees_right);
+
+		fprintf(stderr, "    (L:{");
+		bool first5 = true;
+		for (auto &e : *part_left) {
+			if (first5) {
+				first5 = false;
+			} else {
+				fprintf(stderr, ",");
+			}
+			fprintf(stderr, "%s", e.c_str());
+		}
+		fprintf(stderr, "},R:{");
+		bool first6 = true;
+		for (auto &e : *part_right) {
+			if (first6) {
+				first6 = false;
+			} else {
+				fprintf(stderr, ",");
+			}
+			fprintf(stderr, "%s", e.c_str());
+		}
+		fprintf(stderr, "})");
+
+		fprintf(stderr, "%lu\n", trees.size());
 		result.insert(result.end(), trees.begin(), trees.end());
-		std::cout << "insert called, size: " << result.size() << "\n"; //debug
 	}
 
 	return result;
@@ -248,14 +319,14 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_tree_rec(
 	// (l,r) of the left child node
 	leaf_number l_left_most;
 	leaf_number l_right_most;
-	std::tie(l_left_most, l_right_most) =
-			extract_constraints_from_tree_rec(node->left, constraints);
+	std::tie(l_left_most, l_right_most) = extract_constraints_from_tree_rec(
+			node->left, constraints);
 
 	// (l,r) of the right child node
 	leaf_number r_left_most;
 	leaf_number r_right_most;
-	std::tie(r_left_most, r_right_most) =
-			extract_constraints_from_tree_rec(node->right, constraints);
+	std::tie(r_left_most, r_right_most) = extract_constraints_from_tree_rec(
+			node->right, constraints);
 
 	if (l_left_most != l_right_most) {
 		constraint c;
@@ -322,7 +393,7 @@ std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
 				valid_constraints.push_back(cons);
 			}
 		} else {
-// smaller_right == bigger_right
+			// smaller_right == bigger_right
 			if (leaves.find(cons.smaller_left) != leaves.end()
 					&& leaves.find(cons.smaller_right) != leaves.end()
 					&& leaves.find(cons.bigger_left) != leaves.end()) {
