@@ -147,7 +147,8 @@ std::vector<struct supertree_node*> construct_supertree(index number, const cons
 	return construct_supertree(leaves, c);
 }
 
-std::vector<struct supertree_node*> construct_supertree(const std::vector<index>& leaves, const constraints& c) {
+std::vector<struct supertree_node*> construct_supertree(const std::vector<index>& leaves,
+                                                        const constraints& c) {
 	std::vector<struct supertree_node*> list;
 
 	if (leaves.size() == 1) {

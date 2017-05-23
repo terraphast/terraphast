@@ -63,7 +63,8 @@ std::vector<struct supertree_node*> construct_supertree(index, const constraints
 /**
  * Generate the supertree given a vector of indices and a vector of contraints.
  */
-std::vector<struct supertree_node*> construct_supertree(const std::vector<index>&, const constraints&);
+std::vector<struct supertree_node*> construct_supertree(const std::vector<index>&,
+                                                        const constraints&);
 
 } // namespace terraces
 

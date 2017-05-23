@@ -16,7 +16,6 @@ TEST_CASE("bipartition1", "[bipartition]") {
 	CHECK(bip_it.get_bipartition() == res.at(1));
 	bip_it.increase();
 	CHECK(bip_it.get_bipartition() == res.at(2));
-	bip_it.increase();
 }
 
 } // namespace tests
