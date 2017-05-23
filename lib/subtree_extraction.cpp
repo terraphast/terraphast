@@ -2,20 +2,15 @@
 
 namespace terraces {
 
-std::vector<tree> subtrees(const tree& t, const bitmatrix& occ, const std::vector<index> species) {
+std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 	auto num_species = occ.rows();
 	auto num_sites = occ.cols();
 	assert(t.size() == 2 * num_species - 2);
-	assert(num_species == species.size());
 	assert(is_rooted_tree(t));
 
 	std::vector<tree> out_trees{num_sites, tree{}};
 
-	bitmatrix node_occ{t.size(), num_sites};
-
-	for (index i = 0; i < species.size(); ++i) {
-		node_occ.copy_row(i, species[i], occ);
-	}
+	auto node_occ = occ;
 
 	foreach_postorder(t, [&](index i) {
 		auto lchild = t[i].lchild();

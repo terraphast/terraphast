@@ -20,15 +20,5 @@ TEST_CASE("bitmatrix set/get", "[bitmatrix]") {
 	CHECK(mat.get(1, 2) == true);
 }
 
-TEST_CASE("bitmatrix/copy_row", "[bitmatrix]") {
-	auto m1 = bitmatrix{2, 2};
-	auto m2 = bitmatrix{1, 2};
-	m1.set(1, 1, true);
-	m1.set(1, 0, true);
-	m2.copy_row(1, 0, m1);
-	CHECK(m2.get(0, 0) == true);
-	CHECK(m2.get(0, 1) == true);
-}
-
 } // namespace tests
 } // namespace terraces

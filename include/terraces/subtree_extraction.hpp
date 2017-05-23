@@ -8,7 +8,7 @@
 
 namespace terraces {
 
-std::vector<tree> subtrees(const tree& t, const bitmatrix& occ, const std::vector<index> species);
+std::vector<tree> subtrees(const tree& t, const bitmatrix& occ);
 
 } // namespace terraces
 
