@@ -3,8 +3,8 @@
 #include <iostream>
 
 #include <terraces/parser.hpp>
-#include <terraces/trees.hpp>
 #include <terraces/rooting.hpp>
+#include <terraces/trees.hpp>
 
 int main(int argc, char** argv) try {
 	if (argc != 3) {
