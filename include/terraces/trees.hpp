@@ -48,6 +48,12 @@ struct node {
 
 	index rchild() const { return data[2]; }
 	index& rchild() { return data[2]; }
+
+	bool operator==(const node& o) const {
+		return std::equal(data.begin(), data.end(), o.data.begin(), o.data.end());
+	}
+
+	bool operator!=(const node& o) const { return !(o == *this); }
 };
 
 std::ostream& operator<<(std::ostream& s, const node& n);
@@ -147,6 +153,25 @@ void foreach_postorder(const tree& t, F cb) {
 				cb(cur_idx);
 				break;
 			}
+		}
+	}
+}
+
+template <typename F>
+void foreach_preorder(const tree& t, F cb) {
+	index root_idx = t.size() - 1;
+	assert(is_root(t[root_idx]));
+
+	std::stack<index> stack;
+	stack.push(root_idx);
+	while (!stack.empty()) {
+		auto node = t[stack.top()];
+		cb(stack.top());
+		stack.pop();
+		// recursive descent
+		if (!is_leaf(node)) {
+			stack.push(node.rchild());
+			stack.push(node.lchild());
 		}
 	}
 }

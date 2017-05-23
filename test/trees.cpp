@@ -124,10 +124,30 @@ TEST_CASE("foreach_postorder(example)", "[trees]") {
 	CHECK(std::equal(expected.begin(), expected.end(), result.begin(), result.end()));
 }
 
+TEST_CASE("foreach_preorder(example)", "[trees]") {
+	tree t{
+	        {9, none, none}, {10, 9, 6},      {10, 3, 4},      {2, 5, 8},
+	        {2, none, none}, {3, none, none}, {1, none, none}, {9, none, none},
+	        {3, none, none}, {1, 0, 7},       {none, 1, 2},
+	};
+	std::vector<index> expected{10, 1, 9, 0, 7, 6, 2, 3, 5, 8, 4};
+	std::vector<index> result;
+	foreach_preorder(t, [&](index i) { result.push_back(i); });
+	CHECK(std::equal(expected.begin(), expected.end(), result.begin(), result.end()));
+}
+
 TEST_CASE("foreach_postorder(trivial)", "[trees]") {
 	tree t{{none, none, none}};
 	std::vector<index> result;
 	foreach_postorder(t, [&](index i) { result.push_back(i); });
+	CHECK(result.size() == 1);
+	CHECK(result[0] == 0);
+}
+
+TEST_CASE("foreach_preorder(trivial)", "[trees]") {
+	tree t{{none, none, none}};
+	std::vector<index> result;
+	foreach_preorder(t, [&](index i) { result.push_back(i); });
 	CHECK(result.size() == 1);
 	CHECK(result[0] == 0);
 }
