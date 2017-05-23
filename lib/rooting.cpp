@@ -42,7 +42,7 @@ void reroot_inplace(tree& t, index root_leaf) {
 	bool is_first_node = true;
 	bool is_last_node = false;
 	index current_node_index = t[root_leaf].parent();
-	std::cout << "Going upwards...\n";
+	// std::cout << "Going upwards...\n";
 	while (current_node_index != 0) {
 
 		node& current_node = t[current_node_index];
@@ -107,7 +107,7 @@ void reroot_inplace(tree& t, index root_leaf) {
 		}
 		current_node_index = original_parent_index;
 	}
-	std::cout << "finished\n";
+	// std::cout << "finished\n";
 	//	std::cout << "FROM LEFT END? " << coming_from_left << "\n";
 
 	t[0] = new_root;
