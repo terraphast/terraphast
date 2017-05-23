@@ -6,22 +6,6 @@
 
 namespace terraces {
 
-struct supertree_node {
-	std::vector<index> leaves;
-	struct supertree_node* left;
-	struct supertree_node* right;
-};
-
-/**
- * Create a new node without any subnodes
- */
-struct supertree_node* new_node(std::vector<index>);
-
-/**
- * Return a string representing the given supertree via preorder traversal
- */
-std::string pretty_preorder(struct supertree_node*);
-
 /**
  * Map the given constraints according to the given vector of indices.
  * If the vector of indices is {2, 5, 6} for example, we get the mapping 2->0, 5->1, 6->2.
@@ -53,18 +37,6 @@ size_t count_supertree(index, const constraints&);
  * Count trees.
  */
 size_t count_supertree(const std::vector<index>&, const constraints&);
-
-/**
- * Generate the supertree given a number and a vector of contraints. Entry point for tree
- * enumeration.
- */
-std::vector<struct supertree_node*> construct_supertree(index, const constraints&);
-
-/**
- * Generate the supertree given a vector of indices and a vector of contraints.
- */
-std::vector<struct supertree_node*> construct_supertree(const std::vector<index>&,
-                                                        const constraints&);
 
 } // namespace terraces
 

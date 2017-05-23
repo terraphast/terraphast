@@ -4,27 +4,6 @@
 
 namespace terraces {
 
-struct supertree_node* new_node(std::vector<index> leaves) {
-	struct supertree_node* temp = new supertree_node;
-	temp->leaves = leaves;
-	temp->left = NULL;
-	temp->right = NULL;
-	return temp;
-}
-
-std::string pretty_preorder(struct supertree_node* s) {
-	std::string res = "";
-	if (s != NULL) {
-		for (size_t i = 0; i < s->leaves.size(); i++) {
-			res += std::to_string(s->leaves.at(i));
-		}
-		res += " ";
-		res += pretty_preorder(s->left);
-		res += pretty_preorder(s->right);
-	}
-	return res;
-}
-
 constraints map_constraints(const std::vector<index>& leaves, constraints c) {
 	std::map<index, index> m;
 	for (size_t i = 0; i < leaves.size(); i++) {
@@ -137,59 +116,6 @@ size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
 	}
 
 	return number - bip_count;
-}
-
-std::vector<struct supertree_node*> construct_supertree(index number, const constraints& c) {
-	std::vector<index> leaves(number);
-	for (size_t i = 0; i < number; i++) {
-		leaves.at(i) = i;
-	}
-	return construct_supertree(leaves, c);
-}
-
-std::vector<struct supertree_node*> construct_supertree(const std::vector<index>& leaves,
-                                                        const constraints& c) {
-	std::vector<struct supertree_node*> list;
-
-	if (leaves.size() == 1) {
-		list.push_back(new_node(leaves));
-		return list;
-	}
-
-	constraints new_c = map_constraints(leaves, c);
-	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
-	sets = map_sets(leaves, sets);
-
-	bipartition_iterator bip_it(sets);
-
-	for (size_t i = 0; i < (1 << (sets.size() - 1)) - 1; i++) {
-		std::vector<index> left_set = std::get<0>(bip_it.get_bipartition());
-		std::vector<index> right_set = std::get<1>(bip_it.get_bipartition());
-
-		constraints left_bips = filter_constraints(left_set, c);
-		constraints right_bips = filter_constraints(right_set, c);
-
-		std::vector<struct supertree_node*> left_supertree =
-		        construct_supertree(left_set, left_bips);
-		std::vector<struct supertree_node*> right_supertree =
-		        construct_supertree(right_set, right_bips);
-
-		for (size_t j = 0; j < left_supertree.size(); j++) {
-			struct supertree_node* left = left_supertree.at(j);
-			for (size_t k = 0; k < right_supertree.size(); k++) {
-				struct supertree_node* right = right_supertree.at(k);
-
-				struct supertree_node* node =
-				        new_node(leaves); // making leaves as root
-				node->left = left;        // connect left subtree
-				node->right = right;      // connect right subtree
-				list.push_back(node);     // add this tree to list
-			}
-		}
-
-		bip_it.increase();
-	}
-	return list;
 }
 
 } // namespace terraces

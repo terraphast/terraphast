@@ -74,29 +74,5 @@ TEST_CASE("count_supertree6", "[supertree]") {
 	CHECK(count_supertree(5, c) == 9);
 }
 
-TEST_CASE("enum_supertree1", "[supertree]") {
-	constraints c = {};
-	std::vector<struct supertree_node*> s = construct_supertree(7, c);
-	CHECK(s.size() == 10395);
-}
-
-TEST_CASE("enum_supertree2", "[supertree]") {
-	constraints c = {{0, 1, 2}};
-	std::vector<struct supertree_node*> s = construct_supertree(3, c);
-	CHECK(s.size() == 1);
-}
-
-TEST_CASE("enum_supertree3", "[supertree]") {
-	constraints c = {{0, 1, 2}, {2, 3, 4}};
-	std::vector<struct supertree_node*> s = construct_supertree(4, c);
-	CHECK(s.size() == 1);
-}
-
-TEST_CASE("enum_supertree4", "[supertree]") {
-	constraints c = {{1, 0, 2}, {3, 4, 1}};
-	std::vector<struct supertree_node*> s = construct_supertree(5, c);
-	CHECK(s.size() == 9);
-}
-
 } // namespace tests
 } // namespace terraces
