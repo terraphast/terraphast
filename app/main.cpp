@@ -31,6 +31,8 @@ int main(int argc, char** argv) try {
 		std::cout << '(' << std::setw(3) << data.tree.at(i).parent()
 		          << ") : " << data.names.at(i) << '\n';
 	}
+
+	std::cout << "In Newick-Format:\n" << std::make_pair(data.tree, data.names) << '\n';
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << '\n';
 }
