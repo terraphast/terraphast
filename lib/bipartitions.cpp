@@ -17,7 +17,7 @@ bipartition bipartition_iterator::get_bipartition() {
 			s1.insert(s1.end(), sets.at(i).begin(), sets.at(i).end());
 		}
 	}
-	return {s1, s2};
+	return bipartition{s1, s2};
 }
 
 void bipartition_iterator::increase() { bip++; }

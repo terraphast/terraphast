@@ -14,7 +14,7 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 	assert(is_rooted_tree(t));
 
 	vector<tree> out_trees(num_sites, tree(num_nodes, node{}));
-	vector<stack<index>> tree_boundaries{num_sites, stack<index>{}};
+	vector<vector<index>> tree_boundaries{num_sites, vector<index>{}};
 
 	auto node_occ = occ;
 
@@ -33,25 +33,22 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 			auto& out_tree = out_trees[site];
 			auto& boundary = tree_boundaries[site];
 
-			if (node_occ.get(i, site) && !is_root(node)) {
-				/* Nodes which have this site:
-				 * Link them to the lowest node on the right boundary.
-				 * It should have at most one child already linked. */
-				auto parent = boundary.top();
+			bool leaf_occ = is_leaf(node) && node_occ.get(i, site);
+			bool inner_occ = !is_leaf(node) && node_occ.get(node.lchild(), site) &&
+			                 node_occ.get(node.rchild(), site);
+			if (leaf_occ || (inner_occ & !is_root(node))) {
+				auto parent = boundary.back();
 				out_tree[i].parent() = parent;
 				if (out_tree[parent].lchild() == none) {
 					out_tree[parent].lchild() = i;
 				} else {
 					assert(out_tree[parent].rchild() == none);
 					out_tree[parent].rchild() = i;
-					boundary.pop();
+					boundary.pop_back();
 				}
 			}
-
-			bool insert_node = !is_leaf(node) && node_occ.get(node.lchild(), site) &&
-			                   node_occ.get(node.rchild(), site);
-			if (insert_node) {
-				boundary.push(i);
+			if (inner_occ) {
+				boundary.push_back(i);
 			}
 		}
 	});

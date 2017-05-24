@@ -10,14 +10,23 @@
 namespace terraces {
 
 struct constraint {
-	index shared;
 	index left;
+	index shared;
 	index right;
+
+	constraint(index left, index shared, index right)
+	        : left{left}, shared{shared}, right{right} {}
+
+	bool operator==(const constraint& o) const {
+		return std::tie(left, shared, right) == std::tie(o.left, o.shared, o.right);
+	}
+
+	bool operator!=(const constraint& o) const { return !(o == *this); }
 };
 
-using constraints = std::vector<constraint>;
+std::ostream& operator<<(std::ostream& s, const constraint& c);
 
-bool operator==(const constraint& c1, const constraint& c2);
+using constraints = std::vector<constraint>;
 
 std::ostream& operator<<(std::ostream& s, const constraint& c);
 
@@ -33,6 +42,8 @@ constraints filter_constraints(const std::vector<index>&, const constraints&);
  * structure.
  */
 std::vector<std::vector<index>> apply_constraints(index, const constraints&);
+
+constraints compute_constraints(const std::vector<tree>& trees);
 
 } // namespace terraces
 

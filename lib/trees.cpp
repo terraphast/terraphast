@@ -116,4 +116,16 @@ std::ostream& operator<<(std::ostream& s, newick_t tree_pair) {
 	return s << ';';
 }
 
+std::vector<index> preorder(const tree& t) {
+	std::vector<index> result;
+	foreach_preorder(t, [&](index i) { result.push_back(i); });
+	return result;
+}
+
+std::vector<index> postorder(const tree& t) {
+	std::vector<index> result;
+	foreach_postorder(t, [&](index i) { result.push_back(i); });
+	return result;
+}
+
 } // namespace terraces
