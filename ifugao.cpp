@@ -236,7 +236,7 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 
     for (int i = 0; i < result.size(); i++) {
         if (result[i]->left->label.compare(root_species_name) != 0 && result[i]->right->label.compare(root_species_name) != 0) {
-            result.erase(result.begin() + i);    //this is super inefficient. TODO replace with something efficient
+            //result.erase(result.begin() + i);    //this is super inefficient. TODO replace with something efficient
         }
     }
 	return result;
