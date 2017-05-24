@@ -91,18 +91,25 @@ TEST(TerraceAnalysis, generate_induced_tree) {
 	std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name);
 	auto leafs = extract_leaf_labels_from_supertree(r_tree);
 	auto constraints = extract_constraints_from_supertree(r_tree, example1);
-	for (auto &c : constraints) {
-		d_printf("lca(%s, %s) < lca(%s, %s)\n", c.smaller_left.c_str(),
-				c.smaller_right.c_str(), c.bigger_left.c_str(),
-				c.bigger_right.c_str());
-	}
 
 	auto result = __combine_sets(leafs, constraints, root_species_name);
-	d_printf("%s\n", r_tree->to_newick_string().c_str());
-	d_printf("%lu\n", result.size());
-	for (auto &r : result) {
-		d_printf("%s\n", r->to_newick_string().c_str());
-	}
+	ASSERT_EQ(result.size(), 15);
+
+	ASSERT_EQ(result[0]->to_newick_string(), "(s3,((s5,s1),s2),s4);");
+	ASSERT_EQ(result[1]->to_newick_string(), "(s3,(s5,(s2,s1)),s4);");
+	ASSERT_EQ(result[2]->to_newick_string(), "(s3,((s5,s2),s1),s4);");
+	ASSERT_EQ(result[3]->to_newick_string(), "(s3,(s5,s2),(s4,s1));");
+	ASSERT_EQ(result[4]->to_newick_string(), "(s3,((s5,s2),s4),s1);");
+	ASSERT_EQ(result[5]->to_newick_string(), "(s3,(s5,s1),(s4,s2));");
+	ASSERT_EQ(result[6]->to_newick_string(), "(s3,s5,((s4,s1),s2));");
+	ASSERT_EQ(result[7]->to_newick_string(), "(s3,s5,(s4,(s2,s1)));");
+	ASSERT_EQ(result[8]->to_newick_string(), "(s3,s5,((s4,s2),s1));");
+	ASSERT_EQ(result[9]->to_newick_string(), "(s3,(s5,(s4,s2)),s1);");
+	ASSERT_EQ(result[10]->to_newick_string(), "(s3,((s5,s1),s4),s2);");
+	ASSERT_EQ(result[11]->to_newick_string(), "(s3,(s5,(s4,s1)),s2);");
+	ASSERT_EQ(result[12]->to_newick_string(), "(s3,((s5,s4),s1),s2);");
+	ASSERT_EQ(result[13]->to_newick_string(), "(s3,(s5,s4),(s2,s1));");
+	ASSERT_EQ(result[14]->to_newick_string(), "(s3,((s5,s4),s2),s1);");
 
 	ntree_destroy(tree);
 	freeMissingData(example1);

@@ -109,7 +109,6 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
 
 	std::string root_species_name;
 	std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
-	std::cout << "root: " << root_species_name << std::endl; //debug
 
 	assert(rtree != nullptr);
 	d_print_tree(rtree);

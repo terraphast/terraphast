@@ -61,7 +61,7 @@ std::vector<std::shared_ptr<Tree> > combine_sets(const leaf_set &leaves,
 		const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
-std::vector<std::shared_ptr<Tree> > __combine_sets(const leaf_set &leaves,
+std::vector<std::shared_ptr<UnrootedTree> > __combine_sets(const leaf_set &leaves,
 		const std::vector<constraint> &constraints,
 		const leaf_number root_species_name);
 

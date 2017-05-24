@@ -24,6 +24,27 @@ std::string Tree::to_newick_string() {
 	return ss.str();
 }
 
+std::string UnrootedTree::to_newick_string() {
+	std::stringstream ss;
+	ss << "(";
+	if(this->elem1 != nullptr) {
+		to_newick_string_rec(ss, *this->elem1);
+	}
+	if(this->elem2 != nullptr) {
+		if(this->elem1 != nullptr) {
+			ss << ",";
+		}
+		to_newick_string_rec(ss, *this->elem2);
+	}
+	if(this->elem3 != nullptr) {
+		if(this->elem1 != nullptr || this->elem2 != nullptr) {
+			ss << ",";
+		}
+		to_newick_string_rec(ss, *this->elem3);
+	}
+	ss << ");";
+	return ss.str();
+}
 
 static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree,
 		std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> &cover_map) {

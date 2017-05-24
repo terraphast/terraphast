@@ -107,7 +107,7 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
 	return result;
 }
 
-std::vector<std::shared_ptr<Tree> > __combine_sets(
+std::vector<std::shared_ptr<UnrootedTree> > __combine_sets(
 		const std::set<leaf_number> &leafs,
 		const std::vector<constraint> &constraints,
 		const leaf_number root_species_name) {
@@ -128,8 +128,11 @@ std::vector<std::shared_ptr<Tree> > __combine_sets(
 	auto subtrees_right = combine_sets(*part_right, constraints_right);
 	auto trees = merge_subtrees(subtrees_left, subtrees_right);
 
-	std::vector<std::shared_ptr<Tree> > result;
-	result.insert(result.end(), trees.begin(), trees.end());
+	std::vector<std::shared_ptr<UnrootedTree> > result;
+	result.reserve(trees.size());
+	for (auto &t : trees) {
+		result.push_back(std::make_shared<UnrootedTree>(t));
+	}
 
 	return result;
 }
