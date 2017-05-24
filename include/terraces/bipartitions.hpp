@@ -15,9 +15,11 @@ public:
 	bipartition_iterator(const std::vector<std::vector<index>>&);
 	bipartition get_bipartition();
 	void increase();
+	bool has_next();
 
 private:
 	mpz_class bip;
+	mpz_class end;
 	const std::vector<std::vector<index>>& sets;
 };
 

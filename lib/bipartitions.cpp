@@ -5,7 +5,7 @@
 namespace terraces {
 
 bipartition_iterator::bipartition_iterator(const std::vector<std::vector<index>>& sets)
-        : bip{1}, sets{sets} {}
+        : bip{1}, end{mpz_class{1} << (sets.size() - 1)}, sets{sets} {}
 
 bipartition bipartition_iterator::get_bipartition() {
 	std::vector<index> s1 = sets.at(0);
@@ -21,5 +21,7 @@ bipartition bipartition_iterator::get_bipartition() {
 }
 
 void bipartition_iterator::increase() { bip++; }
+
+bool bipartition_iterator::has_next() { return bip < end; }
 
 } // namespace terraces

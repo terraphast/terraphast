@@ -99,10 +99,7 @@ size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
 	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
 	sets = map_sets(leaves, sets);
 
-	size_t bip_count = (1 << (sets.size() - 1)) - 1;
-	bipartition_iterator bip_it(sets);
-
-	for (size_t i = 0; i < bip_count; i++) {
+	for (bipartition_iterator bip_it(sets); bip_it.has_next(); bip_it.increase()) {
 		std::vector<index> left_set = std::get<0>(bip_it.get_bipartition());
 		std::vector<index> right_set = std::get<1>(bip_it.get_bipartition());
 
