@@ -1,10 +1,13 @@
 #include <terraces/constraints.hpp>
 
+#include <ostream>
+
 namespace terraces {
 
 constraints compute_constraints(const std::vector<tree>& trees) {
 	constraints result;
-	std::vector<std::pair<index, index>> outermost_nodes;
+	auto num_nodes = trees[0].size();
+	std::vector<std::pair<index, index>> outermost_nodes{num_nodes, std::make_pair(none, none)};
 
 	for (auto t : trees) {
 		// collect outermost nodes for each subtree (these have lca i)
@@ -49,6 +52,11 @@ constraints compute_constraints(const std::vector<tree>& trees) {
 	}
 
 	return result;
+}
+
+std::ostream& operator<<(std::ostream& s, const constraint& c) {
+	s << "lca(" << c.left << "," << c.shared << ") < lca(" << c.shared << "," << c.right << ")";
+	return s;
 }
 
 } // namespace terraces
