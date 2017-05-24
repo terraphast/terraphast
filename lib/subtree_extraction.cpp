@@ -37,6 +37,8 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 			bool inner_occ = !is_leaf(node) && node_occ.get(node.lchild(), site) &&
 			                 node_occ.get(node.rchild(), site);
 			if (leaf_occ || (inner_occ & !is_root(node))) {
+				// TODO: this fires with the Caryophyllaceae-input
+				assert(!boundary.empty());
 				auto parent = boundary.back();
 				out_tree[i].parent() = parent;
 				if (out_tree[parent].lchild() == none) {
