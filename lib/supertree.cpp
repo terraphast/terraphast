@@ -83,7 +83,7 @@ size_t count_supertree(index number, const constraints& c) {
 size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
 	size_t number = 0;
 
-	if (leaves.size() == 1) {
+	if (leaves.size() == 2) {
 		return 1;
 	}
 
@@ -109,13 +109,13 @@ size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
 		constraints left_bips = filter_constraints(left_set, c);
 		constraints right_bips = filter_constraints(right_set, c);
 
-		number += count_supertree(left_set, left_bips);
-		number += count_supertree(right_set, right_bips);
+		number += count_supertree(left_set, left_bips) *
+		          count_supertree(right_set, right_bips);
 
 		bip_it.increase();
 	}
 
-	return number - bip_count;
+	return number;
 }
 
 } // namespace terraces
