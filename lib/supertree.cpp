@@ -1,11 +1,11 @@
 #include <terraces/supertree.hpp>
 
-#include <map>
+#include <unordered_map>
 
 namespace terraces {
 
 constraints map_constraints(const std::vector<index>& leaves, constraints c) {
-	std::map<index, index> m;
+	std::unordered_map<index, index> m;
 	for (size_t i = 0; i < leaves.size(); i++) {
 		m[leaves.at(i)] = i;
 	}
