@@ -178,6 +178,10 @@ void foreach_preorder(const tree& t, F cb) {
 	}
 }
 
+// For testing purposes
+std::vector<index> preorder(const tree& t);
+std::vector<index> postorder(const tree& t);
+
 } // namespace terraces
 
 #endif

@@ -1,7 +1,5 @@
 #include <terraces/subtree_extraction.hpp>
 
-#include <iostream>
-
 using std::vector;
 using std::stack;
 using std::pair;
@@ -30,22 +28,15 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 
 	// collect leaves and inner nodes: bitwise and of the children
 	foreach_preorder(t, [&](index i) {
-		std::cout << i << ": ";
-		for (auto n : tree_boundaries[0])
-			std::cout << n << " ";
-		std::cout << "\n" << i << ": ";
-		for (auto n : tree_boundaries[1 % num_sites])
-			std::cout << n << " ";
-		std::cout << "\n";
 		auto node = t[i];
 		for (index site = 0; site < num_sites; ++site) {
 			auto& out_tree = out_trees[site];
 			auto& boundary = tree_boundaries[site];
 
-			if (node_occ.get(i, site) && !is_root(node)) {
-				/* Nodes which have this site:
-				 * Link them to the lowest node on the right boundary.
-				 * It should have at most one child already linked. */
+			bool leaf_occ = is_leaf(node) && node_occ.get(i, site);
+			bool inner_occ = !is_leaf(node) && node_occ.get(node.lchild(), site) &&
+			                 node_occ.get(node.rchild(), site);
+			if (leaf_occ || (inner_occ & !is_root(node))) {
 				auto parent = boundary.back();
 				out_tree[i].parent() = parent;
 				if (out_tree[parent].lchild() == none) {
@@ -56,10 +47,7 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 					boundary.pop_back();
 				}
 			}
-
-			bool insert_node = !is_leaf(node) && node_occ.get(node.lchild(), site) &&
-			                   node_occ.get(node.rchild(), site);
-			if (insert_node) {
+			if (inner_occ) {
 				boundary.push_back(i);
 			}
 		}

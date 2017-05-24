@@ -121,7 +121,7 @@ TEST_CASE("foreach_postorder(example)", "[trees]") {
 	std::vector<index> expected{10, 7, 9, 6, 1, 5, 8, 3, 4, 2, 0};
 	std::vector<index> result;
 	foreach_postorder(t, [&](index i) { result.push_back(i); });
-	CHECK(std::equal(expected.begin(), expected.end(), result.begin(), result.end()));
+	CHECK(result == expected);
 }
 
 TEST_CASE("foreach_preorder(example)", "[trees]") {
@@ -133,7 +133,7 @@ TEST_CASE("foreach_preorder(example)", "[trees]") {
 	std::vector<index> expected{0, 1, 9, 10, 7, 6, 2, 3, 5, 8, 4};
 	std::vector<index> result;
 	foreach_preorder(t, [&](index i) { result.push_back(i); });
-	CHECK(std::equal(expected.begin(), expected.end(), result.begin(), result.end()));
+	CHECK(result == expected);
 }
 
 TEST_CASE("foreach_postorder(trivial)", "[trees]") {
