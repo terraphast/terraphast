@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock-matchers.h"
 
-#include "../input_parser.h"
-#include "../util.h"
+#include "input_parser.h"
+#include "util.h"
 
 #include <limits.h>
 #include <iostream>
@@ -13,7 +13,7 @@
 
 // Test a simple tree file
 TEST(GetNewickTreeTest, simple_tree) {
-    ntree_t *tree = get_newk_tree("test/simple_tree.nwk");
+    ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
     assert(tree != nullptr);
     assert(check_tree(tree));
     ASSERT_EQ(tree->parent, nullptr);
@@ -28,7 +28,7 @@ TEST(GetNewickTreeTest, simple_tree) {
 }
 
 TEST(get_leaf_by_name_Test, simiple_test) {
-    ntree_t *tree = get_newk_tree("test/simple_tree.nwk");
+    ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
     assert(check_tree(tree));
     ASSERT_EQ(tree->children[0], get_leaf_by_name(tree, "A"));
     ASSERT_EQ(tree->children[1], get_leaf_by_name(tree, "B"));
@@ -39,7 +39,7 @@ TEST(get_leaf_by_name_Test, simiple_test) {
 }
 
 TEST(Root_at_Test, simple_tree) {
-    ntree_t *tree = get_newk_tree("test/simple_tree.nwk");
+    ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
     assert(check_tree(tree));
     char label[2];
     label[0] = 'D';
@@ -54,7 +54,7 @@ TEST(Root_at_Test, simple_tree) {
 }
 
 TEST(Tree_root_Test, simple_tree) {
-    ntree_t *tree = get_newk_tree("test/simple_tree.nwk");
+    ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
 
     const char *speciesNames[] = { "A", "B", "C", "D" };
 

@@ -1,9 +1,10 @@
 *.o
 build
-terraces
-terraces_test
 
 # for qt-creator
 *.creator
 *.files
 *.includes
+
+# clion
+cmake-build-debug
