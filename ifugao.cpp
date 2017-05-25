@@ -29,7 +29,7 @@ std::tuple<std::shared_ptr<std::set<leaf_number> >,
 size_t list_trees(const std::vector<constraint> &constraints,
 		const std::set<leaf_number> &leafs, FILE *file) {
 
-	auto all_trees = combine_sets(leafs, constraints);
+	auto all_trees = find_all_rooted_trees(leafs, constraints);
 
 	if (file != nullptr) {
 		for (std::shared_ptr<Tree> t : all_trees) {
@@ -107,7 +107,7 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
 	return result;
 }
 
-std::vector<std::shared_ptr<UnrootedTree> > __combine_sets(
+std::vector<std::shared_ptr<UnrootedTree> > find_all_unrooted_trees(
 		const std::set<leaf_number> &leafs,
 		const std::vector<constraint> &constraints,
 		const leaf_number root_species_name) {
@@ -124,8 +124,8 @@ std::vector<std::shared_ptr<UnrootedTree> > __combine_sets(
 	auto constraints_left = find_constraints(*part_left, constraints);
 	auto constraints_right = find_constraints(*part_right, constraints);
 
-	auto subtrees_left = combine_sets(*part_left, constraints_left);
-	auto subtrees_right = combine_sets(*part_right, constraints_right);
+	auto subtrees_left = find_all_rooted_trees(*part_left, constraints_left);
+	auto subtrees_right = find_all_rooted_trees(*part_right, constraints_right);
 	auto trees = merge_subtrees(subtrees_left, subtrees_right);
 
 	std::vector<std::shared_ptr<UnrootedTree> > result;
@@ -137,7 +137,7 @@ std::vector<std::shared_ptr<UnrootedTree> > __combine_sets(
 	return result;
 }
 
-std::vector<std::shared_ptr<Tree> > combine_sets(
+std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(
 		const std::set<leaf_number> &leafs,
 		const std::vector<constraint> &constraints) {
 
@@ -158,8 +158,8 @@ std::vector<std::shared_ptr<Tree> > combine_sets(
 		auto constraints_left = find_constraints(*part_left, constraints);
 		auto constraints_right = find_constraints(*part_right, constraints);
 
-		auto subtrees_left = combine_sets(*part_left, constraints_left);
-		auto subtrees_right = combine_sets(*part_right, constraints_right);
+		auto subtrees_left = find_all_rooted_trees(*part_left, constraints_left);
+		auto subtrees_right = find_all_rooted_trees(*part_right, constraints_right);
 		auto trees = merge_subtrees(subtrees_left, subtrees_right);
 
 		result.insert(result.end(), trees.begin(), trees.end());

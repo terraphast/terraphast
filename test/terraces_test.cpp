@@ -92,7 +92,7 @@ TEST(TerraceAnalysis, generate_induced_tree) {
 	auto leafs = extract_leaf_labels_from_supertree(r_tree);
 	auto constraints = extract_constraints_from_supertree(r_tree, example1);
 
-	auto result = __combine_sets(leafs, constraints, root_species_name);
+	auto result = find_all_unrooted_trees(leafs, constraints, root_species_name);
 	ASSERT_EQ(result.size(), 15);
 
 	ASSERT_EQ(result[0]->to_newick_string(), "(s3,((s5,s1),s2),s4);");
