@@ -1,6 +1,7 @@
 #include <terraces/bipartitions.hpp>
 
 #include <cassert>
+#include <ostream>
 
 namespace terraces {
 
@@ -25,5 +26,20 @@ bipartition bipartition_iterator::get_bipartition() {
 void bipartition_iterator::increase() { bip++; }
 
 bool bipartition_iterator::is_valid() { return bip < end; }
+
+std::ostream& bipartition_iterator::write_binary(std::ostream& stream) const {
+	for (int i = (int)sets.size() - 1; i >= 0; --i) {
+		stream << ((bip >> i) & 1);
+	}
+	stream << "/";
+	for (int i = (int)sets.size() - 1; i >= 0; --i) {
+		stream << ((end >> i) & 1);
+	}
+	return stream;
+}
+
+std::ostream& operator<<(std::ostream& os, const bipartition_iterator& it) {
+	return it.write_binary(os);
+}
 
 } // namespace terraces

@@ -1,6 +1,9 @@
 #include <terraces/supertree.hpp>
 
+#include <iostream>
 #include <unordered_map>
+
+std::string prefix;
 
 namespace terraces {
 
@@ -77,13 +80,25 @@ size_t count_supertree(index number, const constraints& c) {
 	for (size_t i = 0; i < number; i++) {
 		leaves.at(i) = i;
 	}
+	prefix = "";
 	return count_supertree(leaves, c);
 }
 
 size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
 	size_t number = 0;
+	std::cout << prefix << "leaves {";
+	for (auto l : leaves) {
+		std::cout << l << ",";
+	}
+	std::cout << "}\n";
+	std::cout << prefix << "constraints {";
+	for (auto cc : c) {
+		std::cout << cc << ",";
+	}
+	std::cout << "}\n";
 
 	if (leaves.size() == 2) {
+		std::cout << prefix << "result: 1\n";
 		return 1;
 	}
 
@@ -92,12 +107,23 @@ size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
 		for (size_t i = 3; i <= leaves.size() + 1; i++) {
 			res *= (2 * i - 5);
 		}
+		std::cout << prefix << "result: " << res << "\n";
 		return res;
 	}
 
 	constraints new_c = map_constraints(leaves, c);
 	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
 	sets = map_sets(leaves, sets);
+
+	std::cout << prefix << "sets ";
+	for (auto& set : sets) {
+		std::cout << prefix << "{";
+		for (auto el : set) {
+			std::cout << el << ",";
+		}
+		std::cout << "}, ";
+	}
+	std::cout << "\n";
 
 	for (bipartition_iterator bip_it(sets); bip_it.is_valid(); bip_it.increase()) {
 		std::vector<index> left_set = std::get<0>(bip_it.get_bipartition());
@@ -106,10 +132,29 @@ size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
 		constraints left_bips = filter_constraints(left_set, c);
 		constraints right_bips = filter_constraints(right_set, c);
 
-		number += count_supertree(left_set, left_bips) *
-		          count_supertree(right_set, right_bips);
+		std::cout << prefix << "subcall for bipartition " << bip_it << "{";
+		for (auto el : left_set) {
+			std::cout << el << ",";
+		}
+		std::cout << "}, {";
+		for (auto el : right_set) {
+			std::cout << el << ",";
+		}
+		std::cout << "}\n";
+
+		prefix += "  ";
+
+		auto cl = count_supertree(left_set, left_bips);
+		auto cr = count_supertree(right_set, right_bips);
+
+		prefix = std::string{prefix.begin() + 2, prefix.end()};
+
+		std::cout << prefix << "subcalls returned " << cl << " and " << cr << "\n";
+
+		number += cl * cr;
 	}
 
+	std::cout << prefix << "result: " << number << "\n";
 	return number;
 }
 

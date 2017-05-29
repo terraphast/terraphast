@@ -2,6 +2,7 @@
 #define TERRACES_BIPARTITIONS_HPP
 
 #include <cmath>
+#include <iosfwd>
 
 #include "trees.hpp"
 
@@ -15,12 +16,15 @@ public:
 	bipartition get_bipartition();
 	void increase();
 	bool is_valid();
+	std::ostream& write_binary(std::ostream& stream) const;
 
 private:
 	index bip;
 	index end;
 	const std::vector<std::vector<index>>& sets;
 };
+
+std::ostream& operator<<(std::ostream& stream, const bipartition_iterator& it);
 
 } // namespace terraces
 
