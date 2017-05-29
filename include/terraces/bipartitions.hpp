@@ -2,7 +2,6 @@
 #define TERRACES_BIPARTITIONS_HPP
 
 #include <cmath>
-#include <gmpxx.h>
 
 #include "trees.hpp"
 
@@ -15,11 +14,11 @@ public:
 	bipartition_iterator(const std::vector<std::vector<index>>&);
 	bipartition get_bipartition();
 	void increase();
-	bool has_next();
+	bool is_valid();
 
 private:
-	mpz_class bip;
-	mpz_class end;
+	index bip;
+	index end;
 	const std::vector<std::vector<index>>& sets;
 };
 

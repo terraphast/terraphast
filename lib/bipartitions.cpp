@@ -1,17 +1,19 @@
 #include <terraces/bipartitions.hpp>
 
-#include <iostream>
+#include <cassert>
 
 namespace terraces {
 
 bipartition_iterator::bipartition_iterator(const std::vector<std::vector<index>>& sets)
-        : bip{1}, end{mpz_class{1} << (sets.size() - 1)}, sets{sets} {}
+        : bip{1}, end{(1u << (sets.size() - 1))}, sets{sets} {
+	assert(sets.size() < 64);
+}
 
 bipartition bipartition_iterator::get_bipartition() {
 	std::vector<index> s1 = sets.at(0);
 	std::vector<index> s2;
 	for (size_t i = sets.size() - 1; i > 0; i--) {
-		if (mpz_tstbit(bip.__get_mp(), i - 1)) {
+		if (bip & (1 << (i - 1))) {
 			s2.insert(s2.end(), sets.at(i).begin(), sets.at(i).end());
 		} else {
 			s1.insert(s1.end(), sets.at(i).begin(), sets.at(i).end());
@@ -22,6 +24,6 @@ bipartition bipartition_iterator::get_bipartition() {
 
 void bipartition_iterator::increase() { bip++; }
 
-bool bipartition_iterator::has_next() { return bip < end; }
+bool bipartition_iterator::is_valid() { return bip < end; }
 
 } // namespace terraces
