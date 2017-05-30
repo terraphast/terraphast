@@ -45,3 +45,8 @@ file(GLOB app_headers "app/*.hpp")
 file(GLOB app_sources "app/*.cpp")
 add_executable(app ${app_sources} ${app_headers})
 target_link_libraries(app terraces gmp gmpxx)
+
+file(GLOB debug_app_headers "debug_app/*.hpp")
+file(GLOB debug_app_sources "debug_app/*.cpp")
+add_executable(debug_app ${debug_app_sources} ${debug_app_headers})
+target_link_libraries(debug_app terraces gmp gmpxx)

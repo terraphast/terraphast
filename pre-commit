@@ -5,7 +5,7 @@
 
 ./format.sh
 
-if lizard include lib app test &> "/dev/null"; then
+if lizard include lib app debug_app test &> "/dev/null"; then
 	echo "no overcomplicated functions found"
 else
 	echo "lizard-warnings found... aborting" >&2

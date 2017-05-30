@@ -24,6 +24,7 @@ function format_file() {
 for FILE in $(find include -iname "*.[hc]pp"); do format_file "$FILE"; done
 for FILE in $(find lib     -iname "*.[hc]pp"); do format_file "$FILE"; done
 for FILE in $(find app     -iname "*.[hc]pp"); do format_file "$FILE"; done
+for FILE in $(find debug_app -iname "*.[hc]pp"); do format_file "$FILE"; done
 for FILE in $(find test    -iname "*.[hc]pp"); do format_file "$FILE"; done
 
 
