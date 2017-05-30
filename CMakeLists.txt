@@ -20,6 +20,10 @@ endif()
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 
+# Guard against in-source builds and bad build-type strings
+#
+include(ConfigSafeGuards)
+
 ## MAIN ###############################################################################
 
 set(CORE_HEADERS
