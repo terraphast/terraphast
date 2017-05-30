@@ -51,21 +51,32 @@ add_library(terraces ${CORE_HEADERS} ${CORE_SRCS})
 add_executable(terraces_main src/main.cpp)
 target_link_libraries(terraces_main terraces ${COMMON_LIBRARIEY})
 
-## TESTS ##############################################################################
+## TESTS & BENCHMARK ##################################################################
 
 include(CTest)
 enable_testing()
 
-#set(gtest_disable_pthreads on) #needed in MinGW
 include(${CMAKE_MODULE_PATH}/DownloadProject/DownloadProject.cmake)
+
+#set(gtest_disable_pthreads on) #needed in MinGW
 download_project(
         PROJ                googletest
         GIT_REPOSITORY      https://github.com/google/googletest.git
         GIT_TAG             master
         UPDATE_DISCONNECTED 1
 )
-
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+
+# Disable tests in googlebenchmark
+set(BENCHMARK_ENABLE_TESTING OFF)
+download_project(
+        PROJ                googlebenchmark
+        GIT_REPOSITORY      https://github.com/google/benchmark.git
+        GIT_TAG             master
+        UPDATE_DISCONNECTED 1
+)
+add_subdirectory(${googlebenchmark_SOURCE_DIR} ${googlebenchmark_BINARY_DIR} EXCLUDE_FROM_ALL)
+include_directories("${googlebenchmark_SOURCE_DIR}/include")
 
 include_directories(test)
 
@@ -78,3 +89,6 @@ add_executable(terraces_tests test/gtest.cpp ${CORE_HEADERS} ${TEST_HEADERS})
 target_link_libraries(terraces_tests terraces ${COMMON_LIBRARIEY} gtest gmock)
 add_test(terraces_tests terraces_tests)
 
+add_executable(terraces_benchmarks test/gbenchmark.cpp ${CORE_HEADERS} ${TEST_HEADERS})
+target_link_libraries(terraces_benchmarks terraces ${COMMON_LIBRARIEY} benchmark)
+add_test(terraces_benchmarks terraces_benchmarks)
