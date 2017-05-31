@@ -328,7 +328,7 @@ TEST(ListTrees, example_from_slides_with_printing_stuff) {
     delete[] buffer;
 }
 
-TEST(ListTrees, with_Pyron_data) {
+TEST(ListTrees, DISABLED_with_Pyron_data) {
 
     input_data *read_data = parse_input_data("../input/Pyron.data");
     assert(read_data != nullptr);
