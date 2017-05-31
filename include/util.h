@@ -12,6 +12,9 @@
 #include <memory>
 #include <string>
 #include <iostream>
+#include <vector>
+
+
 
 
 /**
@@ -71,5 +74,31 @@ bool check_tree(ntree_t *tree);
  * @param tree the tree to fix
  */
 void fix_tree(ntree_t *tree);
+
+/**
+ * @brief get_neighbours returns the neighbours of a given node in the tree. this can be used for easier usage of rooted trees as unrooted trees
+ * @param node the node of which we want to get the adjacent nodes
+ * @return a vector containing the adjacent nodes.
+ */
+std::vector<std::shared_ptr<Tree>> get_neighbours(std::shared_ptr<Tree> node);
+
+
+/**
+ * @brief node_compare compares two instances of the Tree class by their label
+ * TODO We can use a lambda function in std::sort in tree_to_string instead
+ * @param node_1 this node is compared to the other paramater
+ * @param node_2 this node is compared to the other paramater
+ * @return true, iff the label of node_1 is smaller than the label of node_2
+ */
+bool node_compare(std::shared_ptr<Tree> node_1, std::shared_ptr<Tree> node_2);
+
+
+/**
+ * @brief get_leafs return a list the list of all leafs of the tree
+ * @param leaf_list the list where the leafs will be inserted
+ * @param current_node the node, where the dfs is at the moment
+ * @param parent the node where we come from. to avoid endles recursion
+ */
+void get_leafs (std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<Tree> current_node, std::shared_ptr<Tree> parent);
 
 #endif //include guard
