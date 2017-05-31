@@ -59,10 +59,14 @@ TEST(Tree_root_Test, simple_tree) {
     const char *speciesNames[] = { "A", "B", "C", "D" };
 
     const unsigned char matrix1[] = { 1, 0, //1st row, species 0 has data for partition 0 only
-            1, 0, 1, 1, 0, 1 }, //missing data matrix from example in the task specification
+                                      1, 0,
+                                      1, 1,
+                                      0, 1 }; //missing data matrix from example in the task specification
 
-            matrix2[] = { 1, 1, //1st row, species 0 has data for partitions 0 and 1
-                    1, 1, 1, 1, 1, 1}; //no missing data, so there should not be any terraces
+    const unsigned char matrix2[] = { 1, 1, //1st row, species 0 has data for partitions 0 and 1
+                                      1, 1,
+                                      1, 1,
+                                      1, 1 }; //no missing data, so there should not be any terraces
 
     //let's initialize some missing data data structures now
     missingData *example1 = initializeMissingData(5, 2, speciesNames);

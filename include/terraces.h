@@ -180,10 +180,13 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
  * for debug statements
  */
 #ifndef DEBUG
-void d_print_tree(const ntree_t* tree);
-void d_print_tree(const std::shared_ptr<Tree> tree);
+void d_print_tree_impl(const char* file, const int line, const ntree_t* tree);
+void d_print_tree_impl(const char* file, const int line, const std::shared_ptr<Tree> tree);
+#define d_print_tree(t) do { \
+   d_print_tree_impl(__FILE__, __LINE__, t);\
+} while(false)
 #define d_printf(...) do { \
-   fprintf(stderr, "DEBUG(%s, %d): ", __FILE__, __LINE__); \
+   fprintf(stderr, "DEBUG(%s, %d): ", __FILE__, __LINE__);\
    fprintf(stderr, __VA_ARGS__);\
 } while(false)
 #else

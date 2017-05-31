@@ -328,6 +328,35 @@ TEST(ListTrees, example_from_slides_with_printing_stuff) {
     delete[] buffer;
 }
 
+TEST(ListTrees, with_Pyron_data) {
+
+    input_data *read_data = parse_input_data("../input/Pyron.data");
+    assert(read_data != nullptr);
+    ntree_t *tree = get_newk_tree("../input/Pyron.nwk");
+    assert(tree != nullptr);
+
+    missingData *m = initializeMissingData(read_data->number_of_species,
+                                           read_data->number_of_partitions,
+                                           (const char **) read_data->names);
+    copyDataMatrix(read_data->matrix, m);
+
+    std::string root_species_name;
+    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
+
+    leaf_set leafs;
+    for (size_t k = 0; k < m->numberOfSpecies; k++) {
+        leafs.insert(leaf_number(m->speciesNames[k]));
+    }
+
+    auto result = find_all_rooted_trees(leafs, extract_constraints_from_supertree(rtree, m));
+
+    d_printf("Tree count: ", result.size());
+
+    ntree_destroy(tree);
+    freeMissingData(m);
+    free_input_data(read_data);
+}
+
 TEST(FindConstraintsTest, example_from_slides) {
     std::set<leaf_number> leaves = {"1", "2", "3"};
 

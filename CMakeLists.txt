@@ -65,6 +65,7 @@ download_project(
         GIT_TAG             master
         UPDATE_DISCONNECTED 1
 )
+include_directories(SYSTEM "${googletest_SOURCE_DIR}/include")
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
 
 # Disable tests in googlebenchmark
@@ -76,7 +77,7 @@ download_project(
         UPDATE_DISCONNECTED 1
 )
 add_subdirectory(${googlebenchmark_SOURCE_DIR} ${googlebenchmark_BINARY_DIR} EXCLUDE_FROM_ALL)
-include_directories("${googlebenchmark_SOURCE_DIR}/include")
+include_directories(SYSTEM "${googlebenchmark_SOURCE_DIR}/include")
 
 include_directories(test)
 
