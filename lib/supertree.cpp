@@ -1,3 +1,4 @@
+#include <terraces/bipartitions.hpp>
 #include <terraces/supertree.hpp>
 
 #include <unordered_map>
@@ -31,10 +32,15 @@ std::vector<std::vector<index>> map_sets(std::vector<index> leaves,
 	return res;
 }
 
-bool check_supertree(index number, const constraints& c) {
-	std::vector<index> leaves(number);
-	for (size_t i = 0; i < number; i++) {
-		leaves.at(i) = i;
+bool check_supertree(const tree& tree, const constraints& c) {
+	index num_nodes = tree.size();
+	index num_leaves = (num_nodes + 1) / 2;
+	std::vector<index> leaves(num_leaves);
+	index j = 0;
+	for (size_t i = 0; i < num_nodes; i++) {
+		if (is_leaf(tree[i])) {
+			leaves[j++] = i;
+		}
 	}
 	return check_supertree(leaves, c);
 }
@@ -72,10 +78,15 @@ bool check_supertree(const std::vector<index>& leaves, const constraints& c) {
 	}
 }
 
-size_t count_supertree(index number, const constraints& c) {
-	std::vector<index> leaves(number);
-	for (size_t i = 0; i < number; i++) {
-		leaves.at(i) = i;
+size_t count_supertree(const tree& tree, const constraints& c) {
+	index num_nodes = tree.size();
+	index num_leaves = (num_nodes + 1) / 2;
+	std::vector<index> leaves(num_leaves);
+	index j = 0;
+	for (size_t i = 0; i < num_nodes; i++) {
+		if (is_leaf(tree[i])) {
+			leaves[j++] = i;
+		}
 	}
 	return count_supertree(leaves, c);
 }

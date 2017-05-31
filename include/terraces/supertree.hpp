@@ -1,8 +1,8 @@
 #ifndef TERRACES_SUPERTREE_HPP
 #define TERRACES_SUPERTREE_HPP
 
-#include "bipartitions.hpp"
 #include "constraints.hpp"
+#include "trees.hpp"
 
 namespace terraces {
 
@@ -21,7 +21,7 @@ std::vector<std::vector<index>> map_sets(std::vector<index>, std::vector<std::ve
  * Check if on a terrace given a number and a vector of constraints. Entry point for terrace
  * checking.
  */
-bool check_supertree(index, const constraints&);
+bool check_supertree(const tree&, const constraints&);
 
 /**
  * Check if on a terrace given a number and a vector of constraints.
@@ -31,7 +31,7 @@ bool check_supertree(const std::vector<index>&, const constraints&);
 /**
  * Count trees given a number and a vector of constraints. Entry point for tree counting.
  */
-size_t count_supertree(index, const constraints&);
+size_t count_supertree(const tree&, const constraints&);
 
 /**
  * Count trees.

@@ -50,7 +50,7 @@ int main(int argc, char** argv) try {
 	terraces::constraints constraints;
 	const auto subtrees = terraces::subtrees(data.tree, data_res.first);
 	constraints = terraces::compute_constraints(subtrees);
-	std::cout << "We counted " << terraces::count_supertree(num_species, constraints)
+	std::cout << "We counted " << terraces::count_supertree(data.tree, constraints)
 	          << " equivalent trees" << std::endl;
 
 } catch (std::exception& e) {
