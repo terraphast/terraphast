@@ -14,8 +14,14 @@ STYLE="{
 	\"ConstructorInitializerIndentWidth\": 8,
 }"
 
+MODE=$1
+
 function format_file() {
 	if ! diff -u <(cat "$1") <(clang-format -style="$STYLE" $1) &> "/dev/null"; then
+		if [ "$MODE" == "check" ]
+		then
+			exit 1
+		fi
 		echo formatting "$1"
 		clang-format -style="$STYLE" -i "$1"
 	fi

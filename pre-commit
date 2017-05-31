@@ -3,7 +3,12 @@
 # link this file in your git-hooks, for example with:
 #      ln .git/hooks/pre-commit pre-commit
 
-./format.sh
+if ./format.sh check &> "/dev/null"; then
+	echo "nothing to format"
+else
+	echo "unformatted files, please format and stage again" >&2
+	exit 1
+fi
 
 if lizard include lib app test &> "/dev/null"; then
 	echo "no overcomplicated functions found"
