@@ -348,6 +348,8 @@ TEST(ListTrees, DISABLED_with_Pyron_data) {
         leafs.insert(leaf_number(m->speciesNames[k]));
     }
 
+    d_print_tree(rtree);
+
     auto result = find_all_rooted_trees(leafs, extract_constraints_from_supertree(rtree, m));
 
     d_printf("Tree count: ", result.size());
