@@ -40,7 +40,7 @@ main.o : main.cpp
 
 terraces.o : terraces.cpp
 
-test/terraces_test.o : test/terraces_test.cpp test/input_parser_test.h test/algorithm_test.h
+test/terraces_test.o : test/terraces_test.cpp test/input_parser_test.h test/algorithm_test.h test/util_test.h
 
 input_parser.o : input_parser.cpp input_parser.h
 

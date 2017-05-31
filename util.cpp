@@ -223,3 +223,37 @@ void fix_tree(ntree_t *tree) {
 		fix_tree(tree->children[i]);
 	}
 }
+
+std::vector<std::shared_ptr<Tree>> get_neighbours(std::shared_ptr<Tree> node) {
+    std::vector<std::shared_ptr<Tree>> neighbours;
+    if (node->left != nullptr) {
+        neighbours.push_back(node->left);
+    }
+    if (node->right != nullptr) {
+        neighbours.push_back((node->right));
+    }
+    if (node->parent != nullptr) {
+        neighbours.push_back(node->parent);
+    }
+    return neighbours;
+}
+
+
+void get_leafs (std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<Tree> current_node, std::shared_ptr<Tree> parent) {
+    std::vector<std::shared_ptr<Tree>> neighbours = get_neighbours(current_node);
+    if (neighbours.size() == 1) {   //if we are at a leaf
+        leaf_list.push_back(current_node);
+        return;
+    }
+    for (size_t i = 0; i < neighbours.size(); i++) {
+        if (neighbours.at(i) != parent) {   //skip the node where we came from
+            get_leafs(leaf_list, neighbours.at(i), current_node);
+        }
+    }
+}
+
+
+bool node_compare(std::shared_ptr<Tree> node_1, std::shared_ptr<Tree> node_2) {
+    assert(node_1 != nullptr && node_2 != nullptr);
+    return (node_1->label.compare(node_2->label) < 0);
+}

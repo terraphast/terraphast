@@ -2,6 +2,7 @@
 
 #include "input_parser_test.h"
 #include "algorithm_test.h"
+#include "util_test.h"
 #include "terraces.h"
 #include "util.h"
 #include "gtest/gtest.h"
@@ -106,7 +107,7 @@ TEST(TerraceAnalysis, generate_induced_tree) {
 	d_printf("%s\n", r_tree->to_newick_string().c_str());
 	d_printf("%lu\n", result.size());
 	for (auto &r : result) {
-		d_printf("%s\n", r->to_newick_string().c_str());
+        d_printf("%s\n", r->to_newick_string().c_str());
 //		d_print_tree(r);
 	}
 
