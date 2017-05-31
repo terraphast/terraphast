@@ -81,7 +81,7 @@ TEST_CASE("count_supertree7", "[supertree]") {
 
 TEST_CASE("count_supertree_none", "[supertree]") {
 	constraints c = {{0, 1, 2}, {2, 1, 0}};
-    CHECK(count_supertree(std::vector<index>{0, 1, 2}, c) == 0);
+	CHECK(count_supertree(std::vector<index>{0, 1, 2}, c) == 0);
 }
 
 } // namespace tests
