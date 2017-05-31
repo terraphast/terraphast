@@ -286,7 +286,7 @@ TEST(ListTrees, example_from_slides) {
 	constraints.push_back(cons1);
 	constraints.push_back(cons2);
 
-    auto n_trees = list_trees(constraints, leaves, nullptr, root_species_name);
+    auto n_trees = list_trees(constraints, leaves, nullptr);
 
 	ASSERT_EQ(n_trees, 9);
 }
@@ -320,7 +320,7 @@ TEST(ListTrees, example_from_slides_with_printing_stuff) {
 
 	auto f = fmemopen(buffer, buffer_size, "w");
 	ASSERT_TRUE(f != nullptr);
-    list_trees(constraints, leaves, f, root_species_name);
+    list_trees(constraints, leaves, f);
 	fclose(f);
 
 	ASSERT_EQ(std::string(buffer), expected);
