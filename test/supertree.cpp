@@ -79,5 +79,10 @@ TEST_CASE("count_supertree7", "[supertree]") {
 	CHECK(count_supertree(8, c) == 173);
 }
 
+TEST_CASE("count_supertree_none", "[supertree]") {
+	constraints c = {{0, 1, 2}, {2, 1, 0}};
+	CHECK(count_supertree(3, c) == 0);
+}
+
 } // namespace tests
 } // namespace terraces
