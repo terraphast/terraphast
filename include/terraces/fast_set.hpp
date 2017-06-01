@@ -8,6 +8,22 @@
 
 namespace terraces {
 
+class bitvector {
+private:
+	std::vector<bool> m_vector;
+
+public:
+	bitvector(index size);
+	bool get(index i) const;
+	void set(index i, bool b);
+	/** Returns the number of set bits in the range [0, i). */
+	index rank(index i) const;
+	/** Returns the smallest value j such that rank(j + 1) = i */
+	index select(index i) const;
+	/** Returns the index of the first set bit in the range (i, size). */
+	index next_set_bit(index i) const;
+};
+
 class fast_index_set {
 	using const_iterator = std::set<index>::const_iterator;
 
@@ -32,6 +48,6 @@ public:
 	void delete_element(index i);
 	void finalize_edit();
 };
-}
+} // namespace terraces
 
 #endif // FAST_SET_H

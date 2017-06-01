@@ -1,8 +1,52 @@
 #include <terraces/fast_set.hpp>
 
+#include <algorithm>
 #include <cassert>
 
 namespace terraces {
+
+bitvector::bitvector(index size) : m_vector(size) {}
+
+bool bitvector::get(index i) const {
+	assert(i < m_vector.size());
+	return m_vector[i];
+}
+
+void bitvector::set(index i, bool b) {
+	assert(i < m_vector.size());
+	m_vector[i] = b;
+}
+
+index bitvector::rank(index i) const {
+	assert(i <= m_vector.size());
+	return (index)std::count(m_vector.begin(),
+	                         m_vector.begin() + (std::vector<bool>::difference_type)i, true);
+}
+
+index bitvector::select(index i) const {
+	index n = m_vector.size();
+	assert(i <= rank(n));
+	assert(i > 0);
+	index rank = 0;
+	index j;
+	for (j = 0; j < n; ++j) {
+		rank += get(j);
+		if (rank == i) {
+			break;
+		}
+	}
+	return j;
+}
+
+index bitvector::next_set_bit(index i) const {
+	index j;
+	for (j = i + 1; j < m_vector.size(); ++j) {
+		if (m_vector[j]) {
+			break;
+		}
+	}
+	return j;
+}
 
 fast_index_set::fast_index_set(index size) : m_dirty{false}, m_set{}, m_occ(size) {}
 
