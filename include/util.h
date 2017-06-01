@@ -7,15 +7,12 @@
 #include "input_parser.h"
 #include "terraces.h"
 
-#include <string.h>
+#include <cstring>
 #include <map>
 #include <memory>
 #include <string>
 #include <iostream>
 #include <vector>
-
-
-
 
 /**
  * This funktion generates the trees T|G_i, which is exactly the subtree of T induced by partition G_i
