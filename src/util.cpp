@@ -1,8 +1,5 @@
 #include "util.h"
 
-#include <assert.h>
-#include "terraces.h"
-
 std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
                                             const missingData *missing_data,
                                             std::map<std::string, unsigned char> &species_map, size_t partition) {
@@ -43,7 +40,6 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
             return right;
         }
     }
-
     return nullptr;
 }
 
@@ -178,6 +174,16 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
         } else {
             assert(false);
         }
+    } else if(current_ntree->parent == nullptr) { //we are at the regular root
+        if(current_ntree->children[0]->label != nullptr) {
+            current->label = current_ntree->children[0]->label;
+        }
+        if(current_ntree->children[1]->label != nullptr) {
+            current->label = current_ntree->children[1]->label;
+        }
+        current->left = nullptr;
+        current->right = nullptr;
+        return;
     } else {
         assert(current_ntree->children_count == 2);
         //set the children, leave out the parent
@@ -193,15 +199,10 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
         } else {
             assert(false);
         }
-
     }
 
-    if(left_ntree != nullptr) {
-        recursive_root(current->left, left_ntree, current_ntree);
-    }
-    if(right_ntree != nullptr) {
-        recursive_root(current->right, right_ntree, current_ntree);
-    }
+    recursive_root(current->left, left_ntree, current_ntree);
+    recursive_root(current->right, right_ntree, current_ntree);
 }
 
 bool check_tree(ntree_t *tree) {
