@@ -72,4 +72,4 @@ void fast_index_set::finalize_edit() {
 	// so far, we don't need this
 	m_dirty = false;
 }
-}
+} // namespace terraces
