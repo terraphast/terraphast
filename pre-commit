@@ -3,7 +3,8 @@
 # link this file in your git-hooks, for example with:
 #      ln .git/hooks/pre-commit pre-commit
 
-if ./format.sh check; then
+if ./format.sh check
+then
 	echo "nothing to format"
 else
 	echo "unformatted files, please format and stage again" >&2
