@@ -328,6 +328,7 @@ TEST(ListTrees, example_from_slides_with_printing_stuff) {
     delete[] buffer;
 }
 
+//TODO: Test takes to long, disabled for now
 TEST(ListTrees, DISABLED_with_Pyron_data) {
 
     input_data *read_data = parse_input_data("../input/Pyron.data");
@@ -348,7 +349,13 @@ TEST(ListTrees, DISABLED_with_Pyron_data) {
         leafs.insert(leaf_number(m->speciesNames[k]));
     }
 
-    d_print_tree(rtree);
+    //TODO: hangs here
+    for(auto &c : extract_constraints_from_supertree(rtree, m)) {
+        fprintf(stderr,"(%s, %s) < (%s, %s);",c.smaller_left.c_str(),
+        c.smaller_right.c_str(),
+        c.bigger_left.c_str(),
+        c.bigger_right.c_str());
+    }
 
     auto result = find_all_rooted_trees(leafs, extract_constraints_from_supertree(rtree, m));
 
