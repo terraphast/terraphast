@@ -8,21 +8,22 @@
 
 namespace terraces {
 
-class fast_index_set
-{
+class fast_index_set {
 	using const_iterator = std::set<index>::const_iterator;
+
 private:
 	bool m_dirty;
 	std::set<index> m_set;
 	std::vector<bool> m_occ;
+
 public:
 	fast_index_set(index m_size);
 
-    bool contains(index i) const;
+	bool contains(index i) const;
 	index size() const;
 
 	const_iterator begin() const;
-    const_iterator find(index i) const;
+	const_iterator find(index i) const;
 	const_iterator end() const;
 
 	void fill(bool val);
@@ -31,7 +32,6 @@ public:
 	void delete_element(index i);
 	void finalize_edit();
 };
-
 }
 
 #endif // FAST_SET_H

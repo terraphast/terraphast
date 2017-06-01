@@ -31,11 +31,21 @@ void fast_index_set::fill(bool val) {
 	finalize_edit();
 }
 
-fast_index_set::const_iterator fast_index_set::begin() const { assert(!m_dirty); return m_set.cbegin(); }
+fast_index_set::const_iterator fast_index_set::begin() const {
+	assert(!m_dirty);
+	return m_set.cbegin();
+}
 
-fast_index_set::const_iterator fast_index_set::find(index i) const { assert(!m_dirty); assert(contains(i)); return m_set.find(i); }
+fast_index_set::const_iterator fast_index_set::find(index i) const {
+	assert(!m_dirty);
+	assert(contains(i));
+	return m_set.find(i);
+}
 
-fast_index_set::const_iterator fast_index_set::end() const { assert(!m_dirty); return m_set.cend(); }
+fast_index_set::const_iterator fast_index_set::end() const {
+	assert(!m_dirty);
+	return m_set.cend();
+}
 
 void fast_index_set::reset_and_resize(index size) {
 	m_set.clear();
@@ -47,20 +57,19 @@ void fast_index_set::insert_element(index i) {
 	assert(i < m_occ.size());
 	m_set.emplace(i);
 	m_occ[i] = true;
-    m_dirty = true;
+	m_dirty = true;
 }
 
 void fast_index_set::delete_element(index i) {
 	assert(i < m_occ.size());
-    assert(contains(i));
+	assert(contains(i));
 	assert(m_set.erase(i));
 	m_occ[i] = false;
-    m_dirty = true;
+	m_dirty = true;
 }
 
 void fast_index_set::finalize_edit() {
 	// so far, we don't need this
-    m_dirty = false;
+	m_dirty = false;
 }
-
 }
