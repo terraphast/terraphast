@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     if (read_data != NULL && read_tree != NULL) {
         missingData *m = initializeMissingData(read_data->number_of_species,
                                                read_data->number_of_partitions,
-                                               (const char **) read_data->names);
+                                               const_cast<const char **>(read_data->names));
 
         copyDataMatrix(read_data->matrix, m);
         mpz_set_ui(alliumTerraceSize, 0);
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
         int errorCode = terraceAnalysis(m, read_tree, TA_COUNT + TA_ENUMERATE,
                                         empiricalTrees, &alliumTerraceSize);
         if (errorCode == TERRACE_SUCCESS) {
-            char *alliumTerraceSizeString = (char *) NULL;
+            char *alliumTerraceSizeString = nullptr;
             alliumTerraceSizeString = mpz_get_str(alliumTerraceSizeString, 10,
                                                   alliumTerraceSize);
 

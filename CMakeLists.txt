@@ -14,7 +14,6 @@ include_directories(include)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -fomit-frame-pointer -funroll-loops")
 
 # Guard against in-source builds and bad build-type strings
-#
 include(ConfigSafeGuards)
 
 ## MAIN ###############################################################################
@@ -45,11 +44,18 @@ set(CORE_SRCS
 #CMAKE_CXX_FLAGS is globally used in all projects.
 #TARGET_CXX_FLAGS is for own build targets only.
 set(TARGET_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Wall")
+endif ( CMAKE_COMPILER_IS_GNUCC )
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} /WX /W4")
+endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Weverything -Wno-c++98-compat-pedantic -Wno-padded -Wno-float-equal -Wno-vla")
 endif()
 
 add_library(terraces ${CORE_HEADERS} ${NEWICK_TOOLS_SRCS} ${CORE_SRCS})
+# ${NEWICK_TOOLS_SRCS} produces to much warnings, so only check ${CORE_SRCS}
 set_source_files_properties(${CORE_SRCS} ${CORE_HEADERS}
         PROPERTIES COMPILE_FLAGS "${TARGET_CXX_FLAGS}")
 add_executable(terraces_main src/main.cpp)
@@ -70,8 +76,9 @@ download_project(
         GIT_TAG             master
         UPDATE_DISCONNECTED 1
 )
+include_directories(SYSTEM "${googletest_SOURCE_DIR}/googletest/include")
+include_directories(SYSTEM "${googletest_SOURCE_DIR}/googlemock/include")
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
-include_directories(SYSTEM "${googletest_SOURCE_DIR}/include")
 
 # Disable tests in googlebenchmark
 set(BENCHMARK_ENABLE_TESTING OFF)

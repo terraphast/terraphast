@@ -1,16 +1,6 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundef"
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
-#pragma clang diagnostic ignored "-Wshift-sign-overflow"
-#pragma clang diagnostic ignored "-Wused-but-marked-unused"
-#pragma clang diagnostic ignored "-Wdeprecated"
-#pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
-#pragma clang diagnostic ignored "-Wweak-vtables"
-#pragma clang diagnostic ignored "-Wsign-compare"
 #include "gtest/gtest.h"
 #include "gmock/gmock-matchers.h"
 #include "gmock/gmock.h"
-#pragma clang diagnostic pop
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wglobal-constructors"
