@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-
 #include "benchmark/benchmark_api.h"
 #include <set>
 
@@ -32,5 +29,3 @@ static void BM_SetInsert(benchmark::State &state) {
 BENCHMARK(BM_SetInsert)->Range(8, 8 << 10);
 
 BENCHMARK_MAIN();
-
-#pragma clang diagnostic pop

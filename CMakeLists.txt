@@ -51,7 +51,10 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} /WX /W4")
 endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Weverything -Wno-c++98-compat-pedantic -Wno-padded -Wno-float-equal -Wno-vla")
+    set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Weverything \
+        -Wno-c++98-compat-pedantic -Wno-padded -Wno-float-equal \
+        -Wno-global-constructors -Wno-used-but-marked-unused \
+        -Wno-covered-switch-default -Wno-vla")
 endif()
 
 add_library(terraces ${CORE_HEADERS} ${NEWICK_TOOLS_SRCS} ${CORE_SRCS})

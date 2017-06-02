@@ -5,9 +5,6 @@
 #include <iostream>
 #include <memory>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-
 // Test a simple tree file
 TEST(GetNewickTreeFromStringTest, simple_tree) {
     ntree_t *tree = get_newk_tree_from_string("(A,B,(C,D));");
@@ -98,4 +95,3 @@ TEST(Tree_root_Test, simple_tree) {
     freeMissingData(example1);
     freeMissingData(example2);
 }
-
