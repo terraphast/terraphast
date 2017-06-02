@@ -9,7 +9,7 @@
 
 // Test a simple tree file
 TEST(Util, generate_induced_tree) {
-    ntree_t *tree = get_newk_tree("../test/input/dummy_tree1.nwk");
+    ntree_t *tree = get_newk_tree_from_string("((s1,s2),s3,(s4,s5));");
 
     const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5"};
 
@@ -48,7 +48,7 @@ TEST(Util, generate_induced_tree) {
 
 // Test a simple tree file
 TEST(ExtractConstraintsFromSuperTree, example_from_slides) {
-    ntree_t *tree = get_newk_tree("../test/input/dummy_tree1.nwk");
+    ntree_t *tree = get_newk_tree_from_string("((s1,s2),s3,(s4,s5));");
 
     const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5"};
 
@@ -82,8 +82,8 @@ TEST(ExtractConstraintsFromSuperTree, example_from_slides) {
     freeMissingData(example1);
 }
 
-TEST(TerraceAnalysis, generate_induced_tree) {
-    ntree_t *tree = get_newk_tree("../test/input/dummy_tree1.nwk");
+TEST(FindAllUnrootedTrees, example_from_slides) {
+    ntree_t *tree = get_newk_tree_from_string("((s1,s2),s3,(s4,s5));");
 
     const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5"};
 

@@ -1647,3 +1647,23 @@ ntree_t * ntree_parse_newick(const char * filename)
   //printf("%s, %s, %s, %s\n", tree->children[0]->label, tree->children[1]->label, tree->children[2]->children[0]->label, tree->children[2]->children[1]->parent->parent->children[0]->label);
   return tree;
 }
+
+void set_input_string(const char* in);
+
+ntree_t * ntree_parse_newick_from_string(const char * string)
+{
+    struct ntree_s * tree;
+
+    tree = (ntree_t *)calloc(1, sizeof(ntree_t));
+
+    set_input_string(string);
+    if (ntree_parse(tree))
+    {
+        ntree_destroy(tree);
+        tree = NULL;
+    }
+
+    ntree_lex_destroy();
+
+    return tree;
+}

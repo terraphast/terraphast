@@ -1938,7 +1938,10 @@ void ntree_free (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 82 "lex_ntree.l"
+void set_input_string(const char* in) {
+	ntree__scan_string(in);
+}
+
 
 
 

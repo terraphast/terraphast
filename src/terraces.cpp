@@ -116,7 +116,7 @@ int terraceAnalysis(missingData *m,
         return TERRACE_OUTPUT_FILE_ERROR;
     }
 
-    ntree_t *tree = get_newk_tree(newickTreeString);
+    ntree_t *tree = get_newk_tree_from_string(newickTreeString);
 
     assert(tree != nullptr);
     d_print_tree(tree);

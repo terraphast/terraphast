@@ -209,6 +209,8 @@ void cmd_make_binary(void);
 
 ntree_t * ntree_parse_newick(const char * filename);
 
+ntree_t *ntree_parse_newick_from_string(const char *newick_strng);
+
 void ntree_destroy(ntree_t * root);
 
 

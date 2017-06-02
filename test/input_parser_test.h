@@ -12,8 +12,8 @@
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 
 // Test a simple tree file
-TEST(GetNewickTreeTest, simple_tree) {
-    ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
+TEST(GetNewickTreeFromStringTest, simple_tree) {
+    ntree_t *tree = get_newk_tree_from_string("(A,B,(C,D));");
     assert(tree != nullptr);
     assert(check_tree(tree));
     ASSERT_EQ(tree->parent, nullptr);
@@ -27,8 +27,24 @@ TEST(GetNewickTreeTest, simple_tree) {
     ntree_destroy(tree);
 }
 
-TEST(get_leaf_by_name_Test, simiple_test) {
+// Test a simple tree file
+TEST(GetNewickTreeTest, simple_tree) {
     ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
+    assert(tree != nullptr);
+    assert(check_tree(tree));
+    ASSERT_EQ(tree->parent, nullptr);
+    ASSERT_STREQ("A", tree->children[0]->label);
+    ASSERT_STREQ("B", tree->children[1]->label);
+    ASSERT_STREQ("C", tree->children[2]->children[0]->label);
+    ASSERT_STREQ("D", tree->children[2]->children[1]->label);
+    ASSERT_STREQ("A",
+                 tree->children[2]->children[1]->parent->parent->children[0]->label);
+
+    ntree_destroy(tree);
+}
+
+TEST(get_leaf_by_name_Test, simiple_test) {
+    ntree_t *tree = get_newk_tree_from_string("(A,B,(C,D));");
     assert(check_tree(tree));
     ASSERT_EQ(tree->children[0], get_leaf_by_name(tree, "A"));
     ASSERT_EQ(tree->children[1], get_leaf_by_name(tree, "B"));
@@ -39,7 +55,7 @@ TEST(get_leaf_by_name_Test, simiple_test) {
 }
 
 TEST(Root_at_Test, simple_tree) {
-    ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
+    ntree_t *tree = get_newk_tree_from_string("(A,B,(C,D));");
     assert(check_tree(tree));
     char label[2];
     label[0] = 'D';
@@ -54,7 +70,7 @@ TEST(Root_at_Test, simple_tree) {
 }
 
 TEST(Tree_root_Test, simple_tree) {
-    ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
+    ntree_t *tree = get_newk_tree_from_string("(A,B,(C,D));");
 
     const char *speciesNames[] = { "A", "B", "C", "D" };
 

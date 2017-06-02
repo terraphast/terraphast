@@ -102,3 +102,9 @@ ntree_t *get_newk_tree(const char *nwk_file) {
     fix_tree(tree); //necessary since tree seems to be corrupt
     return tree;
 }
+
+ntree_t *get_newk_tree_from_string(const char *nwk_string) {
+    ntree_t *tree = ntree_parse_newick_from_string(nwk_string);
+    fix_tree(tree); //necessary since tree seems to be corrupt
+    return tree;
+}

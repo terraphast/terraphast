@@ -60,14 +60,11 @@ extern int ntree_debug;
 
 union YYSTYPE
 {
-#line 63 "parse_ntree.y" /* yacc.c:1909  */
-
   char * s;
   char * d;
   struct ntree_s * tree;
   struct forest_s * forest;
 
-#line 71 "parse_ntree.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

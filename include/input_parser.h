@@ -51,6 +51,15 @@ char* read_newk_tree(const char* newk_file);
  */
 ntree_t* get_newk_tree(const char* nwk_file);
 
+/**
+ * Reads the newick tree directly from the given string and creates a struct based tree.
+ * The returned data must be freed by the caller.
+ *
+ * @param nwk_file The newick tree as string.
+ * @return a point to a node in the tree.
+ */
+ntree_t *get_newk_tree_from_string(const char *nwk_string);
+
 #ifdef __cplusplus
 }
 #endif
