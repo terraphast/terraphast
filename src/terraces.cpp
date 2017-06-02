@@ -87,8 +87,6 @@ int terraceAnalysis(missingData *m,
     //some debugging print outs
 
     d_printf("read_tree = %s\n", newickTreeString);
-    d_printf("read_names[0] = %s\n", m->speciesNames[0]);
-    d_printf("read_matrix[0] = %hhu\n", m->missingDataMatrix[0]);
 
     // figure out what we are supposed to calculate
 
@@ -121,13 +119,11 @@ int terraceAnalysis(missingData *m,
     ntree_t *tree = get_newk_tree_from_string(newickTreeString);
 
     assert(tree != nullptr);
-    d_print_tree(tree);
 
     std::string root_species_name;
     std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
 
     assert(rtree != nullptr);
-    d_print_tree(rtree);
 
     leaf_set leafs;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
