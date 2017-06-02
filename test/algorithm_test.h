@@ -273,42 +273,9 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
     ASSERT_THAT(*part_two, testing::ElementsAre("6", "7", "8"));
 }
 
-TEST(ListTrees, example_from_slides) {
+TEST(FindAllRootedTrees, example_from_slides) {
 
-    std::set<leaf_number> leaves = {"1", "2", "3", "4", "5"};
-    std::string root_species_name("0"); //just to make the test compile.
-
-    std::vector<constraint> constraints;
-
-    constraint cons1 = {"1", "3", "2", "2"};
-    constraint cons2 = {"4", "4", "5", "2"};
-
-    constraints.push_back(cons1);
-    constraints.push_back(cons2);
-
-    auto n_trees = list_trees(constraints, leaves, nullptr);
-
-    ASSERT_EQ(n_trees, 9);
-}
-
-TEST(ListTrees, example_from_slides_with_printing_stuff) {
-
-    size_t buffer_size = 10000000;
-
-    std::string root_species_name("asdf");  //just to make the test compile
-
-    auto buffer = new char[buffer_size];
-    std::string expected = "((2,1),((5,3),4));\n";
-    expected += "((2,1),(5,(4,3)));\n";
-    expected += "((2,1),((5,4),3));\n";
-    expected += "(3,(1,(2,(5,4))));\n";
-    expected += "(3,(2,((5,1),4)));\n";
-    expected += "(3,(2,(5,(4,1))));\n";
-    expected += "(3,(2,((5,4),1)));\n";
-    expected += "(3,((2,1),(5,4)));\n";
-    expected += "(((2,1),3),(5,4));\n";
-
-    std::set<leaf_number> leaves = {"1", "2", "3", "4", "5"};
+    std::set<leaf_number> leafs = {"1", "2", "3", "4", "5"};
 
     std::vector<constraint> constraints;
 
@@ -318,15 +285,20 @@ TEST(ListTrees, example_from_slides_with_printing_stuff) {
     constraints.push_back(cons1);
     constraints.push_back(cons2);
 
-    auto f = fmemopen(buffer, buffer_size, "w");
-    ASSERT_TRUE(f != nullptr);
-    list_trees(constraints, leaves, f);
-    fclose(f);
+    auto result = find_all_rooted_trees(leafs, constraints);
 
-    ASSERT_EQ(std::string(buffer), expected);
-
-    delete[] buffer;
+    ASSERT_EQ(result.size(), 9);
+    ASSERT_EQ(result[0]->to_newick_string(), "((2,1),((5,3),4));");
+    ASSERT_EQ(result[1]->to_newick_string(), "((2,1),(5,(4,3)));");
+    ASSERT_EQ(result[2]->to_newick_string(), "((2,1),((5,4),3));");
+    ASSERT_EQ(result[3]->to_newick_string(), "(3,(1,(2,(5,4))));");
+    ASSERT_EQ(result[4]->to_newick_string(), "(3,(2,((5,1),4)));");
+    ASSERT_EQ(result[5]->to_newick_string(), "(3,(2,(5,(4,1))));");
+    ASSERT_EQ(result[6]->to_newick_string(), "(3,(2,((5,4),1)));");
+    ASSERT_EQ(result[7]->to_newick_string(), "(3,((2,1),(5,4)));");
+    ASSERT_EQ(result[8]->to_newick_string(), "(((2,1),3),(5,4));");
 }
+
 
 //TODO: Test takes to long, disabled for now
 TEST(ListTrees, DISABLED_with_Pyron_data) {

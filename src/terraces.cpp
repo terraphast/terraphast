@@ -133,7 +133,7 @@ int terraceAnalysis(missingData *m,
     }
 
     size_t num_trees = list_trees(extract_constraints_from_supertree(rtree, m),
-                                  leafs, allTreesOnTerrace);
+                                  root_species_name, leafs, allTreesOnTerrace);
     mpz_set_ui(*terraceSize, num_trees);
 
     /* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */

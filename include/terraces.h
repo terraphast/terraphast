@@ -171,7 +171,6 @@ std::vector<constraint> extract_constraints_from_supertree(
  * qparam[out] terraceSize number of unrooted trees on the terrace
  * 
  * @return TERRACE_SUCCESS on success, or an error code (see TERRACE_*) on failure
- * //TODO: We treat newickTreeString as file path here. Used differently in the (original) examples though.
  */
 int terraceAnalysis(missingData *m, const char *newickTreeString,
 		const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
