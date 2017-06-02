@@ -1,7 +1,4 @@
-#include "gtest/gtest.h"
-#include "gmock/gmock.h"
 #include "gmp.h"
-#include "gmock/gmock-matchers.h"
 
 #include "terraces.h"
 
@@ -10,11 +7,6 @@
 #include <string>
 #include <cstdio>
 #include <cstdlib>
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-#pragma clang diagnostic ignored "-Wused-but-marked-unused"
-#pragma clang diagnostic ignored "-Wcovered-switch-default"
 
 TEST(ApplyConstraintsTest, example_from_slides) {
 
@@ -310,7 +302,7 @@ TEST(ListTrees, DISABLED_with_Pyron_data) {
 
     missingData *m = initializeMissingData(read_data->number_of_species,
                                            read_data->number_of_partitions,
-                                           (const char **) read_data->names);
+                                           const_cast<const char **>(read_data->names));
     copyDataMatrix(read_data->matrix, m);
 
     std::string root_species_name;
@@ -331,7 +323,7 @@ TEST(ListTrees, DISABLED_with_Pyron_data) {
 
     auto result = find_all_rooted_trees(leafs, extract_constraints_from_supertree(rtree, m));
 
-    d_printf("Tree count: ", result.size());
+    d_printf("Tree count: %zu", result.size());
 
     ntree_destroy(tree);
     freeMissingData(m);
@@ -370,9 +362,7 @@ TEST(MergeSubtreesTest, simple_tree) {
     std::vector<std::shared_ptr<Tree> > result = merge_subtrees(left, right);
 
     ASSERT_EQ(result.size(), 1);
-    ASSERT_EQ(result[0]->is_leaf(), false);
+    ASSERT_EQ(result[0]->is_leaf(), 0);
     ASSERT_EQ(result[0]->left->label, std::string("leaf_1"));
     ASSERT_EQ(result[0]->right->label, std::string("leaf_2"));
 }
-
-#pragma clang diagnostic pop

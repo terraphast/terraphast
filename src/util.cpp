@@ -46,7 +46,8 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
 std::shared_ptr<Tree> root_tree(ntree_t *tree,
                                 const missingData *missing_data, std::string &root_species_name) {
     assert(tree != nullptr);
-    long root_species_number = -1;
+    size_t root_species_number = 0;
+    bool root_specied_found = false;
     for (size_t i = 0; i < missing_data->numberOfSpecies; i++) {
         bool contains_all_data = true;
         for (size_t k = 0; k < missing_data->numberOfPartitions; k++) {
@@ -56,11 +57,12 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree,
             }
         }
         if (contains_all_data) {
+            root_specied_found = true;
             root_species_number = i;
             break;
         }
     }
-    if (root_species_number != -1) {
+    if (root_specied_found) {
         ntree_t *future_root = get_leaf_by_name(tree,
                                                 missing_data->speciesNames[root_species_number]);
         root_species_name = missing_data->speciesNames[root_species_number];
@@ -172,7 +174,7 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
             left_ntree = current_ntree->children[0];
             right_ntree = current_ntree->children[1];
         } else {
-            assert(false);
+            assert(0);
         }
     } else if(current_ntree->parent == nullptr) { //we are at the regular root
         if(current_ntree->children[0]->label != nullptr) {
@@ -197,7 +199,7 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
             left_ntree = current_ntree->children[0];
             right_ntree = current_ntree->children[1];
         } else {
-            assert(false);
+            assert(0);
         }
     }
 

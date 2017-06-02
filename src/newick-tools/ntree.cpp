@@ -27,7 +27,7 @@ int ntree_tipcount(ntree_t * node)
   int count = 0;
 
   if (!node) return 0;
-  if (!node->children_count == 0) return 1;
+  if (node->children_count != 0) return 1;
 
   for (i=0; i<node->children_count; ++i)
     count += ntree_tipcount(node->children[i]);

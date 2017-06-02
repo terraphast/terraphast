@@ -1,6 +1,3 @@
-#include "gtest/gtest.h"
-#include "gmock/gmock-matchers.h"
-
 #include "input_parser.h"
 #include "util.h"
 
@@ -102,4 +99,3 @@ TEST(Tree_root_Test, simple_tree) {
     freeMissingData(example2);
 }
 
-#pragma clang diagnostic pop

@@ -4,9 +4,6 @@
 #include "util.h"
 #include "gtest/gtest.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-
 // Test a simple tree file
 TEST(Util, generate_induced_tree) {
     ntree_t *tree = get_newk_tree_from_string("((s1,s2),s3,(s4,s5));");
@@ -276,7 +273,7 @@ TEST(TerracesAnalysis, example2_from_old_main) {
         d_printf("Error %i\n", errorCode);
     }
 
-    char *weirdTerraceSizeString = (char *) NULL;
+    char *weirdTerraceSizeString = nullptr;
 
     weirdTerraceSizeString = mpz_get_str(weirdTerraceSizeString, 10,
                                          weirdTerraceSize);
@@ -289,4 +286,3 @@ TEST(TerracesAnalysis, example2_from_old_main) {
     fclose(f0);
 }
 
-#pragma clang diagnostic pop

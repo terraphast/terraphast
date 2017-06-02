@@ -92,9 +92,11 @@ int terraceAnalysis(missingData *m,
 
     // figure out what we are supposed to calculate
 
-    const bool countTrees = (ta_outspec & TA_COUNT) != 0;
+    //TODO Unused variable: countTrees
+    //const bool countTrees = (ta_outspec & TA_COUNT) != 0;
     const bool enumerateTrees = (ta_outspec & TA_ENUMERATE) != 0;
-    const bool treeIsOnTerrace = (ta_outspec & TA_DETECT) != 0;
+    //TODO Unused variable: treeIsOnTerrace
+    //const bool treeIsOnTerrace = (ta_outspec & TA_DETECT) != 0;
     const bool enumerateCompressedTrees = (ta_outspec & TA_ENUMERATE_COMPRESS)
                                           != 0;
 
@@ -169,7 +171,7 @@ int terraceAnalysis(missingData *m,
 
 missingData *initializeMissingData(size_t numberOfSpecies,
                                    size_t numberOfPartitions, const char **speciesNames) {
-    missingData *m = (missingData *) malloc(sizeof(missingData));
+    missingData *m = new missingData();
 
     m->numberOfSpecies = numberOfSpecies;
 
@@ -177,13 +179,13 @@ missingData *initializeMissingData(size_t numberOfSpecies,
 
     //if the species names have been passed by the application programmer just set a pointer to them
     if (speciesNames != nullptr) {
-        m->speciesNames = (char **) speciesNames;
+        m->speciesNames = const_cast<char **>(speciesNames);
         m->allocatedNameArray = 0;
     }
         //otherwise, we assume that species names are just indexes
     else {
         m->allocatedNameArray = 1;
-        m->speciesNames = (char **) malloc(sizeof(char *) * numberOfSpecies);
+        m->speciesNames = new char*[numberOfSpecies];
 
         size_t i;
 
@@ -194,14 +196,14 @@ missingData *initializeMissingData(size_t numberOfSpecies,
 
             size_t n = strlen(buffer);
 
-            m->speciesNames[i] = (char *) malloc((n + 1) * sizeof(char));
+            m->speciesNames[i] = new char[n + 1];
 
             strcpy(m->speciesNames[i], buffer);
         }
     }
 
-    m->missingDataMatrix = (unsigned char *) malloc(
-            sizeof(unsigned char) * numberOfSpecies * numberOfPartitions);
+    m->missingDataMatrix = new unsigned char [
+             numberOfSpecies * numberOfPartitions];
 
     return m;
 }

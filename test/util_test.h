@@ -11,9 +11,6 @@
 //#include <iostream>
 #include <memory>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-
 // Test a simple tree file
 TEST(get_neighbours, simple) {
     std::shared_ptr<Tree> t1 = std::make_shared<Tree>("t1");
@@ -40,9 +37,5 @@ TEST(get_neighbours, simple) {
     ASSERT_EQ(result[2]->label.compare("t4"), 0);
 
 }
-
-
-#pragma clang diagnostic pop
-
 
 #endif // UTIL_TEST_H

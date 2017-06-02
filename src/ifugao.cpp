@@ -232,7 +232,7 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
             sets[index_containing_left_constraint]->insert(
                     sets[index_containing_right_constraint]->begin(),
                     sets[index_containing_right_constraint]->end());
-            sets.erase(sets.begin() + index_containing_right_constraint);
+            sets.erase(sets.begin() + static_cast<decltype(sets)::difference_type>(index_containing_right_constraint));
         }
     }
     return sets;

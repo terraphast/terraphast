@@ -38,11 +38,11 @@ char *read_newk_tree(const char *newk_file) {
         return NULL;
     }
 
-    char *string = (char *) malloc((size_t) fsize + 1);
+    char *string = new char[static_cast<size_t>(fsize) + 1];
 
     if (string != NULL) {
-        fread(string, (size_t) fsize, 1, f);
-        string[(size_t) fsize] = 0;
+        fread(string, static_cast<size_t>(fsize), 1, f);
+        string[static_cast<size_t>(fsize)] = 0;
     }
 
     fclose(f);
@@ -60,16 +60,15 @@ input_data *parse_input_data(const char *data_file) {
         return NULL;
     }
 
-    input_data *result = (input_data *) malloc(sizeof(input_data));
+    input_data *result = new input_data;
 
     char input_buffer[256];
 
     if (result != NULL) {
         fscanf(f, "%zu %zu", &(result->number_of_species), &(result->number_of_partitions));
 
-        result->matrix = (unsigned char *) malloc(
-                sizeof(unsigned char) * result->number_of_species * result->number_of_partitions);
-        result->names = (char **) malloc(sizeof(char *) * result->number_of_species);
+        result->matrix = new unsigned char[result->number_of_species * result->number_of_partitions];
+        result->names = new char *[result->number_of_species];
 
         for (size_t s = 0; s < result->number_of_species; ++s) {
             for (size_t p = 0; p < result->number_of_partitions; ++p) {
@@ -82,7 +81,7 @@ input_data *parse_input_data(const char *data_file) {
             fgets(input_buffer, 256, f);
             size_t len = strlen(input_buffer);
             if (len < 255) {
-                result->names[s] = (char *) malloc(sizeof(char) * len);
+                result->names[s] = new char[len];
                 strncpy(result->names[s], input_buffer, len);
                 // replace newline by NULL
                 result->names[s][len - 1] = 0;
