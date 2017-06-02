@@ -173,24 +173,18 @@ TEST(TerracesAnalysis, example1_from_old_main) {
 
     //now let's calculate terraces for example 1
     errorCode = terraceAnalysis(example1, newickString0,
-                                TA_COUNT + TA_ENUMERATE, f0, &terraceSize0);
-    if (errorCode == TERRACE_SUCCESS) {
-        d_printf("Test 1\n");
-    } else {
-        d_printf("Error %i\n", errorCode);
-    }
+                                TA_COUNT + TA_ENUMERATE,
+                                f0,
+                                &terraceSize0);
+    ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
+    //now let's calculate terraces for example 2
     errorCode = terraceAnalysis(example1,
                                 newickString1,
                                 TA_COUNT + TA_ENUMERATE,
                                 f1,
                                 &terraceSize1);
-    //now let's calculate terraces for example 2
-    if (errorCode == TERRACE_SUCCESS) {
-        d_printf("Test 2\n");
-    } else {
-        d_printf("Error %i\n", errorCode);
-    }
+    ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     //the terraces for example input trees 0 and 1 must be of the same size and equal to 15
     ASSERT_TRUE(
@@ -203,20 +197,12 @@ TEST(TerracesAnalysis, example1_from_old_main) {
     // call for example tree 0
     errorCode = terraceAnalysis(example2, newickString0,
                                 TA_COUNT + TA_ENUMERATE, f0, &terraceSize0);
-    if (errorCode == TERRACE_SUCCESS) {
-        d_printf("Test 3\n");
-    } else {
-        d_printf("Error %i\n", errorCode);
-    }
+    ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     // call for example tree 1
     errorCode = terraceAnalysis(example2, newickString1,
                                 TA_COUNT + TA_ENUMERATE, f1, &terraceSize1);
-    if (errorCode == TERRACE_SUCCESS) {
-        d_printf("Test 4\n");
-    } else {
-        d_printf("Error %i\n", errorCode);
-    }
+    ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     //terrace size for both trees must be 1
     ASSERT_TRUE(
@@ -228,19 +214,42 @@ TEST(TerracesAnalysis, example1_from_old_main) {
     fclose(f1);
 }
 
+//now let's define a weird missing data matrix, there are 6 partitions and 6 species, each species
+//has data in exactly one distinct partition, what should your function return?
+// what should your function return if we change the data matrix to:
+TEST(TerracesAnalysis, examle_with_no_root_species) {
+    //open an output files for enumerating all trees on a terrace
+    FILE *f0 = fopen("tree1", "w");
+
+    const char *weirdSpeciesNames[] = {"s1", "s2", "s3", "s4", "s5", "s6"};
+
+    const unsigned char weirdDataMatrix[] = {1, 0, 0, 0, 0, 0,
+                                             0, 1, 0, 0, 0, 0,
+                                             0, 0, 1, 0, 0, 0,
+                                             0, 0, 0, 1, 0, 0,
+                                             0, 0, 0, 0, 1, 0,
+                                             0, 0, 0, 0, 0, 1};
+
+    const char *weirdTree = "((s1,s2),(s3,s4),(s5,s6));";
+
+    mpz_t weirdTerraceSize;
+
+    mpz_init(weirdTerraceSize);
+    mpz_set_ui(weirdTerraceSize, 0);
+
+    //initialize missing data data structure
+    missingData *weirdExample = initializeMissingData(6, 6, weirdSpeciesNames);
+
+    copyDataMatrix(weirdDataMatrix, weirdExample);
+    //TODO: Should not be an assert! return a corresponding error code instead
+    ASSERT_DEATH(terraceAnalysis(weirdExample, weirdTree, TA_COUNT + TA_ENUMERATE, f0, &weirdTerraceSize),
+                 "Assertion (.)* failed.");
+
+    freeMissingData(weirdExample);
+    fclose(f0);
+}
+
 TEST(TerracesAnalysis, example2_from_old_main) {
-    //now let's define a weird missing data matrix, there are 6 partitions and 6 species, each species
-    //has data in exactly one distinct partition, what should your function return?
-    // what should your function return if we change the data matrix to:
-    //
-    // weirdDataMatrx[] = {1,0,0,0,0,0,
-    //                     0,1,0,0,0,0,
-    //                     0,0,1,0,0,0,
-    //                     0,0,0,1,0,0,
-    //                     0,0,0,0,1,0,
-    //                     0,0,0,0,0,1};
-    //
-    // ?
 
     //open an output files for enumerating all trees on a terrace
     FILE *f0 = fopen("tree1", "w");
@@ -267,18 +276,16 @@ TEST(TerracesAnalysis, example2_from_old_main) {
     copyDataMatrix(weirdDataMatrix, weirdExample);
     int errorCode = terraceAnalysis(weirdExample, weirdTree,
                                     TA_COUNT + TA_ENUMERATE, f0, &weirdTerraceSize);
-    if (errorCode == TERRACE_SUCCESS) {
-        d_printf("Weird Test\n");
-    } else {
-        d_printf("Error %i\n", errorCode);
-    }
+    ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     char *weirdTerraceSizeString = nullptr;
 
     weirdTerraceSizeString = mpz_get_str(weirdTerraceSizeString, 10,
                                          weirdTerraceSize);
 
-    d_printf("weird terrace size: %s\n\n", weirdTerraceSizeString);
+    //input data of the 6 taxa yields to no constraint
+    // -> 105 possibilities exist to build a 6 taxa
+    ASSERT_STREQ(weirdTerraceSizeString, "105");
 
     free(weirdTerraceSizeString);
 
