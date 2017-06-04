@@ -1,12 +1,12 @@
 #ifndef TERRACES_TEST_PERFORMANCE
 #define TERRACES_TEST_PERFORMANCE
 
-#include <cassert>
 #include <algorithm>
-#include <numeric>
+#include <cassert>
 #include <chrono>
 #include <iostream>
 #include <iterator>
+#include <numeric>
 #include <string>
 #include <vector>
 
@@ -19,7 +19,8 @@ public:
 	void stop() { m_end = std::chrono::steady_clock::now(); }
 	std::chrono::steady_clock::duration time() const { return m_end - m_start; }
 	std::uint32_t nanoseconds() const {
-		return static_cast<std::uint32_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(time()).count());
+		return static_cast<std::uint32_t>(
+		        std::chrono::duration_cast<std::chrono::nanoseconds>(time()).count());
 	}
 
 private:
@@ -46,14 +47,12 @@ inline void report_performance_results(const std::string& desc,
 	assert(messures.size() > 1u);
 	const auto sum = std::accumulate(messures.begin(), messures.end(), std::uint64_t{});
 	const auto avg = sum / static_cast<double>(messures.size());
-	const auto median = (messures[messures.size() / 2u] + messures[(messures.size() - 1u)/2u]) /2.0;
-	std::cout << desc
-		<< " min = " << messures.front()
-		<< "ns, max = " << messures.back()
-		<< "ns, avg = " << avg
-		<< "ns, med = " << median
-		<< "ns,   sorted: ";
-	std::copy(messures.begin(), messures.end(), std::ostream_iterator<std::uint32_t>{std::cout, "ns, "});
+	const auto median =
+	        (messures[messures.size() / 2u] + messures[(messures.size() - 1u) / 2u]) / 2.0;
+	std::cout << desc << " min = " << messures.front() << "ns, max = " << messures.back()
+	          << "ns, avg = " << avg << "ns, med = " << median << "ns,   sorted: ";
+	std::copy(messures.begin(), messures.end(),
+	          std::ostream_iterator<std::uint32_t>{std::cout, "ns, "});
 	std::cout << '\n';
 }
 
