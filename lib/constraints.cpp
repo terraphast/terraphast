@@ -1,5 +1,7 @@
 #include <terraces/constraints.hpp>
 
+#include <algorithm>
+#include <array>
 #include <ostream>
 
 #include <terraces/union_find.hpp>
@@ -15,14 +17,35 @@ std::ostream& operator<<(std::ostream& s, const constraint& c) {
 	return s;
 }
 
-constraints filter_constraints(const std::vector<index>& leaves, const constraints& c) {
+constraints filter_constraints(const std::vector<index>& leaves, const constraints& c_list) {
 	constraints new_c;
-	for (size_t i = 0; i < c.size(); i++) {
-		if ((std::find(leaves.begin(), leaves.end(), c.at(i).shared) != leaves.end()) &&
-		    (std::find(leaves.begin(), leaves.end(), c.at(i).left) != leaves.end()) &&
-		    (std::find(leaves.begin(), leaves.end(), c.at(i).right) != leaves.end())) {
-			new_c.push_back(c.at(i));
+	// This may not be the nicest code, but it is a tad faster than using std::find thrice;
+	// further improvements are of course always nice.
+	//
+	// Please keep in mind that this function is called with very small input-sizes most
+	// of the time, so using std::unordered_set easily add a factor of ten to the typical
+	// execution.
+	for (const auto& c : c_list) {
+		auto needles = std::array<index, 3>{{c.shared, c.left, c.right}};
+		auto it = std::find_first_of(leaves.begin(), leaves.end(), needles.begin(),
+		                             needles.end());
+		if (it == leaves.end()) {
+			continue;
+		} else if (*it == needles[0]) {
+			needles[0] = needles[2];
+		} else if (*it == needles[1]) {
+			needles[1] = needles[2];
 		}
+		it = std::find_first_of(std::next(it), leaves.end(), needles.begin(),
+		                        needles.begin() + 2);
+		if (it == leaves.end()) {
+			continue;
+		}
+		const auto final_needle = (*it == needles[0]) ? needles[1] : needles[0];
+		if (std::find(std::next(it), leaves.end(), final_needle) == leaves.end()) {
+			continue;
+		}
+		new_c.push_back(c);
 	}
 	return new_c;
 }
