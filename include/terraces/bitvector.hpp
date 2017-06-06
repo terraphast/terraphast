@@ -44,7 +44,7 @@ public:
 	/** Return the index of the j-th set bit (0-based), i.e. the lowest i s.t. rank(i + 1) = j -
 	 * 1. */
 	index select(index j) const;
-	/** Return the index of the next set bit, i.e. select(rank(i)). */
+	/** Return the index of the next set bit, i.e. select(rank(i + 1)). */
 	index next(index i) const;
 };
 
@@ -73,7 +73,7 @@ public:
 	/** Return the index of the j-th set bit (0-based), i.e. the lowest i s.t. rank(i + 1) = j -
 	 * 1. */
 	index select(index j) const;
-	/** Return the index of the next set bit, i.e. select(rank(i)). */
+	/** Return the index of the next set bit, i.e. select(rank(i + 1)). */
 	index next(index i) const;
 };
 
