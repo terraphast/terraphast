@@ -6,30 +6,6 @@
 namespace terraces {
 namespace tests {
 
-TEST_CASE("byte select tests", "[bitvector]") {
-	//                             76543210
-	CHECK(efficient::byte_select(0b00001000, 0) == 3);
-	CHECK(efficient::byte_select(0b00100100, 0) == 2);
-	CHECK(efficient::byte_select(0b00100100, 1) == 5);
-	CHECK(efficient::byte_select(0b00000000, 0) == 7);
-	CHECK(efficient::byte_select(0b11111101, 5) == 6);
-}
-
-TEST_CASE("block select tests", "[bitvector]") {
-	//              6666555555555544444444443333333333222222222211111111110000000000
-	//              3210987654321098765432109876543210987654321098765432109876543210
-	CHECK(efficient::block_select(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 25) ==
-	      63);
-	CHECK(efficient::block_select(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 10) ==
-	      30);
-	CHECK(efficient::block_select(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 0) == 3);
-	CHECK(efficient::block_select(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 6) == 17);
-}
-
 TEST_CASE("popcount tests", "[bitvector]") {
 	CHECK(efficient::popcount(
 	              0b1010111010101101010001010100000101000011000010111100000101001000) == 26);
@@ -88,16 +64,6 @@ TEST_CASE("naive bitvector", "[bitvector]") {
 	CHECK(b.rank(4) == 2);
 	CHECK(b.rank(7) == 4);
 	CHECK(b.rank(10) == 6);
-	CHECK(b.select(0) == 1);
-	CHECK(b.select(1) == 2);
-	CHECK(b.select(2) == 4);
-	CHECK(b.select(3) == 6);
-	CHECK(b.select(4) == 8);
-	CHECK(b.select(5) == 9);
-	CHECK(b.next(0) == 1);
-	CHECK(b.next(1) == 2);
-	CHECK(b.next(2) == 4);
-	CHECK(b.next(8) == 9);
 }
 
 TEST_CASE("efficient bitvector", "[bitvector]") {
@@ -124,16 +90,29 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 	CHECK(b.rank(4) == 2);
 	CHECK(b.rank(7) == 4);
 	CHECK(b.rank(10) == 6);
-	CHECK(b.select(0) == 1);
-	CHECK(b.select(1) == 2);
-	CHECK(b.select(2) == 4);
-	CHECK(b.select(3) == 6);
-	CHECK(b.select(4) == 8);
-	CHECK(b.select(5) == 9);
-	CHECK(b.next(0) == 1);
-	CHECK(b.next(1) == 2);
-	CHECK(b.next(2) == 4);
-	CHECK(b.next(8) == 9);
+}
+
+TEST_CASE("efficient bitvector large", "[bitvector]") {
+	efficient::bitvector b(255);
+	b.set(1);
+	b.set(63);
+	b.set(128);
+	b.set(191);
+	b.set(200);
+	b.set(204);
+	b.update_ranks();
+	CHECK(b.rank(10) == 1);
+	CHECK(b.rank(63) == 1);
+	CHECK(b.rank(64) == 2);
+	CHECK(b.rank(128) == 2);
+	CHECK(b.rank(129) == 3);
+	CHECK(b.rank(191) == 3);
+	CHECK(b.rank(192) == 4);
+	CHECK(b.rank(200) == 4);
+	CHECK(b.rank(201) == 5);
+	CHECK(b.rank(204) == 5);
+	CHECK(b.rank(205) == 6);
+	CHECK(b.rank(255) == 6);
 }
 
 } // namespace tests
