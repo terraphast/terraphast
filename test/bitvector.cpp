@@ -41,6 +41,29 @@ TEST_CASE("partial popcount tests", "[bitvector]") {
 	      17);
 }
 
+TEST_CASE("bit iteration tests", "[bitvector]") {
+	CHECK(efficient::has_next_bit(
+	        0b0000000000000000000000000000000000010000000000000000000000000000, 28));
+	CHECK(!efficient::has_next_bit(
+	        0b0000000000000000000000000000000000010000000000000000000000000000, 29));
+	//              6666555555555544444444443333333333222222222211111111110000000000
+	//              3210987654321098765432109876543210987654321098765432109876543210
+	CHECK(efficient::next_bit(
+	              0b1010111010101101010001010100000101000011000010111100000101001001, 64) ==
+	      64);
+	CHECK(efficient::next_bit(
+	              0b1010111010101101010001010100000101000011000010111100000101001000, 0) == 3);
+	CHECK(efficient::next_bit(
+	              0b1010111010101101010001010100000101000011000010111100000101001000, 29) ==
+	      30);
+	CHECK(efficient::next_bit(
+	              0b1010111010101101010001010100000101000011000010111100000101001000, 55) ==
+	      55);
+	CHECK(efficient::next_bit(
+	              0b1010111010101101010001010100000101000011000010111100000101001000, 56) ==
+	      57);
+}
+
 TEST_CASE("naive bitvector", "[bitvector]") {
 	// 0 1 2 3 4 5 6 7 8 9
 	// 0 1 1 0 1 0 1 0 1 1
@@ -64,6 +87,13 @@ TEST_CASE("naive bitvector", "[bitvector]") {
 	CHECK(b.rank(4) == 2);
 	CHECK(b.rank(7) == 4);
 	CHECK(b.rank(10) == 6);
+	CHECK(b.begin() == 1);
+	CHECK(b.next(1) == 2);
+	CHECK(b.next(2) == 4);
+	CHECK(b.next(4) == 6);
+	CHECK(b.next(6) == 8);
+	CHECK(b.next(8) == 9);
+	CHECK(b.next(9) == 10);
 }
 
 TEST_CASE("efficient bitvector", "[bitvector]") {
@@ -90,17 +120,28 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 	CHECK(b.rank(4) == 2);
 	CHECK(b.rank(7) == 4);
 	CHECK(b.rank(10) == 6);
+	CHECK(b.begin() == 1);
+	CHECK(b.next(1) == 2);
+	CHECK(b.next(2) == 4);
+	CHECK(b.next(4) == 6);
+	CHECK(b.next(6) == 8);
+	CHECK(b.next(8) == 9);
+	CHECK(b.next(9) == 10);
 }
 
 TEST_CASE("efficient bitvector large", "[bitvector]") {
-	efficient::bitvector b(255);
+	efficient::bitvector b(519);
 	b.set(1);
 	b.set(63);
 	b.set(128);
 	b.set(191);
 	b.set(200);
 	b.set(204);
+	b.set(400);
 	b.update_ranks();
+	efficient::bitvector b2(500);
+	b2.set(128);
+	efficient::bitvector b3(1042);
 	CHECK(b.rank(10) == 1);
 	CHECK(b.rank(63) == 1);
 	CHECK(b.rank(64) == 2);
@@ -113,6 +154,16 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	CHECK(b.rank(204) == 5);
 	CHECK(b.rank(205) == 6);
 	CHECK(b.rank(255) == 6);
+	CHECK(b.begin() == 1);
+	CHECK(b2.begin() == 128);
+	CHECK(b3.begin() == 1042);
+	CHECK(b.next(1) == 63);
+	CHECK(b.next(63) == 128);
+	CHECK(b.next(128) == 191);
+	CHECK(b.next(191) == 200);
+	CHECK(b.next(200) == 204);
+	CHECK(b.next(204) == 400);
+	CHECK(b.next(400) == 519);
 }
 
 } // namespace tests
