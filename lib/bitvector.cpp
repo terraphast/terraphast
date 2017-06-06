@@ -39,9 +39,11 @@ constexpr byte_select_table select_table = byte_select_table();
 
 index block_index(index i) { return i / 64; }
 
+index base_index(index block) { return block * 64; }
+
 uint8_t shift_index(index i) { return i % 64; }
 
-uint64_t set_mask(index i) { return 1 << (i & 63); }
+uint64_t set_mask(index i) { return 1ull << (i & 63); }
 
 uint64_t clear_mask(index i) { return ~set_mask(i); }
 
@@ -117,13 +119,14 @@ index bitvector::rank(index i) const {
 index bitvector::select(index j) const {
 	assert(!m_ranks_dirty);
 	assert(j < rank(m_size));
-	return block_select(m_blocks[0], j);
+	index b = 0; // TODO this does not work yet for multiple blocks
+	return base_index(b) + block_select(m_blocks[b], (uint8_t)j);
 }
 
 index bitvector::next(index i) const {
 	assert(!m_ranks_dirty);
 	assert(i < m_size);
-	return select(rank(i));
+	return select(rank(i + 1));
 }
 
 } // namespace efficient
@@ -154,8 +157,8 @@ index bitvector::rank(index i) const {
 
 index bitvector::select(index i) const {
 	index n = m_vector.size();
-	assert(i <= rank(n));
-	assert(i > 0);
+	assert(i < rank(n));
+	++i;
 	index rank = 0;
 	index j;
 	for (j = 0; j < n; ++j) {

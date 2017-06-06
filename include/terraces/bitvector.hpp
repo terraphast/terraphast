@@ -9,6 +9,7 @@ namespace terraces {
 namespace efficient {
 
 index block_index(index i);
+index base_index(index block);
 uint8_t shift_index(index i);
 uint64_t set_mask(index i);
 uint64_t clear_mask(index i);

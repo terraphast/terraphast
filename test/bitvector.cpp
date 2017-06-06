@@ -41,7 +41,7 @@ TEST_CASE("popcount tests", "[bitvector]") {
 
 TEST_CASE("prefix mask test", "[bitvector]") {
 	CHECK(efficient::prefix_mask(63) ==
-	      0b1111111111111111111111111111111111111111111111111111111111111111);
+	      0b0111111111111111111111111111111111111111111111111111111111111111);
 	CHECK(efficient::prefix_mask(1) ==
 	      0b0000000000000000000000000000000000000000000000000000000000000001);
 	CHECK(efficient::prefix_mask(10) ==
@@ -53,7 +53,7 @@ TEST_CASE("partial popcount tests", "[bitvector]") {
 	//              3210987654321098765432109876543210987654321098765432109876543210
 	CHECK(efficient::partial_popcount(
 	              0b1010111010101101010001010100000101000011000010111100000101001000, 63) ==
-	      26);
+	      25);
 	CHECK(efficient::partial_popcount(
 	              0b1010111010101101010001010100000101000011000010111100000101001000, 62) ==
 	      25);
@@ -61,7 +61,7 @@ TEST_CASE("partial popcount tests", "[bitvector]") {
 	              0b1010111010101101010001010100000101000011000010111100000101001000, 60) ==
 	      24);
 	CHECK(efficient::partial_popcount(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 48) ==
+	              0b1010111010101101010001010100000101000011000010111100000101001000, 49) ==
 	      17);
 }
 
@@ -88,12 +88,12 @@ TEST_CASE("naive bitvector", "[bitvector]") {
 	CHECK(b.rank(4) == 2);
 	CHECK(b.rank(7) == 4);
 	CHECK(b.rank(10) == 6);
-	CHECK(b.select(1) == 1);
-	CHECK(b.select(2) == 2);
-	CHECK(b.select(3) == 4);
-	CHECK(b.select(4) == 6);
-	CHECK(b.select(5) == 8);
-	CHECK(b.select(6) == 9);
+	CHECK(b.select(0) == 1);
+	CHECK(b.select(1) == 2);
+	CHECK(b.select(2) == 4);
+	CHECK(b.select(3) == 6);
+	CHECK(b.select(4) == 8);
+	CHECK(b.select(5) == 9);
 	CHECK(b.next(0) == 1);
 	CHECK(b.next(1) == 2);
 	CHECK(b.next(2) == 4);
@@ -124,12 +124,12 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 	CHECK(b.rank(4) == 2);
 	CHECK(b.rank(7) == 4);
 	CHECK(b.rank(10) == 6);
-	CHECK(b.select(1) == 1);
-	CHECK(b.select(2) == 2);
-	CHECK(b.select(3) == 4);
-	CHECK(b.select(4) == 6);
-	CHECK(b.select(5) == 8);
-	CHECK(b.select(6) == 9);
+	CHECK(b.select(0) == 1);
+	CHECK(b.select(1) == 2);
+	CHECK(b.select(2) == 4);
+	CHECK(b.select(3) == 6);
+	CHECK(b.select(4) == 8);
+	CHECK(b.select(5) == 9);
 	CHECK(b.next(0) == 1);
 	CHECK(b.next(1) == 2);
 	CHECK(b.next(2) == 4);
