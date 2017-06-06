@@ -1,37 +1,48 @@
 #ifndef FAST_SET_H
 #define FAST_SET_H
 
-#include <set>
-#include <vector>
-
-#include "trees.hpp"
+#include <terraces/bitvector.hpp>
 
 namespace terraces {
 
+class fast_index_set_iterator;
+
 class fast_index_set {
-	using const_iterator = std::set<index>::const_iterator;
+	using iterator = fast_index_set_iterator;
+	friend class fast_index_set_iterator;
 
 private:
-	bool m_dirty;
-	std::set<index> m_set;
-	std::vector<bool> m_occ;
+	efficient::bitvector m_vector;
 
 public:
-	fast_index_set(index m_size);
+	fast_index_set(index max_size);
 
 	bool contains(index i) const;
+	index rank(index i) const;
+	index max_size() const;
 	index size() const;
 
-	const_iterator begin() const;
-	const_iterator find(index i) const;
-	const_iterator end() const;
+	iterator begin() const;
+	iterator end() const;
 
-	void fill(bool val);
-	void reset_and_resize(index size);
-	void insert_element(index i);
-	void delete_element(index i);
+	void insert(index i);
+	void remove(index i);
 	void finalize_edit();
 };
+
+class fast_index_set_iterator {
+private:
+	const fast_index_set* m_set;
+	index m_index;
+
+public:
+	fast_index_set_iterator(const fast_index_set* set, index i);
+	fast_index_set_iterator& operator++();
+	bool operator==(const fast_index_set_iterator& other) const;
+	bool operator!=(const fast_index_set_iterator& other) const;
+	const index& operator*() const;
+};
+
 } // namespace terraces
 
 #endif // FAST_SET_H

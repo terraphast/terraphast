@@ -54,10 +54,11 @@ void bitvector::set(index i) {
 
 void bitvector::update_ranks() {
 	m_count = 0;
-	for (index i = 0; i < m_blocks.size() - 1; ++i) {
+	for (index i = 0; i < m_blocks.size(); ++i) {
 		m_count += popcount(m_blocks[i]);
 		m_ranks[i + 1] = m_count;
 	}
+	assert(m_count > 0);
 	m_ranks_dirty = false;
 }
 
@@ -70,8 +71,10 @@ index bitvector::rank(index i) const {
 
 index bitvector::count() const {
 	assert(!m_ranks_dirty);
-	return m_count;
+	return m_count - 1;
 }
+
+index bitvector::size() const { return m_size; }
 
 index bitvector::begin() const {
 	index b = 0;
@@ -90,6 +93,8 @@ index bitvector::next(index i) const {
 	}
 	return next_bit(m_blocks[b], i);
 }
+
+index bitvector::end() const { return m_size; }
 
 } // namespace efficient
 
@@ -111,6 +116,8 @@ void bitvector::clr(index i) {
 	m_vector[i] = false;
 }
 
+index bitvector::size() const { return m_vector.size(); }
+
 index bitvector::rank(index i) const {
 	assert(i <= m_vector.size());
 	return (index)std::count(m_vector.begin(),
@@ -128,6 +135,8 @@ index bitvector::next(index i) const {
 	return (index)std::distance(m_vector.begin(),
 	                            std::find(m_vector.begin() + (int)i + 1, m_vector.end(), true));
 }
+
+index bitvector::end() const { return m_vector.size(); }
 
 } // namespace naive
 

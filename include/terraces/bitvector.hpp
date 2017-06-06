@@ -49,6 +49,8 @@ public:
 	index begin() const;
 	/** Returns the index of the next set bit after the index or size() if no bit is set. */
 	index next(index i) const;
+	/** Returns the index one past the last element. */
+	index end() const;
 };
 
 } // namespace efficient
@@ -81,6 +83,8 @@ public:
 	index begin() const;
 	/** Returns the index of the next set bit after the index or size() if no bit is set. */
 	index next(index i) const;
+	/** Returns the index one past the last element. */
+	index end() const;
 };
 
 } // namespace naive
