@@ -55,7 +55,7 @@ size_t count_supertree(const fast_index_set& leaves, const fast_index_set& in_c_
 		return 1;
 	}
 
-	if (in_c.size() == 0) {
+	if (c_occ.size() == 0) {
 		size_t res = 1;
 		for (size_t i = 3; i <= leaves.size() + 1; i++) {
 			res *= (2 * i - 5);
