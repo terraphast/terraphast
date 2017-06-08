@@ -29,7 +29,7 @@ TEST_CASE("count_supertree4", "[supertree]") {
 
 TEST_CASE("count_supertree5", "[supertree]") {
 	constraints c = {{0, 1, 2}, {2, 3, 4}};
-	CHECK(count_supertree(5, c) == 1);
+	CHECK(count_supertree(5, c) == 9);
 }
 
 TEST_CASE("count_supertree6", "[supertree]") {
