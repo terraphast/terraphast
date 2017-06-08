@@ -129,23 +129,21 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 		}
 		const auto name_start = std::find(line.rbegin(), line.rend(), ' ').base();
 		const auto species = indices.at({name_start, line.end()});
-		if (suitable_root == none) {
-			auto it = line.begin();
-			auto end = name_start;
-			auto all_data_available = true;
-			for (auto i = index{}; i < cols; ++i) {
-				it = utils::skip_ws(it, end);
-				utils::ensure<bad_input_error>(it != end, "bad table in input");
-				auto c = *it++;
-				if (c == '1') {
-					mat.set(species, i, true);
-				} else {
-					all_data_available = false;
-				}
+		auto it = line.begin();
+		auto end = name_start;
+		auto all_data_available = true;
+		for (auto i = index{}; i < cols; ++i) {
+			it = utils::skip_ws(it, end);
+			utils::ensure<bad_input_error>(it != end, "bad table in input");
+			auto c = *it++;
+			if (c == '1') {
+				mat.set(species, i, true);
+			} else {
+				all_data_available = false;
 			}
-			if (all_data_available) {
-				suitable_root = species;
-			}
+		}
+		if (all_data_available and suitable_root == none) {
+			suitable_root = species;
 		}
 	}
 	return {mat, suitable_root};
