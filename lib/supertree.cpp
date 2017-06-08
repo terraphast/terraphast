@@ -1,171 +1,137 @@
 #include <terraces/bipartitions.hpp>
 #include <terraces/supertree.hpp>
+#include <terraces/union_find.hpp>
 
 #include <iostream>
 #include <unordered_map>
 
-std::string prefix;
-
 namespace terraces {
 
-constraints map_constraints(const std::vector<index>& leaves, constraints c) {
-	std::unordered_map<index, index> m;
-	for (size_t i = 0; i < leaves.size(); i++) {
-		m[leaves.at(i)] = i;
-	}
-	for (size_t i = 0; i < c.size(); i++) {
-		auto& constraint = c.at(i);
-		constraint.left = m[constraint.left];
-		constraint.right = m[constraint.right];
-		constraint.shared = m[constraint.shared];
-	}
-	return c;
-}
+std::string prefix = "";
 
-std::vector<std::vector<index>> map_sets(std::vector<index> leaves,
-                                         std::vector<std::vector<index>> sets) {
-	std::vector<std::vector<index>> res;
-	for (size_t i = 0; i < sets.size(); i++) {
-		std::vector<index> set;
-		for (size_t j = 0; j < sets.at(i).size(); j++) {
-			set.push_back(leaves.at(sets.at(i).at(j)));
-		}
-		res.push_back(set);
+size_t count_supertree(index count, const constraints& c) {
+	fast_index_set leaves{count};
+	for (index i = 0; i < count; i++) {
+		leaves.insert(i);
 	}
-	return res;
-}
-
-bool check_supertree(const tree& tree, const constraints& c) {
-	index num_nodes = tree.size();
-	index num_leaves = (num_nodes + 1) / 2;
-	std::vector<index> leaves(num_leaves);
-	index j = 0;
-	for (size_t i = 0; i < num_nodes; i++) {
-		if (is_leaf(tree[i])) {
-			leaves[j++] = i;
-		}
-	}
-	return check_supertree(leaves, c);
-}
-
-bool check_supertree(const std::vector<index>& leaves, const constraints& c) {
-	// only one tree possible for two leaves
-	if (leaves.size() <= 2) {
-		return false;
+	fast_index_set c_occ{c.size()};
+	for (index i = 0; i < c.size(); ++i) {
+		c_occ.insert(i);
 	}
 
-	// on a terrace if more than two leaves and no contraints
-	if (c.size() == 0) {
-		return true;
-	}
-
-	constraints new_c = map_constraints(leaves, c);
-	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
-	sets = map_sets(leaves, sets);
-
-	// on a terrace if more than one bipartition
-	if (sets.size() > 2) {
-		return true;
-	}
-
-	std::vector<index> left_set = sets.at(0);
-	std::vector<index> right_set = sets.at(1);
-
-	constraints left_bips = filter_constraints(left_set, c);
-	constraints right_bips = filter_constraints(right_set, c);
-
-	if (check_supertree(left_set, left_bips)) {
-		return true;
-	} else {
-		return check_supertree(right_set, right_bips);
-	}
+	leaves.finalize_edit();
+	c_occ.finalize_edit();
+	return count_supertree(leaves, c_occ, c);
 }
 
 size_t count_supertree(const tree& tree, const constraints& c) {
-	index num_nodes = tree.size();
-	index num_leaves = (num_nodes + 1) / 2;
-	std::vector<index> leaves(num_leaves);
-	index j = 0;
-	for (size_t i = 0; i < num_nodes; i++) {
+	fast_index_set leaves{tree.size()};
+	for (index i = 0; i < tree.size(); i++) {
 		if (is_leaf(tree[i])) {
-			leaves[j++] = i;
+			leaves.insert(i);
 		}
 	}
-	prefix = "";
-	return count_supertree(leaves, c);
+	fast_index_set c_occ{c.size()};
+	for (index i = 0; i < c.size(); ++i) {
+		c_occ.insert(i);
+	}
+
+	leaves.finalize_edit();
+	c_occ.finalize_edit();
+	return count_supertree(leaves, c_occ, c);
 }
 
-size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
+size_t count_supertree(const fast_index_set& leaves, const fast_index_set& in_c_occ,
+                       const constraints& in_c) {
 	size_t number = 0;
+	fast_index_set c_occ{in_c_occ.max_size()};
 	std::cout << prefix << "leaves {";
 	for (auto l : leaves) {
 		std::cout << l << ",";
 	}
 	std::cout << "}\n";
+
+	for (auto c_i : in_c_occ) {
+		if (leaves.contains(in_c[c_i].left) && leaves.contains(in_c[c_i].shared) &&
+		    leaves.contains(in_c[c_i].right)) {
+			c_occ.insert(c_i);
+		}
+	}
+	c_occ.finalize_edit(); // TODO unnecessary!
 	std::cout << prefix << "constraints {";
-	for (auto cc : c) {
-		std::cout << cc << ",";
+	for (auto cc : c_occ) {
+		std::cout << in_c[cc] << ",";
 	}
 	std::cout << "}\n";
 
 	if (leaves.size() == 2) {
-		std::cout << prefix << "result: 1\n";
+		std::cout << prefix << "result: 1 (direct)\n";
 		return 1;
 	}
 
-	if (c.size() == 0) {
+	if (c_occ.size() == 0) {
 		size_t res = 1;
 		for (size_t i = 3; i <= leaves.size() + 1; i++) {
 			res *= (2 * i - 5);
 		}
-		std::cout << prefix << "result: " << res << "\n";
+		std::cout << prefix << "result: " << res << " (formula)\n";
 		return res;
 	}
 
-	constraints new_c = map_constraints(leaves, c);
-	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
-	sets = map_sets(leaves, sets);
-
-	std::cout << prefix << "sets ";
-	for (auto& set : sets) {
-		std::cout << prefix << "{";
-		for (auto el : set) {
-			std::cout << el << ",";
-		}
-		std::cout << "}, ";
+	union_find sets = make_set(leaves.size());
+	for (auto c_i : c_occ) {
+		auto& c = in_c[c_i];
+		merge(sets, leaves.rank(c.left), leaves.rank(c.shared));
 	}
-	std::cout << "\n";
+	fast_index_set set_rep(leaves.size());
+	for (index i = 0; i < leaves.size(); ++i) {
+		set_rep.insert(find(sets, i));
+	}
+	set_rep.finalize_edit();
+	std::cout << prefix << "sets: " << set_rep.size() << "\n";
 
-	for (bipartition_iterator bip_it(sets); bip_it.is_valid(); bip_it.increase()) {
-		std::vector<index> left_set = std::get<0>(bip_it.get_bipartition());
-		std::vector<index> right_set = std::get<1>(bip_it.get_bipartition());
-
-		constraints left_bips = filter_constraints(left_set, c);
-		constraints right_bips = filter_constraints(right_set, c);
-
+	for (bipartition_iterator bip_it(set_rep.size()); bip_it.is_valid(); bip_it.increase()) {
 		std::cout << prefix << "subcall for bipartition " << bip_it << "{";
-		for (auto el : left_set) {
+		fast_index_set subleaves{leaves.max_size()};
+		index ii = 0;
+		for (auto i : leaves) {
+			if (bip_it.get(set_rep.rank(find(sets, ii)))) {
+				subleaves.insert(i);
+			}
+			++ii;
+		}
+		subleaves.finalize_edit();
+		for (auto el : subleaves) {
 			std::cout << el << ",";
 		}
 		std::cout << "}, {";
-		for (auto el : right_set) {
-			std::cout << el << ",";
+		for (auto el : leaves) {
+			if (!subleaves.contains(el)) {
+				std::cout << el << ",";
+			}
 		}
 		std::cout << "}\n";
 
 		prefix += "  ";
-
-		auto cl = count_supertree(left_set, left_bips);
-		auto cr = count_supertree(right_set, right_bips);
-
+		index count_left = count_supertree(subleaves, c_occ, in_c);
+		for (auto i : leaves) {
+			if (subleaves.contains(i)) {
+				subleaves.remove(i);
+			} else {
+				subleaves.insert(i);
+			}
+		}
+		subleaves.finalize_edit();
+		index count_right = count_supertree(subleaves, c_occ, in_c);
 		prefix = std::string{prefix.begin() + 2, prefix.end()};
+		std::cout << prefix << "subcalls returned " << count_left << " and " << count_right
+		          << "\n";
 
-		std::cout << prefix << "subcalls returned " << cl << " and " << cr << "\n";
-
-		number += cl * cr;
+		number += count_left * count_right;
+		std::cout << prefix << "---------------------------------\n";
 	}
+	std::cout << prefix << "result: " << number << " (recursive)\n";
 
-	std::cout << prefix << "result: " << number << "\n";
 	return number;
 }
 

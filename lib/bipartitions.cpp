@@ -5,35 +5,23 @@
 
 namespace terraces {
 
-bipartition_iterator::bipartition_iterator(const std::vector<std::vector<index>>& sets)
-        : bip{1}, end{(1u << (sets.size() - 1))}, sets{sets} {
-	assert(sets.size() < 64);
+bipartition_iterator::bipartition_iterator(index size) : bip{1}, end{(1u << (size - 1))} {
+	assert(size < 64);
 }
 
-bipartition bipartition_iterator::get_bipartition() {
-	std::vector<index> s1 = sets.at(0);
-	std::vector<index> s2;
-	for (size_t i = sets.size() - 1; i > 0; i--) {
-		if (bip & (1 << (i - 1))) {
-			s2.insert(s2.end(), sets.at(i).begin(), sets.at(i).end());
-		} else {
-			s1.insert(s1.end(), sets.at(i).begin(), sets.at(i).end());
-		}
-	}
-	return bipartition{s1, s2};
-}
+bool bipartition_iterator::get(index i) const { return bip & (1 << (i - 1)); }
 
 void bipartition_iterator::increase() { bip++; }
 
-bool bipartition_iterator::is_valid() { return bip < end; }
+bool bipartition_iterator::is_valid() const { return bip < end; }
 
 std::ostream& bipartition_iterator::write_binary(std::ostream& stream) const {
-	for (int i = (int)sets.size() - 1; i >= 0; --i) {
-		stream << ((bip >> i) & 1);
+	for (index b = end, c = bip; b; b >>= 1, c >>= 1) {
+		stream << (index)(c & 1);
 	}
-	stream << "/";
-	for (int i = (int)sets.size() - 1; i >= 0; --i) {
-		stream << ((end >> i) & 1);
+	stream << '/';
+	for (index b = end; b; b >>= 1) {
+		stream << (index)(b & 1);
 	}
 	return stream;
 }

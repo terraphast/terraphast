@@ -1,10 +1,10 @@
 #include <catch.hpp>
 
 #include <terraces/constraints.hpp>
+#include <terraces/fast_set.hpp>
 #include <terraces/rooting.hpp>
 #include <terraces/subtree_extraction.hpp>
 #include <terraces/supertree.hpp>
-#include <terraces/fast_set.hpp>
 
 namespace terraces {
 
@@ -22,13 +22,7 @@ TEST_CASE("full_run_disjoint", "[rerooting],[tree_extraction],[constraints],[sup
 	b.set(8, 0, true);
 	auto ts = subtrees(t, b);
 	auto cs = compute_constraints(ts);
-	fast_index_set leaves{9};
-	leaves.insert(2);
-	leaves.insert(5);
-	leaves.insert(6);
-	leaves.insert(7);
-	leaves.insert(8);
-	CHECK(leaves, cs) == 17);
+	CHECK(count_supertree(t, cs) == 17);
 }
 
 } // namespace tests
