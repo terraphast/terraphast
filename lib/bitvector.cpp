@@ -29,7 +29,7 @@ uint8_t popcount(uint64_t block) { return (uint8_t)__builtin_popcountll(block); 
 uint8_t partial_popcount(uint64_t block, index i) { return popcount(block & prefix_mask(i)); }
 
 bitvector::bitvector(index size)
-        : m_size{size}, m_blocks(size / 64 + 1), m_ranks((size + 63) / 64 + 1),
+        : m_size{size}, m_blocks(size / 64 + 1), m_ranks(m_blocks.size() + 1),
           m_ranks_dirty{false} {
 	// add sentinel bit for iteration
 	m_blocks[block_index(size)] |= set_mask(size);
@@ -49,6 +49,12 @@ void bitvector::clr(index i) {
 void bitvector::set(index i) {
 	assert(i < m_size);
 	m_blocks[block_index(i)] |= set_mask(i);
+	m_ranks_dirty = true;
+}
+
+void bitvector::blank() {
+	for (auto& el : m_blocks)
+		el = 0;
 	m_ranks_dirty = true;
 }
 

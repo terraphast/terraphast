@@ -26,6 +26,8 @@ void fast_index_set::insert(index i) { m_vector.set(i); }
 
 void fast_index_set::remove(index i) { m_vector.clr(i); }
 
+void fast_index_set::clear() { m_vector.blank(); }
+
 void fast_index_set::finalize_edit() { m_vector.update_ranks(); }
 
 fast_index_set_iterator::fast_index_set_iterator(const fast_index_set* set, index i)

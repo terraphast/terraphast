@@ -34,6 +34,8 @@ public:
 	void set(index i);
 	/** Clears a bit in the bitvector. */
 	void clr(index i);
+	/** Clears all bit in the bitvector. */
+	void blank();
 	/** Returns a bit from the bitvector. */
 	bool get(index i) const;
 	/** Returns the size of the bitvector. */
