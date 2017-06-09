@@ -1,8 +1,55 @@
 #include <limits.h>
+#include <fstream>
+#include <future>
 
 #include "terraces.h"
 #include "util.h"
 #include "gtest/gtest.h"
+
+#define TIME_FOR_TESTS 3000
+
+#define TEST_TIMEOUT_BEGIN   std::promise<bool> promisedFinished; \
+                              auto futureResult = promisedFinished.get_future(); \
+                              std::thread([](std::promise<bool>& finished) {
+ 
+#define TEST_TIMEOUT_FAIL_END(X)  finished.set_value(true); \
+                                   }, std::ref(promisedFinished)).detach(); \
+                                   EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) != std::future_status::timeout);
+
+
+void test_terrace_analysis(const char* newick_file, const char* data_file, const char* trees_on_terrace) {
+    input_data *read_data = parse_input_data(data_file);
+    assert(read_data != nullptr);
+
+    std::ifstream infile(newick_file);
+    std::string newick_tree;
+    std::getline(infile, newick_tree);
+	
+    missingData *m = initializeMissingData(read_data->number_of_species,
+                                           read_data->number_of_partitions,
+                                           const_cast<const char **>(read_data->names));
+    copyDataMatrix(read_data->matrix, m);
+
+    mpz_t terraceSize;
+
+    mpz_init(terraceSize);
+    mpz_set_ui(terraceSize, 0);
+
+    int errorCode = terraceAnalysis(m, newick_tree.c_str(),TA_COUNT, nullptr, &terraceSize);
+
+    ASSERT_EQ(errorCode, TERRACE_SUCCESS);
+
+    char *terraceSizeString = nullptr;
+
+    terraceSizeString = mpz_get_str(terraceSizeString, 10, terraceSize);
+
+    ASSERT_STREQ(terraceSizeString, trees_on_terrace);
+
+    free(terraceSizeString);
+
+    freeMissingData(m);
+    infile.close();
+}
 
 // Test a simple tree file
 TEST(Util, generate_induced_tree) {
@@ -293,3 +340,44 @@ TEST(TerracesAnalysis, example2_from_old_main) {
     fclose(f0);
 }
 
+TEST(TerracesAnalysis, Allium_Tiny) {
+    TEST_TIMEOUT_BEGIN
+    test_terrace_analysis("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+}
+
+TEST(TerracesAnalysis, Asplenium_1) {
+    TEST_TIMEOUT_BEGIN
+    test_terrace_analysis("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+}
+
+TEST(TerracesAnalysis, Asplenium_2) {
+    TEST_TIMEOUT_BEGIN
+    test_terrace_analysis("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+}
+
+TEST(TerracesAnalysis, Eucalyptus_1) {
+    TEST_TIMEOUT_BEGIN
+    test_terrace_analysis("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "27");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+}
+
+TEST(TerracesAnalysis, Eucalyptus_2) {
+    TEST_TIMEOUT_BEGIN
+    test_terrace_analysis("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "147");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+}
+
+TEST(TerracesAnalysis, Euphorbia_1) {
+    TEST_TIMEOUT_BEGIN
+    test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+}
+
+TEST(TerracesAnalysis, Euphorbia_2) {
+    TEST_TIMEOUT_BEGIN
+    test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+}
