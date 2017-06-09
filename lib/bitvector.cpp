@@ -52,6 +52,12 @@ void bitvector::set(index i) {
 	m_ranks_dirty = true;
 }
 
+void bitvector::blank() {
+	for (auto& el : m_blocks)
+		el = 0;
+	m_ranks_dirty = true;
+}
+
 void bitvector::update_ranks() {
 	m_count = 0;
 	for (index i = 0; i < m_blocks.size(); ++i) {
