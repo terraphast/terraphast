@@ -175,22 +175,4 @@ std::vector<constraint> extract_constraints_from_supertree(
 int terraceAnalysis(missingData *m, const char *newickTreeString,
 		const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
 
-/*
- * for debug statements
- */
-#ifndef DEBUG
-void d_print_tree_impl(const char* file, const int line, const ntree_t* tree);
-void d_print_tree_impl(const char* file, const int line, const std::shared_ptr<Tree> tree);
-#define d_print_tree(t) do { \
-   d_print_tree_impl(__FILE__, __LINE__, t);\
-} while(false)
-#define d_printf(...) do { \
-   fprintf(stderr, "DEBUG(%s, %d): ", __FILE__, __LINE__);\
-   fprintf(stderr, __VA_ARGS__);\
-} while(false)
-#else
-#define d_printf(...) do {} while(false)
-#define d_print_tree(tree) do {} while(false)
-#endif
-
 #endif /* TERRACES_H */

@@ -1,4 +1,5 @@
 #include "util.h"
+#include "debug.h"
 
 std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
                                             const missingData *missing_data,
@@ -67,9 +68,9 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree,
                                                 missing_data->speciesNames[root_species_number]);
         root_species_name = missing_data->speciesNames[root_species_number];
         if (future_root == nullptr) {
-            std::cout << "In root_tree(...): label "
-                      << missing_data->speciesNames[root_species_number]
-                      << " not found in tree" << std::endl;
+            dout("In root_tree(...): label "
+                         << missing_data->speciesNames[root_species_number]
+                         << " not found in tree" << std::endl);
             return nullptr;
         }
         return root_at(future_root);
@@ -89,11 +90,11 @@ ntree_t *get_leaf_by_name(ntree_t *tree, const char *label) {
             assert(tree->children[i]->parent != nullptr);
             if (tree != tree->children[i]->parent) {
                 if (tree->children[i]->label != nullptr) {
-                    std::cout << "parent von " << tree->children[i]->label
-                              << " ist falsch\n";
+                    dout("parent von " << tree->children[i]->label
+                              << " ist falsch\n");
                 } else {
-                    std::cout << "parent von " << tree->children[i]
-                              << "ist falsch\n";
+                    dout("parent von " << tree->children[i]
+                              << "ist falsch\n");
                 }
 
             }
@@ -121,7 +122,6 @@ std::shared_ptr<Tree> root_at(ntree_t *leaf) {
     root->label = "";
     root->left = new_leaf;
     root->right = new_neighbour;
-    root->label = "";
 
     //initialize new_leaf and new_neighbour
     new_leaf->parent = root;
@@ -177,15 +177,15 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
             assert(0);
         }
     } else if(current_ntree->parent == nullptr) { //we are at the regular root
-        if(current_ntree->children[0]->label != nullptr) {
-            current->label = current_ntree->children[0]->label;
-        }
-        if(current_ntree->children[1]->label != nullptr) {
-            current->label = current_ntree->children[1]->label;
-        }
         current->left = nullptr;
         current->right = nullptr;
-        return;
+        if(current_ntree->children[0] == parent) {
+            recursive_root(current, current_ntree->children[1], current_ntree);
+            return;
+        } else {
+            recursive_root(current, current_ntree->children[0], current_ntree);
+            return;
+        }
     } else {
         assert(current_ntree->children_count == 2);
         //set the children, leave out the parent
@@ -262,8 +262,39 @@ void get_leafs (std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<T
     }
 }
 
-
 bool node_compare(std::shared_ptr<Tree> node_1, std::shared_ptr<Tree> node_2) {
     assert(node_1 != nullptr && node_2 != nullptr);
     return (node_1->label.compare(node_2->label) < 0);
+}
+
+static void d_print_tree_rec(std::ostream &strm,
+                                      const ntree_t *tree,
+                                      const int depth) {
+
+    for (int j = 0; j < depth * 4; j++) {
+        strm << " ";
+    }
+    strm << "<node";
+    if(tree->label != nullptr) {
+        strm << " label=\"" << tree->label << '"';
+    }
+    strm << ">";
+    if(tree->children_count > 0) {
+        strm << std::endl;
+    }
+    for (int i = 0; i < tree->children_count; i++) {
+        d_print_tree_rec(strm, tree->children[i], depth + 1);
+    }
+    if(tree->children_count > 0) {
+        for (int j = 0; j < depth * 4; j++) {
+            strm << " ";
+        }
+    }
+    strm << "<node/>" << std::endl;
+}
+
+std::ostream& operator<<(std::ostream &strm, const ntree_t *tree) {
+    strm << "Dump ntree_t:" <<  std::endl;
+    d_print_tree_rec(strm, tree, 0);
+    return strm;
 }

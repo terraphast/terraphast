@@ -89,7 +89,6 @@ std::vector<std::shared_ptr<Tree>> get_neighbours(std::shared_ptr<Tree> node);
  */
 bool node_compare(std::shared_ptr<Tree> node_1, std::shared_ptr<Tree> node_2);
 
-
 /**
  * @brief get_leafs return a list the list of all leafs of the tree
  * @param leaf_list the list where the leafs will be inserted
@@ -97,5 +96,13 @@ bool node_compare(std::shared_ptr<Tree> node_1, std::shared_ptr<Tree> node_2);
  * @param parent the node where we come from. to avoid endles recursion
  */
 void get_leafs (std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<Tree> current_node, std::shared_ptr<Tree> parent);
+
+/**
+ * Converts a given newick tree to string
+ * @param strm the output stream
+ * @param tree the tree whose string representation is requested
+ * @return a textual representation of the given tree
+ */
+std::ostream& operator<<(std::ostream &strm, const ntree_t *tree);
 
 #endif //include guard

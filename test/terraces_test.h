@@ -6,25 +6,26 @@
 #include "util.h"
 #include "gtest/gtest.h"
 
-#define TIME_FOR_TESTS 3000
+#define TIME_FOR_TESTS 1000*30
 
-#define TEST_TIMEOUT_BEGIN   std::promise<bool> promisedFinished; \
-                              auto futureResult = promisedFinished.get_future(); \
-                              std::thread([](std::promise<bool>& finished) {
- 
-#define TEST_TIMEOUT_FAIL_END(X)  finished.set_value(true); \
-                                   }, std::ref(promisedFinished)).detach(); \
-                                   EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) != std::future_status::timeout);
+#define TEST_TIMEOUT_BEGIN  std::promise<bool> promisedFinished; \
+                            auto futureResult = promisedFinished.get_future(); \
+                            std::thread([](std::promise<bool>& finished) {
+
+#define TEST_TIMEOUT_FAIL_END(X)    finished.set_value(true); \
+                                    }, std::ref(promisedFinished)).detach(); \
+                                    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) \
+                                        != std::future_status::timeout);
 
 
-void test_terrace_analysis(const char* newick_file, const char* data_file, const char* trees_on_terrace) {
+static void test_terrace_analysis(const char *newick_file,
+                                  const char *data_file,
+                                  const char *trees_on_terrace) {
     input_data *read_data = parse_input_data(data_file);
     assert(read_data != nullptr);
+    char *read_tree = read_newk_tree(newick_file);
+    assert(read_tree != nullptr);
 
-    std::ifstream infile(newick_file);
-    std::string newick_tree;
-    std::getline(infile, newick_tree);
-	
     missingData *m = initializeMissingData(read_data->number_of_species,
                                            read_data->number_of_partitions,
                                            const_cast<const char **>(read_data->names));
@@ -35,7 +36,7 @@ void test_terrace_analysis(const char* newick_file, const char* data_file, const
     mpz_init(terraceSize);
     mpz_set_ui(terraceSize, 0);
 
-    int errorCode = terraceAnalysis(m, newick_tree.c_str(),TA_COUNT, nullptr, &terraceSize);
+    int errorCode = terraceAnalysis(m, read_tree, TA_COUNT, nullptr, &terraceSize);
 
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
@@ -48,7 +49,6 @@ void test_terrace_analysis(const char* newick_file, const char* data_file, const
     free(terraceSizeString);
 
     freeMissingData(m);
-    infile.close();
 }
 
 // Test a simple tree file
@@ -174,10 +174,6 @@ TEST(TerracesAnalysis, example1_from_old_main) {
     FILE *f0 = fopen("tree1", "w");
     FILE *f1 = fopen("tree2", "w");
 
-    //Original: use raw tree as input
-    //char *newickString0 = "((s1,s2),s3,(s4,s5))"; //tree T_0 from Fig 2 in the task specification
-    //char *newickString1 = "((s1,s2),s4,(s3,s5))";  //tree T_1 from Fig 2 in the task sepcification
-
     const char *newickString0 = "((s1,s2),s3,(s4,s5));"; //tree T_0 from Fig 2 in the task specification
     const char *newickString1 = "((s1,s2),s4,(s3,s5));"; //tree T_1 from Fig 2 in the task sepcification
 
@@ -192,10 +188,13 @@ TEST(TerracesAnalysis, example1_from_old_main) {
                                      1, 0,
                                      1, 1,
                                      0, 1,
-                                     0, 1}, //missing data matrix from example in the task specification
+                                     0, 1}; //missing data matrix from example in the task specification
 
-            matrix2[] = {1, 1, //1st row, species 0 has data for partitions 0 and 1
-                         1, 1, 1, 1, 1, 1, 1, 1}; //no missing data, so there should not be any terraces
+    const unsigned char matrix2[] = {1, 1, //1st row, species 0 has data for partitions 0 and 1
+                                     1, 1,
+                                     1, 1,
+                                     1, 1,
+                                     1, 1}; //no missing data, so there should not be any terraces
 
     //let's initialize some missing data data structures now
     missingData *example1 = initializeMissingData(5, 2, speciesNames);
@@ -237,7 +236,7 @@ TEST(TerracesAnalysis, example1_from_old_main) {
     ASSERT_TRUE(
             (mpz_cmp(terraceSize0, terraceSize1) == 0) && (mpz_cmp_ui(terraceSize0, 15) == 0));
 
-    /*********************************************************************************************************************/
+    /******************************************************************************************************************/
 
     // example calling a matrix with no missing data, hence there are no terraces, or the size of all terraces is 1, or
     // there are 15 unique trees.
@@ -342,42 +341,42 @@ TEST(TerracesAnalysis, example2_from_old_main) {
 
 TEST(TerracesAnalysis, Allium_Tiny) {
     TEST_TIMEOUT_BEGIN
-    test_terrace_analysis("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35");
+                test_terrace_analysis("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35");
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }
 
 TEST(TerracesAnalysis, Asplenium_1) {
     TEST_TIMEOUT_BEGIN
-    test_terrace_analysis("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1");
+                test_terrace_analysis("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1");
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }
 
 TEST(TerracesAnalysis, Asplenium_2) {
     TEST_TIMEOUT_BEGIN
-    test_terrace_analysis("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95");
+                test_terrace_analysis("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95");
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }
 
 TEST(TerracesAnalysis, Eucalyptus_1) {
     TEST_TIMEOUT_BEGIN
-    test_terrace_analysis("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "27");
+                test_terrace_analysis("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "27");
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }
 
 TEST(TerracesAnalysis, Eucalyptus_2) {
     TEST_TIMEOUT_BEGIN
-    test_terrace_analysis("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "147");
+                test_terrace_analysis("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "147");
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }
 
 TEST(TerracesAnalysis, Euphorbia_1) {
     TEST_TIMEOUT_BEGIN
-    test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759");
+                test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759");
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }
 
 TEST(TerracesAnalysis, Euphorbia_2) {
     TEST_TIMEOUT_BEGIN
-    test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759");
+                test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759");
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }

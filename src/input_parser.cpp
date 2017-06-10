@@ -7,7 +7,7 @@
 
 #include "util.h"
 
-//function to free input data 
+//function to free input data
 
 void free_input_data(input_data *d) {
     for (size_t i = 0; i < d->number_of_species; ++i) {
@@ -20,7 +20,7 @@ void free_input_data(input_data *d) {
 }
 
 
-//read newick tree string from empirical input example files 
+//read newick tree string from empirical input example files
 
 char *read_newk_tree(const char *newk_file) {
     FILE *f = fopen(newk_file, "rb");

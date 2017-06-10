@@ -43,18 +43,14 @@ public:
 	std::shared_ptr<Tree> right;
 	std::shared_ptr<Tree> parent;
 
-	// unused from newick structure:
-	//unsigned int leaves;
-	//char * color;
-	//int mark;
-	//void * data;
-
 	inline bool is_leaf() {
 		return (left == nullptr && right == nullptr);
 	}
 
 	std::string to_newick_string();
 };
+
+std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree);
 
 class UnrootedTree {
 public:

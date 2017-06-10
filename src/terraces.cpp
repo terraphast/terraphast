@@ -7,6 +7,7 @@
 #include "input_parser.h"
 #include "terraces.h"
 #include "util.h"
+#include "debug.h"
 
 #include <assert.h>
 #include <math.h>
@@ -17,62 +18,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <gmp.h>
-
-#ifndef DEBUG
-
-static void d_print_tree_rec(const ntree_t *tree, int depth) {
-    for (int j = 0; j < depth * 4; j++) {
-        fprintf(stderr, " ");
-    }
-    fprintf(stderr, "<node label=\"%s\">", tree->label);
-    if(tree->children_count > 0) {
-        fprintf(stderr, "\n");
-    }
-    for (int i = 0; i < tree->children_count; i++) {
-        d_print_tree_rec(tree->children[i], depth + 1);
-    }
-    if(tree->children_count > 0) {
-        for (int j = 0; j < depth * 4; j++) {
-            fprintf(stderr, " ");
-        }
-    }
-    fprintf(stderr, "<node/>\n");
-}
-
-void d_print_tree_impl(const char* file, const int line, const ntree_t *tree) {
-    fprintf(stderr, "DEBUG(%s, %d): Dump ntree_t:\n", file, line);
-    d_print_tree_rec(tree, 1);
-}
-
-static void d_print_tree_rec(const std::shared_ptr<Tree> tree, int depth) {
-    fprintf(stderr, "Label: %s\n", tree->label.c_str());
-    assert(
-            depth == 1
-            || (tree->parent != nullptr
-                && (tree->parent->left == tree
-                    || tree->parent->right == tree)));
-    if (tree->left != nullptr) {
-        for (int j = 0; j < depth * 4; j++) {
-            fprintf(stderr, " ");
-        }
-        fprintf(stderr, "L:");
-        d_print_tree_rec(tree->left, depth + 1);
-    }
-    if (tree->right != nullptr) {
-        for (int j = 0; j < depth * 4; j++) {
-            fprintf(stderr, " ");
-        }
-        fprintf(stderr, "R:");
-        d_print_tree_rec(tree->right, depth + 1);
-    }
-}
-
-void d_print_tree_impl(const char* file, const int line, const std::shared_ptr<Tree> tree) {
-    fprintf(stderr, "DEBUG(%s, %d): Dump Tree:\n", file, line);
-    d_print_tree_rec(tree, 1);
-}
-
-#endif /* DEBUG */
 
 int terraceAnalysis(missingData *m,
                     const char *newickTreeString,
@@ -86,7 +31,7 @@ int terraceAnalysis(missingData *m,
 
     //some debugging print outs
 
-    d_printf("read_tree = %s\n", newickTreeString);
+    //dout("read_tree = " << newickTreeString << std::endl);
 
     // figure out what we are supposed to calculate
 
@@ -119,11 +64,13 @@ int terraceAnalysis(missingData *m,
     ntree_t *tree = get_newk_tree_from_string(newickTreeString);
 
     assert(tree != nullptr);
+    //dout(tree);
 
     std::string root_species_name;
     std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
 
     assert(rtree != nullptr);
+    //dout(rtree);
 
     leaf_set leafs;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {

@@ -4,6 +4,7 @@
 #include <sstream>
 #include <memory>
 #include <map>
+#include <assert.h>
 
 static void to_newick_string_rec(std::stringstream &ss, Tree &node) {
 	if(node.is_leaf()) {
@@ -70,4 +71,35 @@ static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree,
 std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree) {
 	std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> cover_map;
 	return deep_copy(tree, cover_map);
+}
+
+static void d_print_tree_rec(std::ostream &strm,
+                                    const std::shared_ptr<Tree> tree,
+                                    const int depth) {
+	strm << "Label: " << tree->label << std::endl;
+	assert(
+			depth == 1
+			|| (tree->parent != nullptr
+				&& (tree->parent->left == tree
+					|| tree->parent->right == tree)));
+	if (tree->left != nullptr) {
+		for (int j = 0; j < depth * 4; j++) {
+            strm << " ";
+		}
+        strm << "L:";
+		d_print_tree_rec(strm, tree->left, depth + 1);
+	}
+	if (tree->right != nullptr) {
+		for (int j = 0; j < depth * 4; j++) {
+			strm << " ";
+		}
+		strm << "R:";
+		d_print_tree_rec(strm, tree->right, depth + 1);
+	}
+}
+
+std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree) {
+    strm << "Dump Tree:" << std::endl;
+    d_print_tree_rec(strm, tree, 1);
+    return strm;
 }

@@ -1,6 +1,7 @@
 #include "gmp.h"
 
 #include "terraces.h"
+#include "debug.h"
 
 #include <limits.h>
 #include <iostream>
@@ -323,7 +324,7 @@ TEST(ListTrees, DISABLED_with_Pyron_data) {
 
     auto result = find_all_rooted_trees(leafs, extract_constraints_from_supertree(rtree, m));
 
-    d_printf("Tree count: %zu", result.size());
+    dout("Tree count: " << result.size());
 
     ntree_destroy(tree);
     freeMissingData(m);
