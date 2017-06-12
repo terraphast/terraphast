@@ -82,7 +82,7 @@ index bitvector::size() const { return m_size; }
 
 index bitvector::begin() const {
 	index b = 0;
-	while (m_blocks[b] == 0) {
+	while (!has_next_bit0(m_blocks[b])) {
 		++b;
 	}
 	return next_bit0(m_blocks[b], base_index(b));
@@ -101,7 +101,6 @@ index bitvector::next(index i) const {
 		} while (!has_next_bit0(m_blocks[b]));
 		return next_bit0(m_blocks[b], base_index(b));
 	}
-	return next_bit(m_blocks[b], i);
 }
 
 index bitvector::end() const { return m_size; }
