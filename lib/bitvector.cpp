@@ -55,6 +55,7 @@ void bitvector::set(index i) {
 void bitvector::blank() {
 	for (auto& el : m_blocks)
 		el = 0;
+	m_blocks[block_index(m_size)] |= set_mask(m_size);
 	m_ranks_dirty = true;
 }
 
