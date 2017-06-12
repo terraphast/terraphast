@@ -5,6 +5,8 @@
 #include <terraces/subtree_extraction.hpp>
 #include <terraces/supertree.hpp>
 
+#include <iostream>
+
 namespace terraces {
 
 namespace tests {
@@ -21,7 +23,7 @@ TEST_CASE("full_run_disjoint", "[rerooting],[tree_extraction],[constraints],[sup
 	b.set(8, 0, true);
 	auto ts = subtrees(t, b);
 	auto cs = compute_constraints(ts);
-	terraces::tree_master tm;
+	terraces::tree_master tm(t.size());
 	CHECK(tm.count_supertree(t, cs) == 17);
 }
 
