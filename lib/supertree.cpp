@@ -7,7 +7,7 @@
 
 namespace terraces {
 
-tree_master::tree_master() {};
+tree_master::tree_master(){};
 
 size_t tree_master::count_supertree(const tree& tree, const constraints& c) {
 	fast_index_set leaves{tree.size()};
