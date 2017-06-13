@@ -50,6 +50,12 @@ void bitvector::clr(index i) {
 	m_ranks_dirty = true;
 }
 
+void bitvector::flip(index i) {
+    assert(i < m_size);
+    m_blocks[block_index(i)] ^= set_mask(i);
+    m_ranks_dirty = true;
+}
+
 void bitvector::set(index i) {
 	assert(i < m_size);
 	m_blocks[block_index(i)] |= set_mask(i);
@@ -123,6 +129,11 @@ void bitvector::set(index i) {
 void bitvector::clr(index i) {
 	assert(i < m_vector.size());
 	m_vector[i] = false;
+}
+
+void bitvector::flip(index i) {
+    assert(i < m_vector.size());
+    m_vector[i] = !m_vector[i];
 }
 
 index bitvector::size() const { return m_vector.size(); }
