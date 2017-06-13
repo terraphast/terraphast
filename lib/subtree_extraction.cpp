@@ -14,7 +14,7 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 	assert(is_rooted_tree(t));
 
 	vector<tree> out_trees(num_sites, tree(num_nodes, node{}));
-	vector<vector<index>> tree_boundaries{num_sites, vector<index>{}};
+	vector<stack<index>> tree_boundaries{num_sites, stack<index>{}};
 
 	auto node_occ = occ;
 
@@ -39,18 +39,18 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 			if (leaf_occ || (inner_occ & !is_root(node))) {
 				// TODO: this fires with the Caryophyllaceae-input
 				assert(!boundary.empty());
-				auto parent = boundary.back();
+				auto parent = boundary.top();
 				out_tree[i].parent() = parent;
 				if (out_tree[parent].lchild() == none) {
 					out_tree[parent].lchild() = i;
 				} else {
 					assert(out_tree[parent].rchild() == none);
 					out_tree[parent].rchild() = i;
-					boundary.pop_back();
+					boundary.pop();
 				}
 			}
 			if (inner_occ) {
-				boundary.push_back(i);
+				boundary.push(i);
 			}
 		}
 	});
