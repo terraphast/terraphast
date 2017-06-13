@@ -34,6 +34,8 @@ using constraints = std::vector<constraint>;
 
 constraints compute_constraints(const std::vector<tree>& trees);
 
+index deduplicate_constraints(constraints& in_c);
+
 } // namespace terraces
 
 #endif
