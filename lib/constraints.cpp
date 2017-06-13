@@ -6,10 +6,6 @@
 
 namespace terraces {
 
-bool operator==(const constraint& c1, const constraint& c2) {
-	return std::tie(c1.shared, c1.left, c1.right) == std::tie(c2.shared, c2.left, c2.right);
-}
-
 std::ostream& operator<<(std::ostream& s, const constraint& c) {
 	s << "lca(" << c.left << "," << c.shared << ") < lca(" << c.shared << "," << c.right << ")";
 	return s;
@@ -63,6 +59,19 @@ constraints compute_constraints(const std::vector<tree>& trees) {
 	}
 
 	return result;
+}
+
+index deduplicate_constraints(constraints& in_c) {
+	for (auto& c : in_c) {
+		c = {std::min(c.left, c.shared), std::max(c.left, c.shared), c.right};
+	}
+	std::sort(in_c.begin(), in_c.end(), [](auto a, auto b) {
+		return std::tie(a.left, a.shared, a.right) < std::tie(b.left, b.shared, b.right);
+	});
+	auto it = std::unique(in_c.begin(), in_c.end());
+	index count = (index)std::distance(it, in_c.end());
+	in_c.erase(it, in_c.end());
+	return count;
 }
 
 } // namespace terraces
