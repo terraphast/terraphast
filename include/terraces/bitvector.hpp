@@ -34,8 +34,8 @@ public:
 	void set(index i);
 	/** Clears a bit in the bitvector. */
 	void clr(index i);
-    /** Flips a bit in the bitvector. */
-    void flip(index i);
+	/** Flips a bit in the bitvector. */
+	void flip(index i);
 	/** Returns a bit from the bitvector. */
 	bool get(index i) const;
 	/** Returns the size of the bitvector. */
@@ -70,8 +70,8 @@ public:
 	void set(index i);
 	/** Clears a bit in the bitvector. */
 	void clr(index i);
-    /** Flips a bit in the bitvector. */
-    void flip(index i);
+	/** Flips a bit in the bitvector. */
+	void flip(index i);
 	/** Returns a bit from the bitvector. */
 	bool get(index i) const;
 	/** Returns the size of the bitvector. */
