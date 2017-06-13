@@ -8,7 +8,7 @@
 namespace terraces {
 
 struct union_find {
-	std::vector<index> id;
+	mutable std::vector<index> id;
 	std::vector<index> size;
 };
 
@@ -24,7 +24,7 @@ union_find make_set(std::size_t);
 /**
  * Return a representational index which is in the same subset as the given one
  */
-index find(union_find&, index);
+index find(const union_find&, index);
 
 /**
  * Merge the given indices

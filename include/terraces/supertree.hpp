@@ -4,10 +4,18 @@
 #include "constraints.hpp"
 #include "fast_set.hpp"
 #include "trees.hpp"
+#include "union_find.hpp"
 
 namespace terraces {
 
 class tree_master {
+private:
+	fast_index_set filter_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
+	                                  const constraints& c) const;
+
+	union_find apply_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
+	                             const constraints& c) const;
+
 public:
 	tree_master();
 

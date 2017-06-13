@@ -13,7 +13,7 @@ union_find make_set(index n) {
 	return leaves;
 }
 
-index find(union_find& leaves, index x) {
+index find(const union_find& leaves, index x) {
 	index root = x;
 	while (root != leaves.id.at(root)) {
 		root = leaves.id.at(root);
