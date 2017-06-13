@@ -25,10 +25,10 @@ fast_index_set tree_master::filter_constraints(const fast_index_set& leaves,
 
 union_find tree_master::apply_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
                                           const constraints& c) const {
-	auto sets = make_set(leaves.size());
+	auto sets = union_find(leaves.size());
 	for (auto c_i : c_occ) {
 		auto& cons = c[c_i];
-		merge(sets, leaves.rank(cons.left), leaves.rank(cons.shared));
+		sets.merge(leaves.rank(cons.left), leaves.rank(cons.shared));
 	}
 	return sets;
 }

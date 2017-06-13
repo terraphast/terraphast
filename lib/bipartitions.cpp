@@ -17,7 +17,7 @@ fast_index_set bipartition_iterator::find_set_reps() const {
 	// TODO ugly style :)
 	fast_index_set set_rep(m_leaves.size());
 	for (index i = 0; i < m_leaves.size(); ++i) {
-		set_rep.insert(find(m_sets, i));
+		set_rep.insert(m_sets.find(i));
 	}
 	set_rep.finalize_edit();
 	return set_rep;
@@ -32,7 +32,7 @@ void bipartition_iterator::increase() {
 		m_subleaves.clear();
 		index ii = 0;
 		for (auto i : m_leaves) {
-			if (in_left_partition(m_set_rep.rank(find(m_sets, ii)))) {
+			if (in_left_partition(m_set_rep.rank(m_sets.find(ii)))) {
 				m_subleaves.insert(i);
 			}
 			++ii;
