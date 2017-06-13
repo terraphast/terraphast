@@ -18,26 +18,24 @@ private:
 public:
 	fast_index_set(index max_size) : m_vector{max_size} {}
 
-	inline bool contains(index i) const { return m_vector.get(i); }
-	inline index rank(index i) const {
+	bool contains(index i) const { return m_vector.get(i); }
+	index rank(index i) const {
 		assert(contains(i));
 		return m_vector.rank(i);
 	}
 
-	inline index max_size() const { return m_vector.size(); }
-	inline index size() const { return m_vector.count(); }
+	index max_size() const { return m_vector.size(); }
+	index size() const { return m_vector.count(); }
 
 	iterator begin() const;
 	iterator end() const;
 
-	inline void insert(index i) { m_vector.set(i); }
-	inline void remove(index i) { m_vector.clr(i); }
-	inline void toggle(index i) { m_vector.flip(i); }
-	inline void symm_difference(const fast_index_set& other) {
-		m_vector.bitwise_xor(other.m_vector);
-	}
-	inline void clear() { m_vector.blank(); }
-	inline void finalize_edit() { m_vector.update_ranks(); }
+	void insert(index i) { m_vector.set(i); }
+	void remove(index i) { m_vector.clr(i); }
+	void toggle(index i) { m_vector.flip(i); }
+	void symm_difference(const fast_index_set& other) { m_vector.bitwise_xor(other.m_vector); }
+	void clear() { m_vector.blank(); }
+	void finalize_edit() { m_vector.update_ranks(); }
 };
 
 class fast_index_set_iterator {
@@ -47,17 +45,15 @@ private:
 
 public:
 	fast_index_set_iterator(const fast_index_set& set, index i) : m_set{set}, m_index{i} {}
-	inline fast_index_set_iterator& operator++() {
+	fast_index_set_iterator& operator++() {
 		m_index = m_set.m_vector.next(m_index);
 		return *this;
 	}
-	inline bool operator==(const fast_index_set_iterator& other) const {
+	bool operator==(const fast_index_set_iterator& other) const {
 		return m_index == other.m_index;
 	}
-	inline bool operator!=(const fast_index_set_iterator& other) const {
-		return !(*this == other);
-	}
-	inline const index& operator*() const { return m_index; }
+	bool operator!=(const fast_index_set_iterator& other) const { return !(*this == other); }
+	const index& operator*() const { return m_index; }
 };
 
 inline auto fast_index_set::begin() const -> iterator { return {*this, m_vector.begin()}; }
