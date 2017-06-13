@@ -27,6 +27,8 @@ private:
 	index m_count;
 	bool m_ranks_dirty;
 
+	void add_sentinel();
+
 public:
 	/** Initializes a bitvector with given size. */
 	bitvector(index size);
@@ -36,12 +38,15 @@ public:
 	void clr(index i);
 	/** Flips a bit in the bitvector. */
 	void flip(index i);
-	/** Clears all bit in the bitvector. */
-	void blank();
 	/** Returns a bit from the bitvector. */
 	bool get(index i) const;
 	/** Returns the size of the bitvector. */
 	index size() const;
+
+	/** Clears all bits in the bitvector. */
+	void blank();
+	/** Applies element-wise xor from another bitvector. */
+	void bitwise_xor(const bitvector& other);
 
 	/** Updates the internal data structures after editing the vector. */
 	void update_ranks();
@@ -58,42 +63,6 @@ public:
 };
 
 } // namespace efficient
-
-namespace naive {
-
-class bitvector {
-private:
-	std::vector<bool> m_vector;
-
-public:
-	/** Initializes a bitvector with given size. */
-	bitvector(index size);
-	/** Sets a bit in the bitvector. */
-	void set(index i);
-	/** Clears a bit in the bitvector. */
-	void clr(index i);
-	/** Flips a bit in the bitvector. */
-	void flip(index i);
-	/** Returns a bit from the bitvector. */
-	bool get(index i) const;
-	/** Returns the size of the bitvector. */
-	index size() const;
-
-	/** Updates the internal data structures after editing the vector. */
-	void update_ranks();
-	/** Returns the rank of an index, i.e. the number of set bits in the range [0..i) */
-	index rank(index i) const;
-	/** Returns the number of set bits. */
-	index count() const;
-	/** Returns the index of the first set bit or size() if no bit is set. */
-	index begin() const;
-	/** Returns the index of the next set bit after the index or size() if no bit is set. */
-	index next(index i) const;
-	/** Returns the index one past the last element. */
-	index end() const;
-};
-
-} // namespace naive
 } // namespace terraces
 
 #endif // BITVECTOR_H

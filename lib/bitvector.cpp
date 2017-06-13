@@ -35,8 +35,12 @@ uint8_t partial_popcount(uint64_t block, index i) { return popcount(block & pref
 bitvector::bitvector(index size)
         : m_size{size}, m_blocks(size / 64 + 1), m_ranks(m_blocks.size() + 1),
           m_ranks_dirty{false} {
+	add_sentinel();
+}
+
+void bitvector::add_sentinel() {
 	// add sentinel bit for iteration
-	m_blocks[block_index(size)] |= set_mask(size);
+	m_blocks[block_index(m_size)] |= set_mask(m_size);
 }
 
 bool bitvector::get(index i) const {
@@ -63,17 +67,27 @@ void bitvector::set(index i) {
 }
 
 void bitvector::blank() {
-	for (auto& el : m_blocks)
+	for (auto& el : m_blocks) {
 		el = 0;
-	m_blocks[block_index(m_size)] |= set_mask(m_size);
+	}
+	add_sentinel();
+	m_ranks_dirty = true;
+}
+
+void bitvector::bitwise_xor(const bitvector& other) {
+	assert(size() == other.size());
+	for (index b = 0; b < m_blocks.size(); ++b) {
+		m_blocks[b] ^= other.m_blocks[b];
+	}
+	add_sentinel();
 	m_ranks_dirty = true;
 }
 
 void bitvector::update_ranks() {
 	m_count = 0;
-	for (index i = 0; i < m_blocks.size(); ++i) {
-		m_count += popcount(m_blocks[i]);
-		m_ranks[i + 1] = m_count;
+	for (index b = 0; b < m_blocks.size(); ++b) {
+		m_count += popcount(m_blocks[b]);
+		m_ranks[b + 1] = m_count;
 	}
 	assert(m_count > 0);
 	m_ranks_dirty = false;
@@ -119,52 +133,5 @@ index bitvector::next(index i) const {
 index bitvector::end() const { return m_size; }
 
 } // namespace efficient
-
-namespace naive {
-bitvector::bitvector(index size) : m_vector(size) {}
-
-bool bitvector::get(index i) const {
-	assert(i < m_vector.size());
-	return m_vector[i];
-}
-
-void bitvector::set(index i) {
-	assert(i < m_vector.size());
-	m_vector[i] = true;
-}
-
-void bitvector::clr(index i) {
-	assert(i < m_vector.size());
-	m_vector[i] = false;
-}
-
-void bitvector::flip(index i) {
-	assert(i < m_vector.size());
-	m_vector[i] = !m_vector[i];
-}
-
-index bitvector::size() const { return m_vector.size(); }
-
-index bitvector::rank(index i) const {
-	assert(i <= m_vector.size());
-	return (index)std::count(m_vector.begin(),
-	                         m_vector.begin() + (std::vector<bool>::difference_type)i, true);
-}
-
-index bitvector::count() const { return rank(m_vector.size()); }
-
-index bitvector::begin() const {
-	return (index)std::distance(m_vector.begin(),
-	                            std::find(m_vector.begin(), m_vector.end(), true));
-}
-
-index bitvector::next(index i) const {
-	return (index)std::distance(m_vector.begin(),
-	                            std::find(m_vector.begin() + (int)i + 1, m_vector.end(), true));
-}
-
-index bitvector::end() const { return m_vector.size(); }
-
-} // namespace naive
 
 } // namespace terraces
