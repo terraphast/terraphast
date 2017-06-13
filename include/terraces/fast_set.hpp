@@ -1,6 +1,7 @@
 #ifndef FAST_SET_H
 #define FAST_SET_H
 
+#include <cassert>
 #include <terraces/bitvector.hpp>
 
 namespace terraces {
@@ -15,22 +16,28 @@ private:
 	efficient::bitvector m_vector;
 
 public:
-	fast_index_set(index max_size);
+	fast_index_set(index max_size) : m_vector{max_size} {}
 
-	bool contains(index i) const;
-	index rank(index i) const;
-	index max_size() const;
-	index size() const;
+	inline bool contains(index i) const { return m_vector.get(i); }
+	inline index rank(index i) const {
+		assert(contains(i));
+		return m_vector.rank(i);
+	}
+
+	inline index max_size() const { return m_vector.size(); }
+	inline index size() const { return m_vector.count(); }
 
 	iterator begin() const;
 	iterator end() const;
 
-	void insert(index i);
-	void remove(index i);
-	void toggle(index i);
-	void symm_difference(const fast_index_set& other);
-	void clear();
-	void finalize_edit();
+	inline void insert(index i) { m_vector.set(i); }
+	inline void remove(index i) { m_vector.clr(i); }
+	inline void toggle(index i) { m_vector.flip(i); }
+	inline void symm_difference(const fast_index_set& other) {
+		m_vector.bitwise_xor(other.m_vector);
+	}
+	inline void clear() { m_vector.blank(); }
+	inline void finalize_edit() { m_vector.update_ranks(); }
 };
 
 class fast_index_set_iterator {
