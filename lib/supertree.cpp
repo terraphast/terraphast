@@ -84,10 +84,7 @@ size_t tree_master::count_supertree(const fast_index_set& leaves, const fast_ind
 		}
 		subleaves.finalize_edit();
 		index count_left = count_supertree(subleaves, c_occ, in_c);
-		// TODO replace by block-wise xor (while keeping sentinel intact)
-		for (auto i : leaves) {
-			subleaves.toggle(i);
-		}
+		subleaves.symm_difference(leaves);
 		subleaves.finalize_edit();
 		index count_right = count_supertree(subleaves, c_occ, in_c);
 		number += count_left * count_right;

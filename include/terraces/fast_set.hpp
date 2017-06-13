@@ -28,6 +28,7 @@ public:
 	void insert(index i);
 	void remove(index i);
 	void toggle(index i);
+	void symm_difference(const fast_index_set& other);
 	void clear();
 	void finalize_edit();
 };

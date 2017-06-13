@@ -28,6 +28,10 @@ void fast_index_set::remove(index i) { m_vector.clr(i); }
 
 void fast_index_set::toggle(index i) { m_vector.flip(i); }
 
+void fast_index_set::symm_difference(const fast_index_set& other) {
+	m_vector.bitwise_xor(other.m_vector);
+}
+
 void fast_index_set::clear() { m_vector.blank(); }
 
 void fast_index_set::finalize_edit() { m_vector.update_ranks(); }
