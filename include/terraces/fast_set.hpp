@@ -27,6 +27,7 @@ public:
 
 	void insert(index i);
 	void remove(index i);
+	void toggle(index i);
 	void clear();
 	void finalize_edit();
 };

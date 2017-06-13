@@ -51,7 +51,8 @@ size_t tree_master::count_supertree(const fast_index_set& leaves, const fast_ind
 			c_occ.insert(c_i);
 		}
 	}
-	c_occ.finalize_edit(); // TODO unnecessary!
+	c_occ.finalize_edit();
+
 	if (leaves.size() == 2) {
 		return 1;
 	}
@@ -83,12 +84,9 @@ size_t tree_master::count_supertree(const fast_index_set& leaves, const fast_ind
 		}
 		subleaves.finalize_edit();
 		index count_left = count_supertree(subleaves, c_occ, in_c);
+		// TODO replace by block-wise xor (while keeping sentinel intact)
 		for (auto i : leaves) {
-			if (subleaves.contains(i)) {
-				subleaves.remove(i);
-			} else {
-				subleaves.insert(i);
-			}
+			subleaves.toggle(i);
 		}
 		subleaves.finalize_edit();
 		index count_right = count_supertree(subleaves, c_occ, in_c);
