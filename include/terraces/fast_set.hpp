@@ -35,16 +35,27 @@ public:
 
 class fast_index_set_iterator {
 private:
-	const fast_index_set* m_set;
+	const fast_index_set& m_set;
 	index m_index;
 
 public:
-	fast_index_set_iterator(const fast_index_set* set, index i);
-	fast_index_set_iterator& operator++();
-	bool operator==(const fast_index_set_iterator& other) const;
-	bool operator!=(const fast_index_set_iterator& other) const;
-	const index& operator*() const;
+	fast_index_set_iterator(const fast_index_set& set, index i) : m_set{set}, m_index{i} {}
+	inline fast_index_set_iterator& operator++() {
+		m_index = m_set.m_vector.next(m_index);
+		return *this;
+	}
+	inline bool operator==(const fast_index_set_iterator& other) const {
+		return m_index == other.m_index;
+	}
+	inline bool operator!=(const fast_index_set_iterator& other) const {
+		return !(*this == other);
+	}
+	inline const index& operator*() const { return m_index; }
 };
+
+inline auto fast_index_set::begin() const -> iterator { return {*this, m_vector.begin()}; }
+
+inline auto fast_index_set::end() const -> iterator { return {*this, m_vector.end()}; }
 
 } // namespace terraces
 
