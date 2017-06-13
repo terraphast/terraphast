@@ -10,11 +10,9 @@
 	do {                                                                                       \
 	} while (0)
 #define debug_var(x) static_assert(true, "")
-#define debug_init(x)
 #else
 #define debug_code(x) x
 #define debug_var(x) x
-#define debug_init(x) , x
 #endif
 
 namespace terraces {

@@ -7,9 +7,9 @@ namespace terraces {
 namespace efficient {
 
 bitvector::bitvector(index size)
-        : m_size{size}, m_blocks(size / 64 + 1),
-          m_ranks(m_blocks.size() + 1) debug_init(m_ranks_dirty{false}) {
+        : m_size{size}, m_blocks(size / 64 + 1), m_ranks(m_blocks.size() + 1) {
 	add_sentinel();
+	debug_code(m_ranks_dirty = false);
 }
 
 void bitvector::add_sentinel() {
