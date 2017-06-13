@@ -30,4 +30,6 @@ void union_find::merge(index x, index y) {
 	size.at(j) += size.at(i);
 }
 
+bool union_find::is_representative(index x) const { return x == find(x); }
+
 } // namespace terraces

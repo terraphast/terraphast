@@ -16,6 +16,7 @@ public:
 	union_find(std::size_t);
 	index find(index) const;
 	void merge(index, index);
+	bool is_representative(index) const;
 };
 
 } // namespace terraces
