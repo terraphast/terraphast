@@ -78,6 +78,10 @@ TEST_CASE("naive bitvector", "[bitvector]") {
 	CHECK(!b.get(3));
 	CHECK(!b.get(5));
 	CHECK(!b.get(7));
+	b.flip(7);
+	CHECK(b.get(7));
+	b.flip(7);
+	CHECK(!b.get(7));
 	CHECK(b.get(1));
 	CHECK(b.get(2));
 	CHECK(b.get(4));
@@ -111,6 +115,11 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 	CHECK(!b.get(3));
 	CHECK(!b.get(5));
 	CHECK(!b.get(7));
+	b.flip(7);
+	CHECK(b.get(7));
+	b.flip(7);
+	CHECK(!b.get(7));
+	b.update_ranks();
 	CHECK(b.get(1));
 	CHECK(b.get(2));
 	CHECK(b.get(4));

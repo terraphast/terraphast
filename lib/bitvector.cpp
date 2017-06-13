@@ -22,7 +22,11 @@ index next_bit(uint64_t block, index i) {
 	return i + (index)__builtin_ctzll(block >> shift_index(i));
 }
 
+index next_bit0(uint64_t block, index i) { return i + (index)__builtin_ctzll(block); }
+
 bool has_next_bit(uint64_t block, index i) { return (block >> shift_index(i)) != 0; }
+
+bool has_next_bit0(uint64_t block) { return block != 0; }
 
 uint8_t popcount(uint64_t block) { return (uint8_t)__builtin_popcountll(block); }
 
@@ -43,6 +47,12 @@ bool bitvector::get(index i) const {
 void bitvector::clr(index i) {
 	assert(i < m_size);
 	m_blocks[block_index(i)] &= clear_mask(i);
+	m_ranks_dirty = true;
+}
+
+void bitvector::flip(index i) {
+	assert(i < m_size);
+	m_blocks[block_index(i)] ^= set_mask(i);
 	m_ranks_dirty = true;
 }
 
@@ -85,20 +95,25 @@ index bitvector::size() const { return m_size; }
 
 index bitvector::begin() const {
 	index b = 0;
-	while (!has_next_bit(m_blocks[b], 0)) {
+	while (!has_next_bit0(m_blocks[b])) {
 		++b;
 	}
-	return next_bit(m_blocks[b], base_index(b));
+	return next_bit0(m_blocks[b], base_index(b));
 }
 
 index bitvector::next(index i) const {
 	++i;
 	index b = block_index(i);
-	while (!has_next_bit(m_blocks[b], i)) {
-		++b;
-		i = base_index(b);
+	if (has_next_bit(m_blocks[b], i)) {
+		// the next bit is in the current block
+		return next_bit(m_blocks[b], i);
+	} else {
+		// the next bit is in a far-away block
+		do {
+			++b;
+		} while (!has_next_bit0(m_blocks[b]));
+		return next_bit0(m_blocks[b], base_index(b));
 	}
-	return next_bit(m_blocks[b], i);
 }
 
 index bitvector::end() const { return m_size; }
@@ -121,6 +136,11 @@ void bitvector::set(index i) {
 void bitvector::clr(index i) {
 	assert(i < m_vector.size());
 	m_vector[i] = false;
+}
+
+void bitvector::flip(index i) {
+	assert(i < m_vector.size());
+	m_vector[i] = !m_vector[i];
 }
 
 index bitvector::size() const { return m_vector.size(); }
