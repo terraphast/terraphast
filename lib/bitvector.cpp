@@ -33,8 +33,8 @@ uint8_t popcount(uint64_t block) { return (uint8_t)__builtin_popcountll(block); 
 uint8_t partial_popcount(uint64_t block, index i) { return popcount(block & prefix_mask(i)); }
 
 bitvector::bitvector(index size)
-        : m_size{size}, m_blocks(size / 64 + 1), m_ranks(m_blocks.size() + 1),
-          m_ranks_dirty{false} {
+        : m_size{size}, m_blocks(size / 64 + 1),
+          m_ranks(m_blocks.size() + 1), m_ranks_dirty{false} {
 	add_sentinel();
 }
 

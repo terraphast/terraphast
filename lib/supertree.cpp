@@ -33,7 +33,8 @@ union_find tree_master::apply_constraints(const fast_index_set& leaves, const fa
 	return sets;
 }
 
-size_t tree_master::count_supertree(const tree& tree, const constraints& c, index root_species) {
+counted_supertree tree_master::count_supertree(const tree& tree, const constraints& c,
+                                               index root_species) {
 	fast_index_set leaves{tree.size()};
 	for (index i = 0; i < tree.size(); i++) {
 		if (is_leaf(tree[i]) && i != root_species) {
@@ -50,7 +51,7 @@ size_t tree_master::count_supertree(const tree& tree, const constraints& c, inde
 	return tree_master::count_supertree(leaves, c_occ, c);
 }
 
-size_t tree_master::count_supertree(index count, const constraints& c) {
+counted_supertree tree_master::count_supertree(index count, const constraints& c) {
 	fast_index_set leaves{count};
 	for (index i = 0; i < count; i++) {
 		leaves.insert(i);
@@ -65,32 +66,44 @@ size_t tree_master::count_supertree(index count, const constraints& c) {
 	return count_supertree(leaves, c_occ, c);
 }
 
-size_t tree_master::count_supertree(const fast_index_set& leaves, const fast_index_set& in_c_occ,
-                                    const constraints& in_c) {
+counted_supertree tree_master::count_supertree(const fast_index_set& leaves,
+                                               const fast_index_set& in_c_occ,
+                                               const constraints& in_c, const name_map& n_map) {
+
 	size_t number = 0;
+	std::stringstream ss;
 	fast_index_set c_occ = tree_master::filter_constraints(leaves, in_c_occ, in_c);
 
 	if (leaves.size() == 2) {
-		return 1;
+		ss << printable_leaf_pair_representation(leaves, n_map);
+		return counted_supertree({1, ss.str()});
 	}
+
 	if (c_occ.size() == 0) {
 		size_t res = 1;
 		for (size_t i = 3; i <= leaves.size() + 1; i++) {
 			res *= (2 * i - 5);
 		}
-		return res;
+		return counted_supertree({res, ss.str()});
 	}
+
 	union_find sets = apply_constraints(leaves, c_occ, in_c);
 	bipartition_iterator bip_it(leaves, sets);
-	while (bip_it.is_valid()) {
-		index count_left = count_supertree(bip_it.get_current_set(), c_occ, in_c);
+	while (bip_it.is_valid()) { // TODO: Ask Tobias if I understood this code correctly.
+		std::string left_subtree_repr =
+		        printable_tree_representation(bip_it.get_current_set(), n_map);
+		index count_left = count_supertree(bip_it.get_current_set(), c_occ, in_c).count;
+
 		bip_it.flip_sets();
-		index count_right = count_supertree(bip_it.get_current_set(), c_occ, in_c);
+		std::string right_subtree_repr =
+		        printable_tree_representation(bip_it.get_current_set(), n_map);
+		index count_right = count_supertree(bip_it.get_current_set(), c_occ, in_c).count;
 		number += count_left * count_right;
+		ss << "(" << left_subtree_repr << "|" << right_subtree_repr << ")";
 
 		bip_it.increase();
 	}
-	return number;
+	return counted_supertree({number, ss.str()});
 }
 
 size_t tree_master::check_supertree(const fast_index_set& leaves, const fast_index_set& in_c_occ,
@@ -102,6 +115,7 @@ size_t tree_master::check_supertree(const fast_index_set& leaves, const fast_ind
 	fast_index_set c_occ = tree_master::filter_constraints(leaves, in_c_occ, in_c);
 
 	if (c_occ.size() == 0 && number + leaves.size() > 2) {
+
 		return 2;
 	}
 
@@ -120,6 +134,46 @@ size_t tree_master::check_supertree(const fast_index_set& leaves, const fast_ind
 		bip_it.increase();
 	}
 	return number;
+}
+
+std::string tree_master::printable_tree_representation(const fast_index_set& leaves,
+                                                       const name_map& n_map) {
+	bool n_map_given = true;
+	if (n_map.size() == 0) {
+		n_map_given = false;
+	}
+	std::stringstream ss;
+	bool first;
+	for (auto i : leaves) {
+		if (!first) {
+			ss << ",";
+		}
+		if (n_map_given) {
+			ss << n_map.at(i);
+		} else {
+			ss << i;
+		}
+		if (first) {
+			first = false;
+		}
+	}
+	return ss.str();
+}
+
+std::string tree_master::printable_leaf_pair_representation(const fast_index_set& leaves,
+                                                            const name_map& n_map) {
+	bool n_map_given = true;
+	if (n_map.size() == 0) {
+		n_map_given = false;
+	}
+	std::stringstream ss;
+	ss << "(";
+	if (n_map_given) {
+		ss << n_map.at(*leaves.begin()) << "," << n_map.at(*(++leaves.begin())) << ")";
+	} else {
+		ss << *leaves.begin() << "," << *(++leaves.begin()) << ")";
+	}
+	return ss.str();
 }
 
 } // namespace terraces

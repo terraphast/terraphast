@@ -5,6 +5,7 @@
 #include "fast_set.hpp"
 #include "trees.hpp"
 #include "union_find.hpp"
+#include <string>
 
 namespace terraces {
 
@@ -19,17 +20,27 @@ private:
 public:
 	tree_master();
 
-	size_t count_supertree(const tree&, const constraints&, index root);
+	counted_supertree count_supertree(const tree&, const constraints&, index root);
 
 	/**
 	 * Count trees given a number and a vector of constraints. Entry point for tree counting.
 	 */
-	size_t count_supertree(index count, const constraints&);
+	counted_supertree count_supertree(index count, const constraints&);
 
 	/**
 	 * Count trees.
 	 */
-	size_t count_supertree(const fast_index_set&, const fast_index_set&, const constraints&);
+	counted_supertree count_supertree(const fast_index_set&, const fast_index_set&,
+	                                  const constraints&,
+	                                  const name_map& = name_map(std::vector<std::string>()));
+	std::string printable_tree_representation(const fast_index_set&, const name_map&);
+	std::string printable_leaf_pair_representation(const fast_index_set&, const name_map&);
+
+	/*
+	 * Enumerate trees. Working copy.
+	 */
+	// counted_supertree enumerate_supertrees(const fast_index_set&, const fast_index_set&,
+	//                                        const constraints&, const name_map&);
 
 	size_t check_supertree(const fast_index_set& leaves, const fast_index_set& in_c_occ,
 	                       const constraints& in_c, index init_number);

@@ -54,7 +54,8 @@ int main(int argc, char** argv) try {
 	std::cout << "Deleted " << duplicated << " unnecessary constraints, " << constraints.size()
 	          << " remaining" << std::endl;
 	terraces::tree_master tm;
-	std::cout << "We counted " << tm.count_supertree(data.tree, constraints, data_res.second)
+	std::cout << "We counted "
+	          << tm.count_supertree(data.tree, constraints, data_res.second).count
 	          << " equivalent trees" << std::endl;
 
 } catch (std::exception& e) {

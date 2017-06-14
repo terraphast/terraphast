@@ -6,8 +6,11 @@
 #include <cassert>
 #include <cstdint>
 #include <iosfwd>
+#include <iostream>
 #include <limits>
+#include <sstream>
 #include <stack>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -95,6 +98,11 @@ struct newick_t {
 	const tree* t;
 	const name_map* names;
 };
+
+typedef struct {
+	const index count;
+	const std::string supertree;
+} counted_supertree;
 
 inline newick_t as_newick(const tree& t, const name_map& names) { return {&t, &names}; }
 
