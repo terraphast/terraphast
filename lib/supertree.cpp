@@ -33,10 +33,10 @@ union_find tree_master::apply_constraints(const fast_index_set& leaves, const fa
 	return sets;
 }
 
-size_t tree_master::count_supertree(const tree& tree, const constraints& c) {
+size_t tree_master::count_supertree(const tree& tree, const constraints& c, index root_species) {
 	fast_index_set leaves{tree.size()};
 	for (index i = 0; i < tree.size(); i++) {
-		if (is_leaf(tree[i])) {
+		if (is_leaf(tree[i]) && i != root_species) {
 			leaves.insert(i);
 		}
 	}
