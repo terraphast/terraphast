@@ -25,12 +25,14 @@ inline uint64_t set_mask(index i) { return 1ull << (i & 63); }
 inline uint64_t clear_mask(index i) { return ~set_mask(i); }
 inline uint64_t prefix_mask(index i) { return set_mask(i) - 1; }
 inline index next_bit(uint64_t block, index i) {
-	return i + (index)__builtin_ctzll(block >> shift_index(i));
+	unsigned long idx;
+	_BitScanForward64(&idx, block >> shift_index(i));
+	return i + (index)idx;
 }
 inline index next_bit0(uint64_t block, index i) { return i + (index)__builtin_ctzll(block); }
 inline bool has_next_bit(uint64_t block, index i) { return (block >> shift_index(i)) != 0; }
 inline bool has_next_bit0(uint64_t block) { return block != 0; }
-inline uint8_t popcount(uint64_t block) { return (uint8_t)__builtin_popcountll(block); }
+inline uint8_t popcount(uint64_t block) { return (uint8_t)__popcnt64(block); }
 inline uint8_t partial_popcount(uint64_t block, index i) {
 	return popcount(block & prefix_mask(i));
 }
