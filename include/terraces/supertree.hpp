@@ -19,7 +19,7 @@ private:
 public:
 	tree_master();
 
-	size_t count_supertree(const tree&, const constraints&);
+	size_t count_supertree(const tree&, const constraints&, index root);
 
 	/**
 	 * Count trees given a number and a vector of constraints. Entry point for tree counting.
