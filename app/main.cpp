@@ -67,13 +67,13 @@ int main(int argc, char** argv) try {
 			auto end = tm.get_state().end();
 			auto begin = tm.get_state().begin();
 			std::cout << "\033[2J\033[;H";
+			auto depth = 0u;
 			for (auto it = begin; it != end; ++it) {
-				if (!std::get<0>(*it)) {
-					break;
-				}
-				std::cout << std::setw(20) << std::get<1>(*it) << "/"
-				          << std::setw(20) << std::get<2>(*it) << std::setw(20)
-				          << std::get<3>(*it) << "\n";
+				std::cout << std::setw(20) << std::get<0>(*it) << "/"
+				          << std::setw(20) << std::get<1>(*it) << std::setw(20)
+				          << std::get<2>(*it) << std::string(depth, ' ')
+				          << (std::get<3>(*it) ? '\\' : '|') << "\n";
+				depth += std::get<3>(*it);
 			}
 			std::cout << std::flush;
 		}

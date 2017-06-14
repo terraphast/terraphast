@@ -109,8 +109,10 @@ size_t tree_master::count_supertree(const fast_index_set& leaves, const fast_ind
 	state.init_iteration(bip_it.end_bip());
 	while (bip_it.is_valid()) {
 		state.update(bip_it.cur_bip(), number);
+		state.go_left();
 		index count_left = count_supertree(bip_it.get_current_set(), c_occ, in_c);
 		bip_it.flip_sets();
+		state.go_right();
 		index count_right = count_supertree(bip_it.get_current_set(), c_occ, in_c);
 		number += count_left * count_right;
 
