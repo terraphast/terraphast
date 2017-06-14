@@ -2,6 +2,7 @@
 #define BITVECTOR_H
 
 #include <cstdint>
+#include <intrin.h>
 #include <terraces/trees.hpp>
 #include <vector>
 
@@ -29,7 +30,11 @@ inline index next_bit(uint64_t block, index i) {
 	_BitScanForward64(&idx, block >> shift_index(i));
 	return i + (index)idx;
 }
-inline index next_bit0(uint64_t block, index i) { return i + (index)__builtin_ctzll(block); }
+inline index next_bit0(uint64_t block, index i) {
+	unsigned long idx;
+	_BitScanForward64(&idx, block);
+	return i + (index)idx;
+}
 inline bool has_next_bit(uint64_t block, index i) { return (block >> shift_index(i)) != 0; }
 inline bool has_next_bit0(uint64_t block) { return block != 0; }
 inline uint8_t popcount(uint64_t block) { return (uint8_t)__popcnt64(block); }
