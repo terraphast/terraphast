@@ -93,4 +93,33 @@ size_t tree_master::count_supertree(const fast_index_set& leaves, const fast_ind
 	return number;
 }
 
+size_t tree_master::check_supertree(const fast_index_set& leaves, const fast_index_set& in_c_occ,
+                                    const constraints& in_c, index init_number) {
+	size_t number = init_number;
+	if (leaves.size() == 2) {
+		return number + 1;
+	}
+	fast_index_set c_occ = tree_master::filter_constraints(leaves, in_c_occ, in_c);
+
+	if (c_occ.size() == 0 && number + leaves.size() > 2) {
+		return 2;
+	}
+
+	union_find sets = apply_constraints(leaves, c_occ, in_c);
+	bipartition_iterator bip_it(leaves, sets);
+	while (bip_it.is_valid() && number < 2) {
+		index count_left = check_supertree(bip_it.get_current_set(), c_occ, in_c, number);
+		if (count_left == 0)
+			continue;
+		if (count_left == 2)
+			number = 1;
+		bip_it.flip_sets();
+		index count_right = check_supertree(bip_it.get_current_set(), c_occ, in_c, number);
+		number += count_left * count_right;
+
+		bip_it.increase();
+	}
+	return number;
+}
+
 } // namespace terraces
