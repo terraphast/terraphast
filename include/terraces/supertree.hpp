@@ -4,6 +4,7 @@
 #include "constraints.hpp"
 #include "fast_set.hpp"
 #include "trees.hpp"
+#include <string>
 
 namespace terraces {
 
@@ -22,6 +23,15 @@ public:
 	 * Count trees.
 	 */
 	size_t count_supertree(const fast_index_set&, const fast_index_set&, const constraints&);
+
+	std::string printable_tree_representation(const fast_index_set&, const name_map&);
+	std::string printable_leaf_pair_representation(const fast_index_set&, const name_map&);
+
+	/*
+	 * Enumerate trees. Working copy.
+	 */
+	counted_supertree enumerate_supertrees(const fast_index_set&, const fast_index_set&,
+	                                       const constraints&, const name_map&);
 };
 
 } // namespace terraces
