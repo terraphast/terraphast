@@ -1,5 +1,5 @@
-#ifndef TERRACES_UTILS_HPP
-#define TERRACES_UTILS_HPP
+#ifndef TERRACES_STACK_ALLOCATOR_HPP
+#define TERRACES_STACK_ALLOCATOR_HPP
 
 #include <cstdint>
 #include <memory>
@@ -10,12 +10,9 @@
 namespace terraces {
 namespace utils {
 
-
 class free_list {
 public:
-	free_list(std::size_t initial_capacity = 0) {
-		m_list.reserve(initial_capacity);
-	}
+	free_list(std::size_t initial_capacity = 0) { m_list.reserve(initial_capacity); }
 
 	void push(std::unique_ptr<char[]> ptr) { m_list.push_back(std::move(ptr)); }
 
@@ -34,9 +31,9 @@ private:
 };
 
 template <typename T>
-class free_list_allocator {
+class stack_allocator {
 public:
-	free_list_allocator(free_list& fl, std::size_t expected_size)
+	stack_allocator(free_list& fl, std::size_t expected_size)
 	        : m_fl{&fl}, m_expected_size{expected_size} {}
 
 	using value_type = T;
@@ -70,7 +67,6 @@ private:
 	free_list* m_fl;
 	std::size_t m_expected_size;
 };
-
 
 } // namespace utils
 } // namespace terraces
