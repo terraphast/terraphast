@@ -8,11 +8,11 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(BASIC_WARNINGS "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion")
-set(OPTIMIZATION_FLAGS "-march=native")
+set(BASIC_WARNINGS "-Wall -WX")
+set(OPTIMIZATION_FLAGS "-arch:AVX")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BASIC_WARNINGS} ${OPTIMIZATION_FLAGS}")
 
-include_directories("include")
+include_directories("include" "Catch/include")
 enable_testing()
 
 
