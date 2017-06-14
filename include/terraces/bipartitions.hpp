@@ -33,6 +33,9 @@ public:
 	const fast_index_set& get_current_set() const;
 	/** Switches the current partition with the other partition. */
 	void flip_sets();
+
+	index cur_bip() const { return m_bip; }
+	index end_bip() const { return m_end; }
 };
 
 } // namespace terraces
