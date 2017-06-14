@@ -30,6 +30,9 @@ public:
 	 * Count trees.
 	 */
 	size_t count_supertree(const fast_index_set&, const fast_index_set&, const constraints&);
+
+	size_t check_supertree(const fast_index_set& leaves, const fast_index_set& in_c_occ,
+	                       const constraints& in_c, index init_number);
 };
 
 } // namespace terraces
