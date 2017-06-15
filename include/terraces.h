@@ -175,4 +175,9 @@ std::vector<constraint> extract_constraints_from_supertree(
 int terraceAnalysis(missingData *m, const char *newickTreeString,
 		const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
 
+#ifdef __cplusplus
+std::string missing_data_to_nexus(const missingData* m);
+std::ostream& operator<<(std::ostream &strm, const missingData& m);
+#endif // __cplusplus
+
 #endif /* TERRACES_H */

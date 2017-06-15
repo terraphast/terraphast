@@ -9,7 +9,6 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
     }
 
     if (tree->is_leaf()) {
-        // Leave case
         if (species_map.count(tree->label) == 1
             && getDataMatrix(missing_data, species_map[tree->label],
                              partition)) {
@@ -274,7 +273,7 @@ static void d_print_tree_rec(std::ostream &strm,
     for (int j = 0; j < depth * 4; j++) {
         strm << " ";
     }
-    strm << "<node";
+    strm << "<node addr=\"" << static_cast<const void*>(tree) << '"';
     if(tree->label != nullptr) {
         strm << " label=\"" << tree->label << '"';
     }

@@ -2,6 +2,7 @@
 #define TREE_H
 
 #include <memory>
+#include <assert.h>
 
 class Tree {
 public:
@@ -43,11 +44,31 @@ public:
 	std::shared_ptr<Tree> right;
 	std::shared_ptr<Tree> parent;
 
-	inline bool is_leaf() {
+	inline bool is_leaf() const {
 		return (left == nullptr && right == nullptr);
 	}
 
 	std::string to_newick_string();
+
+    template<typename T>
+    using BinaryOperator = T (*)(const T, const T);
+
+    template<typename T>
+    using TreeNodeVisitor = T (*)(const Tree*);
+
+    template<typename T>
+    T fold (BinaryOperator<T> op, TreeNodeVisitor<T> v) const {
+        if(this->is_leaf()) {
+            return v(this);
+        }
+
+        assert(this->left != nullptr);
+        assert(this->right != nullptr);
+        return op(this->left->fold(op, v),
+                  this->right->fold(op, v));
+    }
+
+    size_t count() const;
 };
 
 std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree);

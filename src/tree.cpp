@@ -47,6 +47,16 @@ std::string UnrootedTree::to_newick_string() {
 	return ss.str();
 }
 
+size_t Tree::count() const {
+    BinaryOperator<size_t> op = [](const size_t a, const size_t b){
+        return a + b;
+    };
+    TreeNodeVisitor<size_t> v = [](auto){
+        return static_cast<size_t>(1);
+    };
+    return this->fold(op, v);
+}
+
 static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree,
 		std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> &cover_map) {
 	if (tree == nullptr) {
@@ -82,38 +92,25 @@ static void d_print_tree_rec(std::ostream &strm,
                 && (tree->parent->left == tree
                     || tree->parent->right == tree)));
 
-	strm << " label=\"" << tree->label << "\">";
-    if(!tree->is_leaf()) {
-        strm << std::endl;
-    }
-
+	strm << "Label:" << tree->label << std::endl;
 	if (tree->left != nullptr) {
 		for (int j = 0; j < depth * 4; j++) {
             strm << " ";
 		}
-        strm << "<left";
+        strm << "L:";
 		d_print_tree_rec(strm, tree->left, depth + 1);
-        strm << "</left>" << std::endl;
 	}
 	if (tree->right != nullptr) {
 		for (int j = 0; j < depth * 4; j++) {
 			strm << " ";
 		}
-		strm << "<right";
+		strm << "R:";
 		d_print_tree_rec(strm, tree->right, depth + 1);
-        strm << "</right>" << std::endl;
 	}
-    if(!tree->is_leaf()) {
-        for (int j = 0; j < depth * 4; j++) {
-            strm << " ";
-        }
-    }
 }
 
 std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree) {
     strm << "Dump Tree:" << std::endl;
-    strm << "<root";
     d_print_tree_rec(strm, tree, 1);
-    strm << "</root>";
-    return strm;
+    return strm << std::endl;
 }

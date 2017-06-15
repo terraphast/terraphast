@@ -369,6 +369,12 @@ TEST(TerracesAnalysis, Eucalyptus_2) {
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }
 
+TEST(TerracesAnalysis, Eucalyptus_3) {
+    TEST_TIMEOUT_BEGIN
+                test_terrace_analysis("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "1");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+}
+
 TEST(TerracesAnalysis, Euphorbia_1) {
     TEST_TIMEOUT_BEGIN
                 test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759");

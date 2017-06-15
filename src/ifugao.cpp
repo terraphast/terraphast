@@ -1,8 +1,11 @@
 #include "ifugao.h"
+#include "debug.h"
 
 #include <assert.h>
 #include <terraces.h>
 #include <map>
+#include <sstream>
+#include <iomanip>
 
 std::tuple<std::shared_ptr<std::set<leaf_number> >,
         std::shared_ptr<std::set<leaf_number> > > get_nth_partition_tuple(
@@ -145,17 +148,27 @@ std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(
 
     if (constraints.empty()) {
         auto result = get_all_binary_trees(leafs);
+        std::cerr << "<itr>\n";
+        std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
+        std::cerr << "<result count=\"" << result.size() << "\"/>\n";
+        std::cerr << "</itr>\n";
         return result;
     }
 
     auto partitions = apply_constraints(leafs, constraints);
     std::vector<std::shared_ptr<Tree> > result;
 
+    std::cerr << "<itr>\n";
+    std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
+    std::cerr << "<constraints val=\"" << constraints << "\"/>\n";
+    std::cerr << "<partitions val=\"" << partitions << "\"/>\n";
+
     for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
         std::shared_ptr<std::set<leaf_number> > part_left;
         std::shared_ptr<std::set<leaf_number> > part_right;
-        std::tie(part_left, part_right) = get_nth_partition_tuple(partitions,
-                                                                  i);
+        std::tie(part_left, part_right) = get_nth_partition_tuple(partitions, i);
+
+        std::cerr << "<bipartition l=\"" << *part_left << "\" r=\"" << *part_right << "\">\n";
 
         auto constraints_left = find_constraints(*part_left, constraints);
         auto constraints_right = find_constraints(*part_right, constraints);
@@ -164,8 +177,14 @@ std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(
         auto subtrees_right = find_all_rooted_trees(*part_right, constraints_right);
         auto trees = merge_subtrees(subtrees_left, subtrees_right);
 
+        std::cerr << "<result count=\"" << trees.size() << "\"/>\n";
+        std::cerr << "</bipartition>\n";
+
         result.insert(result.end(), trees.begin(), trees.end());
     }
+
+    std::cerr << "<result count=\"" << result.size() << "\"/>\n";
+    std::cerr << "</itr>\n";
 
     return result;
 }
@@ -336,4 +355,70 @@ std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
         }
     }
     return valid_constraints;
+}
+
+std::string missing_data_to_nexus(const missingData* m) {
+
+    std::stringstream ss;
+    size_t max_len = 0;
+    for (size_t i = 0; i < m->numberOfSpecies; i++) {
+        if(strlen(m->speciesNames[i]) > max_len) {
+            max_len = strlen(m->speciesNames[i]);
+        }
+    }
+
+    ss << "#NEXUS\n";
+    ss << "Begin data;\n";
+    ss << "    Dimensions ntax=" << m->numberOfSpecies << " nchar=" << m->numberOfPartitions << ";\n";
+    ss << "    Format datatype=dna gap=-;\n";
+    ss << "    Matrix\n";
+    for (size_t i = 0; i < m->numberOfSpecies; i++) {
+        ss << std::left << std::setw(static_cast<int>(max_len+1)) << m->speciesNames[i];
+        for (size_t j = 0; j < m->numberOfPartitions; j++) {
+            ss << (getDataMatrix(m, i, j)>0 ? 'A' : '-');
+        }
+        ss << std::endl;
+    }
+    ss << "\t;\n";
+    ss << "End;\n";
+    ss << "\n";
+
+    ss << "BEGIN SETS;\n";
+    for (size_t j = 0; j < m->numberOfPartitions; j++) {
+        ss << "\tCHARSET  P" << std::to_string(j+1) << " = "
+             << std::to_string(j+1) << "-" << std::to_string(j+1) << ";\n";
+    }
+    ss << "END;\n";
+    return ss.str();
+}
+
+std::ostream& operator<<(std::ostream &strm,
+                         const std::vector<std::shared_ptr<leaf_set> >& set) {
+    strm << "[";
+    bool first = true;
+    for(size_t i = 0; i < set.size(); i++) {
+        if(first) {
+            first = false;
+        } else {
+            strm << ",";
+        }
+
+        strm << "{";
+        bool first2 = true;
+        for(const auto &e : *set[i]) {
+            if(first2) {
+                first2 = false;
+            } else {
+                strm << ",";
+            }
+            strm << e;
+        }
+        strm << "}";
+    }
+    return strm << "]";
+}
+
+std::ostream& operator<<(std::ostream &strm, const constraint& c) {
+    return strm << "lca(" << c.smaller_left << "," << c.smaller_right
+                << ") < lca(" << c.bigger_left << "," << c.bigger_right << ")";
 }

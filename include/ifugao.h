@@ -8,6 +8,7 @@
 #include <set>
 #include <assert.h>
 #include <iostream>
+#include <iterator>
 
 //TODO bad performance when doing string comparison all the time I guess...
 typedef std::string leaf_number;
@@ -132,5 +133,40 @@ std::set<leaf_number> extract_leaf_labels_from_supertree(
  */
 std::tuple<std::shared_ptr<leaf_set>, std::shared_ptr<leaf_set> > get_nth_partition_tuple(
         std::vector<std::shared_ptr<leaf_set> > &partitions, size_t n);
+
+template<typename T>
+std::ostream& operator<<(std::ostream &strm, const std::set<T>& set) {
+    strm << "{";
+    bool first = true;
+    for(const T &elem : set) {
+        if(first) {
+            first = false;
+        } else {
+            strm << ",";
+        }
+        strm << elem;
+    }
+    return strm << "}";
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream &strm, const std::vector<T>& set) {
+    strm << "[";
+    bool first = true;
+    for(const T &elem : set) {
+        if(first) {
+            first = false;
+        } else {
+            strm << ",";
+        }
+        strm << elem;
+    }
+    return strm << "]";
+}
+
+std::ostream& operator<<(std::ostream &strm, const constraint& tree);
+
+std::ostream& operator<<(std::ostream &strm,
+                         const std::vector<std::shared_ptr<leaf_set> >& set);
 
 #endif /* IFUGAO_H */
