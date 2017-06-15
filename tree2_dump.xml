@@ -1,0 +1,240 @@
+<!-- Tree: (((((s5,s3),(s4,s2)),s7),s13),s1); -->
+<itr>
+    <leafs val="{s1,s13,s2,s3,s4,s5,s7}"/>
+    <constraints val="[lca(s13,s5) < lca(s1,s5),lca(s2,s4) < lca(s1,s4),lca(s3,s5) < lca(s4,s5),lca(s4,s5) < lca(s1,s5),lca(s4,s5) < lca(s7,s5),lca(s7,s5) < lca(s13,s5),lca(s7,s5) < lca(s1,s5)]"/>
+    <partitions val="[{s1},{s13,s2,s3,s4,s5,s7}]"/>
+    <bipartition l="{s1}" r="{s13,s2,s3,s4,s5,s7}">
+        <itr>
+            <leafs val="{s1}"/>
+            <result count="1"/>
+        </itr>
+        <itr>
+            <leafs val="{s13,s2,s3,s4,s5,s7}"/>
+            <constraints val="[lca(s3,s5) < lca(s4,s5),lca(s4,s5) < lca(s7,s5),lca(s7,s5) < lca(s13,s5)]"/>
+            <partitions val="[{s13},{s2},{s3,s4,s5,s7}]"/>
+            <bipartition l="{s13}" r="{s2,s3,s4,s5,s7}">
+                <itr>
+                    <leafs val="{s13}"/>
+                    <result count="1"/>
+                </itr>
+                <itr>
+                    <leafs val="{s2,s3,s4,s5,s7}"/>
+                    <constraints val="[lca(s3,s5) < lca(s4,s5),lca(s4,s5) < lca(s7,s5)]"/>
+                    <partitions val="[{s2},{s3,s4,s5},{s7}]"/>
+                    <bipartition l="{s2}" r="{s3,s4,s5,s7}">
+                        <itr>
+                            <leafs val="{s2}"/>
+                            <result count="1"/>
+                        </itr>
+                        <itr>
+                            <leafs val="{s3,s4,s5,s7}"/>
+                            <constraints val="[lca(s3,s5) < lca(s4,s5),lca(s4,s5) < lca(s7,s5)]"/>
+                            <partitions val="[{s3,s4,s5},{s7}]"/>
+                            <bipartition l="{s3,s4,s5}" r="{s7}">
+                                <itr>
+                                    <leafs val="{s3,s4,s5}"/>
+                                    <constraints val="[lca(s3,s5) < lca(s4,s5)]"/>
+                                    <partitions val="[{s3,s5},{s4}]"/>
+                                    <bipartition l="{s3,s5}" r="{s4}">
+                                        <itr>
+                                            <leafs val="{s3,s5}"/>
+                                            <result count="1"/>
+                                        </itr>
+                                        <itr>
+                                            <leafs val="{s4}"/>
+                                            <result count="1"/>
+                                        </itr>
+                                        <result count="1"/>
+                                    </bipartition>
+                                    <result count="1"/>
+                                </itr>
+                                <itr>
+                                    <leafs val="{s7}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <result count="1"/>
+                            </bipartition>
+                            <result count="1"/>
+                        </itr>
+                        <result count="1"/>
+                    </bipartition>
+                    <bipartition l="{s3,s4,s5}" r="{s2,s7}">
+                        <itr>
+                            <leafs val="{s3,s4,s5}"/>
+                            <constraints val="[lca(s3,s5) < lca(s4,s5)]"/>
+                            <partitions val="[{s3,s5},{s4}]"/>
+                            <bipartition l="{s3,s5}" r="{s4}">
+                                <itr>
+                                    <leafs val="{s3,s5}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <itr>
+                                    <leafs val="{s4}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <result count="1"/>
+                            </bipartition>
+                            <result count="1"/>
+                        </itr>
+                        <itr>
+                            <leafs val="{s2,s7}"/>
+                            <result count="1"/>
+                        </itr>
+                        <result count="1"/>
+                    </bipartition>
+                    <bipartition l="{s2,s3,s4,s5}" r="{s7}">
+                        <itr>
+                            <leafs val="{s2,s3,s4,s5}"/>
+                            <constraints val="[lca(s3,s5) < lca(s4,s5)]"/>
+                            <partitions val="[{s2},{s3,s5},{s4}]"/>
+                            <bipartition l="{s2}" r="{s3,s4,s5}">
+                                <itr>
+                                    <leafs val="{s2}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <itr>
+                                    <leafs val="{s3,s4,s5}"/>
+                                    <constraints val="[lca(s3,s5) < lca(s4,s5)]"/>
+                                    <partitions val="[{s3,s5},{s4}]"/>
+                                    <bipartition l="{s3,s5}" r="{s4}">
+                                        <itr>
+                                            <leafs val="{s3,s5}"/>
+                                            <result count="1"/>
+                                        </itr>
+                                        <itr>
+                                            <leafs val="{s4}"/>
+                                            <result count="1"/>
+                                        </itr>
+                                        <result count="1"/>
+                                    </bipartition>
+                                    <result count="1"/>
+                                </itr>
+                                <result count="1"/>
+                            </bipartition>
+                            <bipartition l="{s3,s5}" r="{s2,s4}">
+                                <itr>
+                                    <leafs val="{s3,s5}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <itr>
+                                    <leafs val="{s2,s4}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <result count="1"/>
+                            </bipartition>
+                            <bipartition l="{s2,s3,s5}" r="{s4}">
+                                <itr>
+                                    <leafs val="{s2,s3,s5}"/>
+                                    <result count="3"/>
+                                </itr>
+                                <itr>
+                                    <leafs val="{s4}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <result count="3"/>
+                            </bipartition>
+                            <result count="5"/>
+                        </itr>
+                        <itr>
+                            <leafs val="{s7}"/>
+                            <result count="1"/>
+                        </itr>
+                        <result count="5"/>
+                    </bipartition>
+                    <result count="7"/>
+                </itr>
+                <result count="7"/>
+            </bipartition>
+            <bipartition l="{s2}" r="{s13,s3,s4,s5,s7}">
+                <itr>
+                    <leafs val="{s2}"/>
+                    <result count="1"/>
+                </itr>
+                <itr>
+                    <leafs val="{s13,s3,s4,s5,s7}"/>
+                    <constraints val="[lca(s3,s5) < lca(s4,s5),lca(s4,s5) < lca(s7,s5),lca(s7,s5) < lca(s13,s5)]"/>
+                    <partitions val="[{s13},{s3,s4,s5,s7}]"/>
+                    <bipartition l="{s13}" r="{s3,s4,s5,s7}">
+                        <itr>
+                            <leafs val="{s13}"/>
+                            <result count="1"/>
+                        </itr>
+                        <itr>
+                            <leafs val="{s3,s4,s5,s7}"/>
+                            <constraints val="[lca(s3,s5) < lca(s4,s5),lca(s4,s5) < lca(s7,s5)]"/>
+                            <partitions val="[{s3,s4,s5},{s7}]"/>
+                            <bipartition l="{s3,s4,s5}" r="{s7}">
+                                <itr>
+                                    <leafs val="{s3,s4,s5}"/>
+                                    <constraints val="[lca(s3,s5) < lca(s4,s5)]"/>
+                                    <partitions val="[{s3,s5},{s4}]"/>
+                                    <bipartition l="{s3,s5}" r="{s4}">
+                                        <itr>
+                                            <leafs val="{s3,s5}"/>
+                                            <result count="1"/>
+                                        </itr>
+                                        <itr>
+                                            <leafs val="{s4}"/>
+                                            <result count="1"/>
+                                        </itr>
+                                        <result count="1"/>
+                                    </bipartition>
+                                    <result count="1"/>
+                                </itr>
+                                <itr>
+                                    <leafs val="{s7}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <result count="1"/>
+                            </bipartition>
+                            <result count="1"/>
+                        </itr>
+                        <result count="1"/>
+                    </bipartition>
+                    <result count="1"/>
+                </itr>
+                <result count="1"/>
+            </bipartition>
+            <bipartition l="{s13,s2}" r="{s3,s4,s5,s7}">
+                <itr>
+                    <leafs val="{s13,s2}"/>
+                    <result count="1"/>
+                </itr>
+                <itr>
+                    <leafs val="{s3,s4,s5,s7}"/>
+                    <constraints val="[lca(s3,s5) < lca(s4,s5),lca(s4,s5) < lca(s7,s5)]"/>
+                    <partitions val="[{s3,s4,s5},{s7}]"/>
+                    <bipartition l="{s3,s4,s5}" r="{s7}">
+                        <itr>
+                            <leafs val="{s3,s4,s5}"/>
+                            <constraints val="[lca(s3,s5) < lca(s4,s5)]"/>
+                            <partitions val="[{s3,s5},{s4}]"/>
+                            <bipartition l="{s3,s5}" r="{s4}">
+                                <itr>
+                                    <leafs val="{s3,s5}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <itr>
+                                    <leafs val="{s4}"/>
+                                    <result count="1"/>
+                                </itr>
+                                <result count="1"/>
+                            </bipartition>
+                            <result count="1"/>
+                        </itr>
+                        <itr>
+                            <leafs val="{s7}"/>
+                            <result count="1"/>
+                        </itr>
+                        <result count="1"/>
+                    </bipartition>
+                    <result count="1"/>
+                </itr>
+                <result count="1"/>
+            </bipartition>
+            <result count="9"/>
+        </itr>
+        <result count="9"/>
+    </bipartition>
+    <result count="9"/>
+</itr>

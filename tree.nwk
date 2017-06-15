@@ -1,0 +1,21 @@
+#NEXUS
+Begin data;
+    Dimensions ntax=7 nchar=4;
+    Format datatype=dna gap=-;
+    Matrix
+s1  AAAA
+s2  --A-
+s3  AA--
+s4  AAA-
+s5  AA-A
+s7  A--A
+s13 ---A
+    ;
+End;
+
+BEGIN SETS;
+    CHARSET  P1 = 1-1;
+    CHARSET  P2 = 2-2;
+    CHARSET  P3 = 3-3;
+    CHARSET  P4 = 4-4;
+END;
