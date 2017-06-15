@@ -6,6 +6,7 @@
 
 class LeafSet {
 public:
+    virtual ~LeafSet() = default;
     virtual std::vector<LeafSet> apply_constraints(const std::vector<constraint> &constraints);
     virtual bool contains(size_t leaf);
     virtual std::tuple<LeafSet, LeafSet> get_nth_partition_tuple(
