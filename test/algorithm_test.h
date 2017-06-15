@@ -20,7 +20,7 @@
                                    }, std::ref(promisedFinished)).detach(); \
                                    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) != std::future_status::timeout);
 
-void test_rooted_trees(const char* newick_file, const char* data_file, int trees_on_terrace) {
+static void test_rooted_trees(const char* newick_file, const char* data_file, int trees_on_terrace) {
     
     input_data *read_data = parse_input_data(data_file);
     assert(read_data != nullptr);
