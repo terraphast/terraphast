@@ -39,7 +39,6 @@ public:
 
 	//TODO getter and setter? //performance vs. code quality?
 	std::string label;
-	//double length;  //TODO do we need the length?
 	std::shared_ptr<Tree> left;
 	std::shared_ptr<Tree> right;
 	std::shared_ptr<Tree> parent;
