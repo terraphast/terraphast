@@ -26,7 +26,7 @@ private:
 public:
 		
 	/**
-	 * Create a new set representation with not more the @max_element elements.
+	 * Create a new set representation with not more the \p max_element elements.
 	 * Initially every element is in its own set.
 	 * @param max_element maximum number of elements 
 	 */
@@ -42,14 +42,14 @@ public:
 	void allToSingletons();
 
 	/**
-	 * Find the representative to element @u
+	 * Find the representative to element \p u
 	 * @param u element
-	 * @return representative of set containing @u
+	 * @return representative of set containing \p u
 	 */	
     size_t find(size_t u);
 	
 	/**
-	 *  Merge the two sets contain @u and @v
+	 *  Merge the two sets contain \p u and \p v
 	 *  @param u element u
 	 *  @param v element v
 	 */
