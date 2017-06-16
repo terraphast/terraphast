@@ -36,19 +36,6 @@ struct constraint {
  */
 
 /**
- * Calculates the number of trees on the terrace.
- *
- * @param constraints All constraints to fulfill.
- * @param leafs All leaves of the tree.
- * @param root_species_name the root species
- * @param file File to write all trees in newick format into, iff file != nullptr.
- * @return Number of all trees on the terrace.
- */
-size_t list_trees(const std::vector<constraint> &constraints,
-                  const leaf_number &root_species_name,
-                  const leaf_set &leafs, FILE *file);
-
-/**
  * Applies the given constraints on a set of given leaves, by merging them if
  * they two of them are on the left side of a constraint.
  *

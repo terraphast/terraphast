@@ -28,23 +28,6 @@ std::tuple<std::shared_ptr<std::set<leaf_number> >,
     return std::make_tuple(part_one, part_two);
 }
 
-size_t list_trees(const std::vector<constraint> &constraints,
-                  const leaf_number &root_species_name,
-                  const leaf_set &leafs, FILE *file) {
-
-    auto all_trees = find_all_unrooted_trees(leafs,
-                                             constraints,
-                                             root_species_name);
-
-    if (file != nullptr) {
-        for (std::shared_ptr<UnrootedTree> t : all_trees) {
-            fprintf(file, "%s\n", t->to_newick_string().c_str());
-        }
-    }
-    return all_trees.size();
-
-}
-
 static std::shared_ptr<Tree> root(std::shared_ptr<Tree> t) {
     if (t->parent == nullptr) {
         return t;
@@ -148,27 +131,27 @@ std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(
 
     if (constraints.empty()) {
         auto result = get_all_binary_trees(leafs);
-        std::cerr << "<itr>\n";
-        std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
-        std::cerr << "<result count=\"" << result.size() << "\"/>\n";
-        std::cerr << "</itr>\n";
+        //std::cerr << "<itr>\n";
+        //std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
+        //std::cerr << "<result count=\"" << result.size() << "\"/>\n";
+        //std::cerr << "</itr>\n";
         return result;
     }
 
     auto partitions = apply_constraints(leafs, constraints);
     std::vector<std::shared_ptr<Tree> > result;
 
-    std::cerr << "<itr>\n";
-    std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
-    std::cerr << "<constraints val=\"" << constraints << "\"/>\n";
-    std::cerr << "<partitions val=\"" << partitions << "\"/>\n";
+    //std::cerr << "<itr>\n";
+    //std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
+    //std::cerr << "<constraints val=\"" << constraints << "\"/>\n";
+    //std::cerr << "<partitions val=\"" << partitions << "\"/>\n";
 
     for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
         std::shared_ptr<std::set<leaf_number> > part_left;
         std::shared_ptr<std::set<leaf_number> > part_right;
         std::tie(part_left, part_right) = get_nth_partition_tuple(partitions, i);
 
-        std::cerr << "<bipartition l=\"" << *part_left << "\" r=\"" << *part_right << "\">\n";
+        //std::cerr << "<bipartition l=\"" << *part_left << "\" r=\"" << *part_right << "\">\n";
 
         auto constraints_left = find_constraints(*part_left, constraints);
         auto constraints_right = find_constraints(*part_right, constraints);
@@ -177,14 +160,14 @@ std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(
         auto subtrees_right = find_all_rooted_trees(*part_right, constraints_right);
         auto trees = merge_subtrees(subtrees_left, subtrees_right);
 
-        std::cerr << "<result count=\"" << trees.size() << "\"/>\n";
-        std::cerr << "</bipartition>\n";
+        //std::cerr << "<result count=\"" << trees.size() << "\"/>\n";
+        //std::cerr << "</bipartition>\n";
 
         result.insert(result.end(), trees.begin(), trees.end());
     }
 
-    std::cerr << "<result count=\"" << result.size() << "\"/>\n";
-    std::cerr << "</itr>\n";
+    //std::cerr << "<result count=\"" << result.size() << "\"/>\n";
+    //std::cerr << "</itr>\n";
 
     return result;
 }

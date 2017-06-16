@@ -140,9 +140,17 @@ int terraceAnalysis(missingData *m,
     //auto r = find_all_rooted_trees(leafs,
     //                               extract_constraints_from_supertree(rtree, m));
     //dout("===== TREES: " << r.size() << "\n");
-    size_t num_trees = list_trees(constraints,
-                                  root_species_name, leafs, allTreesOnTerrace);
-    mpz_set_ui(*terraceSize, num_trees);
+    auto all_trees = find_all_unrooted_trees(leafs,
+                                             constraints,
+                                             root_species_name);
+
+    if (enumerateTrees) {
+        for (std::shared_ptr<UnrootedTree> t : all_trees) {
+            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string().c_str());
+        }
+    }
+
+    mpz_set_ui(*terraceSize, all_trees.size());
 
     /* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
 
