@@ -1,6 +1,8 @@
 #ifndef TREE_H
 #define TREE_H
 
+#include "functional.h"
+
 #include <memory>
 #include <assert.h>
 
@@ -48,9 +50,6 @@ public:
 	}
 
 	std::string to_newick_string();
-
-    template<typename T>
-    using BinaryOperator = T (*)(const T, const T);
 
     template<typename T>
     using TreeNodeVisitor = T (*)(const Tree*);

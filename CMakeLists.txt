@@ -22,6 +22,7 @@ set(CORE_HEADERS
         include/newick-tools/newick-tools.h
         include/newick-tools/parse_ntree.h
         include/util.h
+        include/functional.h
         include/tree.h
         include/terraces.h
         include/input_parser.h
