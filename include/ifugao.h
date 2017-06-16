@@ -50,6 +50,10 @@ std::vector<std::shared_ptr<leaf_set> > apply_constraints(
 std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(const leaf_set &leaves,
                                                           const std::vector<constraint> &constraints);
 
+//TODO: only temporarly
+size_t count_all_rooted_trees(const leaf_set &leaves,
+                              const std::vector<constraint> &constraints);
+
 /** Combines all sets (constraints need to be applied already) */
 std::vector<std::shared_ptr<UnrootedTree> > find_all_unrooted_trees(const leaf_set &leaves,
                                                                     const std::vector<constraint> &constraints,

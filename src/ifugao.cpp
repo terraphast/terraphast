@@ -125,6 +125,51 @@ std::vector<std::shared_ptr<UnrootedTree> > find_all_unrooted_trees(
     return result;
 }
 
+//TODO: structure is more or less duplicated. from find_all_rooted_trees
+size_t count_all_rooted_trees(const leaf_set &leaves,
+                              const std::vector<constraint> &constraints) {
+    if (constraints.empty()) {
+        size_t result = 1;
+        for(size_t i = 4; i <= (leaves.size() + 1); i++) {
+            result *= (2*i-5);
+        }
+        return result;
+    }
+
+    auto partitions = apply_constraints(leaves, constraints);
+    size_t result = 0;
+
+    //std::cerr << "<itr>\n";
+    //std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
+    //std::cerr << "<constraints val=\"" << constraints << "\"/>\n";
+    //std::cerr << "<partitions val=\"" << partitions << "\"/>\n";
+
+    for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
+        std::shared_ptr<std::set<leaf_number> > part_left;
+        std::shared_ptr<std::set<leaf_number> > part_right;
+        std::tie(part_left, part_right) = get_nth_partition_tuple(partitions, i);
+
+        //std::cerr << "<bipartition l=\"" << *part_left << "\" r=\"" << *part_right << "\">\n";
+
+        auto constraints_left = find_constraints(*part_left, constraints);
+        auto constraints_right = find_constraints(*part_right, constraints);
+
+        auto subtrees_left = count_all_rooted_trees(*part_left, constraints_left);
+        auto subtrees_right = count_all_rooted_trees(*part_right, constraints_right);
+        auto trees = subtrees_left * subtrees_right;
+
+        //std::cerr << "<result count=\"" << trees.size() << "\"/>\n";
+        //std::cerr << "</bipartition>\n";
+
+        result += trees;
+    }
+
+    //std::cerr << "<result count=\"" << result.size() << "\"/>\n";
+    //std::cerr << "</itr>\n";
+
+    return result;
+}
+
 std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(
         const leaf_set &leafs,
         const std::vector<constraint> &constraints) {
