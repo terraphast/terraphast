@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <future>
 
-#define TIME_FOR_TESTS_ 1000 * 10
+#define TIME_FOR_TESTS_ 1000 * 30
 
 #define TEST_TIMEOUT_BEGIN   std::promise<bool> promisedFinished; \
                               auto futureResult = promisedFinished.get_future(); \
@@ -20,7 +20,7 @@
                                    }, std::ref(promisedFinished)).detach(); \
                                    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) != std::future_status::timeout);
 
-static void test_rooted_trees(const char* newick_file, const char* data_file, int trees_on_terrace) {
+static void test_rooted_trees(const char* newick_file, const char* data_file, long trees_on_terrace) {
     
     input_data *read_data = parse_input_data(data_file);
     assert(read_data != nullptr);
@@ -37,12 +37,17 @@ static void test_rooted_trees(const char* newick_file, const char* data_file, in
 
     leaf_set leafs;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
-        leafs.insert(leaf_number(m->speciesNames[k]));
+        for (size_t j = 0; j < m->numberOfPartitions; j++) {
+            if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
+                leafs.insert(leaf_number(m->speciesNames[k]));
+                break;
+            }
+        }
     }
 
-    auto result = find_all_rooted_trees(leafs, extract_constraints_from_supertree(rtree, m));
+    auto result = count_all_rooted_trees(leafs, extract_constraints_from_supertree(rtree, m));
 
-    ASSERT_EQ(result.size(), trees_on_terrace);
+    ASSERT_EQ(result, trees_on_terrace);
 
     ntree_destroy(tree);
     freeMissingData(m);
@@ -420,16 +425,16 @@ TEST(ListRootedTrees, Ficus_2) {
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS_)
 }
 
-TEST(ListRootedTrees, DISABLED_Ficus_3) {
+TEST(ListRootedTrees, Ficus_3) {
     TEST_TIMEOUT_BEGIN
     test_rooted_trees("../input/modified/Ficus.nwk", "../input/modified/Ficus.data.3", 851445);
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS_)
 }
 
 // TODO: fix test to run with mpi (amount of trees on terrace to large for an integer)
-TEST(ListRootedTrees, DISABLED_Caryophyllaceae) {
+TEST(ListRootedTrees, Caryophyllaceae) {
     TEST_TIMEOUT_BEGIN
     // test is commented since it throws an overflow conversion error
-    //test_rooted_trees("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data.", 718346120625);
+    test_rooted_trees("../input/Caryophyllaceae.nwk", "../input/Caryophyllaceae.data", 718346120625);
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS_)
 }

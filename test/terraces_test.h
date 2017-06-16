@@ -147,6 +147,7 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     auto constraints = extract_constraints_from_supertree(r_tree, example1);
 
     auto result = find_all_unrooted_trees(leafs, constraints, root_species_name);
+    ASSERT_EQ(count_all_rooted_trees(leafs, constraints), 17);
     ASSERT_EQ(result.size(), 15);
 
     ASSERT_EQ(result[0]->to_newick_string(), "(s3,((s5,s1),s2),s4);");
@@ -337,6 +338,12 @@ TEST(TerracesAnalysis, example2_from_old_main) {
 
     freeMissingData(weirdExample);
     fclose(f0);
+}
+
+TEST(TerracesAnalysis, Meusemann) {
+    TEST_TIMEOUT_BEGIN
+                test_terrace_analysis("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1");
+    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
 }
 
 TEST(TerracesAnalysis, Allium_Tiny) {
