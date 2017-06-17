@@ -2,10 +2,22 @@
 #include <terraces/supertree.hpp>
 #include <terraces/union_find.hpp>
 
+#include <functional>
 #include <iostream>
 #include <unordered_map>
 
 namespace terraces {
+
+template <typename Enter, typename Exit>
+class scope_guard {
+private:
+	Enter& m_enter;
+	Exit& m_exit;
+
+public:
+	scope_guard(Enter& enter, Exit& exit) : m_enter{enter}, m_exit{exit} { m_enter(); }
+	~scope_guard() { m_exit(); }
+};
 
 class tree_count_callback {
 public:
@@ -51,7 +63,7 @@ template <typename Callback>
 auto tree_enumerator<Callback>::run(const fast_index_set& leaves,
                                     const fast_index_set& constraint_occ,
                                     const constraints& constraints) -> result_type {
-	scope_guard(cb.enter, cb.exit);
+	scope_guard<decltype(cb.enter), decltype(cb.exit)>(cb.enter, cb.exit);
 
 	if (leaves.size() == 1) {
 		return cb.base_one_leaf(*leaves.begin());
