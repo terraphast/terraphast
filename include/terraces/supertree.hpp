@@ -35,12 +35,6 @@ public:
 
 class tree_master {
 private:
-	fast_index_set filter_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
-	                                  const constraints& c) const;
-
-	union_find apply_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
-	                             const constraints& c) const;
-
 	constraints map_constraints(const fast_index_set& leaves, const constraints& c);
 
 	fast_index_set leave_occ(const tree& t);
@@ -49,8 +43,6 @@ private:
 	raii_stackstate::state m_stack_state;
 
 public:
-	tree_master();
-
 	const raii_stackstate::state& get_state() const { return m_stack_state; }
 
 	counted_supertree count_supertree(const tree&, const constraints&, index root);

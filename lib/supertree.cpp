@@ -7,11 +7,91 @@
 
 namespace terraces {
 
-tree_master::tree_master() {}
+class tree_count_callback {
+public:
+	using result_type = index;
 
-fast_index_set tree_master::filter_constraints(const fast_index_set& leaves,
-                                               const fast_index_set& c_occ,
-                                               const constraints& c) const {
+	void enter() {}
+	void exit() {}
+
+	index base_one_leaf(index) { return 1; }
+	index base_two_leaves(index) { return 1; }
+	index base_unconstrained(index);
+	index init_result() { return 0; }
+
+	void begin_iteration(const bipartition_iterator&) {}
+	bool continue_iteration(const bipartition_iterator&) { return true; }
+	void step_iteration(const bipartition_iterator&) {}
+	void left_subcall() {}
+	void right_subcall() {}
+	index accumulate(index acc, index val) { return acc + val; }
+	index combine(index left, index right) { return left * right; }
+};
+
+fast_index_set filter_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
+                                  const constraints& c);
+
+union_find apply_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
+                             const constraints& c);
+
+template <typename Callback>
+class tree_enumerator {
+	using result_type = typename Callback::result_type;
+
+private:
+	Callback& cb;
+
+public:
+	tree_enumerator(Callback& cb);
+	result_type run(const fast_index_set& leaves, const fast_index_set& constraint_occ,
+	                const constraints& constraints);
+};
+
+template <typename Callback>
+auto tree_enumerator<Callback>::run(const fast_index_set& leaves,
+                                    const fast_index_set& constraint_occ,
+                                    const constraints& constraints) -> result_type {
+	scope_guard(cb.enter, cb.exit);
+
+	if (leaves.size() == 1) {
+		return cb.base_one_leaf(*leaves.begin());
+	}
+
+	if (leaves.size() == 2) {
+		auto it = leaves.begin();
+		auto fst = *it;
+		auto snd = *(++it);
+		return cb.base_two_leaves(fst, snd);
+	}
+
+	fast_index_set new_constraint_occ = filter_constraints(leaves, constraint_occ, constraints);
+	if (new_constraint_occ.size() == 0) {
+		return cb.base_unconstrained(leaves);
+	}
+
+	auto result = cb.init_result();
+
+	union_find sets = apply_constraints(leaves, new_constraint_occ, constraints);
+	bipartition_iterator bip_it(leaves, sets);
+	cb.begin_iteration(bip_it);
+	while (bip_it.is_valid() && cb.continue_iteration()) {
+		cb.step_iteration(bip_it);
+		cb.left_subcall();
+		auto left = run(bip_it.get_current_set(), new_constraint_occ, constraints);
+
+		bip_it.flip_sets();
+		cb.right_subcall();
+		auto right = run(bip_it.get_current_set(), new_constraint_occ, constraints);
+		result = cb.accumulate(result, cb.combine(left, right));
+
+		bip_it.increase();
+	}
+
+	return result;
+}
+
+fast_index_set filter_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
+                                  const constraints& c) {
 	fast_index_set result{c_occ.max_size()};
 	for (auto c_i : c_occ) {
 		if (leaves.contains(c[c_i].left) && leaves.contains(c[c_i].shared) &&
@@ -23,8 +103,8 @@ fast_index_set tree_master::filter_constraints(const fast_index_set& leaves,
 	return result;
 }
 
-union_find tree_master::apply_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
-                                          const constraints& c) const {
+union_find apply_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
+                             const constraints& c) {
 	auto sets = union_find(leaves.size());
 	for (auto c_i : c_occ) {
 		auto& cons = c[c_i];
@@ -101,7 +181,7 @@ counted_supertree tree_master::count_supertree(const fast_index_set& leaves,
 		return counted_supertree({1, ss.str()});
 	}
 
-	fast_index_set c_occ = tree_master::filter_constraints(leaves, in_c_occ, in_c);
+	fast_index_set c_occ = filter_constraints(leaves, in_c_occ, in_c);
 	if (c_occ.size() == 0) {
 		size_t res = 1;
 		for (size_t i = 3; i <= leaves.size() + 1; i++) {
@@ -139,7 +219,7 @@ size_t tree_master::check_supertree(const fast_index_set& leaves, const fast_ind
 	if (leaves.size() == 2) {
 		return number + 1;
 	}
-	fast_index_set c_occ = tree_master::filter_constraints(leaves, in_c_occ, in_c);
+	fast_index_set c_occ = filter_constraints(leaves, in_c_occ, in_c);
 
 	if (c_occ.size() == 0 && number + leaves.size() > 2) {
 
