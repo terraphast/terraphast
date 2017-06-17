@@ -1,6 +1,9 @@
+#include <bitset>
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <thread>
 
 #include <terraces/constraints.hpp>
 #include <terraces/parser.hpp>
@@ -54,9 +57,32 @@ int main(int argc, char** argv) try {
 	std::cout << "Deleted " << duplicated << " unnecessary constraints, " << constraints.size()
 	          << " remaining" << std::endl;
 	terraces::tree_master tm;
+	std::thread status_thread([&]() {
+		using namespace std::chrono_literals;
+		while (tm.get_state().empty()) {
+			std::this_thread::sleep_for(100ms);
+		}
+		while (!tm.get_state().empty()) {
+			std::this_thread::sleep_for(100ms);
+			auto end = tm.get_state().end();
+			auto begin = tm.get_state().begin();
+			std::cout << "\033[2J\033[;H";
+			auto depth = 0u;
+			for (auto it = begin; it != end; ++it) {
+				std::cout << std::setw(20) << std::get<0>(*it) << "/"
+				          << std::setw(20) << std::get<1>(*it) << std::setw(20)
+				          << std::get<2>(*it) << std::string(depth, ' ')
+				          << (std::get<3>(*it) ? '\\' : '|') << "\n";
+				depth += std::get<3>(*it);
+			}
+			std::cout << std::flush;
+		}
+	});
+
 	std::cout << "We counted "
 	          << tm.count_supertree(data.tree, constraints, data_res.second).count
 	          << " equivalent trees" << std::endl;
+	status_thread.join();
 
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << std::endl;
