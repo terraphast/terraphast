@@ -36,6 +36,8 @@ public:
 
 	index cur_bip() const { return m_bip; }
 	index end_bip() const { return m_end; }
+	const union_find& sets() const { return m_sets; }
+	const fast_index_set& leaves() const { return m_leaves; }
 };
 
 } // namespace terraces
