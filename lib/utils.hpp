@@ -83,6 +83,17 @@ std::ostream& operator<<(std::ostream& stream, comma_separated_mapped_output<T1,
 	return stream;
 }
 
+// helpers because c++14 can't deduce class template types
+template <typename T>
+comma_separated_output<T> as_comma_separated_output(const T& data) {
+	return {data};
+}
+
+template <typename T1, typename T2>
+comma_separated_mapped_output<T1, T2> as_comma_separated_output(const T1& data, const T2& names) {
+	return {data, names};
+}
+
 } // namespace utils
 } // namespace terraces
 

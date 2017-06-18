@@ -9,8 +9,11 @@
 #include <terraces/parser.hpp>
 #include <terraces/rooting.hpp>
 #include <terraces/subtree_extraction.hpp>
-#include <terraces/supertree.hpp>
 #include <terraces/trees.hpp>
+
+#include "../lib/supertree_enumerator.hpp"
+#include "../lib/supertree_variants.hpp"
+#include "../lib/supertree_variants_debug.hpp"
 
 int main(int argc, char** argv) try {
 	if (argc != 3) {
@@ -56,9 +59,12 @@ int main(int argc, char** argv) try {
 	auto duplicated = terraces::deduplicate_constraints(constraints);
 	std::cout << "Deleted " << duplicated << " unnecessary constraints, " << constraints.size()
 	          << " remaining" << std::endl;
-	terraces::tree_master tm;
 
-	std::cout << "We counted " << tm.count_supertree(data.tree, constraints, data_res.second)
+	terraces::tree_count_callback c_cb{};
+	terraces::logging_decorator<terraces::tree_count_callback> cb{c_cb, std::cerr, data.names};
+	terraces::tree_enumerator<decltype(cb)> enumerator{cb};
+
+	std::cout << "We counted " << enumerator.run(data.tree, constraints, data_res.second)
 	          << " equivalent trees" << std::endl;
 
 } catch (std::exception& e) {
