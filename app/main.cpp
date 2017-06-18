@@ -60,8 +60,7 @@ int main(int argc, char** argv) try {
 	std::cout << "Deleted " << duplicated << " unnecessary constraints, " << constraints.size()
 	          << " remaining" << std::endl;
 
-	terraces::tree_count_callback c_cb{};
-	terraces::logging_decorator<terraces::tree_count_callback> cb{c_cb, std::cerr, data.names};
+	terraces::logging_decorator<terraces::tree_count_callback> cb{{}, std::cerr, data.names};
 	terraces::tree_enumerator<decltype(cb)> enumerator{cb};
 
 	std::cout << "We counted " << enumerator.run(data.tree, constraints, data_res.second)

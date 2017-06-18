@@ -15,10 +15,10 @@ class tree_enumerator {
 	using result_type = typename Callback::result_type;
 
 private:
-	Callback& cb;
+	Callback cb;
 
 public:
-	tree_enumerator(Callback& cb) : cb{cb} {}
+	tree_enumerator(Callback cb) : cb{cb} {}
 	result_type run(const tree& t, const constraints& constraints, index root_species);
 	result_type run(index count, const constraints& constraints);
 	result_type run(const fast_index_set& leaves, const fast_index_set& constraint_occ,

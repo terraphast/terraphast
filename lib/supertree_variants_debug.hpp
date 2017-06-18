@@ -28,7 +28,7 @@ private:
 	std::vector<stack_state<result_type>> m_stack;
 
 public:
-	stack_state_callback_decorator(const Callback& cb) : Callback{cb} {}
+	stack_state_callback_decorator(Callback cb) : Callback{cb} {}
 
 	void enter(const fast_index_set&, const fast_index_set&, const constraints&) {
 		m_stack.emplace_back(0, 0, false, Callback::init_result());
@@ -82,7 +82,7 @@ private:
 	std::ostream& output() { return m_output << std::string(m_depth, '\t'); }
 
 public:
-	logging_decorator(const Callback& cb, std::ostream& output, const name_map& names)
+	logging_decorator(Callback cb, std::ostream& output, const name_map& names)
 	        : Callback{cb}, m_output{output}, m_depth{0}, m_first_iteration{}, m_names{names} {}
 
 	void enter(const fast_index_set& leaves) {
