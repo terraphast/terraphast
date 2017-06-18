@@ -46,6 +46,43 @@ public:
 	~scope_guard() { m_exit(); }
 };
 
+template <typename T>
+struct comma_separated_output {
+	const T& data;
+};
+
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, comma_separated_output<T> output) {
+	bool first = true;
+	for (auto el : output.data) {
+		if (not first) {
+			stream << ",";
+		}
+		stream << el;
+		first = false;
+	}
+	return stream;
+}
+
+template <typename T1, typename T2>
+struct comma_separated_mapped_output {
+	const T1& data;
+	const T2& names;
+};
+
+template <typename T1, typename T2>
+std::ostream& operator<<(std::ostream& stream, comma_separated_mapped_output<T1, T2> output) {
+	bool first = true;
+	for (auto el : output.data) {
+		if (not first) {
+			stream << ",";
+		}
+		stream << output.names[el];
+		first = false;
+	}
+	return stream;
+}
+
 } // namespace utils
 } // namespace terraces
 
