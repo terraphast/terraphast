@@ -5,8 +5,8 @@
 #include "fast_set.hpp"
 #include "trees.hpp"
 #include "union_find.hpp"
+#include <gmpxx.h>
 #include <string>
-
 #include <tuple>
 
 namespace terraces {
@@ -14,8 +14,8 @@ namespace terraces {
 class tree_master {
 private:
 public:
-	index count_supertree(const tree&, const constraints&, index root);
-	index count_supertree(index count, const constraints&);
+	mpz_class count_supertree(const tree&, const constraints&, index root);
+	mpz_class count_supertree(index count, const constraints&);
 };
 
 } // namespace terraces

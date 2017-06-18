@@ -7,13 +7,13 @@
 
 namespace terraces {
 
-index tree_master::count_supertree(const tree& t, const constraints& c, index root) {
+mpz_class tree_master::count_supertree(const tree& t, const constraints& c, index root) {
 	tree_count_callback cb{};
 	tree_enumerator<tree_count_callback> counter{cb};
 	return counter.run(t, c, root);
 }
 
-index tree_master::count_supertree(index count, const constraints& c) {
+mpz_class tree_master::count_supertree(index count, const constraints& c) {
 	tree_count_callback cb{};
 	tree_enumerator<tree_count_callback> counter{cb};
 	return counter.run(count, c);

@@ -5,6 +5,8 @@
 #include <terraces/constraints.hpp>
 #include <terraces/trees.hpp>
 
+#include <gmpxx.h>
+
 namespace terraces {
 
 template <typename Result>
@@ -45,21 +47,21 @@ public:
 	Result combine(Result, Result) {}
 };
 
-class tree_count_callback : public enumeration_callback<index> {
+class tree_count_callback : public enumeration_callback<mpz_class> {
 public:
-	index base_one_leaf(index) { return 1; }
-	index base_two_leaves(index, index) { return 1; }
-	index base_unconstrained(const fast_index_set& leaves) {
+	mpz_class base_one_leaf(index) { return 1; }
+	mpz_class base_two_leaves(index, index) { return 1; }
+	mpz_class base_unconstrained(const fast_index_set& leaves) {
 		index num_leaves = leaves.size();
-		index result = 1;
+		mpz_class result = 1;
 		for (index i = 3; i <= num_leaves + 1; i++) {
 			result *= (2 * i - 5);
 		}
 		return result;
 	}
 
-	index accumulate(index acc, index val) { return acc + val; }
-	index combine(index left, index right) { return left * right; }
+	mpz_class accumulate(mpz_class acc, mpz_class val) { return acc + val; }
+	mpz_class combine(mpz_class left, mpz_class right) { return left * right; }
 };
 
 } // namespace terraces
