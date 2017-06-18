@@ -11,6 +11,63 @@
 
 namespace terraces {
 
+template <typename Result>
+struct stack_state {
+	index current_bip;
+	index max_bip;
+	bool right;
+	Result intermediate;
+};
+
+template <typename Callback>
+class stack_state_callback_decorator : public Callback {
+public:
+	using result_type = typename Callback::result_type;
+
+private:
+	std::vector<stack_state<result_type>> m_stack;
+
+public:
+	stack_state_callback_decorator(const Callback& cb) : Callback{cb} {}
+
+	void enter(const fast_index_set&, const fast_index_set&, const constraints&) {
+		m_stack.emplace_back(0, 0, false, Callback::init_result());
+		Callback::enter();
+	}
+
+	void exit(result_type result) {
+		Callback::exit(result);
+		m_stack.pop_back();
+	}
+
+	void begin_iteration(const bipartition_iterator& bip_it) {
+		m_stack.back().current_bip = bip_it.cur_bip();
+		m_stack.back().max_bip = bip_it.end_bip();
+		Callback::begin_iteration(bip_it);
+	}
+
+	void step_iteration(const bipartition_iterator& bip_it) {
+		m_stack.back().current_bip = bip_it.cur_bip();
+		Callback::step_iteration(bip_it);
+	}
+
+	void right_subcall() {
+		m_stack.back().right = true;
+		Callback::right_subcall();
+	}
+
+	void left_subcall() {
+		m_stack.back().right = false;
+		Callback::left_subcall();
+	}
+
+	result_type accumulate(result_type acc, result_type val) {
+		auto result = Callback::accumulate(acc, val);
+		m_stack.back().intermediate = result;
+		return result;
+	}
+};
+
 template <typename Callback>
 class logging_decorator : public Callback {
 public:
