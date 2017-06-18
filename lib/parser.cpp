@@ -142,7 +142,7 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 				all_data_available = false;
 			}
 		}
-		if (all_data_available) {
+		if (all_data_available and suitable_root == none) {
 			suitable_root = species;
 		}
 	}
