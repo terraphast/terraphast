@@ -36,11 +36,14 @@ inline uint8_t partial_popcount(uint64_t block, index i) {
 }
 
 class bitvector {
+public:
+	using value_type = uint64_t;
+
 private:
 	index m_size;
 	// TODO align blocks for SSE
-	std::vector<uint64_t> m_blocks;
-	std::vector<index> m_ranks;
+	std::vector<value_type> m_blocks;
+	std::vector<value_type> m_ranks;
 	index m_count;
 
 	debug_var(bool m_ranks_dirty);

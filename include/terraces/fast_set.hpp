@@ -16,6 +16,8 @@ private:
 	efficient::bitvector m_vector;
 
 public:
+	using value_type = efficient::bitvector::value_type;
+
 	fast_index_set(index max_size) : m_vector{max_size} {}
 
 	bool contains(index i) const { return m_vector.get(i); }
@@ -23,6 +25,7 @@ public:
 		assert(contains(i));
 		return m_vector.rank(i);
 	}
+	index select(index i) const;
 
 	index max_size() const { return m_vector.size(); }
 	index size() const { return m_vector.count(); }
@@ -39,6 +42,9 @@ public:
 };
 
 class fast_index_set_iterator {
+public:
+	using value_type = fast_index_set::value_type;
+
 private:
 	const fast_index_set& m_set;
 	index m_index;
@@ -59,6 +65,15 @@ public:
 inline auto fast_index_set::begin() const -> iterator { return {*this, m_vector.begin()}; }
 
 inline auto fast_index_set::end() const -> iterator { return {*this, m_vector.end()}; }
+
+inline index fast_index_set::select(index i) const {
+	assert(i < size());
+	auto it = begin();
+	for (index j = 0; j < i; ++j) {
+		++it;
+	}
+	return *it;
+}
 
 } // namespace terraces
 
