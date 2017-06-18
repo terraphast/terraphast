@@ -5,29 +5,33 @@
 
 namespace terraces {
 
-union_find::union_find(index n) : id(n), size(n, 1) { std::iota(id.begin(), id.end(), index{}); }
+union_find::union_find(index n) : m_id(n), m_size(n, 1) {
+	std::iota(m_id.begin(), m_id.end(), index{});
+}
 
 index union_find::find(index x) const {
 	index root = x;
-	while (root != id.at(root)) {
-		root = id.at(root);
+	while (root != m_id[root]) {
+		root = m_id[root];
 	}
 	while (x != root) {
-		x = std::exchange(id.at(x), root);
+		x = std::exchange(m_id[x], root);
 	}
 	return root;
 }
+
+index union_find::size() const { return m_id.size(); }
 
 void union_find::merge(index x, index y) {
 	index i = find(x);
 	index j = find(y);
 	if (i == j) {
 		return;
-	} else if (size.at(i) >= size.at(j)) {
+	} else if (m_size[i] >= m_size[j]) {
 		std::swap(i, j);
 	}
-	id.at(i) = j;
-	size.at(j) += size.at(i);
+	m_id[i] = j;
+	m_size[j] += m_size[i];
 }
 
 bool union_find::is_representative(index x) const { return x == find(x); }
