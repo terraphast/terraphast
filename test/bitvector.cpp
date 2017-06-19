@@ -74,6 +74,8 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 	b.set(6);
 	b.set(8);
 	b.set(9);
+	b.invert();
+	b.invert();
 	b.update_ranks();
 	CHECK(!b.get(0));
 	CHECK(!b.get(3));
@@ -111,6 +113,8 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	b.set(200);
 	b.set(204);
 	b.set(400);
+	b.invert();
+	b.invert();
 	b.update_ranks();
 	efficient::bitvector b2(500);
 	b2.set(128);
@@ -151,6 +155,8 @@ TEST_CASE("efficient bitvector xor", "[bitvector]") {
 	b.set(8);
 	b.set(9);
 	b.bitwise_xor(b);
+	b.invert();
+	b.invert();
 	b.update_ranks();
 	CHECK(b.count() == 0);
 }

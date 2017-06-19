@@ -81,8 +81,12 @@ public:
 
 	/** Clears all bits in the bitvector. */
 	void blank();
+	/** Inverts all bits in the bitvector. */
+	void invert();
 	/** Applies element-wise xor from another bitvector. */
 	void bitwise_xor(const bitvector& other);
+	/** Sets the values of this bitvector to the bitwise or of two bitvectors. */
+	void set_bitwise_or(const bitvector& fst, const bitvector& snd);
 
 	/** Updates the internal data structures after editing the vector. */
 	void update_ranks();
@@ -123,6 +127,9 @@ public:
 	}
 	/** Returns the index one past the last element. */
 	index end() const { return m_size; }
+
+	bool operator<(const bitvector& other) const;
+	bool operator==(const bitvector& other) const;
 };
 
 } // namespace efficient
