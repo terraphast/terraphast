@@ -11,10 +11,16 @@
 
 namespace terraces {
 
+/**
+  * @brief Remaps contstraints, names and root to leaf-based indexing (remove inner nodes).
+  * @returns the number of leaves.
+  */
+index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root);
+
 class tree_master {
 private:
 public:
-	mpz_class count_supertree(const tree&, const constraints&, index root);
+	mpz_class count_supertree(index num_leaves, const constraints&, index root);
 	mpz_class count_supertree(index count, const constraints&);
 };
 

@@ -19,30 +19,28 @@ private:
 
 public:
 	tree_enumerator(Callback cb) : cb{cb} {}
-	result_type run(const tree& t, const constraints& constraints, index root_species);
-	result_type run(index count, const constraints& constraints);
+	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
+	result_type run(index num_leaves, const constraints& constraints);
 	result_type run(const fast_index_set& leaves, const fast_index_set& constraint_occ,
 	                const constraints& constraints);
 };
 
 template <typename Callback>
-auto tree_enumerator<Callback>::run(index count, const constraints& constraints) -> result_type {
-	auto leaves = full_set(count);
+auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constraints)
+        -> result_type {
+	auto leaves = full_set(num_leaves);
 	auto c_occ = full_set(constraints.size());
 	return run(leaves, c_occ, constraints);
 }
 
 template <typename Callback>
-auto tree_enumerator<Callback>::run(const tree& tree, const constraints& constraints,
-                                    index root_species) -> result_type {
-	auto leaves = leave_occ(tree);
-	auto mapped_constraints = constraints; // map_constraints(leaves, constraints);
+auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constraints,
+                                    index root_leaf) -> result_type {
+	auto leaves = full_set(num_leaves);
 	auto c_occ = full_set(constraints.size());
-	auto mapped_root = root_species; // leaves.rank(root_species);
-	// leaves = full_set(leaves.size());
-	leaves.remove(mapped_root);
+	leaves.remove(root_leaf);
 	leaves.finalize_edit();
-	return run(leaves, c_occ, mapped_constraints);
+	return run(leaves, c_occ, constraints);
 }
 
 template <typename Callback>
