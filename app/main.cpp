@@ -1,13 +1,19 @@
+#include <bitset>
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <thread>
 
 #include <terraces/constraints.hpp>
 #include <terraces/parser.hpp>
 #include <terraces/rooting.hpp>
 #include <terraces/subtree_extraction.hpp>
-#include <terraces/supertree.hpp>
 #include <terraces/trees.hpp>
+
+#include "../lib/supertree_enumerator.hpp"
+#include "../lib/supertree_variants.hpp"
+#include "../lib/supertree_variants_debug.hpp"
 
 int main(int argc, char** argv) try {
 	if (argc != 3) {
@@ -49,9 +55,33 @@ int main(int argc, char** argv) try {
 
 	terraces::constraints constraints;
 	const auto subtrees = terraces::subtrees(data.tree, data_res.first);
+	std::cout << "Subtrees in Newick format:\n";
+	for (auto& subtree : subtrees) {
+		std::cout << as_newick(subtree, data.names) << "\n";
+	}
 	constraints = terraces::compute_constraints(subtrees);
-	std::cout << "We counted " << terraces::count_supertree(data.tree, constraints)
-	          << " equivalent trees" << std::endl;
+	for (auto& constraint : constraints) {
+		std::cout << terraces::utils::named_output<terraces::constraints,
+		                                           terraces::name_map>{constraint,
+		                                                               data.names}
+		          << "\n";
+	}
+	auto duplicated = terraces::deduplicate_constraints(constraints);
+	std::cout << "Deleted " << duplicated << " unnecessary constraints, " << constraints.size()
+	          << " remaining" << std::endl;
+	for (auto& constraint : constraints) {
+		std::cout << terraces::utils::named_output<terraces::constraints,
+		                                           terraces::name_map>{constraint,
+		                                                               data.names}
+		          << "\n";
+	}
+
+	terraces::logging_decorator<terraces::multitree_callback> cb{
+	        {std::cout, data.names}, std::cerr, data.names};
+	terraces::tree_enumerator<decltype(cb)> enumerator{cb};
+	std::cout << "(";
+	enumerator.run(data.tree, constraints, data_res.second);
+	std::cout << "," << data.names[data_res.second] << ")\n";
 
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << std::endl;

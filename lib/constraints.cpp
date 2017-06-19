@@ -6,33 +6,9 @@
 
 namespace terraces {
 
-bool operator==(const constraint& c1, const constraint& c2) {
-	return std::tie(c1.shared, c1.left, c1.right) == std::tie(c2.shared, c2.left, c2.right);
-}
-
 std::ostream& operator<<(std::ostream& s, const constraint& c) {
 	s << "lca(" << c.left << "," << c.shared << ") < lca(" << c.shared << "," << c.right << ")";
 	return s;
-}
-
-constraints filter_constraints(const std::vector<index>& leaves, const constraints& c) {
-	constraints new_c;
-	for (size_t i = 0; i < c.size(); i++) {
-		if ((std::find(leaves.begin(), leaves.end(), c.at(i).shared) != leaves.end()) &&
-		    (std::find(leaves.begin(), leaves.end(), c.at(i).left) != leaves.end()) &&
-		    (std::find(leaves.begin(), leaves.end(), c.at(i).right) != leaves.end())) {
-			new_c.push_back(c.at(i));
-		}
-	}
-	return new_c;
-}
-
-std::vector<std::vector<index>> apply_constraints(index number, const constraints& c) {
-	union_find leaves = make_set(number);
-	for (size_t i = 0; i < c.size(); i++) {
-		merge(leaves, c.at(i).shared, c.at(i).left);
-	}
-	return to_set_of_sets(leaves);
 }
 
 constraints compute_constraints(const std::vector<tree>& trees) {
@@ -83,6 +59,19 @@ constraints compute_constraints(const std::vector<tree>& trees) {
 	}
 
 	return result;
+}
+
+index deduplicate_constraints(constraints& in_c) {
+	for (auto& c : in_c) {
+		c = {std::min(c.left, c.shared), std::max(c.left, c.shared), c.right};
+	}
+	std::sort(in_c.begin(), in_c.end(), [](auto a, auto b) {
+		return std::tie(a.left, a.shared, a.right) < std::tie(b.left, b.shared, b.right);
+	});
+	auto it = std::unique(in_c.begin(), in_c.end());
+	index count = (index)std::distance(it, in_c.end());
+	in_c.erase(it, in_c.end());
+	return count;
 }
 
 } // namespace terraces

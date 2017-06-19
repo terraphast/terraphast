@@ -1,127 +1,20 @@
 #include <terraces/bipartitions.hpp>
 #include <terraces/supertree.hpp>
+#include <terraces/union_find.hpp>
 
-#include <unordered_map>
+#include "supertree_enumerator.hpp"
+#include "supertree_variants.hpp"
 
 namespace terraces {
 
-constraints map_constraints(const std::vector<index>& leaves, constraints c) {
-	std::unordered_map<index, index> m;
-	for (size_t i = 0; i < leaves.size(); i++) {
-		m[leaves.at(i)] = i;
-	}
-	for (size_t i = 0; i < c.size(); i++) {
-		auto& constraint = c.at(i);
-		constraint.left = m[constraint.left];
-		constraint.right = m[constraint.right];
-		constraint.shared = m[constraint.shared];
-	}
-	return c;
+mpz_class tree_master::count_supertree(const tree& t, const constraints& c, index root) {
+	tree_enumerator<tree_count_callback> counter{{}};
+	return counter.run(t, c, root);
 }
 
-std::vector<std::vector<index>> map_sets(std::vector<index> leaves,
-                                         std::vector<std::vector<index>> sets) {
-	std::vector<std::vector<index>> res;
-	for (size_t i = 0; i < sets.size(); i++) {
-		std::vector<index> set;
-		for (size_t j = 0; j < sets.at(i).size(); j++) {
-			set.push_back(leaves.at(sets.at(i).at(j)));
-		}
-		res.push_back(set);
-	}
-	return res;
-}
-
-bool check_supertree(const tree& tree, const constraints& c) {
-	index num_nodes = tree.size();
-	index num_leaves = (num_nodes + 1) / 2;
-	std::vector<index> leaves(num_leaves);
-	index j = 0;
-	for (size_t i = 0; i < num_nodes; i++) {
-		if (is_leaf(tree[i])) {
-			leaves[j++] = i;
-		}
-	}
-	return check_supertree(leaves, c);
-}
-
-bool check_supertree(const std::vector<index>& leaves, const constraints& c) {
-	// only one tree possible for two leaves
-	if (leaves.size() <= 2) {
-		return false;
-	}
-
-	// on a terrace if more than two leaves and no contraints
-	if (c.size() == 0) {
-		return true;
-	}
-
-	constraints new_c = map_constraints(leaves, c);
-	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
-	sets = map_sets(leaves, sets);
-
-	// on a terrace if more than one bipartition
-	if (sets.size() > 2) {
-		return true;
-	}
-
-	std::vector<index> left_set = sets.at(0);
-	std::vector<index> right_set = sets.at(1);
-
-	constraints left_bips = filter_constraints(left_set, c);
-	constraints right_bips = filter_constraints(right_set, c);
-
-	if (check_supertree(left_set, left_bips)) {
-		return true;
-	} else {
-		return check_supertree(right_set, right_bips);
-	}
-}
-
-size_t count_supertree(const tree& tree, const constraints& c) {
-	index num_nodes = tree.size();
-	index num_leaves = (num_nodes + 1) / 2;
-	std::vector<index> leaves(num_leaves);
-	index j = 0;
-	for (size_t i = 0; i < num_nodes; i++) {
-		if (is_leaf(tree[i])) {
-			leaves[j++] = i;
-		}
-	}
-	return count_supertree(leaves, c);
-}
-
-size_t count_supertree(const std::vector<index>& leaves, const constraints& c) {
-	size_t number = 0;
-
-	if (leaves.size() == 2) {
-		return 1;
-	}
-
-	if (c.size() == 0) {
-		size_t res = 1;
-		for (size_t i = 3; i <= leaves.size() + 1; i++) {
-			res *= (2 * i - 5);
-		}
-		return res;
-	}
-
-	constraints new_c = map_constraints(leaves, c);
-	std::vector<std::vector<index>> sets = apply_constraints(leaves.size(), new_c);
-	sets = map_sets(leaves, sets);
-
-	for (bipartition_iterator bip_it(sets); bip_it.is_valid(); bip_it.increase()) {
-		std::vector<index> left_set = std::get<0>(bip_it.get_bipartition());
-		std::vector<index> right_set = std::get<1>(bip_it.get_bipartition());
-
-		constraints left_bips = filter_constraints(left_set, c);
-		constraints right_bips = filter_constraints(right_set, c);
-
-		number += count_supertree(left_set, left_bips) *
-		          count_supertree(right_set, right_bips);
-	}
-
-	return number;
+mpz_class tree_master::count_supertree(index count, const constraints& c) {
+	tree_enumerator<tree_count_callback> counter{{}};
+	return counter.run(count, c);
 }
 
 } // namespace terraces

@@ -3,20 +3,36 @@
 #include <iostream>
 
 #include <terraces/bipartitions.hpp>
+#include <terraces/fast_set.hpp>
+#include <terraces/union_find.hpp>
 
 namespace terraces {
 namespace tests {
 
 TEST_CASE("bipartition1", "[bipartition]") {
-	std::vector<std::vector<index>> set = {{0}, {1}, {2}};
-	std::vector<bipartition> res = {bipartition{{0, 2}, {1}}, bipartition{{0, 1}, {2}},
-	                                bipartition{{0}, {2, 1}}};
-	bipartition_iterator bip_it(set);
-	CHECK(bip_it.get_bipartition() == res.at(0));
+	union_find u(4);
+	fast_index_set s{4};
+	s.insert(0);
+	s.insert(1);
+	s.insert(2);
+	s.insert(3);
+	s.finalize_edit();
+	u.merge(0, 1);
+	bipartition_iterator bip_it(s, u);
+	CHECK(!bip_it.get_current_set().contains(0));
+	CHECK(!bip_it.get_current_set().contains(1));
+	CHECK(bip_it.get_current_set().contains(2));
+	CHECK(!bip_it.get_current_set().contains(3));
 	bip_it.increase();
-	CHECK(bip_it.get_bipartition() == res.at(1));
+	CHECK(!bip_it.get_current_set().contains(0));
+	CHECK(!bip_it.get_current_set().contains(1));
+	CHECK(!bip_it.get_current_set().contains(2));
+	CHECK(bip_it.get_current_set().contains(3));
 	bip_it.increase();
-	CHECK(bip_it.get_bipartition() == res.at(2));
+	CHECK(!bip_it.get_current_set().contains(0));
+	CHECK(!bip_it.get_current_set().contains(1));
+	CHECK(bip_it.get_current_set().contains(2));
+	CHECK(bip_it.get_current_set().contains(3));
 	CHECK(bip_it.is_valid());
 	bip_it.increase();
 	CHECK(!bip_it.is_valid());

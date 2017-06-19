@@ -64,38 +64,6 @@ TEST_CASE("bit iteration tests", "[bitvector]") {
 	      57);
 }
 
-TEST_CASE("naive bitvector", "[bitvector]") {
-	// 0 1 2 3 4 5 6 7 8 9
-	// 0 1 1 0 1 0 1 0 1 1
-	naive::bitvector b(10);
-	b.set(1);
-	b.set(2);
-	b.set(4);
-	b.set(6);
-	b.set(8);
-	b.set(9);
-	CHECK(!b.get(0));
-	CHECK(!b.get(3));
-	CHECK(!b.get(5));
-	CHECK(!b.get(7));
-	CHECK(b.get(1));
-	CHECK(b.get(2));
-	CHECK(b.get(4));
-	CHECK(b.get(6));
-	CHECK(b.get(8));
-	CHECK(b.get(9));
-	CHECK(b.rank(4) == 2);
-	CHECK(b.rank(7) == 4);
-	CHECK(b.rank(10) == 6);
-	CHECK(b.begin() == 1);
-	CHECK(b.next(1) == 2);
-	CHECK(b.next(2) == 4);
-	CHECK(b.next(4) == 6);
-	CHECK(b.next(6) == 8);
-	CHECK(b.next(8) == 9);
-	CHECK(b.next(9) == 10);
-}
-
 TEST_CASE("efficient bitvector", "[bitvector]") {
 	// 0 1 2 3 4 5 6 7 8 9
 	// 0 1 1 0 1 0 1 0 1 1
@@ -106,11 +74,18 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 	b.set(6);
 	b.set(8);
 	b.set(9);
+	b.invert();
+	b.invert();
 	b.update_ranks();
 	CHECK(!b.get(0));
 	CHECK(!b.get(3));
 	CHECK(!b.get(5));
 	CHECK(!b.get(7));
+	b.flip(7);
+	CHECK(b.get(7));
+	b.flip(7);
+	CHECK(!b.get(7));
+	b.update_ranks();
 	CHECK(b.get(1));
 	CHECK(b.get(2));
 	CHECK(b.get(4));
@@ -138,6 +113,8 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	b.set(200);
 	b.set(204);
 	b.set(400);
+	b.invert();
+	b.invert();
 	b.update_ranks();
 	efficient::bitvector b2(500);
 	b2.set(128);
@@ -164,6 +141,24 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	CHECK(b.next(200) == 204);
 	CHECK(b.next(204) == 400);
 	CHECK(b.next(400) == 519);
+	b.blank();
+	b.update_ranks();
+	CHECK(b.count() == 0);
+}
+
+TEST_CASE("efficient bitvector xor", "[bitvector]") {
+	efficient::bitvector b(10);
+	b.set(1);
+	b.set(2);
+	b.set(4);
+	b.set(6);
+	b.set(8);
+	b.set(9);
+	b.bitwise_xor(b);
+	b.invert();
+	b.invert();
+	b.update_ranks();
+	CHECK(b.count() == 0);
 }
 
 } // namespace tests

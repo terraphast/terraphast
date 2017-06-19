@@ -21,7 +21,8 @@ TEST_CASE("full_run_disjoint", "[rerooting],[tree_extraction],[constraints],[sup
 	b.set(8, 0, true);
 	auto ts = subtrees(t, b);
 	auto cs = compute_constraints(ts);
-	CHECK(count_supertree(t, cs) == 17);
+	terraces::tree_master tm;
+	CHECK(tm.count_supertree(t, cs, 2) == 15);
 }
 
 } // namespace tests

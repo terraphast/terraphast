@@ -5,45 +5,35 @@
 
 namespace terraces {
 
-union_find make_set(index n) {
-	std::vector<index> id(n);
-	std::vector<index> size(n, 1);
-	std::iota(id.begin(), id.end(), index{});
-	union_find leaves{std::move(id), std::move(size)};
-	return leaves;
+union_find::union_find(index n) : m_id(n), m_size(n, 1) {
+	std::iota(m_id.begin(), m_id.end(), index{});
 }
 
-index find(union_find& leaves, index x) {
+index union_find::find(index x) const {
 	index root = x;
-	while (root != leaves.id.at(root)) {
-		root = leaves.id.at(root);
+	while (root != m_id[root]) {
+		root = m_id[root];
 	}
 	while (x != root) {
-		x = std::exchange(leaves.id.at(x), root);
+		x = std::exchange(m_id[x], root);
 	}
 	return root;
 }
 
-void merge(union_find& leaves, index x, index y) {
-	index i = find(leaves, x);
-	index j = find(leaves, y);
+index union_find::size() const { return m_id.size(); }
+
+void union_find::merge(index x, index y) {
+	index i = find(x);
+	index j = find(y);
 	if (i == j) {
 		return;
-	} else if (leaves.size.at(i) >= leaves.size.at(j)) {
+	} else if (m_size[i] >= m_size[j]) {
 		std::swap(i, j);
 	}
-	leaves.id.at(i) = j;
-	leaves.size.at(j) += leaves.size.at(i);
+	m_id[i] = j;
+	m_size[j] += m_size[i];
 }
 
-std::vector<std::vector<index>> to_set_of_sets(union_find& leaves) {
-	index size = leaves.id.size();
-	std::vector<std::vector<index>> set(size);
-	for (index i = 0; i < size; i++) {
-		set.at(find(leaves, i)).push_back(i);
-	}
-	set.erase(std::remove_if(set.begin(), set.end(), is_empty()), set.end());
-	return set;
-}
+bool union_find::is_representative(index x) const { return x == find(x); }
 
 } // namespace terraces

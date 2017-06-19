@@ -6,8 +6,11 @@
 #include <cassert>
 #include <cstdint>
 #include <iosfwd>
+#include <iostream>
 #include <limits>
+#include <sstream>
 #include <stack>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -95,6 +98,11 @@ struct newick_t {
 	const tree* t;
 	const name_map* names;
 };
+
+typedef struct {
+	const index count;
+	const std::string supertree;
+} counted_supertree;
 
 inline newick_t as_newick(const tree& t, const name_map& names) { return {&t, &names}; }
 
@@ -190,6 +198,12 @@ void foreach_preorder(const tree& t, F cb) {
 // For testing purposes
 std::vector<index> preorder(const tree& t);
 std::vector<index> postorder(const tree& t);
+
+// output trees
+void print_tree_dot_unrooted(const tree& t, const name_map& names, std::ostream& output,
+                             std::string name_prefix = "");
+void print_tree_dot(const tree& t, const name_map& names, std::ostream& output);
+void print_tree_gml(const tree& t, const name_map& names, std::ostream& output);
 
 } // namespace terraces
 
