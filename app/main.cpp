@@ -61,7 +61,8 @@ int main(int argc, char** argv) try {
 	auto constraints = terraces::compute_constraints(subtrees);
 	auto num_constraints = constraints.size();
 
-	std::cout << as_comma_separated_output(full_set(num_constraints), constraints, names)
+	std::cout << "Constraints:\n"
+	          << as_comma_separated_output(full_set(num_constraints), constraints, names)
 	          << "\n";
 
 	auto duplicate = terraces::deduplicate_constraints(constraints);
@@ -69,16 +70,16 @@ int main(int argc, char** argv) try {
 	std::cout << "Deleted " << duplicate << " unnecessary constraints, " << num_constraints
 	          << " remaining\n";
 
-	std::cout << as_comma_separated_output(full_set(num_constraints), constraints, names)
+	std::cout << "Remaining constraints:\n"
+	          << as_comma_separated_output(full_set(num_constraints), constraints, names)
 	          << "\n";
 
 	num_species = terraces::remap_to_leaves(tree, constraints, names, root_species);
 
+	std::cout << "Supertree:\n";
 	multitree_callback cb{std::cout, names};
 	tree_enumerator<decltype(cb)> enumerator{cb};
-	std::cout << "(";
 	enumerator.run(num_species, constraints, root_species);
-	std::cout << "," << names[root_species] << ")\n";
 
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << "\n";
