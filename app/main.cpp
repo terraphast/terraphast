@@ -55,16 +55,33 @@ int main(int argc, char** argv) try {
 
 	terraces::constraints constraints;
 	const auto subtrees = terraces::subtrees(data.tree, data_res.first);
+	std::cout << "Subtrees in Newick format:\n";
+	for (auto& subtree : subtrees) {
+		std::cout << as_newick(subtree, data.names) << "\n";
+	}
 	constraints = terraces::compute_constraints(subtrees);
+	for (auto& constraint : constraints) {
+		std::cout << terraces::utils::named_output<terraces::constraints,
+		                                           terraces::name_map>{constraint,
+		                                                               data.names}
+		          << "\n";
+	}
 	auto duplicated = terraces::deduplicate_constraints(constraints);
 	std::cout << "Deleted " << duplicated << " unnecessary constraints, " << constraints.size()
 	          << " remaining" << std::endl;
+	for (auto& constraint : constraints) {
+		std::cout << terraces::utils::named_output<terraces::constraints,
+		                                           terraces::name_map>{constraint,
+		                                                               data.names}
+		          << "\n";
+	}
 
-	terraces::logging_decorator<terraces::tree_count_callback> cb{{}, std::cerr, data.names};
+	terraces::logging_decorator<terraces::multitree_callback> cb{
+	        {std::cout, data.names}, std::cerr, data.names};
 	terraces::tree_enumerator<decltype(cb)> enumerator{cb};
-
-	std::cout << "We counted " << enumerator.run(data.tree, constraints, data_res.second)
-	          << " equivalent trees" << std::endl;
+	std::cout << "(";
+	enumerator.run(data.tree, constraints, data_res.second);
+	std::cout << "," << data.names[data_res.second] << ")\n";
 
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << std::endl;

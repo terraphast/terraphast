@@ -68,6 +68,14 @@ public:
 	}
 };
 
+std::ostream& operator<<(std::ostream& stream, utils::named_output<constraints, name_map> output) {
+	auto c = output.entry;
+	auto& n = output.names;
+	stream << "lca(" << n[c.left] << "," << n[c.shared] << ") < lca(" << n[c.shared] << ","
+	       << n[c.right] << ")";
+	return stream;
+}
+
 template <typename Callback>
 class logging_decorator : public Callback {
 public:
@@ -96,8 +104,8 @@ public:
 	void begin_iteration(const bipartition_iterator& bip_it, const fast_index_set& c_occ,
 	                     const constraints& c) {
 		Callback::begin_iteration(bip_it, c_occ, c);
-		output() << "<constraints val=\"{" << utils::as_comma_separated_output(c_occ, c)
-		         << "}\" />\n";
+		output() << "<constraints val=\"{"
+		         << utils::as_comma_separated_output(c_occ, c, m_names) << "}\" />\n";
 		output() << "<sets val=\"[";
 		bool set_first = true;
 		auto& leaves = bip_it.leaves();
