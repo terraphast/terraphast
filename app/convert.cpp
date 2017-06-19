@@ -16,8 +16,9 @@ int main(int argc, char* argv[]) {
 	int i = 0;
 	do {
 		std::getline(tree_file, tree_string);
-		if (tree_string.empty())
+		if (tree_string.empty()) {
 			continue;
+		}
 		auto tree_set = terraces::parse_nwk(tree_string);
 		terraces::index root = (terraces::index)std::distance(
 		        tree_set.names.begin(),

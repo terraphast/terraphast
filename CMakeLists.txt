@@ -52,3 +52,6 @@ target_link_libraries(app terraces gmp gmpxx)
 
 add_executable(convert "app/convert.cpp")
 target_link_libraries(convert terraces)
+
+add_executable(isomorphic "app/isomorphic.cpp")
+target_link_libraries(isomorphic terraces)
