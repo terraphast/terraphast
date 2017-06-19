@@ -128,6 +128,55 @@ std::vector<index> postorder(const tree& t) {
 	return result;
 }
 
+void print_tree_dot_unrooted(const tree& t, const name_map& names, std::ostream& output,
+                             std::string name_prefix) {
+	output << "strict graph {\n";
+	index i = 0;
+	for (auto n : t) {
+		if (is_root(n)) {
+			index u = n.lchild();
+			index v = n.rchild();
+			if (names[u] == "") {
+				output << "\"" << name_prefix << u << "\"";
+			} else {
+				output << "\"" << name_prefix << names[u] << "\"";
+			}
+			output << " -- ";
+			if (names[v] == "") {
+				output << "\"" << name_prefix << v << "\"";
+			} else {
+				output << "\"" << name_prefix << names[v] << "\"";
+			}
+			output << ";\r\n";
+		} else {
+			for (auto v : n.data) {
+				if (v != none && !is_root(t[v])) {
+					if (names[i] == "") {
+						output << "\"" << name_prefix << i << "\"";
+					} else {
+						output << "\"" << name_prefix << names[i] << "\"";
+					}
+					output << " -- ";
+					if (names[v] == "") {
+						output << "\"" << name_prefix << v << "\"";
+					} else {
+						output << "\"" << name_prefix << names[v] << "\"";
+					}
+					output << ";\r\n";
+				}
+			}
+			if (names[i] == "") {
+				output << "\"" << name_prefix << i << "\" [shape=point];\r\n";
+			} else {
+				output << "\"" << name_prefix << names[i] << "\" [label=\""
+				       << names[i] << "\"];\r\n";
+			}
+		}
+		++i;
+	}
+	output << "}";
+}
+
 void print_tree_dot(const tree& t, const name_map& names, std::ostream& output) {
 	output << "graph {\n";
 	index i = 0;

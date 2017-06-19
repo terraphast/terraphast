@@ -45,8 +45,10 @@ add_executable(unittests ${test_sources} ${test_headers})
 target_link_libraries(unittests terraces gmp gmpxx)
 add_test(NAME unittests COMMAND unittests)
 
-
-file(GLOB app_headers "app/*.hpp")
-file(GLOB app_sources "app/*.cpp")
+file(GLOB app_headers "")
+file(GLOB app_sources "app/main.cpp")
 add_executable(app ${app_sources} ${app_headers})
 target_link_libraries(app terraces gmp gmpxx)
+
+add_executable(convert "app/convert.cpp")
+target_link_libraries(convert terraces)
