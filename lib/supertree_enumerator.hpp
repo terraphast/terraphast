@@ -17,6 +17,9 @@ class tree_enumerator {
 private:
 	Callback cb;
 
+	result_type iterate(bipartition_iterator& bip_it, const fast_index_set& new_constraint_occ,
+	                    const constraints& constraints);
+
 public:
 	tree_enumerator(Callback cb) : cb{cb} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
@@ -40,9 +43,22 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 	auto leaves = full_set(num_leaves);
 	auto c_occ = full_set(constraints.size());
 	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
-	leaves.remove(root_leaf);
-	leaves.finalize_edit();
-	return run(leaves, c_occ, constraints);
+	// enter the call
+	cb.enter(leaves);
+	// no base cases
+	assert(num_leaves > 2);
+	assert(constraints.size() > 0);
+	// build bipartition iterator:
+	auto sets = union_find{num_leaves};
+	index rep = root_leaf == 0 ? 1 : 0;
+	// merge all non-root leaves into one set
+	for (index i = rep + 1; i < num_leaves; ++i) {
+		if (i != root_leaf) {
+			sets.merge(rep, i);
+		}
+	}
+	auto bip_it = bipartition_iterator{leaves, sets};
+	return cb.exit(iterate(bip_it, c_occ, constraints));
 }
 
 template <typename Callback>
@@ -69,10 +85,18 @@ auto tree_enumerator<Callback>::run(const fast_index_set& leaves,
 		return cb.exit(cb.base_unconstrained(leaves));
 	}
 
-	result_type result = cb.init_result();
-
 	union_find sets = apply_constraints(leaves, new_constraint_occ, constraints);
 	bipartition_iterator bip_it(leaves, sets);
+
+	return iterate(bip_it, new_constraint_occ, constraints);
+}
+
+template <typename Callback>
+auto tree_enumerator<Callback>::iterate(bipartition_iterator& bip_it,
+                                        const fast_index_set& new_constraint_occ,
+                                        const constraints& constraints) -> result_type {
+	result_type result = cb.init_result();
+
 	cb.begin_iteration(bip_it, new_constraint_occ, constraints);
 	// iterate over all possible bipartitions
 	while (bip_it.is_valid() && cb.continue_iteration(bip_it)) {
