@@ -15,6 +15,11 @@
 #include "../lib/supertree_variants.hpp"
 #include "../lib/supertree_variants_debug.hpp"
 
+using terraces::tree_enumerator;
+using terraces::multitree_callback;
+using terraces::logging_decorator;
+using terraces::utils::as_comma_separated_output;
+
 int main(int argc, char** argv) try {
 	if (argc != 3) {
 		std::cerr << "Usage: " << argv[0] << " <tree-file> <occurrence file>" << std::endl;
@@ -27,7 +32,6 @@ int main(int argc, char** argv) try {
 
 	auto data_file = std::ifstream{argv[2]};
 	const auto data_res = terraces::parse_bitmatrix(data_file, data.indices, data.tree.size());
-	const auto& mat = data_res.first;
 	auto num_nodes = data_res.first.rows();
 	auto num_species = data.names.size();
 	auto num_sites = data_res.first.cols();
@@ -42,43 +46,27 @@ int main(int argc, char** argv) try {
 
 	terraces::reroot_inplace(data.tree, data_res.second);
 
-	for (auto i = terraces::index{}; i < data.tree.size(); ++i) {
-		std::cout << std::setw(3) << i << ": " << std::setw(1) << std::noboolalpha;
-		for (auto j = terraces::index{}; j < mat.cols(); ++j) {
-			std::cout << mat.get(i, j) << ' ';
-		}
-		std::cout << '(' << std::setw(3) << data.tree.at(i).parent()
-		          << ") : " << data.names.at(i) << '\n';
-	}
-
 	std::cout << "In Newick-Format:\n" << as_newick(data.tree, data.names) << std::endl;
 
-	terraces::constraints constraints;
 	const auto subtrees = terraces::subtrees(data.tree, data_res.first);
 	std::cout << "Subtrees in Newick format:\n";
 	for (auto& subtree : subtrees) {
 		std::cout << as_newick(subtree, data.names) << "\n";
 	}
-	constraints = terraces::compute_constraints(subtrees);
-	for (auto& constraint : constraints) {
-		std::cout << terraces::utils::named_output<terraces::constraints,
-		                                           terraces::name_map>{constraint,
-		                                                               data.names}
-		          << "\n";
-	}
+	auto constraints = terraces::compute_constraints(subtrees);
+
+	std::cout << as_comma_separated_output(terraces::full_set(constraints.size()), constraints,
+	                                       data.names);
+
 	auto duplicated = terraces::deduplicate_constraints(constraints);
 	std::cout << "Deleted " << duplicated << " unnecessary constraints, " << constraints.size()
 	          << " remaining" << std::endl;
-	for (auto& constraint : constraints) {
-		std::cout << terraces::utils::named_output<terraces::constraints,
-		                                           terraces::name_map>{constraint,
-		                                                               data.names}
-		          << "\n";
-	}
 
-	terraces::logging_decorator<terraces::multitree_callback> cb{
-	        {std::cout, data.names}, std::cerr, data.names};
-	terraces::tree_enumerator<decltype(cb)> enumerator{cb};
+	std::cout << as_comma_separated_output(terraces::full_set(constraints.size()), constraints,
+	                                       data.names);
+
+	logging_decorator<multitree_callback> cb{{std::cout, data.names}, std::cerr, data.names};
+	tree_enumerator<decltype(cb)> enumerator{cb};
 	std::cout << "(";
 	enumerator.run(data.tree, constraints, data_res.second);
 	std::cout << "," << data.names[data_res.second] << ")\n";
