@@ -37,9 +37,7 @@ constraints map_constraints(const fast_index_set& leaves, const constraints& cs)
 
 fast_index_set full_set(index size) {
 	fast_index_set set{size};
-	for (index i = 0; i < size; i++) {
-		set.insert(i);
-	}
+	set.complement();
 	set.finalize_edit();
 	return set;
 }

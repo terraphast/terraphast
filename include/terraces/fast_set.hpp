@@ -37,6 +37,7 @@ public:
 	void remove(index i) { m_vector.clr(i); }
 	void toggle(index i) { m_vector.flip(i); }
 	void symm_difference(const fast_index_set& other) { m_vector.bitwise_xor(other.m_vector); }
+	void complement() { m_vector.invert(); }
 	void clear() { m_vector.blank(); }
 	void finalize_edit() { m_vector.update_ranks(); }
 };
