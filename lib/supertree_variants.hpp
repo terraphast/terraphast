@@ -7,6 +7,8 @@
 
 #include <gmpxx.h>
 
+#include "utils.hpp"
+
 namespace terraces {
 
 template <typename Result>
@@ -17,16 +19,16 @@ public:
 	/** Called when a (sub)call begins. */
 	void enter(const fast_index_set&) {}
 	/** Called when a (sub)call finishes. */
-	void exit(Result) {}
+	Result exit(Result val) { return val; }
 
 	/** Returns the initial value of the accumulator. */
 	Result init_result() { return Result{}; }
 	/** Returns the result for a single leaf. */
-	Result base_one_leaf(index) { return Result{}; }
+	Result base_one_leaf(index);
 	/** Returns the result for two leaves. */
-	Result base_two_leaves(index, index) { return Result{}; }
+	Result base_two_leaves(index, index);
 	/** Returns the result for multiple leaves without constraints. */
-	Result base_unconstrained(const fast_index_set&) { return Result{}; }
+	Result base_unconstrained(const fast_index_set&);
 
 	/** Called when we begin iterating over the bipartitions. */
 	void begin_iteration(const bipartition_iterator&, const fast_index_set&,
@@ -42,9 +44,9 @@ public:
 	/** Called before descending into the right subset. */
 	void right_subcall() {}
 	/** Accumulates the results from multiple bipartitions. */
-	Result accumulate(Result, Result) {}
+	Result accumulate(Result, Result);
 	/** Combines the results from two subcalls. */
-	Result combine(Result, Result) {}
+	Result combine(Result, Result);
 };
 
 class tree_count_callback : public enumeration_callback<mpz_class> {
@@ -62,6 +64,47 @@ public:
 
 	mpz_class accumulate(mpz_class acc, mpz_class val) { return acc + val; }
 	mpz_class combine(mpz_class left, mpz_class right) { return left * right; }
+};
+
+class multitree_callback : public enumeration_callback<std::ostream*> {
+private:
+	std::ostream* m_stream;
+	const name_map& m_names;
+	bool m_first_iteration;
+
+public:
+	multitree_callback(std::ostream& stream, const name_map& names)
+	        : m_stream{&stream}, m_names{names} {}
+
+	std::ostream* base_one_leaf(index i) { return &(*m_stream << m_names[i]); }
+	std::ostream* base_two_leaves(index i, index j) {
+		return &(*m_stream << "(" << m_names[i] << "," << m_names[j] << ")");
+	}
+	std::ostream* base_unconstrained(const fast_index_set& leaves) {
+		return &(*m_stream << "{" << utils::as_comma_separated_output(leaves, m_names)
+		                   << "}");
+	}
+
+	void right_subcall() { *m_stream << ","; }
+
+	void begin_iteration(const bipartition_iterator&, const fast_index_set&,
+	                     const constraints&) {
+		m_first_iteration = true;
+	}
+
+	void step_iteration(const bipartition_iterator&) {
+		if (not m_first_iteration) {
+			*m_stream << "|";
+		}
+
+		m_first_iteration = false;
+	}
+
+	void left_subcall() { *m_stream << "("; }
+
+	std::ostream* accumulate(std::ostream*, std::ostream*) { return m_stream; }
+
+	std::ostream* combine(std::ostream*, std::ostream*) { return &(*m_stream << ")"); }
 };
 
 } // namespace terraces

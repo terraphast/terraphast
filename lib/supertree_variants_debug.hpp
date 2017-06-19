@@ -31,34 +31,34 @@ public:
 	stack_state_callback_decorator(Callback cb) : Callback{cb} {}
 
 	void enter(const fast_index_set&, const fast_index_set&, const constraints&) {
-		m_stack.emplace_back(0, 0, false, Callback::init_result());
 		Callback::enter();
+		m_stack.emplace_back(0, 0, false, Callback::init_result());
 	}
 
-	void exit(result_type result) {
-		Callback::exit(result);
+	result_type exit(result_type result) {
 		m_stack.pop_back();
+		return Callback::exit(result);
 	}
 
 	void begin_iteration(const bipartition_iterator& bip_it) {
+		Callback::begin_iteration(bip_it);
 		m_stack.back().current_bip = bip_it.cur_bip();
 		m_stack.back().max_bip = bip_it.end_bip();
-		Callback::begin_iteration(bip_it);
 	}
 
 	void step_iteration(const bipartition_iterator& bip_it) {
-		m_stack.back().current_bip = bip_it.cur_bip();
 		Callback::step_iteration(bip_it);
+		m_stack.back().current_bip = bip_it.cur_bip();
 	}
 
 	void right_subcall() {
-		m_stack.back().right = true;
 		Callback::right_subcall();
+		m_stack.back().right = true;
 	}
 
 	void left_subcall() {
-		m_stack.back().right = false;
 		Callback::left_subcall();
+		m_stack.back().right = false;
 	}
 
 	result_type accumulate(result_type acc, result_type val) {
@@ -86,15 +86,16 @@ public:
 	        : Callback{cb}, m_output{output}, m_depth{0}, m_first_iteration{}, m_names{names} {}
 
 	void enter(const fast_index_set& leaves) {
+		Callback::enter(leaves);
 		output() << "<itr>\n";
 		++m_depth;
 		output() << "<leafs val=\"{" << utils::as_comma_separated_output(leaves, m_names)
 		         << "}\" />\n";
-		Callback::enter(leaves);
 	}
 
 	void begin_iteration(const bipartition_iterator& bip_it, const fast_index_set& c_occ,
 	                     const constraints& c) {
+		Callback::begin_iteration(bip_it, c_occ, c);
 		output() << "<constraints val=\"{" << utils::as_comma_separated_output(c_occ, c)
 		         << "}\" />\n";
 		output() << "<sets val=\"[";
@@ -118,10 +119,10 @@ public:
 		}
 		m_output << "]\" />\n";
 		m_first_iteration = true;
-		Callback::begin_iteration(bip_it, c_occ, c);
 	}
 
 	void step_iteration(const bipartition_iterator& bip_it) {
+		Callback::step_iteration(bip_it);
 		if (not m_first_iteration) {
 			--m_depth;
 			output() << "</bipartition>\n";
@@ -138,13 +139,14 @@ public:
 	void finish_iteration() {
 		--m_depth;
 		output() << "</bipartition>\n";
+		Callback::finish_iteration();
 	}
 
-	void exit(result_type result) {
-		Callback::exit(result);
+	result_type exit(result_type result) {
 		output() << "<result val=\"" << result << "\" />\n";
 		--m_depth;
 		output() << "</itr>\n";
+		return Callback::exit(result);
 	}
 };
 

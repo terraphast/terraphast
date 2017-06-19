@@ -49,31 +49,27 @@ template <typename Callback>
 auto tree_enumerator<Callback>::run(const fast_index_set& leaves,
                                     const fast_index_set& constraint_occ,
                                     const constraints& constraints) -> result_type {
-	result_type result = cb.init_result();
-	auto exit_lambda = [&]() { cb.exit(result); };
-	utils::scope_guard<decltype(exit_lambda)> guard(exit_lambda);
 	cb.enter(leaves);
 
 	// base cases: only a few leaves
 	if (leaves.size() == 1) {
-		result = cb.base_one_leaf(*leaves.begin());
-		return result;
+		return cb.exit(cb.base_one_leaf(*leaves.begin()));
 	}
 
 	if (leaves.size() == 2) {
 		auto it = leaves.begin();
 		auto fst = *it;
 		auto snd = *(++it);
-		result = cb.base_two_leaves(fst, snd);
-		return result;
+		return cb.exit(cb.base_two_leaves(fst, snd));
 	}
 
 	fast_index_set new_constraint_occ = filter_constraints(leaves, constraint_occ, constraints);
 	// base case: no constraints left
 	if (new_constraint_occ.size() == 0) {
-		result = cb.base_unconstrained(leaves);
-		return result;
+		return cb.exit(cb.base_unconstrained(leaves));
 	}
+
+	result_type result = cb.init_result();
 
 	union_find sets = apply_constraints(leaves, new_constraint_occ, constraints);
 	bipartition_iterator bip_it(leaves, sets);
@@ -95,7 +91,7 @@ auto tree_enumerator<Callback>::run(const fast_index_set& leaves,
 	}
 	cb.finish_iteration();
 
-	return result;
+	return cb.exit(result);
 }
 
 } // namespace terraces
