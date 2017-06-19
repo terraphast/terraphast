@@ -40,6 +40,9 @@ public:
 	void complement() { m_vector.invert(); }
 	void clear() { m_vector.blank(); }
 	void finalize_edit() { m_vector.update_ranks(); }
+
+	bool operator==(const fast_index_set& other) const { return m_vector == other.m_vector; }
+	bool operator!=(const fast_index_set& other) const { return m_vector != other.m_vector; }
 };
 
 class fast_index_set_iterator {

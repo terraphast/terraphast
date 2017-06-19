@@ -30,6 +30,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
         -> result_type {
 	auto leaves = full_set(num_leaves);
 	auto c_occ = full_set(constraints.size());
+	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
 	return run(leaves, c_occ, constraints);
 }
 
@@ -38,6 +39,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
                                     index root_leaf) -> result_type {
 	auto leaves = full_set(num_leaves);
 	auto c_occ = full_set(constraints.size());
+	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
 	leaves.remove(root_leaf);
 	leaves.finalize_edit();
 	return run(leaves, c_occ, constraints);

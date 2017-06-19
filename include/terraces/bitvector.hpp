@@ -130,6 +130,7 @@ public:
 
 	bool operator<(const bitvector& other) const;
 	bool operator==(const bitvector& other) const;
+	bool operator!=(const bitvector& other) const { return !(*this == other); }
 };
 
 } // namespace efficient
