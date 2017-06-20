@@ -11,7 +11,9 @@ bipartition_iterator::bipartition_iterator(const fast_index_set& leaves, const u
 	increase();
 }
 
-bool bipartition_iterator::in_left_partition(index i) const { return (m_bip & (1ull << (i - 1))) != 0; }
+bool bipartition_iterator::in_left_partition(index i) const {
+	return (m_bip & (1ull << (i - 1))) != 0;
+}
 
 fast_index_set bipartition_iterator::find_set_reps() const {
 	// TODO ugly style :)

@@ -1,10 +1,10 @@
 #include <terraces/bitvector.hpp>
 #include <terraces/validation.hpp>
 
+#include <numeric>
 #include <unordered_map>
 
 #include <algorithm>
-#include <numeric>
 
 #include "supertree_helpers.hpp"
 
