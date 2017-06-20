@@ -1,10 +1,12 @@
 # terraces
-C/C++ Interface for terraces in phylogenetic tree space
+C++ data checker for the existence of terraces in phylogenetic tree space.
 
-files terraces.c terraces.h comprise the interface for which you shall implement the algorithm 
+**Usage**: `terraces/build/release/app <nwk file> <gene/site file>`
 
-files input_parser are used for parsing some real-world input example dataset to use for testing 
+Program output states some imput data properties, the species whose leaf edge is used as a new tree root, and the resulting supertree in enhanced newick format. (STILL SUBJECT TO CHANGE!)
 
-directory input contains such empirical input files 
+**Enhanced Newick Format**: The resulting supertree representation cann be plain Newick, but can also contain the following two notation enhancements:
+- `{a,b,c}` represents any conceivable binary subtree comprising the taxa a, b, and c.
+- `(A|B,C|D)` represents any conceivable binary subtree comprising either subtrees A or B on the left, and either subtrees C or D on the right branch.
 
-directory scripts contains a python script to convert empirical input data (nothing you need to worry about)
+Both enhancements were chosen such that the result is standard newick format if there's only one possible supertree.
