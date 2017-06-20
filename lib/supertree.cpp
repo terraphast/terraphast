@@ -29,14 +29,14 @@ index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& roo
 	return leaves.size();
 }
 
-mpz_class tree_master::count_supertree(index num_leaves, const constraints& c, index root) {
+mpz_class count_supertree(index num_leaves, const constraints& c, index root_leaf) {
 	tree_enumerator<variants::count_callback> counter{{}};
-	return counter.run(num_leaves, c, root);
+	return counter.run(num_leaves, c, root_leaf);
 }
 
-mpz_class tree_master::count_supertree(index count, const constraints& c) {
+mpz_class count_supertree(index num_leaves, const constraints& c) {
 	tree_enumerator<variants::count_callback> counter{{}};
-	return counter.run(count, c);
+	return counter.run(num_leaves, c);
 }
 
 } // namespace terraces

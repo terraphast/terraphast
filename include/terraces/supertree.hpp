@@ -17,12 +17,9 @@ namespace terraces {
   */
 index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root);
 
-class tree_master {
-private:
-public:
-	mpz_class count_supertree(index num_leaves, const constraints&, index root);
-	mpz_class count_supertree(index count, const constraints&);
-};
+mpz_class count_supertree(index num_leaves, const constraints& constraints, index root_leaf);
+
+mpz_class count_supertree(index num_leaves, const constraints& constraints);
 
 } // namespace terraces
 
