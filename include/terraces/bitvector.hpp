@@ -2,11 +2,9 @@
 #define BITVECTOR_H
 
 #include <cstdint>
+#include <terraces/intrinsics.hpp>
 #include <terraces/trees.hpp>
 #include <vector>
-
-//#undef _MSC_VER
-//#include <intrin.h>
 
 #ifdef NDEBUG
 #define debug_code(x)                                                                              \
@@ -18,38 +16,29 @@
 #define debug_var(x) x
 #endif
 
-#pragma intrinsic(_BitScanForward64, __popcnt64)
-
 namespace terraces {
 
 namespace bits {
-inline index block_index(index i) { return i / 64; }
-inline index base_index(index block) { return block * 64; }
-inline uint8_t shift_index(index i) { return i % 64; }
-inline uint64_t set_mask(index i) { return 1ull << (i & 63); }
-inline uint64_t clear_mask(index i) { return ~set_mask(i); }
-inline uint64_t prefix_mask(index i) { return set_mask(i) - 1; }
-inline index next_bit(uint64_t block, index i) {
-	unsigned long idx;
-	_BitScanForward64(&idx, block >> shift_index(i));
-	return i + (index)idx;
-}
-inline index next_bit0(uint64_t block, index i) {
-	unsigned long idx;
-	_BitScanForward64(&idx, block);
-	return i + (index)idx;
-}
-inline bool has_next_bit(uint64_t block, index i) { return (block >> shift_index(i)) != 0; }
-inline bool has_next_bit0(uint64_t block) { return block != 0; }
-inline uint8_t popcount(uint64_t block) { return (uint8_t)__popcnt64(block); }
-inline uint8_t partial_popcount(uint64_t block, index i) {
-	return popcount(block & prefix_mask(i));
-}
+
+static_assert(std::numeric_limits<index>::radix == 2, "Our integers must be of base 2");
+constexpr index word_bits = std::numeric_limits<index>::digits;
+
+inline index block_index(index i) { return i / word_bits; }
+inline index base_index(index block) { return block * word_bits; }
+inline uint8_t shift_index(index i) { return i % word_bits; }
+inline index set_mask(index i) { return 1ull << (i & word_bits - 1); }
+inline index clear_mask(index i) { return ~set_mask(i); }
+inline index prefix_mask(index i) { return set_mask(i) - 1; }
+inline index next_bit(uint64_t block, index i) { return i + bitscan(block >> shift_index(i)); }
+inline index next_bit0(index block, index i) { return i + (index)__builtin_ctzll(block); }
+inline bool has_next_bit(index block, index i) { return (block >> shift_index(i)) != 0; }
+inline bool has_next_bit0(index block) { return block != 0; }
+inline index partial_popcount(index block, index i) { return popcount(block & prefix_mask(i)); }
 } // namespace bits
 
 class bitvector {
 public:
-	using value_type = uint64_t;
+	using value_type = index;
 
 private:
 	index m_size;

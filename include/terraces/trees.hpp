@@ -23,7 +23,7 @@ namespace terraces {
 //
 // You may rely on the fact that it's unsigned and
 // that sizeof(index) >= sizeof(int)
-using index = unsigned __int64;
+using index = std::size_t;
 
 constexpr static const auto none = std::numeric_limits<index>::max();
 
