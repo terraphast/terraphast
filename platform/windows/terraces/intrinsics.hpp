@@ -5,11 +5,11 @@
 namespace terraces {
 namespace bits {
 
-index popcount(index word) {
+inline index popcount(index word) {
 	return (index)__popcnt64(word);
 }
 
-index bitscan(index word) {
+inline index bitscan(index word) {
 	unsigned long idx;
 	_BitScanForward64(&idx, word);
 	return (index)idx;
