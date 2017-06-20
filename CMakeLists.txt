@@ -8,8 +8,14 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(BASIC_WARNINGS "-W4 -WX")
-set(OPTIMIZATION_FLAGS "-arch:AVX -Oi")
+if(WIN32)
+	set(BASIC_WARNINGS "-W4 -WX")
+	set(OPTIMIZATION_FLAGS "-Oi")
+	#set(OPTIMIZATION_FLAGS "${OPTIMIZATION_FLAGS} -arch:AVX")
+else()
+	set(BASIC_WARNINGS "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion")
+	set(OPTIMIZATION_FLAGS "-march=native")
+endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BASIC_WARNINGS} ${OPTIMIZATION_FLAGS}")
 
 include_directories("include" "Catch/include")
@@ -46,6 +52,7 @@ add_test(NAME unittests COMMAND unittests)
 
 file(GLOB app_headers "app/*.hpp")
 file(GLOB app_sources "app/*.cpp")
+
 add_executable(app "app/main.cpp")
 target_link_libraries(app terraces)
 
@@ -55,6 +62,11 @@ target_link_libraries(convert terraces)
 add_executable(isomorphic "app/isomorphic.cpp")
 target_link_libraries(isomorphic terraces)
 
-file(GLOB test_main_source "test/main.cpp")
-list(REMOVE_ITEM test_sources ${test_main_source})
-set_source_files_properties(${lib_sources} ${test_sources} ${app_sources} PROPERTIES COMPILE_FLAGS "-Za")
+# Most of our files only compile with disabled language extensions for VC++
+# Unfortunately, Catch uses some windows-specific features, so we have to
+# enable these extensions for the Catch main method (more specific: not disable them)
+if(WIN32)
+	file(GLOB test_main_source "test/main.cpp")
+	list(REMOVE_ITEM test_sources ${test_main_source})
+	set_source_files_properties(${lib_sources} ${test_sources} ${app_sources} PROPERTIES COMPILE_FLAGS "-Za")
+endif()
