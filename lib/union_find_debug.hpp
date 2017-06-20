@@ -4,6 +4,7 @@
 #include <terraces/union_find.hpp>
 
 namespace terraces {
+namespace debug {
 
 class union_find_sets_iterator {
 private:
@@ -75,6 +76,7 @@ struct union_find_iterable_set {
 	union_find_set_iterator end() const { return {sets, representative, sets.size()}; }
 };
 
+} // namespace debug
 } // namespace terraces
 
 #endif // UNION_FIND_DEBUG_HPP

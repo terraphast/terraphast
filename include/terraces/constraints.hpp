@@ -28,10 +28,6 @@ std::ostream& operator<<(std::ostream& s, const constraint& c);
 
 using constraints = std::vector<constraint>;
 
-std::ostream& operator<<(std::ostream& s, const constraint& c);
-
-using constraints = std::vector<constraint>;
-
 constraints compute_constraints(const std::vector<tree>& trees);
 
 index deduplicate_constraints(constraints& in_c);

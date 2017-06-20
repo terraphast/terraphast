@@ -17,10 +17,13 @@ struct stack_state {
 	index max_bip;
 	bool right;
 	Result intermediate;
+
+	stack_state(Result intermediate)
+	        : current_bip{0}, max_bip{0}, right{false}, intermediate{intermediate} {}
 };
 
 template <typename Callback>
-class stack_state_callback_decorator : public Callback {
+class stack_state_decorator : public Callback {
 public:
 	using result_type = typename Callback::result_type;
 
@@ -28,11 +31,11 @@ private:
 	std::vector<stack_state<result_type>> m_stack;
 
 public:
-	stack_state_callback_decorator(Callback cb) : Callback{cb} {}
+	stack_state_decorator(Callback cb) : Callback{cb} {}
 
-	void enter(const fast_index_set&, const fast_index_set&, const constraints&) {
-		Callback::enter();
-		m_stack.emplace_back(0, 0, false, Callback::init_result());
+	void enter(const fast_index_set& leaves) {
+		Callback::enter(leaves);
+		m_stack.emplace_back(Callback::init_result());
 	}
 
 	result_type exit(result_type result) {
@@ -40,8 +43,9 @@ public:
 		return Callback::exit(result);
 	}
 
-	void begin_iteration(const bipartition_iterator& bip_it) {
-		Callback::begin_iteration(bip_it);
+	void begin_iteration(const bipartition_iterator& bip_it, const fast_index_set& c_occ,
+	                     const constraints& constraints) {
+		Callback::begin_iteration(bip_it, c_occ, constraints);
 		m_stack.back().current_bip = bip_it.cur_bip();
 		m_stack.back().max_bip = bip_it.end_bip();
 	}
@@ -68,7 +72,8 @@ public:
 	}
 };
 
-std::ostream& operator<<(std::ostream& stream, utils::named_output<constraints, name_map> output) {
+inline std::ostream& operator<<(std::ostream& stream,
+                                utils::named_output<constraints, name_map> output) {
 	auto c = output.entry;
 	auto& n = output.names;
 	stream << "lca(" << n[c.left] << "," << n[c.shared] << ") < lca(" << n[c.shared] << ","
@@ -109,13 +114,13 @@ public:
 		output() << "<sets val=\"[";
 		bool set_first = true;
 		auto& leaves = bip_it.leaves();
-		for (auto rep : union_find_iterable_sets{bip_it.sets()}) {
+		for (auto rep : debug::union_find_iterable_sets{bip_it.sets()}) {
 			if (not set_first) {
 				m_output << ",";
 			}
 			m_output << "{";
 			bool el_first = true;
-			for (auto el : union_find_iterable_set{bip_it.sets(), rep}) {
+			for (auto el : debug::union_find_iterable_set{bip_it.sets(), rep}) {
 				if (not el_first) {
 					m_output << ",";
 				}
