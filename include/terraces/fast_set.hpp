@@ -13,10 +13,10 @@ class fast_index_set {
 	friend class fast_index_set_iterator;
 
 private:
-	efficient::bitvector m_vector;
+	bitvector m_vector;
 
 public:
-	using value_type = efficient::bitvector::value_type;
+	using value_type = bitvector::value_type;
 
 	fast_index_set(index max_size) : m_vector{max_size} {}
 

@@ -7,67 +7,63 @@ namespace terraces {
 namespace tests {
 
 TEST_CASE("popcount tests", "[bitvector]") {
-	CHECK(efficient::popcount(
-	              0b1010111010101101010001010100000101000011000010111100000101001000) == 26);
-	CHECK(efficient::popcount(
-	              0b0000000000000000000000000000000000000000000000000000000000000000) == 0);
-	CHECK(efficient::popcount(
-	              0b0000001000000100000000000010000000001000000000001000000010001100) == 8);
+	CHECK(bits::popcount(0b1010111010101101010001010100000101000011000010111100000101001000) ==
+	      26);
+	CHECK(bits::popcount(0b0000000000000000000000000000000000000000000000000000000000000000) ==
+	      0);
+	CHECK(bits::popcount(0b0000001000000100000000000010000000001000000000001000000010001100) ==
+	      8);
 }
 
 TEST_CASE("prefix mask test", "[bitvector]") {
-	CHECK(efficient::prefix_mask(63) ==
+	CHECK(bits::prefix_mask(63) ==
 	      0b0111111111111111111111111111111111111111111111111111111111111111);
-	CHECK(efficient::prefix_mask(1) ==
+	CHECK(bits::prefix_mask(1) ==
 	      0b0000000000000000000000000000000000000000000000000000000000000001);
-	CHECK(efficient::prefix_mask(10) ==
+	CHECK(bits::prefix_mask(10) ==
 	      0b0000000000000000000000000000000000000000000000000000001111111111);
 }
 
 TEST_CASE("partial popcount tests", "[bitvector]") {
 	//              6666555555555544444444443333333333222222222211111111110000000000
 	//              3210987654321098765432109876543210987654321098765432109876543210
-	CHECK(efficient::partial_popcount(
+	CHECK(bits::partial_popcount(
 	              0b1010111010101101010001010100000101000011000010111100000101001000, 63) ==
 	      25);
-	CHECK(efficient::partial_popcount(
+	CHECK(bits::partial_popcount(
 	              0b1010111010101101010001010100000101000011000010111100000101001000, 62) ==
 	      25);
-	CHECK(efficient::partial_popcount(
+	CHECK(bits::partial_popcount(
 	              0b1010111010101101010001010100000101000011000010111100000101001000, 60) ==
 	      24);
-	CHECK(efficient::partial_popcount(
+	CHECK(bits::partial_popcount(
 	              0b1010111010101101010001010100000101000011000010111100000101001000, 49) ==
 	      17);
 }
 
 TEST_CASE("bit iteration tests", "[bitvector]") {
-	CHECK(efficient::has_next_bit(
-	        0b0000000000000000000000000000000000010000000000000000000000000000, 28));
-	CHECK(!efficient::has_next_bit(
+	CHECK(bits::has_next_bit(0b0000000000000000000000000000000000010000000000000000000000000000,
+	                         28));
+	CHECK(!bits::has_next_bit(
 	        0b0000000000000000000000000000000000010000000000000000000000000000, 29));
 	//              6666555555555544444444443333333333222222222211111111110000000000
 	//              3210987654321098765432109876543210987654321098765432109876543210
-	CHECK(efficient::next_bit(
-	              0b1010111010101101010001010100000101000011000010111100000101001001, 64) ==
-	      64);
-	CHECK(efficient::next_bit(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 0) == 3);
-	CHECK(efficient::next_bit(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 29) ==
-	      30);
-	CHECK(efficient::next_bit(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 55) ==
-	      55);
-	CHECK(efficient::next_bit(
-	              0b1010111010101101010001010100000101000011000010111100000101001000, 56) ==
-	      57);
+	CHECK(bits::next_bit(0b1010111010101101010001010100000101000011000010111100000101001001,
+	                     64) == 64);
+	CHECK(bits::next_bit(0b1010111010101101010001010100000101000011000010111100000101001000,
+	                     0) == 3);
+	CHECK(bits::next_bit(0b1010111010101101010001010100000101000011000010111100000101001000,
+	                     29) == 30);
+	CHECK(bits::next_bit(0b1010111010101101010001010100000101000011000010111100000101001000,
+	                     55) == 55);
+	CHECK(bits::next_bit(0b1010111010101101010001010100000101000011000010111100000101001000,
+	                     56) == 57);
 }
 
 TEST_CASE("efficient bitvector", "[bitvector]") {
 	// 0 1 2 3 4 5 6 7 8 9
 	// 0 1 1 0 1 0 1 0 1 1
-	efficient::bitvector b(10);
+	bitvector b(10);
 	b.set(1);
 	b.set(2);
 	b.set(4);
@@ -105,7 +101,7 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 }
 
 TEST_CASE("efficient bitvector large", "[bitvector]") {
-	efficient::bitvector b(519);
+	bitvector b(519);
 	b.set(1);
 	b.set(63);
 	b.set(128);
@@ -116,9 +112,9 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	b.invert();
 	b.invert();
 	b.update_ranks();
-	efficient::bitvector b2(500);
+	bitvector b2(500);
 	b2.set(128);
-	efficient::bitvector b3(1042);
+	bitvector b3(1042);
 	CHECK(b.rank(10) == 1);
 	CHECK(b.rank(63) == 1);
 	CHECK(b.rank(64) == 2);
@@ -147,7 +143,7 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 }
 
 TEST_CASE("efficient bitvector xor", "[bitvector]") {
-	efficient::bitvector b(10);
+	bitvector b(10);
 	b.set(1);
 	b.set(2);
 	b.set(4);

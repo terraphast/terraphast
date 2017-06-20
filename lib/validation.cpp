@@ -9,10 +9,10 @@
 
 namespace terraces {
 
-std::vector<efficient::bitvector>
-tree_bipartitions(const tree& t, const std::vector<index>& mapping, const fast_index_set& leaves) {
-	std::vector<efficient::bitvector> bips(t.size(), {0});
-	std::vector<efficient::bitvector> subtrees(t.size(), {leaves.size()});
+std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>& mapping,
+                                         const fast_index_set& leaves) {
+	std::vector<bitvector> bips(t.size(), {0});
+	std::vector<bitvector> subtrees(t.size(), {leaves.size()});
 	foreach_postorder(t, [&](index i) {
 		auto n = t[i];
 		if (is_leaf(n)) {
