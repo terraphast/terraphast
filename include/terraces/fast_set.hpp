@@ -13,9 +13,11 @@ class fast_index_set {
 	friend class fast_index_set_iterator;
 
 private:
-	efficient::bitvector m_vector;
+	bitvector m_vector;
 
 public:
+	using value_type = bitvector::value_type;
+
 	fast_index_set(index max_size) : m_vector{max_size} {}
 
 	bool contains(index i) const { return m_vector.get(i); }
@@ -23,6 +25,7 @@ public:
 		assert(contains(i));
 		return m_vector.rank(i);
 	}
+	index select(index i) const;
 
 	index max_size() const { return m_vector.size(); }
 	index size() const { return m_vector.count(); }
@@ -34,11 +37,18 @@ public:
 	void remove(index i) { m_vector.clr(i); }
 	void toggle(index i) { m_vector.flip(i); }
 	void symm_difference(const fast_index_set& other) { m_vector.bitwise_xor(other.m_vector); }
+	void complement() { m_vector.invert(); }
 	void clear() { m_vector.blank(); }
 	void finalize_edit() { m_vector.update_ranks(); }
+
+	bool operator==(const fast_index_set& other) const { return m_vector == other.m_vector; }
+	bool operator!=(const fast_index_set& other) const { return m_vector != other.m_vector; }
 };
 
 class fast_index_set_iterator {
+public:
+	using value_type = fast_index_set::value_type;
+
 private:
 	const fast_index_set& m_set;
 	index m_index;
@@ -59,6 +69,15 @@ public:
 inline auto fast_index_set::begin() const -> iterator { return {*this, m_vector.begin()}; }
 
 inline auto fast_index_set::end() const -> iterator { return {*this, m_vector.end()}; }
+
+inline index fast_index_set::select(index i) const {
+	assert(i < size());
+	auto it = begin();
+	for (index j = 0; j < i; ++j) {
+		++it;
+	}
+	return *it;
+}
 
 } // namespace terraces
 

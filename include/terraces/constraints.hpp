@@ -5,6 +5,7 @@
 #include <tuple>
 #include <vector>
 
+#include "io_utils.hpp"
 #include "trees.hpp"
 
 namespace terraces {
@@ -24,13 +25,10 @@ struct constraint {
 	bool operator!=(const constraint& o) const { return !(o == *this); }
 };
 
-std::ostream& operator<<(std::ostream& s, const constraint& c);
-
 using constraints = std::vector<constraint>;
 
 std::ostream& operator<<(std::ostream& s, const constraint& c);
-
-using constraints = std::vector<constraint>;
+std::ostream& operator<<(std::ostream& s, utils::named_output<constraints, name_map>);
 
 constraints compute_constraints(const std::vector<tree>& trees);
 

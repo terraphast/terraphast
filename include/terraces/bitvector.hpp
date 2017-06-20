@@ -17,8 +17,8 @@
 #endif
 
 namespace terraces {
-namespace efficient {
 
+namespace bits {
 inline index block_index(index i) { return i / 64; }
 inline index base_index(index block) { return block * 64; }
 inline uint8_t shift_index(index i) { return i % 64; }
@@ -41,13 +41,17 @@ inline uint8_t popcount(uint64_t block) { return (uint8_t)__popcnt64(block); }
 inline uint8_t partial_popcount(uint64_t block, index i) {
 	return popcount(block & prefix_mask(i));
 }
+} // namespace bits
 
 class bitvector {
+public:
+	using value_type = uint64_t;
+
 private:
 	index m_size;
 	// TODO align blocks for SSE
-	std::vector<uint64_t> m_blocks;
-	std::vector<index> m_ranks;
+	std::vector<value_type> m_blocks;
+	std::vector<value_type> m_ranks;
 	index m_count;
 
 	debug_var(bool m_ranks_dirty);
@@ -60,33 +64,37 @@ public:
 	/** Sets a bit in the bitvector. */
 	void set(index i) {
 		assert(i < m_size);
-		m_blocks[block_index(i)] |= set_mask(i);
+		m_blocks[bits::block_index(i)] |= bits::set_mask(i);
 		debug_code(m_ranks_dirty = true);
 	}
 	/** Clears a bit in the bitvector. */
 	void clr(index i) {
 		assert(i < m_size);
-		m_blocks[block_index(i)] &= clear_mask(i);
+		m_blocks[bits::block_index(i)] &= bits::clear_mask(i);
 		debug_code(m_ranks_dirty = true);
 	}
 	/** Flips a bit in the bitvector. */
 	void flip(index i) {
 		assert(i < m_size);
-		m_blocks[block_index(i)] ^= set_mask(i);
+		m_blocks[bits::block_index(i)] ^= bits::set_mask(i);
 		debug_code(m_ranks_dirty = true);
 	}
 	/** Returns a bit from the bitvector. */
 	bool get(index i) const {
 		assert(i < m_size);
-		return (m_blocks[block_index(i)] >> shift_index(i)) & 1;
+		return (m_blocks[bits::block_index(i)] >> bits::shift_index(i)) & 1;
 	}
 	/** Returns the size of the bitvector. */
 	index size() const { return m_size; }
 
 	/** Clears all bits in the bitvector. */
 	void blank();
+	/** Inverts all bits in the bitvector. */
+	void invert();
 	/** Applies element-wise xor from another bitvector. */
 	void bitwise_xor(const bitvector& other);
+	/** Sets the values of this bitvector to the bitwise or of two bitvectors. */
+	void set_bitwise_or(const bitvector& fst, const bitvector& snd);
 
 	/** Updates the internal data structures after editing the vector. */
 	void update_ranks();
@@ -94,8 +102,8 @@ public:
 	index rank(index i) const {
 		assert(!m_ranks_dirty);
 		assert(i <= m_size);
-		index b = block_index(i);
-		return m_ranks[b] + partial_popcount(m_blocks[b], shift_index(i));
+		index b = bits::block_index(i);
+		return m_ranks[b] + bits::partial_popcount(m_blocks[b], bits::shift_index(i));
 	}
 	/** Returns the number of set bits. */
 	index count() const {
@@ -105,31 +113,34 @@ public:
 	/** Returns the index of the first set bit or size() if no bit is set. */
 	index begin() const {
 		index b = 0;
-		while (!has_next_bit0(m_blocks[b])) {
+		while (!bits::has_next_bit0(m_blocks[b])) {
 			++b;
 		}
-		return next_bit0(m_blocks[b], base_index(b));
+		return bits::next_bit0(m_blocks[b], bits::base_index(b));
 	}
 	/** Returns the index of the next set bit after the index or size() if no bit is set. */
 	index next(index i) const {
 		++i;
-		index b = block_index(i);
-		if (has_next_bit(m_blocks[b], i)) {
+		index b = bits::block_index(i);
+		if (bits::has_next_bit(m_blocks[b], i)) {
 			// the next bit is in the current block
-			return next_bit(m_blocks[b], i);
+			return bits::next_bit(m_blocks[b], i);
 		} else {
 			// the next bit is in a far-away block
 			do {
 				++b;
-			} while (!has_next_bit0(m_blocks[b]));
-			return next_bit0(m_blocks[b], base_index(b));
+			} while (!bits::has_next_bit0(m_blocks[b]));
+			return bits::next_bit0(m_blocks[b], bits::base_index(b));
 		}
 	}
 	/** Returns the index one past the last element. */
 	index end() const { return m_size; }
+
+	bool operator<(const bitvector& other) const;
+	bool operator==(const bitvector& other) const;
+	bool operator!=(const bitvector& other) const { return !(*this == other); }
 };
 
-} // namespace efficient
 } // namespace terraces
 
 #endif // BITVECTOR_H

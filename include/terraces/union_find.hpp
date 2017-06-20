@@ -8,13 +8,17 @@
 namespace terraces {
 
 class union_find {
+public:
+	using value_type = index;
+
 private:
-	mutable std::vector<index> id;
-	std::vector<index> size;
+	mutable std::vector<index> m_id;
+	std::vector<index> m_size;
 
 public:
 	union_find(std::size_t);
 	index find(index) const;
+	index size() const;
 	void merge(index, index);
 	bool is_representative(index) const;
 };

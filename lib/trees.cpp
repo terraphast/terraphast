@@ -128,4 +128,102 @@ std::vector<index> postorder(const tree& t) {
 	return result;
 }
 
+void print_tree_dot_unrooted(const tree& t, const name_map& names, std::ostream& output,
+                             std::string name_prefix) {
+	output << "strict graph {\n";
+	index i = 0;
+	for (auto n : t) {
+		if (is_root(n)) {
+			index u = n.lchild();
+			index v = n.rchild();
+			if (names[u] == "") {
+				output << "\"" << name_prefix << u << "\"";
+			} else {
+				output << "\"" << name_prefix << names[u] << "\"";
+			}
+			output << " -- ";
+			if (names[v] == "") {
+				output << "\"" << name_prefix << v << "\"";
+			} else {
+				output << "\"" << name_prefix << names[v] << "\"";
+			}
+			output << ";\r\n";
+		} else {
+			for (auto v : n.data) {
+				if (v != none && !is_root(t[v])) {
+					if (names[i] == "") {
+						output << "\"" << name_prefix << i << "\"";
+					} else {
+						output << "\"" << name_prefix << names[i] << "\"";
+					}
+					output << " -- ";
+					if (names[v] == "") {
+						output << "\"" << name_prefix << v << "\"";
+					} else {
+						output << "\"" << name_prefix << names[v] << "\"";
+					}
+					output << ";\r\n";
+				}
+			}
+			if (names[i] == "") {
+				output << "\"" << name_prefix << i << "\" [shape=point];\r\n";
+			} else {
+				output << "\"" << name_prefix << names[i] << "\" [label=\""
+				       << names[i] << "\"];\r\n";
+			}
+		}
+		++i;
+	}
+	output << "}";
+}
+
+void print_tree_dot(const tree& t, const name_map& names, std::ostream& output) {
+	output << "graph {\n";
+	index i = 0;
+	for (auto n : t) {
+		for (auto v : n.data) {
+			if (v != none) {
+				if (names[i] == "") {
+					output << i;
+				} else {
+					output << "\"" << names[i] << "\"";
+				}
+				output << " -- ";
+				if (names[v] == "") {
+					output << v;
+				} else {
+					output << "\"" << names[v] << "\"";
+				}
+				output << ";\r\n";
+			}
+		}
+		if (names[i] == "") {
+			output << i << " [shape=point];\r\n";
+		}
+		++i;
+	}
+	output << "}";
+}
+
+void print_tree_gml(const tree& t, const name_map& names, std::ostream& output) {
+	output << "graph [\n";
+	index i = 0;
+	for (index i = 0; i < t.size(); ++i) {
+		output << "\tnode [\n\t\tid " << i << "\n";
+		if (names[i] != "")
+			output << "\t\tlabel \"" << names[i] << "\"\n";
+		output << "\t]\n";
+	}
+	for (auto n : t) {
+		for (auto v : n.data) {
+			if (v != none) {
+				output << "\tedge [\n\t\tsource " << i << "\n\t\ttarget " << v
+				       << "\n\t]\n";
+			}
+		}
+		++i;
+	}
+	output << "]";
+}
+
 } // namespace terraces

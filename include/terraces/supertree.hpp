@@ -5,32 +5,38 @@
 #include "fast_set.hpp"
 #include "trees.hpp"
 #include "union_find.hpp"
+#include <gmpxx.h>
+#include <string>
+#include <tuple>
 
 namespace terraces {
 
-class tree_master {
-private:
-	fast_index_set filter_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
-	                                  const constraints& c) const;
+/**
+  * Remaps contstraints, names and root to leaf-based indexing (remove inner nodes).
+  * \returns the number of leaves.
+  */
+index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root);
 
-	union_find apply_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
-	                             const constraints& c) const;
+/**
+ * Counts the number of trees compatible with the given constraints, while keeping the root fixed.
+ * \param num_leaves The number of leaves of the tree
+ * \param constraints The constraints on the leaves. The constraints must only contain valid leaf
+ * indices.
+ * \param root_leaf The fixed 'root leaf' which will be placed to the right of the root
+ * to avoid isomorphic, differently rooted trees.
+ * @return the number of trees.
+ */
+mpz_class count_supertree(index num_leaves, const constraints& constraints, index root_leaf);
 
-public:
-	tree_master();
-
-	size_t count_supertree(const tree&, const constraints&, index root);
-
-	/**
-	 * Count trees given a number and a vector of constraints. Entry point for tree counting.
-	 */
-	size_t count_supertree(index count, const constraints&);
-
-	/**
-	 * Count trees.
-	 */
-	size_t count_supertree(const fast_index_set&, const fast_index_set&, const constraints&);
-};
+/**
+ * Counts the number of trees compatible with the given constraints.
+ * This method might count a tree multiple times if it has a valid isomorphic representation.
+ * \param num_leaves The number of leaves of the tree
+ * \param constraints The constraints on the leaves. The constraints must only contain valid leaf
+ * indices.
+ * @return the number of trees.
+ */
+mpz_class count_supertree(index num_leaves, const constraints& constraints);
 
 } // namespace terraces
 
