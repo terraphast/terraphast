@@ -36,16 +36,6 @@ void ensure(bool b, Args&&... args) {
 	}
 }
 
-template <typename Exit>
-class scope_guard {
-private:
-	Exit& m_exit;
-
-public:
-	scope_guard(Exit& exit) : m_exit{exit} {}
-	~scope_guard() { m_exit(); }
-};
-
 template <typename T>
 struct comma_separated_output {
 	const T& data;
