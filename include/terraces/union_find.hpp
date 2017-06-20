@@ -16,7 +16,7 @@ private:
 	std::vector<index> m_size;
 
 public:
-	union_find(std::size_t);
+	union_find(index);
 	index find(index) const;
 	index size() const;
 	void merge(index, index);

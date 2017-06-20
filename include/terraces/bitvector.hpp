@@ -2,9 +2,11 @@
 #define BITVECTOR_H
 
 #include <cstdint>
-#include <intrin.h>
 #include <terraces/trees.hpp>
 #include <vector>
+
+//#undef _MSC_VER
+//#include <intrin.h>
 
 #ifdef NDEBUG
 #define debug_code(x)                                                                              \
@@ -15,6 +17,8 @@
 #define debug_code(x) x
 #define debug_var(x) x
 #endif
+
+#pragma intrinsic(_BitScanForward64, __popcnt64)
 
 namespace terraces {
 

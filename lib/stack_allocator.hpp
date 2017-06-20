@@ -35,6 +35,8 @@ class stack_allocator {
 public:
 	stack_allocator(free_list& fl, std::size_t expected_size)
 	        : m_fl{&fl}, m_expected_size{expected_size} {}
+	template <typename U>
+	stack_allocator(const stack_allocator<U>& other) : m_fl{ other.m_fl }, m_expected_size{ other.m_expected_size * sizeof(T) / sizeof(U) } {}
 
 	using value_type = T;
 
@@ -57,7 +59,7 @@ public:
 		m_fl->push(std::move(p));
 	}
 
-private:
+public:
 	T* system_allocate(std::size_t n) {
 		auto size = n * sizeof(T);
 		auto ptr = ::operator new(size);
