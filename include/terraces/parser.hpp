@@ -16,8 +16,6 @@ struct tree_set {
 	tree tree;
 	name_map names;
 	index_map indices;
-
-	tree_set(terraces::tree tree, name_map names, index_map indices) : tree{ std::move(tree) }, names{ std::move(names) }, indices{ std::move(indices) } {}
 };
 
 /**

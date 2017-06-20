@@ -18,16 +18,16 @@ enum class token_type { lparen, rparen, name, seperator, eof };
 
 struct token {
 	token_type type;
-	std::string name = "";
+	std::string name;
 
-	token(token_type type, std::string name = "") : type{ type }, name{ name } {}
+	token(token_type type, std::string name = "") : type{type}, name{name} {}
 };
 
 struct parser_state {
-	index parent = none;
-	index self = 0u;
+	index parent;
+	index self;
 
-	parser_state(index parent, index self) : parent{ parent }, self{ self } {}
+	parser_state(index parent, index self) : parent{parent}, self{self} {}
 };
 
 using parser_stack = std::stack<parser_state, std::vector<parser_state>>;
@@ -37,23 +37,23 @@ token next_token(Iterator& it, Iterator end) {
 	constexpr static auto special_tokens = std::array<char, 3>{{'(', ')', ','}};
 	it = utils::skip_ws(it, end);
 	if (it == end) {
-		return token{token_type::eof};
+		return {token_type::eof};
 	}
 	switch (*it) {
 	case '(':
 		++it;
-		return token{token_type::lparen};
+		return {token_type::lparen};
 	case ')':
 		++it;
-		return token{token_type::rparen};
+		return {token_type::rparen};
 	case ',':
 		++it;
-		return token{token_type::seperator};
+		return {token_type::seperator};
 	}
 	const auto name_begin = it;
 	it = std::find_first_of(it, end, special_tokens.begin(), special_tokens.end());
 	const auto name_end = utils::reverse_skip_ws(name_begin, std::find(name_begin, it, ':'));
-	return token{token_type::name, std::string{name_begin, name_end}};
+	return {token_type::name, {name_begin, name_end}};
 }
 
 } // namespace parsing
@@ -69,7 +69,7 @@ tree_set parse_nwk(const std::string& input) {
 	const auto end = input.end();
 
 	ret.emplace_back(none, none, none);
-	auto state = parsing::parser_state{ none, 0u };
+	auto state = parsing::parser_state{none, 0};
 
 	for (auto token = parsing::next_token(it, end); token.type != parsing::token_type::eof;
 	     token = parsing::next_token(it, end)) {
@@ -113,7 +113,7 @@ tree_set parse_nwk(const std::string& input) {
 	if (not names.front().empty() and names.front().back() == ';') {
 		names.front().pop_back();
 	}
-	return tree_set{ std::move(ret), std::move(names), std::move(indices) };
+	return {std::move(ret), std::move(names), std::move(indices)};
 }
 
 std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices,
