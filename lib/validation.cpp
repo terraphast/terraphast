@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include <algorithm>
+#include <numeric>
 
 #include "supertree_helpers.hpp"
 
