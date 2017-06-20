@@ -7,7 +7,7 @@
 
 #include <gmpxx.h>
 
-#include "utils.hpp"
+#include <terraces/io_utils.hpp>
 
 namespace terraces {
 

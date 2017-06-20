@@ -17,7 +17,7 @@
 
 using terraces::tree_enumerator;
 using terraces::multitree_callback;
-using terraces::logging_decorator;
+using terraces::debug::logging_decorator;
 using terraces::utils::as_comma_separated_output;
 using terraces::full_set;
 

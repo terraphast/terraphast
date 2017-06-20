@@ -7,9 +7,13 @@
 
 #include "supertree_variants.hpp"
 #include "union_find_debug.hpp"
-#include "utils.hpp"
+
+#include <terraces/constraints.hpp>
+#include <terraces/io_utils.hpp>
 
 namespace terraces {
+
+namespace debug {
 
 template <typename Result>
 struct stack_state {
@@ -71,15 +75,6 @@ public:
 		return result;
 	}
 };
-
-inline std::ostream& operator<<(std::ostream& stream,
-                                utils::named_output<constraints, name_map> output) {
-	auto c = output.entry;
-	auto& n = output.names;
-	stream << "lca(" << n[c.left] << "," << n[c.shared] << ") < lca(" << n[c.shared] << ","
-	       << n[c.right] << ")";
-	return stream;
-}
 
 template <typename Callback>
 class logging_decorator : public Callback {
@@ -163,6 +158,7 @@ public:
 	}
 };
 
+} // namespace debug
 } // namespace terraces
 
 #endif // SUPERTREE_VARIANTS_DEBUG_HPP

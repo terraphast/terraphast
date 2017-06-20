@@ -11,6 +11,14 @@ std::ostream& operator<<(std::ostream& s, const constraint& c) {
 	return s;
 }
 
+std::ostream& operator<<(std::ostream& stream, utils::named_output<constraints, name_map> output) {
+	auto c = output.entry;
+	auto& n = output.names;
+	stream << "lca(" << n[c.left] << "," << n[c.shared] << ") < lca(" << n[c.shared] << ","
+	       << n[c.right] << ")";
+	return stream;
+}
+
 constraints compute_constraints(const std::vector<tree>& trees) {
 	constraints result;
 	auto num_nodes = trees[0].size();

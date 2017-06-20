@@ -8,11 +8,11 @@
 
 namespace terraces {
 
-template class tree_enumerator<logging_decorator<multitree_callback>>;
-template class tree_enumerator<stack_state_decorator<multitree_callback>>;
+template class tree_enumerator<debug::logging_decorator<multitree_callback>>;
+template class tree_enumerator<debug::stack_state_decorator<multitree_callback>>;
 
-template class tree_enumerator<logging_decorator<tree_count_callback>>;
-template class tree_enumerator<stack_state_decorator<tree_count_callback>>;
+template class tree_enumerator<debug::logging_decorator<tree_count_callback>>;
+template class tree_enumerator<debug::stack_state_decorator<tree_count_callback>>;
 
 index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root) {
 	auto leaves = leave_occ(t);
