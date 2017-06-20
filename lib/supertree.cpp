@@ -8,10 +8,16 @@
 
 namespace terraces {
 
+template class tree_enumerator<variants::multitree_callback>;
 template class tree_enumerator<debug::variants::logging_decorator<variants::multitree_callback>>;
 template class tree_enumerator<
         debug::variants::stack_state_decorator<variants::multitree_callback>>;
 
+template class tree_enumerator<variants::check_callback>;
+template class tree_enumerator<debug::variants::logging_decorator<variants::check_callback>>;
+template class tree_enumerator<debug::variants::stack_state_decorator<variants::check_callback>>;
+
+template class tree_enumerator<variants::count_callback>;
 template class tree_enumerator<debug::variants::logging_decorator<variants::count_callback>>;
 template class tree_enumerator<debug::variants::stack_state_decorator<variants::count_callback>>;
 
@@ -29,14 +35,24 @@ index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& roo
 	return leaves.size();
 }
 
-mpz_class count_supertree(index num_leaves, const constraints& c, index root_leaf) {
+mpz_class count_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
 	tree_enumerator<variants::count_callback> counter{{}};
-	return counter.run(num_leaves, c, root_leaf);
+	return counter.run(num_leaves, constraints, root_leaf);
 }
 
-mpz_class count_supertree(index num_leaves, const constraints& c) {
+mpz_class count_supertree(index num_leaves, const constraints& constraints) {
 	tree_enumerator<variants::count_callback> counter{{}};
-	return counter.run(num_leaves, c);
+	return counter.run(num_leaves, constraints);
+}
+
+bool check_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
+	tree_enumerator<variants::check_callback> counter{{}};
+	return counter.run(num_leaves, constraints, root_leaf) > 1;
+}
+
+bool check_supertree(index num_leaves, const constraints& constraints) {
+	tree_enumerator<variants::check_callback> counter{{}};
+	return counter.run(num_leaves, constraints) > 1;
 }
 
 } // namespace terraces
