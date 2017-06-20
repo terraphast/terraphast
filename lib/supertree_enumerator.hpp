@@ -68,6 +68,7 @@ auto tree_enumerator<Callback>::run(const fast_index_set& leaves,
 	cb.enter(leaves);
 
 	// base cases: only a few leaves
+	assert(leaves.size() > 0);
 	if (leaves.size() == 1) {
 		return cb.exit(cb.base_one_leaf(*leaves.begin()));
 	}
@@ -99,7 +100,7 @@ auto tree_enumerator<Callback>::iterate(bipartition_iterator& bip_it,
 
 	cb.begin_iteration(bip_it, new_constraint_occ, constraints);
 	// iterate over all possible bipartitions
-	while (bip_it.is_valid() && cb.continue_iteration(bip_it)) {
+	while (bip_it.is_valid() && cb.continue_iteration(result)) {
 		cb.step_iteration(bip_it);
 		cb.left_subcall();
 		auto left = run(bip_it.get_current_set(), new_constraint_occ, constraints);

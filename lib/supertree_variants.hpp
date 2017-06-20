@@ -35,7 +35,7 @@ public:
 	void begin_iteration(const bipartition_iterator&, const fast_index_set&,
 	                     const constraints&) {}
 	/** Returns true iff the iteration should continue. */
-	bool continue_iteration(const bipartition_iterator&) { return true; }
+	bool continue_iteration(Result) { return true; }
 	/** Called when an iteration step begins. */
 	void step_iteration(const bipartition_iterator&) {}
 	/** Called when the last iteration step has finished. */
@@ -65,6 +65,18 @@ public:
 
 	mpz_class accumulate(mpz_class acc, mpz_class val) { return acc + val; }
 	mpz_class combine(mpz_class left, mpz_class right) { return left * right; }
+};
+
+class check_callback : public abstract_callback<index> {
+public:
+	index base_one_leaf(index) { return 1; }
+	index base_two_leaves(index, index) { return 1; }
+	index base_unconstrained(const fast_index_set&) { return 2; }
+
+	bool continue_iteration(index acc) { return acc < 2; }
+
+	index accumulate(index acc, index val) { return std::min<index>(2, acc + val); }
+	index combine(index left, index right) { return std::min<index>(2, left * right); }
 };
 
 class multitree_callback : public abstract_callback<std::ostream*> {
