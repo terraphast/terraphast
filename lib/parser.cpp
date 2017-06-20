@@ -20,14 +20,14 @@ struct token {
 	token_type type;
 	std::string name = "";
 
-	token(token_type type, std::string name = "") : type{ type }, name{ name } {}
+	token(token_type type, std::string name = "") : type{type}, name{name} {}
 };
 
 struct parser_state {
 	index parent = none;
 	index self = 0u;
 
-	parser_state(index parent, index self) : parent{ parent }, self{ self } {}
+	parser_state(index parent, index self) : parent{parent}, self{self} {}
 };
 
 using parser_stack = std::stack<parser_state, std::vector<parser_state>>;
@@ -69,7 +69,7 @@ tree_set parse_nwk(const std::string& input) {
 	const auto end = input.end();
 
 	ret.emplace_back(none, none, none);
-	auto state = parsing::parser_state{ none, 0u };
+	auto state = parsing::parser_state{none, 0u};
 
 	for (auto token = parsing::next_token(it, end); token.type != parsing::token_type::eof;
 	     token = parsing::next_token(it, end)) {
@@ -113,7 +113,7 @@ tree_set parse_nwk(const std::string& input) {
 	if (not names.front().empty() and names.front().back() == ';') {
 		names.front().pop_back();
 	}
-	return tree_set{ std::move(ret), std::move(names), std::move(indices) };
+	return tree_set{std::move(ret), std::move(names), std::move(indices)};
 }
 
 std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices,
