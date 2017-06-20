@@ -6,12 +6,12 @@ namespace terraces {
 
 bipartition_iterator::bipartition_iterator(const fast_index_set& leaves, const union_find& sets)
         : m_leaves{leaves}, m_sets{sets}, m_set_rep{find_set_reps()},
-          m_subleaves{leaves.max_size()}, m_bip{0}, m_end{(1u << (m_set_rep.size() - 1))} {
+          m_subleaves{leaves.max_size()}, m_bip{0}, m_end{(1ull << (m_set_rep.size() - 1))} {
 	assert(leaves.max_size() < 64);
 	increase();
 }
 
-bool bipartition_iterator::in_left_partition(index i) const { return m_bip & (1 << (i - 1)); }
+bool bipartition_iterator::in_left_partition(index i) const { return (m_bip & (1ull << (i - 1))) != 0; }
 
 fast_index_set bipartition_iterator::find_set_reps() const {
 	// TODO ugly style :)
