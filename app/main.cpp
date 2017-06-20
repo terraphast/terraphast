@@ -16,8 +16,8 @@
 #include "../lib/supertree_variants_debug.hpp"
 
 using terraces::tree_enumerator;
-using terraces::multitree_callback;
-using terraces::debug::logging_decorator;
+using terraces::variants::multitree_callback;
+using terraces::debug::variants::logging_decorator;
 using terraces::utils::as_comma_separated_output;
 using terraces::full_set;
 

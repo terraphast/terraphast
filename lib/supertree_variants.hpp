@@ -10,9 +10,10 @@
 #include <terraces/io_utils.hpp>
 
 namespace terraces {
+namespace variants {
 
 template <typename Result>
-class enumeration_callback {
+class abstract_callback {
 public:
 	using result_type = Result;
 
@@ -49,7 +50,7 @@ public:
 	Result combine(Result, Result);
 };
 
-class tree_count_callback : public enumeration_callback<mpz_class> {
+class count_callback : public abstract_callback<mpz_class> {
 public:
 	mpz_class base_one_leaf(index) { return 1; }
 	mpz_class base_two_leaves(index, index) { return 1; }
@@ -66,7 +67,7 @@ public:
 	mpz_class combine(mpz_class left, mpz_class right) { return left * right; }
 };
 
-class multitree_callback : public enumeration_callback<std::ostream*> {
+class multitree_callback : public abstract_callback<std::ostream*> {
 private:
 	std::ostream* m_stream;
 	const name_map& m_names;
@@ -107,6 +108,7 @@ public:
 	std::ostream* combine(std::ostream*, std::ostream*) { return &(*m_stream << ")"); }
 };
 
+} // namespace variants
 } // namespace terraces
 
 #endif // SUPERTREE_VARIANTS_HPP

@@ -12,8 +12,8 @@
 #include <terraces/io_utils.hpp>
 
 namespace terraces {
-
 namespace debug {
+namespace variants {
 
 template <typename Result>
 struct stack_state {
@@ -158,6 +158,7 @@ public:
 	}
 };
 
+} // namespace variants
 } // namespace debug
 } // namespace terraces
 
