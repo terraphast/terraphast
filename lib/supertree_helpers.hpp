@@ -23,8 +23,6 @@ constraints map_constraints(const fast_index_set& leaves, const constraints& c);
 /** Returns a set containing all leaves of the given tree. */
 fast_index_set leave_occ(const tree& t);
 
-/** Returns a set containing size elements. */
-fast_index_set full_set(index size);
-}
+} // namespace terraces
 
 #endif // SUPERTREE_HELPERS_HPP

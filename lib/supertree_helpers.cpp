@@ -35,13 +35,6 @@ constraints map_constraints(const fast_index_set& leaves, const constraints& cs)
 	return result;
 }
 
-fast_index_set full_set(index size) {
-	fast_index_set set{size};
-	set.complement();
-	set.finalize_edit();
-	return set;
-}
-
 fast_index_set leave_occ(const tree& tree) {
 	fast_index_set leaves{tree.size()};
 	for (index i = 0; i < tree.size(); i++) {

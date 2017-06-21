@@ -79,6 +79,14 @@ inline index fast_index_set::select(index i) const {
 	return *it;
 }
 
+/** Returns a set containing size elements. */
+inline fast_index_set full_set(index size) {
+	fast_index_set set{size};
+	set.complement();
+	set.finalize_edit();
+	return set;
+}
+
 } // namespace terraces
 
 #endif // FAST_SET_H
