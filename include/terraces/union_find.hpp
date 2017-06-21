@@ -12,8 +12,8 @@ public:
 	using value_type = index;
 
 private:
-	mutable std::vector<index> m_id;
-	std::vector<index> m_size;
+	// mutable because of path compression
+	mutable std::vector<index> m_parent;
 
 public:
 	union_find(index);
