@@ -1,6 +1,7 @@
 #include <terraces/bipartitions.hpp>
 
 #include <cassert>
+#include <ostream>
 
 namespace terraces {
 
@@ -48,6 +49,17 @@ const fast_index_set& bipartition_iterator::get_current_set() const { return m_s
 void bipartition_iterator::flip_sets() {
 	m_subleaves.symm_difference(m_leaves);
 	m_subleaves.finalize_edit();
+}
+
+std::ostream& operator<<(std::ostream& stream, const bipartition_iterator& it) {
+	for (index b = it.end_bip(), c = it.cur_bip(); b; b >>= 1, c >>= 1) {
+		stream << (index)(c & 1);
+	}
+	stream << '/';
+	for (index b = it.end_bip(); b; b >>= 1) {
+		stream << (index)(b & 1);
+	}
+	return stream;
 }
 
 } // namespace terraces

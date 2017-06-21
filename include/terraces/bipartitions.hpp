@@ -2,6 +2,7 @@
 #define TERRACES_BIPARTITIONS_HPP
 
 #include <cmath>
+#include <iosfwd>
 
 #include "fast_set.hpp"
 #include "trees.hpp"
@@ -39,6 +40,8 @@ public:
 	const union_find& sets() const { return m_sets; }
 	const fast_index_set& leaves() const { return m_leaves; }
 };
+
+std::ostream& operator<<(std::ostream& stream, const bipartition_iterator& it);
 
 } // namespace terraces
 
