@@ -34,8 +34,9 @@ bool is_valid_tree(const tree& t) {
 	for (auto& n : t) {
 		index degree = 0;
 		for (auto i : n.data) {
-			if (i != none)
+			if (i != none) {
 				++degree;
+			}
 		}
 		if (degree == 0) {
 			return false;
@@ -209,8 +210,9 @@ void print_tree_gml(const tree& t, const name_map& names, std::ostream& output) 
 	output << "graph [\n";
 	for (index i = 0; i < t.size(); ++i) {
 		output << "\tnode [\n\t\tid " << i << "\n";
-		if (names[i] != "")
+		if (names[i] != "") {
 			output << "\t\tlabel \"" << names[i] << "\"\n";
+		}
 		output << "\t]\n";
 	}
 	index i = 0;

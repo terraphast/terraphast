@@ -88,11 +88,7 @@ void reroot_inplace(tree& t, index root_leaf) {
 		}
 
 		// CLEANUP
-		if (t[original_parent_index].lchild() == current_node_index) {
-			coming_from_left = true;
-		} else {
-			coming_from_left = false;
-		}
+		coming_from_left = t[original_parent_index].lchild() == current_node_index;
 		current_node_index = original_parent_index;
 	}
 

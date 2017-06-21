@@ -21,9 +21,8 @@ public:
 			auto ret = std::move(m_list.back());
 			m_list.pop_back();
 			return ret;
-		} else {
-			return nullptr;
 		}
+		return nullptr;
 	}
 
 private:

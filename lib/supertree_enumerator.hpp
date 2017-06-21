@@ -47,7 +47,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 	cb.enter(leaves);
 	// no base cases
 	assert(num_leaves > 2);
-	assert(constraints.size() > 0);
+	assert(!constraints.empty());
 	// build bipartition iterator:
 	auto sets = union_find{num_leaves};
 	index rep = root_leaf == 0 ? 1 : 0;

@@ -5,6 +5,7 @@
 #include <array>
 #include <stack>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
 #include "utils.hpp"
@@ -20,7 +21,7 @@ struct token {
 	token_type type;
 	std::string name;
 
-	token(token_type type, std::string name = "") : type{type}, name{name} {}
+	token(token_type type, std::string name = "") : type{type}, name{std::move(name)} {}
 };
 
 struct parser_state {

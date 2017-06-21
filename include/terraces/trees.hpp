@@ -106,7 +106,7 @@ typedef struct {
 
 inline newick_t as_newick(const tree& t, const name_map& names) { return {&t, &names}; }
 
-std::ostream& operator<<(std::ostream& s, newick_t t);
+std::ostream& operator<<(std::ostream& s, newick_t tree_pair);
 
 // maps the name of a species to it's index in the tree:
 using index_map = std::unordered_map<std::string, index>;

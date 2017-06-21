@@ -52,11 +52,11 @@ void bipartition_iterator::flip_sets() {
 }
 
 std::ostream& operator<<(std::ostream& stream, const bipartition_iterator& it) {
-	for (index b = it.end_bip(), c = it.cur_bip(); b; b >>= 1, c >>= 1) {
+	for (index b = it.end_bip(), c = it.cur_bip(); b != 0u; b >>= 1, c >>= 1) {
 		stream << (index)(c & 1);
 	}
 	stream << '/';
-	for (index b = it.end_bip(); b; b >>= 1) {
+	for (index b = it.end_bip(); b != 0u; b >>= 1) {
 		stream << (index)(b & 1);
 	}
 	return stream;

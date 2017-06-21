@@ -28,7 +28,7 @@ struct constraint {
 using constraints = std::vector<constraint>;
 
 std::ostream& operator<<(std::ostream& s, const constraint& c);
-std::ostream& operator<<(std::ostream& s, utils::named_output<constraints, name_map>);
+std::ostream& operator<<(std::ostream& stream, utils::named_output<constraints, name_map>);
 
 constraints compute_constraints(const std::vector<tree>& trees);
 

@@ -36,7 +36,7 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 			bool leaf_occ = is_leaf(node) && node_occ.get(i, site);
 			bool inner_occ = !is_leaf(node) && node_occ.get(node.lchild(), site) &&
 			                 node_occ.get(node.rchild(), site);
-			if (leaf_occ || (inner_occ & !is_root(node))) {
+			if (leaf_occ || (inner_occ && !is_root(node))) {
 				// fires if the tree is trivial (i.e. only one edge!)
 				// this can only happen with sites for which only one species has
 				// data.

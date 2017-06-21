@@ -75,7 +75,7 @@ public:
 	/** Returns a bit from the bitvector. */
 	bool get(index i) const {
 		assert(i < m_size);
-		return (m_blocks[bits::block_index(i)] >> bits::shift_index(i)) & 1;
+		return ((m_blocks[bits::block_index(i)] >> bits::shift_index(i)) & 1) != 0u;
 	}
 	/** Returns the size of the bitvector. */
 	index size() const { return m_size; }
@@ -118,13 +118,12 @@ public:
 		if (bits::has_next_bit(m_blocks[b], i)) {
 			// the next bit is in the current block
 			return bits::next_bit(m_blocks[b], i);
-		} else {
-			// the next bit is in a far-away block
-			do {
-				++b;
-			} while (!bits::has_next_bit0(m_blocks[b]));
-			return bits::next_bit0(m_blocks[b], bits::base_index(b));
 		}
+		// the next bit is in a far-away block
+		do {
+			++b;
+		} while (!bits::has_next_bit0(m_blocks[b]));
+		return bits::next_bit0(m_blocks[b], bits::base_index(b));
 	}
 	/** Returns the index one past the last element. */
 	index end() const { return m_size; }

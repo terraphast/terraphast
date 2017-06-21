@@ -32,23 +32,24 @@ int main(int argc, char* argv[]) {
 	auto fst = read_trees(argv[1]);
 	auto snd = read_trees(argv[2]);
 	std::cout << "pairwise comparison\n";
+	std::cout << std::noboolalpha;
 	for (auto& t_fst : fst) {
 		for (auto& t_snd : snd) {
-			std::cout << (is_isomorphic(t_fst, t_snd) * 1) << " ";
+			std::cout << is_isomorphic(t_fst, t_snd) << " ";
 		}
 		std::cout << "\n";
 	}
 	std::cout << "comparison inside first group\n";
 	for (auto& t_fst : fst) {
 		for (auto& t_snd : fst) {
-			std::cout << (is_isomorphic(t_fst, t_snd) * 1) << " ";
+			std::cout << is_isomorphic(t_fst, t_snd) << " ";
 		}
 		std::cout << "\n";
 	}
 	std::cout << "comparison inside second group\n";
 	for (auto& t_fst : snd) {
 		for (auto& t_snd : snd) {
-			std::cout << (is_isomorphic(t_fst, t_snd) * 1) << " ";
+			std::cout << is_isomorphic(t_fst, t_snd) << " ";
 		}
 		std::cout << "\n";
 	}

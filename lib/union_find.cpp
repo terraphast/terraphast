@@ -26,7 +26,8 @@ void union_find::merge(index x, index y) {
 	index j = find(y);
 	if (i == j) {
 		return;
-	} else if (m_parent[i] < m_parent[j]) {
+	}
+	if (m_parent[i] < m_parent[j]) {
 		// link the smaller group to the larger one
 		m_parent[i] = j;
 	} else if (m_parent[i] > m_parent[j]) {

@@ -20,7 +20,7 @@ void bitmatrix::set(index row, index col, bool val) {
 
 void bitmatrix::row_or(index in1, index in2, index out) {
 	for (index i = 0; i < cols(); ++i) {
-		set(out, i, get(in1, i) | get(in2, i));
+		set(out, i, get(in1, i) || get(in2, i));
 	}
 }
 

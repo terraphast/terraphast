@@ -18,10 +18,10 @@ union_find apply_constraints(const fast_index_set& leaves, const fast_index_set&
                              const constraints& c);
 
 /** Maps the given constraints to leaf indices. */
-constraints map_constraints(const fast_index_set& leaves, const constraints& c);
+constraints map_constraints(const fast_index_set& leaves, const constraints& cs);
 
 /** Returns a set containing all leaves of the given tree. */
-fast_index_set leave_occ(const tree& t);
+fast_index_set leave_occ(const tree& tree);
 
 } // namespace terraces
 
