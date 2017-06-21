@@ -32,9 +32,16 @@ private:
 
 template <typename T>
 class stack_allocator {
+	template <typename U>
+	friend class stack_allocator;
+
 public:
 	stack_allocator(free_list& fl, std::size_t expected_size)
 	        : m_fl{&fl}, m_expected_size{expected_size} {}
+	template <typename U>
+	stack_allocator(const stack_allocator<U>& other)
+	        : m_fl{other.m_fl}, m_expected_size{other.m_expected_size * sizeof(U) / sizeof(T)} {
+	}
 
 	using value_type = T;
 
