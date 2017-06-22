@@ -17,14 +17,14 @@ class tree_enumerator {
 private:
 	Callback cb;
 
-	result_type iterate(bipartition_iterator& bip_it, const fast_index_set& new_constraint_occ,
+	result_type iterate(bipartition_iterator& bip_it, const bitvector& new_constraint_occ,
 	                    const constraints& constraints);
 
 public:
 	tree_enumerator(Callback cb) : cb{cb} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
 	result_type run(index num_leaves, const constraints& constraints);
-	result_type run(const fast_index_set& leaves, const fast_index_set& constraint_occ,
+	result_type run(const bitvector& leaves, const bitvector& constraint_occ,
 	                const constraints& constraints);
 };
 
@@ -62,27 +62,25 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 }
 
 template <typename Callback>
-auto tree_enumerator<Callback>::run(const fast_index_set& leaves,
-                                    const fast_index_set& constraint_occ,
+auto tree_enumerator<Callback>::run(const bitvector& leaves, const bitvector& constraint_occ,
                                     const constraints& constraints) -> result_type {
 	cb.enter(leaves);
 
 	// base cases: only a few leaves
-	assert(leaves.size() > 0);
-	if (leaves.size() == 1) {
-		return cb.exit(cb.base_one_leaf(*leaves.begin()));
+	assert(leaves.count() > 0);
+	if (leaves.count() == 1) {
+		return cb.exit(cb.base_one_leaf(leaves.first_set()));
 	}
 
-	if (leaves.size() == 2) {
-		auto it = leaves.begin();
-		auto fst = *it;
-		auto snd = *(++it);
+	if (leaves.count() == 2) {
+		auto fst = leaves.first_set();
+		auto snd = leaves.next_set(fst);
 		return cb.exit(cb.base_two_leaves(fst, snd));
 	}
 
-	fast_index_set new_constraint_occ = filter_constraints(leaves, constraint_occ, constraints);
+	bitvector new_constraint_occ = filter_constraints(leaves, constraint_occ, constraints);
 	// base case: no constraints left
-	if (new_constraint_occ.size() == 0) {
+	if (new_constraint_occ.count() == 0) {
 		return cb.exit(cb.base_unconstrained(leaves));
 	}
 
@@ -94,7 +92,7 @@ auto tree_enumerator<Callback>::run(const fast_index_set& leaves,
 
 template <typename Callback>
 auto tree_enumerator<Callback>::iterate(bipartition_iterator& bip_it,
-                                        const fast_index_set& new_constraint_occ,
+                                        const bitvector& new_constraint_occ,
                                         const constraints& constraints) -> result_type {
 	result_type result = cb.init_result();
 

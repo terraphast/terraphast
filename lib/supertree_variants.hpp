@@ -18,7 +18,7 @@ public:
 	using result_type = Result;
 
 	/** Called when a (sub)call begins. */
-	void enter(const fast_index_set&) {}
+	void enter(const bitvector&) {}
 	/** Called when a (sub)call finishes. */
 	Result exit(Result val) { return val; }
 
@@ -29,11 +29,10 @@ public:
 	/** Returns the result for two leaves. */
 	Result base_two_leaves(index, index);
 	/** Returns the result for multiple leaves without constraints. */
-	Result base_unconstrained(const fast_index_set&);
+	Result base_unconstrained(const bitvector&);
 
 	/** Called when we begin iterating over the bipartitions. */
-	void begin_iteration(const bipartition_iterator&, const fast_index_set&,
-	                     const constraints&) {}
+	void begin_iteration(const bipartition_iterator&, const bitvector&, const constraints&) {}
 	/** Returns true iff the iteration should continue. */
 	bool continue_iteration(Result) { return true; }
 	/** Called when an iteration step begins. */
@@ -54,8 +53,8 @@ class count_callback : public abstract_callback<mpz_class> {
 public:
 	mpz_class base_one_leaf(index) { return 1; }
 	mpz_class base_two_leaves(index, index) { return 1; }
-	mpz_class base_unconstrained(const fast_index_set& leaves) {
-		index num_leaves = leaves.size();
+	mpz_class base_unconstrained(const bitvector& leaves) {
+		index num_leaves = leaves.count();
 		mpz_class result = 1;
 		for (index i = 3; i <= num_leaves + 1; i++) {
 			result *= (2 * i - 5);
@@ -71,7 +70,7 @@ class check_callback : public abstract_callback<index> {
 public:
 	index base_one_leaf(index) { return 1; }
 	index base_two_leaves(index, index) { return 1; }
-	index base_unconstrained(const fast_index_set&) { return 2; }
+	index base_unconstrained(const bitvector&) { return 2; }
 
 	bool continue_iteration(index acc) { return acc < 2; }
 
@@ -93,15 +92,14 @@ public:
 	std::ostream* base_two_leaves(index i, index j) {
 		return &(*m_stream << "(" << m_names[i] << "," << m_names[j] << ")");
 	}
-	std::ostream* base_unconstrained(const fast_index_set& leaves) {
+	std::ostream* base_unconstrained(const bitvector& leaves) {
 		return &(*m_stream << "{" << utils::as_comma_separated_output(leaves, m_names)
 		                   << "}");
 	}
 
 	void right_subcall() { *m_stream << ","; }
 
-	void begin_iteration(const bipartition_iterator&, const fast_index_set&,
-	                     const constraints&) {
+	void begin_iteration(const bipartition_iterator&, const bitvector&, const constraints&) {
 		m_first_iteration = true;
 	}
 

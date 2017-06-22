@@ -38,8 +38,8 @@ TEST_CASE("performance of constraints", "[.][performance][performance_constraint
 		}
 		{
 			auto leaves = full_set(13);
-			leaves.remove(9);
-			leaves.finalize_edit();
+			leaves.clr(9);
+			leaves.update_ranks();
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();

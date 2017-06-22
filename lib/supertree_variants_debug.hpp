@@ -37,7 +37,7 @@ private:
 public:
 	stack_state_decorator(Callback cb) : Callback{cb} {}
 
-	void enter(const fast_index_set& leaves) {
+	void enter(const bitvector& leaves) {
 		Callback::enter(leaves);
 		m_stack.emplace_back(Callback::init_result());
 	}
@@ -47,7 +47,7 @@ public:
 		return Callback::exit(result);
 	}
 
-	void begin_iteration(const bipartition_iterator& bip_it, const fast_index_set& c_occ,
+	void begin_iteration(const bipartition_iterator& bip_it, const bitvector& c_occ,
 	                     const constraints& constraints) {
 		Callback::begin_iteration(bip_it, c_occ, constraints);
 		m_stack.back().current_bip = bip_it.cur_bip();
@@ -93,7 +93,7 @@ public:
 	logging_decorator(Callback cb, std::ostream& output, const name_map& names)
 	        : Callback{cb}, m_output{output}, m_depth{0}, m_first_iteration{}, m_names{names} {}
 
-	void enter(const fast_index_set& leaves) {
+	void enter(const bitvector& leaves) {
 		Callback::enter(leaves);
 		output() << "<itr>\n";
 		++m_depth;
@@ -101,7 +101,7 @@ public:
 		         << "}\" />\n";
 	}
 
-	void begin_iteration(const bipartition_iterator& bip_it, const fast_index_set& c_occ,
+	void begin_iteration(const bipartition_iterator& bip_it, const bitvector& c_occ,
 	                     const constraints& c) {
 		Callback::begin_iteration(bip_it, c_occ, c);
 		output() << "<constraints val=\"{"
@@ -138,7 +138,7 @@ public:
 		auto subleaves = bip_it.get_current_set();
 		output() << "<bipartition l=\"{"
 		         << utils::as_comma_separated_output(subleaves, m_names) << "}\" r=\"{";
-		subleaves.symm_difference(bip_it.leaves());
+		subleaves.bitwise_xor(bip_it.leaves());
 		m_output << utils::as_comma_separated_output(subleaves, m_names) << "}\" />\n";
 		++m_depth;
 		m_first_iteration = false;

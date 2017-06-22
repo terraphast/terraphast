@@ -24,15 +24,16 @@ template class tree_enumerator<debug::variants::stack_state_decorator<variants::
 index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root) {
 	auto leaves = leave_occ(t);
 	c = map_constraints(leaves, c);
-	auto new_names = name_map(leaves.size());
+	auto new_names = name_map(leaves.count());
 	index i = 0;
-	for (auto leaf : leaves) {
+	for (auto leaf = leaves.first_set(); leaf < leaves.last_set();
+	     leaf = leaves.next_set(leaf)) {
 		new_names[i] = std::move(names[leaf]);
 		++i;
 	}
 	names = std::move(new_names);
 	root = leaves.rank(root);
-	return leaves.size();
+	return leaves.count();
 }
 
 mpz_class count_supertree(index num_leaves, const constraints& constraints, index root_leaf) {

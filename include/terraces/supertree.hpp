@@ -1,8 +1,8 @@
 #ifndef TERRACES_SUPERTREE_HPP
 #define TERRACES_SUPERTREE_HPP
 
+#include "bitvector.hpp"
 #include "constraints.hpp"
-#include "fast_set.hpp"
 #include "trees.hpp"
 #include "union_find.hpp"
 #include <gmpxx.h>

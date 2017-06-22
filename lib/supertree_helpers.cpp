@@ -2,30 +2,30 @@
 
 namespace terraces {
 
-fast_index_set filter_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
-                                  const constraints& c) {
-	fast_index_set result{c_occ.max_size()};
-	for (auto c_i : c_occ) {
-		if (leaves.contains(c[c_i].left) && leaves.contains(c[c_i].shared) &&
-		    leaves.contains(c[c_i].right)) {
-			result.insert(c_i);
+bitvector filter_constraints(const bitvector& leaves, const bitvector& c_occ,
+                             const constraints& c) {
+	bitvector result{c_occ.size()};
+	for (auto c_i = c_occ.first_set(); c_i < c_occ.last_set(); c_i = c_occ.next_set(c_i)) {
+		if (leaves.get(c[c_i].left) && leaves.get(c[c_i].shared) &&
+		    leaves.get(c[c_i].right)) {
+			result.set(c_i);
 		}
 	}
-	result.finalize_edit();
+	result.update_ranks();
 	return result;
 }
 
-union_find apply_constraints(const fast_index_set& leaves, const fast_index_set& c_occ,
+union_find apply_constraints(const bitvector& leaves, const bitvector& c_occ,
                              const constraints& c) {
-	auto sets = union_find(leaves.size());
-	for (auto c_i : c_occ) {
+	auto sets = union_find(leaves.count());
+	for (auto c_i = c_occ.first_set(); c_i < c_occ.last_set(); c_i = c_occ.next_set(c_i)) {
 		auto& cons = c[c_i];
 		sets.merge(leaves.rank(cons.left), leaves.rank(cons.shared));
 	}
 	return sets;
 }
 
-constraints map_constraints(const fast_index_set& leaves, const constraints& cs) {
+constraints map_constraints(const bitvector& leaves, const constraints& cs) {
 	auto result = cs;
 	for (auto& c : result) {
 		c.left = leaves.rank(c.left);
@@ -35,14 +35,14 @@ constraints map_constraints(const fast_index_set& leaves, const constraints& cs)
 	return result;
 }
 
-fast_index_set leave_occ(const tree& tree) {
-	fast_index_set leaves{tree.size()};
+bitvector leave_occ(const tree& tree) {
+	bitvector leaves{tree.size()};
 	for (index i = 0; i < tree.size(); i++) {
 		if (is_leaf(tree[i])) {
-			leaves.insert(i);
+			leaves.set(i);
 		}
 	}
-	leaves.finalize_edit();
+	leaves.update_ranks();
 	return leaves;
 }
 
