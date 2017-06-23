@@ -2,6 +2,7 @@
 #define SUPERTREE_ENUMERATOR_HPP
 
 #include <terraces/bipartitions.hpp>
+#include <terraces/multitree.hpp>
 #include <terraces/supertree.hpp>
 #include <terraces/union_find.hpp>
 
