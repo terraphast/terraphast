@@ -11,6 +11,7 @@
 #define UNIONFIND_H_
 
 #include <vector>
+#include <memory>
 
 
 /**
@@ -23,6 +24,7 @@ class UnionFind {
 private:
     std::vector<size_t> parent;
 	std::vector<unsigned char> rank;    //TODO evtl uint verwenden?
+    size_t num_elems;
 public:
 		
 	/**
@@ -30,9 +32,18 @@ public:
 	 * Initially every element is in its own set.
 	 * @param max_element maximum number of elements 
 	 */
-    UnionFind(size_t max_element) : parent(max_element), rank(max_element, 0) {
+    UnionFind(size_t max_element) : parent(max_element), rank(max_element, 0), num_elems(max_element) {
 		allToSingletons();
 	}
+
+    /**
+     * Creates a new union_find datastructure with given parent- and rank-arrays
+     * @param parent the parent array
+     * @param rank the rank array
+     */
+    UnionFind(std::vector<size_t> &parent, std::vector<unsigned char> &rank) : parent(parent), rank(rank), num_elems(parent.size()) {
+        assert(parent.size() == rank.size());
+    }
 
 	/**
 	 * Assigns every element to a singleton set.
@@ -54,6 +65,30 @@ public:
 	 *  @param v element v
 	 */
     void merge(size_t u, size_t v);
+
+    /**
+     * @brief size getter for the size of the datastructure
+     * @return
+     */
+    size_t size() {
+        return num_elems;
+    }
+
+    /**
+     * @brief get_parent getter for the parent array
+     * @return
+     */
+    std::vector<size_t>& get_parent() {
+        return parent;
+    }
+
+    /**
+     * @brief get_rank getter for the rank array
+     * @return
+     */
+    std::vector<unsigned char>& get_rank() {
+        return rank;
+    }
 
 };
 
