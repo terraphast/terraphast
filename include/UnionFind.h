@@ -45,6 +45,7 @@ public:
         assert(parent.size() == rank.size());
     }
 
+
 	/**
 	 * Assigns every element to a singleton set.
 	 * Set id is equal to element id.

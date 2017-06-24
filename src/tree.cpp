@@ -18,14 +18,14 @@ static void to_newick_string_rec(std::stringstream &ss, Tree &node) {
 	}
 }
 
-std::string Tree::to_newick_string() {
+std::string Tree::to_newick_string(std::vector<std::__cxx11::string> &id_to_label, std::string &root_species_label) {
 	std::stringstream ss;
 	to_newick_string_rec(ss, *this);
 	ss << ";";
 	return ss.str();
 }
 
-std::string UnrootedTree::to_newick_string() {
+std::string UnrootedTree::to_newick_string(std::vector<std::__cxx11::string> &id_to_label, std::__cxx11::string &root_species_label) {
 	std::stringstream ss;
 	ss << "(";
 	if(this->elem1 != nullptr) {

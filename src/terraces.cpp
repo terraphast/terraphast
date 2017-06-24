@@ -109,44 +109,45 @@ int terraceAnalysis(missingData *m,
     assert(tree != nullptr);
 
     std::string root_species_name;
-    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
+    std::vector<std::string> id_to_label;
+    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_label);
 
     //dout(newickTreeString << "\n");
 
     assert(rtree != nullptr);
-    //dout("rooted_tree = " << rtree->to_newick_string() << "\n");
+    //dout("rooted_tree = " << rtree->to_newick_string(id_to_label, root_species_name) << "\n");
 
-    leaf_set leafs;
-    for (size_t k = 0; k < m->numberOfSpecies; k++) {
-        for (size_t j = 0; j < m->numberOfPartitions; j++) {
-            if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
-                leafs.insert(leaf_number(m->speciesNames[k]));
-                break;
-            }
-        }
-    }
+    LeafSet leaves = create_leafSet(id_to_label.size());
+//    for (size_t k = 0; k < m->numberOfSpecies; k++) {
+//        for (size_t j = 0; j < m->numberOfPartitions; j++) {
+//            if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
+//                leaves.insert(leaf_number(m->speciesNames[k]));
+//                break;
+//            }
+//        }
+//    }
 
-    auto in_tree = __list(tree);
-    for (size_t i = 0; i < in_tree.size(); i++) {
-        if (leafs.count(std::string(in_tree[i])) == 0) {
-            dout("not found = " << in_tree[i] << "\n");
-        }
-    }
+//    auto in_tree = __list(tree);
+//    for (size_t i = 0; i < in_tree.size(); i++) {
+//        if (leaves.count(std::string(in_tree[i])) == 0) {
+//            dout("not found = " << in_tree[i] << "\n");
+//        }
+//    }
 
     auto constraints = extract_constraints_from_supertree(rtree, m);
     //dout(constraints << "\n");
     //dout(extract_constraints_from_supertree(__convert(tree), m) << "\n");
 
-    //auto r = find_all_rooted_trees(leafs,
+    //auto r = find_all_rooted_trees(leaves,
     //                               extract_constraints_from_supertree(rtree, m));
     //dout("===== TREES: " << r.size() << "\n");
-    auto all_trees = find_all_unrooted_trees(leafs,
+    auto all_trees = find_all_unrooted_trees(leaves,
                                              constraints,
                                              root_species_name);
 
     if (enumerateTrees) {
         for (std::shared_ptr<UnrootedTree> t : all_trees) {
-            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string().c_str());
+            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_label, root_species_name).c_str());
         }
     }
 

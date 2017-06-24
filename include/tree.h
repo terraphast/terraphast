@@ -5,17 +5,19 @@
 
 #include <memory>
 #include <assert.h>
+#include <vector>
+#include "types.h"
 
 class Tree {
 public:
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-			std::shared_ptr<Tree> p_parent, std::string p_label) :
-			label(p_label), left(p_left), right(p_right), parent(p_parent) {
+            std::shared_ptr<Tree> p_parent, leaf_number p_id) :
+            id(p_id), left(p_left), right(p_right), parent(p_parent) {
 	}
 
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-			std::string p_label) :
-			label(p_label), left(p_left), right(p_right), parent(nullptr) {
+            leaf_number p_id) :
+             id(p_id), left(p_left), right(p_right), parent(nullptr) {
 	}
 
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :
@@ -27,12 +29,12 @@ public:
 			left(p_left), right(p_right), parent(p_parent) {
 	}
 
-	Tree(std::string p_label, std::shared_ptr<Tree> p_parent) :
-			label(p_label), left(nullptr), right(nullptr), parent(p_parent) {
+    Tree(leaf_number p_id, std::shared_ptr<Tree> p_parent) :
+            id(p_id), left(nullptr), right(nullptr), parent(p_parent) {
 	}
 
-	Tree(std::string p_label) :
-			label(p_label), left(nullptr), right(nullptr), parent(nullptr) {
+    Tree(leaf_number p_id) :
+            id(p_id), left(nullptr), right(nullptr), parent(nullptr) {
 	}
 
 	Tree() :
@@ -40,7 +42,7 @@ public:
 	}
 
 	//TODO getter and setter? //performance vs. code quality?
-	std::string label;
+    leaf_number id;
 	std::shared_ptr<Tree> left;
 	std::shared_ptr<Tree> right;
 	std::shared_ptr<Tree> parent;
@@ -49,7 +51,7 @@ public:
 		return (left == nullptr && right == nullptr);
 	}
 
-	std::string to_newick_string();
+    std::string to_newick_string(std::vector<std::string> &id_to_label, std::string &root_species_label);
 
     template<typename T>
     using TreeNodeVisitor = T (*)(const Tree*);
@@ -73,9 +75,9 @@ std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree);
 
 class UnrootedTree {
 public:
-	UnrootedTree(std::string p_label, std::shared_ptr<Tree> p_elem1,
+    UnrootedTree(leaf_number p_id, std::shared_ptr<Tree> p_elem1,
 			std::shared_ptr<Tree> p_elem2, std::shared_ptr<Tree> p_elem3) :
-			label(p_label), elem1(p_elem1), elem2(p_elem2), elem3(p_elem3) {
+            id(p_id), elem1(p_elem1), elem2(p_elem2), elem3(p_elem3) {
 	}
 	UnrootedTree(std::shared_ptr<Tree> rooted_tree) {
 		if (rooted_tree == nullptr) {
@@ -103,12 +105,12 @@ public:
 		}
 	}
 
-	std::string label;
+    leaf_number id;
 	std::shared_ptr<Tree> elem1;
 	std::shared_ptr<Tree> elem2;
 	std::shared_ptr<Tree> elem3;
 
-	std::string to_newick_string();
+    std::string to_newick_string(std::vector<std::string> &id_to_label, std::string &root_species_label);
 };
 
 std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree);

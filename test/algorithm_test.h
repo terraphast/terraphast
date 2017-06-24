@@ -35,7 +35,7 @@ static void test_rooted_trees(const char* newick_file, const char* data_file, lo
     std::string root_species_name;
     std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
 
-    leaf_set leafs;
+    LeafSet leafs;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
         for (size_t j = 0; j < m->numberOfPartitions; j++) {
             if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
@@ -354,7 +354,7 @@ TEST(ListTrees, DISABLED_with_Pyron_data) {
     std::string root_species_name;
     std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
 
-    leaf_set leafs;
+    LeafSet leafs;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
         leafs.insert(leaf_number(m->speciesNames[k]));
     }

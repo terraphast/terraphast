@@ -33,7 +33,7 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
  * @param missing_data the data for the missing sequences on each partition
  * @return the new root of the tree, or NULL if the tree cannot be rooted (e.g. if there is no species that has data for every partition)
  */
-std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data, std::string &root_species_name);
+std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data, std::string &root_species_name, std::vector<std::__cxx11::string> &id_to_label);
 
 /**
  * Returns a pointer to the leaf that has the label <label>
@@ -48,7 +48,7 @@ ntree_t* get_leaf_by_name(ntree_t *tree, const char *label);
  * @param root the leaf-edge
  * @return pointer to the new root
  */
-std::shared_ptr<Tree> root_at(ntree_t *root);
+std::shared_ptr<Tree> root_at(ntree_t *root, std::vector<std::string> &id_to_label);
 
 /**
  * private function
@@ -57,7 +57,7 @@ std::shared_ptr<Tree> root_at(ntree_t *root);
  * @param parent the ntree_t represention of the parent. this is needed to avoid calling the recursion on the parent
  */
 void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
-		ntree_t *parent);
+        ntree_t *parent, std::vector<std::__cxx11::string> &id_to_label);
 
 /**
  * @brief check_tree do a dfs on the tree and check, if the childs parent is the current node.
