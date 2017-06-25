@@ -17,7 +17,7 @@
 
 using terraces::tree_enumerator;
 using terraces::variants::multitree_callback;
-using terraces::debug::variants::logging_decorator;
+using terraces::variants::count_callback;
 using terraces::utils::as_comma_separated_output;
 using terraces::full_set;
 
@@ -77,9 +77,9 @@ int main(int argc, char** argv) try {
 	num_species = terraces::remap_to_leaves(tree, constraints, names, root_species);
 
 	std::cout << "Supertree:\n";
-	multitree_callback cb{std::cout, names};
+	multitree_callback cb;
 	tree_enumerator<decltype(cb)> enumerator{cb};
-	enumerator.run(num_species, constraints, root_species);
+	std::cout << as_newick(enumerator.run(num_species, constraints, root_species), names);
 
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << "\n";

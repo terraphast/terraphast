@@ -3,6 +3,7 @@
 
 #include <terraces/bipartitions.hpp>
 #include <terraces/constraints.hpp>
+#include <terraces/multitree.hpp>
 #include <terraces/trees.hpp>
 
 #include <gmpxx.h>
@@ -22,8 +23,6 @@ public:
 	/** Called when a (sub)call finishes. */
 	Result exit(Result val) { return val; }
 
-	/** Returns the initial value of the accumulator. */
-	Result init_result() { return Result{}; }
 	/** Returns the result for a single leaf. */
 	Result base_one_leaf(index);
 	/** Returns the result for two leaves. */
@@ -31,8 +30,13 @@ public:
 	/** Returns the result for multiple leaves without constraints. */
 	Result base_unconstrained(const bitvector&);
 
+	bool fast_return(const bipartition_iterator&) { return false; }
+	Result fast_return_value(const bipartition_iterator&) { return Result{}; }
+
 	/** Called when we begin iterating over the bipartitions. */
-	void begin_iteration(const bipartition_iterator&, const bitvector&, const constraints&) {}
+	Result begin_iteration(const bipartition_iterator&, const bitvector&, const constraints&) {
+		return Result{};
+	}
 	/** Returns true iff the iteration should continue. */
 	bool continue_iteration(Result) { return true; }
 	/** Called when an iteration step begins. */
@@ -51,23 +55,26 @@ public:
 
 class count_callback : public abstract_callback<mpz_class> {
 public:
-	mpz_class base_one_leaf(index) { return 1; }
-	mpz_class base_two_leaves(index, index) { return 1; }
-	mpz_class base_unconstrained(const bitvector& leaves) {
+	using return_type = mpz_class;
+	return_type base_one_leaf(index) { return 1; }
+	return_type base_two_leaves(index, index) { return 1; }
+	return_type base_unconstrained(const bitvector& leaves) {
 		index num_leaves = leaves.count();
-		mpz_class result = 1;
+		return_type result = 1;
 		for (index i = 3; i <= num_leaves + 1; i++) {
 			result *= (2 * i - 5);
 		}
 		return result;
 	}
 
-	mpz_class accumulate(mpz_class acc, mpz_class val) { return acc + val; }
-	mpz_class combine(mpz_class left, mpz_class right) { return left * right; }
+	return_type accumulate(return_type acc, return_type val) { return acc + val; }
+	return_type combine(return_type left, return_type right) { return left * right; }
 };
 
 class check_callback : public abstract_callback<index> {
 public:
+	using return_type = index;
+
 	index base_one_leaf(index) { return 1; }
 	index base_two_leaves(index, index) { return 1; }
 	index base_unconstrained(const bitvector&) { return 2; }
@@ -78,44 +85,44 @@ public:
 	index combine(index left, index right) { return std::min<index>(2, left * right); }
 };
 
-class multitree_callback : public abstract_callback<std::ostream*> {
+class multitree_callback : public abstract_callback<multitree_node*> {
 private:
-	std::ostream* m_stream;
-	const name_map& m_names;
-	bool m_first_iteration;
+	multitree_node* alloc_node() { return new multitree_node; }
+	index* alloc_leaves(index size) { return new index[size]; }
 
 public:
-	multitree_callback(std::ostream& stream, const name_map& names)
-	        : m_stream{&stream}, m_names{names} {}
+	using return_type = multitree_node*;
 
-	std::ostream* base_one_leaf(index i) { return &(*m_stream << m_names[i]); }
-	std::ostream* base_two_leaves(index i, index j) {
-		return &(*m_stream << "(" << m_names[i] << "," << m_names[j] << ")");
-	}
-	std::ostream* base_unconstrained(const bitvector& leaves) {
-		return &(*m_stream << "{" << utils::as_comma_separated_output(leaves, m_names)
-		                   << "}");
-	}
-
-	void right_subcall() { *m_stream << ","; }
-
-	void begin_iteration(const bipartition_iterator&, const bitvector&, const constraints&) {
-		m_first_iteration = true;
-	}
-
-	void step_iteration(const bipartition_iterator&) {
-		if (not m_first_iteration) {
-			*m_stream << "|";
+	return_type base_one_leaf(index i) { return alloc_node()->as_single_leaf(i); }
+	return_type base_two_leaves(index i, index j) { return alloc_node()->as_two_leaves(i, j); }
+	return_type base_unconstrained(const bitvector& leaves) {
+		index* a_leaves = alloc_leaves(leaves.count());
+		index i = 0;
+		for (auto el : leaves) {
+			a_leaves[i++] = el;
 		}
-
-		m_first_iteration = false;
+		return alloc_node()->as_unconstrained(a_leaves, a_leaves + leaves.count());
 	}
 
-	void left_subcall() { *m_stream << "("; }
+	return_type begin_iteration(const bipartition_iterator& bip_it, const bitvector&,
+	                            const constraints&) {
+		return alloc_node()->as_alternative_list(bip_it.end_bip());
+	}
 
-	std::ostream* accumulate(std::ostream*, std::ostream*) { return m_stream; }
+	return_type accumulate(multitree_node* acc, multitree_node* cur) {
+		auto node = alloc_node()->as_alternative_list_node(cur);
+		assert(acc->type == multitree_node_type::alternative_list);
+		assert(acc->alternative_list.begin == nullptr ||
+		       acc->alternative_list.begin->type ==
+		               multitree_node_type::alternative_list_node);
+		node->alternative_list_node.next = acc->alternative_list.begin;
+		acc->alternative_list.begin = node;
+		return acc;
+	}
 
-	std::ostream* combine(std::ostream*, std::ostream*) { return &(*m_stream << ")"); }
+	return_type combine(multitree_node* left, multitree_node* right) {
+		return alloc_node()->as_inner_node(left, right);
+	}
 };
 
 } // namespace variants

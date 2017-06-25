@@ -35,12 +35,8 @@ private:
 	std::vector<stack_state<result_type>> m_stack;
 
 public:
-	stack_state_decorator(Callback cb) : Callback{cb} {}
-
-	void enter(const bitvector& leaves) {
-		Callback::enter(leaves);
-		m_stack.emplace_back(Callback::init_result());
-	}
+	template <typename... Args>
+	stack_state_decorator(Args&&... args) : Callback{std::forward<Args>(args)...} {}
 
 	result_type exit(result_type result) {
 		m_stack.pop_back();
@@ -49,7 +45,7 @@ public:
 
 	void begin_iteration(const bipartition_iterator& bip_it, const bitvector& c_occ,
 	                     const constraints& constraints) {
-		Callback::begin_iteration(bip_it, c_occ, constraints);
+		m_stack.emplace_back(Callback::begin_iteration(bip_it, c_occ, constraints));
 		m_stack.back().current_bip = bip_it.cur_bip();
 		m_stack.back().max_bip = bip_it.end_bip();
 	}
@@ -90,8 +86,10 @@ private:
 	std::ostream& output() { return m_output << std::string(m_depth, '\t'); }
 
 public:
-	logging_decorator(Callback cb, std::ostream& output, const name_map& names)
-	        : Callback{cb}, m_output{output}, m_depth{0}, m_first_iteration{}, m_names{names} {}
+	template <typename... Args>
+	logging_decorator(Args&&... args, std::ostream& output, const name_map& names)
+	        : Callback{std::forward<Args>(args)...}, m_output{output}, m_depth{0},
+	          m_first_iteration{}, m_names{names} {}
 
 	void enter(const bitvector& leaves) {
 		Callback::enter(leaves);
@@ -101,9 +99,8 @@ public:
 		         << "}\" />\n";
 	}
 
-	void begin_iteration(const bipartition_iterator& bip_it, const bitvector& c_occ,
-	                     const constraints& c) {
-		Callback::begin_iteration(bip_it, c_occ, c);
+	result_type begin_iteration(const bipartition_iterator& bip_it, const bitvector& c_occ,
+	                            const constraints& c) {
 		output() << "<constraints val=\"{"
 		         << utils::as_comma_separated_output(c_occ, c, m_names) << "}\" />\n";
 		output() << "<sets val=\"[";
@@ -127,6 +124,8 @@ public:
 		}
 		m_output << "]\" />\n";
 		m_first_iteration = true;
+
+		return Callback::begin_iteration(bip_it, c_occ, c);
 	}
 
 	void step_iteration(const bipartition_iterator& bip_it) {

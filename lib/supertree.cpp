@@ -8,18 +8,19 @@
 
 namespace terraces {
 
-template class tree_enumerator<variants::multitree_callback>;
-template class tree_enumerator<debug::variants::logging_decorator<variants::multitree_callback>>;
-template class tree_enumerator<
-        debug::variants::stack_state_decorator<variants::multitree_callback>>;
+using check = variants::check_callback;
+using count = variants::count_callback;
 
-template class tree_enumerator<variants::check_callback>;
-template class tree_enumerator<debug::variants::logging_decorator<variants::check_callback>>;
-template class tree_enumerator<debug::variants::stack_state_decorator<variants::check_callback>>;
+namespace debug {
+namespace variants {
+using namespace terraces::variants;
 
-template class tree_enumerator<variants::count_callback>;
-template class tree_enumerator<debug::variants::logging_decorator<variants::count_callback>>;
-template class tree_enumerator<debug::variants::stack_state_decorator<variants::count_callback>>;
+template class logging_decorator<check>;
+template class logging_decorator<count>;
+template class stack_state_decorator<check>;
+template class stack_state_decorator<count>;
+}
+}
 
 index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root) {
 	auto leaves = leave_occ(t);
