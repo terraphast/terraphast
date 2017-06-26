@@ -102,6 +102,8 @@ include_directories(SYSTEM "${googlebenchmark_SOURCE_DIR}/include")
 include_directories(test)
 
 set(TEST_HEADERS
+        test/parameters.h
+        test/util_test.h
         test/algorithm_test.h
         test/input_parser_test.h
         test/terraces_test.h)
