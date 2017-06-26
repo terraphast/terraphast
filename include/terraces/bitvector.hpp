@@ -2,7 +2,7 @@
 #define BITVECTOR_H
 
 #include <cstdint>
-#include <terraces/intrinsics.hpp>
+#include <terraces/bits.hpp>
 #include <terraces/trees.hpp>
 #include <vector>
 
@@ -19,10 +19,6 @@
 namespace terraces {
 
 namespace bits {
-
-static_assert(std::numeric_limits<index>::radix == 2, "Our integers must be of base 2");
-constexpr index word_bits = std::numeric_limits<index>::digits;
-
 inline index block_index(index i) { return i / word_bits; }
 inline index base_index(index block) { return block * word_bits; }
 inline uint8_t shift_index(index i) { return i % word_bits; }

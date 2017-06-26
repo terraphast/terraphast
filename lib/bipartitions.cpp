@@ -1,4 +1,5 @@
 #include <terraces/bipartitions.hpp>
+#include <terraces/bits.hpp>
 
 #include <cassert>
 #include <ostream>
@@ -8,7 +9,7 @@ namespace terraces {
 bipartition_iterator::bipartition_iterator(const bitvector& leaves, const union_find& sets)
         : m_leaves{leaves}, m_sets{sets}, m_set_rep{find_set_reps()}, m_subleaves{leaves.size()},
           m_bip{0}, m_end{(1ull << (m_set_rep.count() - 1))} {
-	assert(m_set_rep.count() < 64);
+	assert(m_set_rep.count() < bits::word_bits);
 	increase();
 }
 
