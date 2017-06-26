@@ -2,7 +2,9 @@
 
 #include "terraces.h"
 
-void BM_takes_args(benchmark::State& state, const char *newick_file, const char *data_file) {
+void BM_terraphy_analysis__count(benchmark::State& state,
+                                 const char *newick_file,
+                                 const char *data_file) {
     while (state.KeepRunning()) {
         input_data *read_data = parse_input_data(data_file);
         assert(read_data != nullptr);
@@ -25,39 +27,39 @@ void BM_takes_args(benchmark::State& state, const char *newick_file, const char 
     }
 }
 
-BENCHMARK_CAPTURE(BM_takes_args, Meusemann,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Meusemann,
                   "../input/modified/Meusemann.nwk",
                   "../input/modified/Meusemann.data");
 
-BENCHMARK_CAPTURE(BM_takes_args, Allium_Tiny,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Allium_Tiny,
                   "../input/modified/Allium_Tiny.nwk",
                   "../input/modified/Allium_Tiny.data");
 
-BENCHMARK_CAPTURE(BM_takes_args, Asplenium_1,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Asplenium_1,
                   "../input/modified/Asplenium.nwk",
                   "../input/modified/Asplenium.data.1");
 
-BENCHMARK_CAPTURE(BM_takes_args, Asplenium_2,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Asplenium_2,
                   "../input/modified/Asplenium.nwk",
                   "../input/modified/Asplenium.data.2");
 
-BENCHMARK_CAPTURE(BM_takes_args, Eucalyptus_1,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Eucalyptus_1,
                   "../input/modified/Eucalyptus.nwk",
                   "../input/modified/Eucalyptus.data.1");
 
-BENCHMARK_CAPTURE(BM_takes_args, Eucalyptus_2,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Eucalyptus_2,
                   "../input/modified/Eucalyptus.nwk",
                   "../input/modified/Eucalyptus.data.2");
 
-BENCHMARK_CAPTURE(BM_takes_args, Eucalyptus_3,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Eucalyptus_3,
                   "../input/modified/Eucalyptus.nwk.3",
                   "../input/modified/Eucalyptus.data.3");
 
-BENCHMARK_CAPTURE(BM_takes_args, Euphorbia_1,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Euphorbia_1,
                   "../input/modified/Euphorbia.nwk",
                   "../input/modified/Euphorbia.data.1");
 
-BENCHMARK_CAPTURE(BM_takes_args, Euphorbia_2,
+BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Euphorbia_2,
                   "../input/modified/Euphorbia.nwk",
                   "../input/modified/Euphorbia.data.2");
 
