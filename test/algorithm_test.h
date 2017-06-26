@@ -30,11 +30,11 @@ static void test_rooted_trees(const char* newick_file, const char* data_file, lo
     std::string root_species_name;
     std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
 
-    leaf_set leafs;
+    std::set<leaf_label> leafs;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
         for (size_t j = 0; j < m->numberOfPartitions; j++) {
             if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
-                leafs.insert(leaf_number(m->speciesNames[k]));
+                leafs.insert(leaf_label(m->speciesNames[k]));
                 break;
             }
         }
@@ -51,7 +51,7 @@ static void test_rooted_trees(const char* newick_file, const char* data_file, lo
 
 TEST(ApplyConstraintsTest, example_from_slides) {
 
-    std::set<leaf_number> leaves = {"1", "2", "3", "4", "5"};
+    std::set<leaf_label> leaves = {"1", "2", "3", "4", "5"};
 
     std::vector<constraint> constraints;
 
@@ -61,7 +61,7 @@ TEST(ApplyConstraintsTest, example_from_slides) {
     constraints.push_back(cons1);
     constraints.push_back(cons2);
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > result =
+    std::vector<std::shared_ptr<std::set<leaf_label> > > result =
             apply_constraints(leaves, constraints);
 
     ASSERT_EQ(result.size(), 3);
@@ -73,7 +73,7 @@ TEST(ApplyConstraintsTest, example_from_slides) {
 
 TEST(ApplyConstraintsTest, merge_all_sets) {
 
-    std::set<leaf_number> leaves = {"1", "2", "3", "4", "5"};
+    std::set<leaf_label> leaves = {"1", "2", "3", "4", "5"};
 
     std::vector<constraint> constraints;
 
@@ -87,7 +87,7 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
     constraints.push_back(cons3);
     constraints.push_back(cons4);
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > result =
+    std::vector<std::shared_ptr<std::set<leaf_label> > > result =
             apply_constraints(leaves, constraints);
 
     ASSERT_EQ(result.size(), 1);
@@ -98,7 +98,7 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
 
 TEST(ApplyConstraintsTest, no_merges) {
 
-    std::set<leaf_number> leaves = {"1", "2", "3", "4", "5"};
+    std::set<leaf_label> leaves = {"1", "2", "3", "4", "5"};
 
     std::vector<constraint> constraints;
 
@@ -112,7 +112,7 @@ TEST(ApplyConstraintsTest, no_merges) {
 
 TEST(GetAllBinaryTrees, with_tree_leafs) {
 
-    std::set<leaf_number> leafs = {"1", "2", "3"};
+    std::set<leaf_label> leafs = {"1", "2", "3"};
 
     auto result = get_all_binary_trees(leafs);
 
@@ -125,7 +125,7 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
 
 TEST(GetAllBinaryTrees, with_four_leafs) {
 
-    std::set<leaf_number> leafs = {"1", "2", "3", "4"};
+    std::set<leaf_label> leafs = {"1", "2", "3", "4"};
 
     auto result = get_all_binary_trees(leafs);
 
@@ -165,7 +165,7 @@ TEST(PrintNewick, with_four_leafs) {
 
 TEST(ApplyConstraintsTest, merges_to_two_parts) {
 
-    std::set<leaf_number> leafs = {"1", "2", "3", "4"};
+    std::set<leaf_label> leafs = {"1", "2", "3", "4"};
 
     std::vector<constraint> constraints;
 
@@ -223,17 +223,17 @@ TEST(ExtractConstraintsFromTree, example_from_slides) {
 
 TEST(GetNthPartitionTuple, example_with_two_parts) {
 
-    std::set<leaf_number> part1 = {"1", "2"};
-    std::set<leaf_number> part2 = {"3"};
+    std::set<leaf_label> part1 = {"1", "2"};
+    std::set<leaf_label> part2 = {"3"};
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
+    std::vector<std::shared_ptr<std::set<leaf_label> > > partitions;
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part1));
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part2));
 
     ASSERT_EQ(number_partition_tuples(partitions), 1);
 
-    std::shared_ptr<std::set<leaf_number> > part_one;
-    std::shared_ptr<std::set<leaf_number> > part_two;
+    std::shared_ptr<std::set<leaf_label> > part_one;
+    std::shared_ptr<std::set<leaf_label> > part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
     ASSERT_THAT(*part_one, testing::ElementsAre("1", "2"));
     ASSERT_THAT(*part_two, testing::ElementsAre("3"));
@@ -241,19 +241,19 @@ TEST(GetNthPartitionTuple, example_with_two_parts) {
 
 TEST(GetNthPartitionTuple, example_from_slides) {
 
-    std::set<leaf_number> part1 = {"1", "2"};
-    std::set<leaf_number> part2 = {"3"};
-    std::set<leaf_number> part3 = {"4", "5"};
+    std::set<leaf_label> part1 = {"1", "2"};
+    std::set<leaf_label> part2 = {"3"};
+    std::set<leaf_label> part3 = {"4", "5"};
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part3));
+    std::vector<std::shared_ptr<std::set<leaf_label> > > partitions;
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part1));
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part2));
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part3));
 
     ASSERT_EQ(number_partition_tuples(partitions), 3);
 
-    std::shared_ptr<std::set<leaf_number> > part_one;
-    std::shared_ptr<std::set<leaf_number> > part_two;
+    std::shared_ptr<std::set<leaf_label> > part_one;
+    std::shared_ptr<std::set<leaf_label> > part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
     ASSERT_THAT(*part_one, testing::ElementsAre("1", "2"));
     ASSERT_THAT(*part_two, testing::ElementsAre("3", "4", "5"));
@@ -267,21 +267,21 @@ TEST(GetNthPartitionTuple, example_from_slides) {
 
 TEST(GetNthPartitionTuple, with_four_partitions) {
 
-    std::set<leaf_number> part1 = {"1", "2"};
-    std::set<leaf_number> part2 = {"3"};
-    std::set<leaf_number> part3 = {"4", "5"};
-    std::set<leaf_number> part4 = {"6", "7", "8"};
+    std::set<leaf_label> part1 = {"1", "2"};
+    std::set<leaf_label> part2 = {"3"};
+    std::set<leaf_label> part3 = {"4", "5"};
+    std::set<leaf_label> part4 = {"6", "7", "8"};
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part3));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part4));
+    std::vector<std::shared_ptr<std::set<leaf_label> > > partitions;
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part1));
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part2));
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part3));
+    partitions.push_back(std::make_shared<std::set<leaf_label>>(part4));
 
     ASSERT_EQ(number_partition_tuples(partitions), 7);
 
-    std::shared_ptr<std::set<leaf_number> > part_one;
-    std::shared_ptr<std::set<leaf_number> > part_two;
+    std::shared_ptr<std::set<leaf_label> > part_one;
+    std::shared_ptr<std::set<leaf_label> > part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
     ASSERT_THAT(*part_one, testing::ElementsAre("1", "2"));
     ASSERT_THAT(*part_two, testing::ElementsAre("3", "4", "5", "6", "7", "8"));
@@ -308,7 +308,7 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
 
 TEST(FindAllRootedTrees, example_from_slides) {
 
-    std::set<leaf_number> leafs = {"1", "2", "3", "4", "5"};
+    std::set<leaf_label> leafs = {"1", "2", "3", "4", "5"};
 
     std::vector<constraint> constraints;
 
@@ -349,9 +349,9 @@ TEST(ListTrees, DISABLED_with_Pyron_data) {
     std::string root_species_name;
     std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
 
-    leaf_set leafs;
+    std::set<leaf_label> leafs;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
-        leafs.insert(leaf_number(m->speciesNames[k]));
+        leafs.insert(leaf_label(m->speciesNames[k]));
     }
 
     //TODO: hangs here
@@ -372,7 +372,7 @@ TEST(ListTrees, DISABLED_with_Pyron_data) {
 }
 
 TEST(FindConstraintsTest, example_from_slides) {
-    std::set<leaf_number> leaves = {"1", "2", "3"};
+    std::set<leaf_label> leaves = {"1", "2", "3"};
 
     std::vector<constraint> constraints;
 

@@ -11,15 +11,14 @@
 #include <iterator>
 
 //TODO bad performance when doing string comparison all the time I guess...
-typedef std::string leaf_number;
-typedef std::set<leaf_number> leaf_set;
+typedef std::string leaf_label;
 
 //lca(smaller_left, smaller_right) < lca(bigger_left, bigger_right)
 struct constraint {
-    leaf_number smaller_left;
-    leaf_number bigger_left;
-    leaf_number smaller_right;
-    leaf_number bigger_right;
+    leaf_label smaller_left;
+    leaf_label bigger_left;
+    leaf_label smaller_right;
+    leaf_label bigger_right;
 };
 
 /**
@@ -43,21 +42,21 @@ struct constraint {
  * @param constraints Constraints to apply.
  * @return Sets merged from given sets according to the given contraints.
  */
-std::vector<std::shared_ptr<leaf_set> > apply_constraints(
-        const leaf_set &leaves, const std::vector<constraint> &constraints);
+std::vector<std::shared_ptr<std::set<leaf_label>> > apply_constraints(
+        const std::set<leaf_label> &leaves, const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
-std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(const leaf_set &leaves,
+std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(const std::set<leaf_label> &leaves,
                                                           const std::vector<constraint> &constraints);
 
 //TODO: only temporarly
-size_t count_all_rooted_trees(const leaf_set &leaves,
+size_t count_all_rooted_trees(const std::set<leaf_label> &leaves,
                               const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
-std::vector<std::shared_ptr<UnrootedTree> > find_all_unrooted_trees(const leaf_set &leaves,
+std::vector<std::shared_ptr<UnrootedTree> > find_all_unrooted_trees(const std::set<leaf_label> &leaves,
                                                                     const std::vector<constraint> &constraints,
-                                                                    const leaf_number &root_species_name);
+                                                                    const leaf_label &root_species_name);
 
 /**
  * Returns a vector containing all constraints infered from the given supertree.
@@ -68,7 +67,7 @@ std::vector<std::shared_ptr<UnrootedTree> > find_all_unrooted_trees(const leaf_s
 std::vector<constraint> extract_constraints_from_tree(
         const std::shared_ptr<Tree> supertree);
 
-std::vector<std::shared_ptr<Tree> > get_all_binary_trees(const leaf_set &leafs);
+std::vector<std::shared_ptr<Tree> > get_all_binary_trees(const std::set<leaf_label> &leafs);
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
@@ -77,7 +76,7 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(const leaf_set &leafs);
  * @param constraints All constraints that could still be valid.
  * @return All constraints that are still valid.
  */
-std::vector<constraint> find_constraints(const leaf_set &leaves,
+std::vector<constraint> find_constraints(const std::set<leaf_label> &leaves,
                                          const std::vector<constraint> &constraints);
 
 /** merges two sub-trees */
@@ -106,14 +105,14 @@ inline bool is_bit_set(size_t num, size_t n) {
  * @return the number of partition tuples that can be formed from the given list
  */
 inline size_t number_partition_tuples(
-        std::vector<std::shared_ptr<leaf_set> > &partitions) {
+        std::vector<std::shared_ptr<std::set<leaf_label>> > &partitions) {
     assert(partitions.size() > 1);
 
     return (1 << (partitions.size() - 1)) - 1;
 }
 
 //TODO Doc
-std::set<leaf_number> extract_leaf_labels_from_supertree(
+std::set<leaf_label> extract_leaf_labels_from_supertree(
         std::shared_ptr<Tree> tree);
 
 /**
@@ -122,8 +121,8 @@ std::set<leaf_number> extract_leaf_labels_from_supertree(
  * @param n the target n-th partition tuple to select, ranging from [1,2^(p-1)-1] where p is the number of partitions
  * @return the n-th partition tuple formed from the given partition list
  */
-std::tuple<std::shared_ptr<leaf_set>, std::shared_ptr<leaf_set> > get_nth_partition_tuple(
-        std::vector<std::shared_ptr<leaf_set> > &partitions, size_t n);
+std::tuple<std::shared_ptr<std::set<leaf_label>>, std::shared_ptr<std::set<leaf_label>> > get_nth_partition_tuple(
+        std::vector<std::shared_ptr<std::set<leaf_label>> > &partitions, size_t n);
 
 template<typename T>
 std::ostream& operator<<(std::ostream &strm, const std::set<T>& set) {
@@ -158,6 +157,6 @@ std::ostream& operator<<(std::ostream &strm, const std::vector<T>& set) {
 std::ostream& operator<<(std::ostream &strm, const constraint& tree);
 
 std::ostream& operator<<(std::ostream &strm,
-                         const std::vector<std::shared_ptr<leaf_set> >& set);
+                         const std::vector<std::shared_ptr<std::set<leaf_label>> >& set);
 
 #endif /* IFUGAO_H */

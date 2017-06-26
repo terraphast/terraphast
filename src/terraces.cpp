@@ -88,11 +88,11 @@ int terraceAnalysis(missingData *m,
     assert(rtree != nullptr);
     //dout("rooted_tree = " << rtree->to_newick_string() << "\n");
 
-    leaf_set leafs;
+    std::set<leaf_label> leafs;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
         for (size_t j = 0; j < m->numberOfPartitions; j++) {
             if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
-                leafs.insert(leaf_number(m->speciesNames[k]));
+                leafs.insert(leaf_label(m->speciesNames[k]));
                 break;
             }
         }
