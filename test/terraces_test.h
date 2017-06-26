@@ -349,13 +349,13 @@ TEST_P(ComplexTerracesAnalysis, ExamplesFromModifiedInput) {
 }
 
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, ComplexTerracesAnalysis, ::testing::Values(
-        TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
-        TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35"),
-        TACountParameter("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1"),
-        TACountParameter("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95"),
-        TACountParameter("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "229"),
-        TACountParameter("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "267"),
-        TACountParameter("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "9"),
-        TACountParameter("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759"),
-        TACountParameter("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759")
+    TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
+    TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35"),
+    TACountParameter("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1"),
+    TACountParameter("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95"),
+    TACountParameter("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "229"),
+    TACountParameter("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "267"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "9"),
+    TACountParameter("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759"),
+    TACountParameter("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759")
 ));
