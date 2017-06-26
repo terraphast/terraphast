@@ -1,6 +1,8 @@
 
 #include <terraces/bitmatrix.hpp>
 
+#include <cassert>
+
 namespace terraces {
 
 bitmatrix::bitmatrix(index rows, index cols) : m_rows{rows}, m_cols{cols}, m_vec(rows * cols) {}
@@ -22,6 +24,17 @@ void bitmatrix::row_or(index in1, index in2, index out) {
 	for (index i = 0; i < cols(); ++i) {
 		set(out, i, get(in1, i) | get(in2, i));
 	}
+}
+
+bitmatrix bitmatrix::get_cols(const std::vector<std::size_t>& cols) const {
+	assert(cols.size() <= this->cols());
+	auto ret = bitmatrix{rows(), cols.size()};
+	for (auto i = std::size_t{}; i < rows(); ++i) {
+		for (auto j = std::size_t{}; j < cols.size(); ++j) {
+			ret.set(i, j, get(i, cols[j]));
+		}
+	}
+	return ret;
 }
 
 } // namespace terraces

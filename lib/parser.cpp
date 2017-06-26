@@ -123,6 +123,7 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 	auto line = std::string{};
 	auto mat = bitmatrix{tree_size, cols};
 	auto suitable_root = none;
+	auto species_per_site = std::vector<std::size_t>(cols, 0u);
 	while (std::getline(input, line)) {
 		if (line.empty()) {
 			continue;
@@ -138,6 +139,7 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 			auto c = *it++;
 			if (c == '1') {
 				mat.set(species, i, true);
+				species_per_site[i] += 1u;
 			} else {
 				all_data_available = false;
 			}
@@ -146,7 +148,13 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 			suitable_root = species;
 		}
 	}
-	return {mat, suitable_root};
+	auto interessting_cols = std::vector<std::size_t>();
+	for (auto i = std::size_t{}; i < cols; ++i) {
+		if (species_per_site[i] > 1u) {
+			interessting_cols.push_back(i);
+		}
+	}
+	return {mat.get_cols(interessting_cols), suitable_root};
 }
 
 } // namespace terraces

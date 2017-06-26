@@ -67,15 +67,15 @@ TEST_CASE("parsing a tree with three leaves and two inner nodes", "[parser]") {
 	CHECK(indices.at("baz") == 4);
 }
 
-TEST_CASE("parsing a datafile with two species and two cols", "[parser],[data-parser]") {
-	auto stream = std::istringstream{"2 2\n0 1 foo\n1 1 bar\n"};
-	const auto map = terraces::index_map{{"foo", 2}, {"bar", 1}};
-	const auto res = terraces::parse_bitmatrix(stream, map, 3);
+TEST_CASE("parsing a datafile with three species and two cols", "[parser],[data-parser]") {
+	auto stream = std::istringstream{"2 2\n0 1 foo\n1 1 bar\n1 1 baz\n"};
+	const auto map = terraces::index_map{{"foo", 2}, {"bar", 1}, {"baz", 3}};
+	const auto res = terraces::parse_bitmatrix(stream, map, 4);
 	const auto& mat = res.first;
 	const auto& root_species = res.second;
 
 	REQUIRE(mat.cols() == 2);
-	REQUIRE(mat.rows() == 3);
+	REQUIRE(mat.rows() == 4);
 
 	CHECK(mat.get(0, 0) == false);
 	CHECK(mat.get(0, 1) == false);
@@ -83,6 +83,8 @@ TEST_CASE("parsing a datafile with two species and two cols", "[parser],[data-pa
 	CHECK(mat.get(1, 1) == true);
 	CHECK(mat.get(2, 0) == false);
 	CHECK(mat.get(2, 1) == true);
+	CHECK(mat.get(3, 0) == true);
+	CHECK(mat.get(3, 1) == true);
 
 	CHECK(root_species == 1);
 }

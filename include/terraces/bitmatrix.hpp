@@ -19,6 +19,8 @@ public:
 	/** Writes the bit rows 'in1' and 'in2' to row 'out'. */
 	void row_or(index in1, index in2, index out);
 
+	bitmatrix get_cols(const std::vector<std::size_t>& cols) const;
+
 private:
 	index m_rows;
 	index m_cols;
