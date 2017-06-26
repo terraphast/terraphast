@@ -1,14 +1,8 @@
 #ifndef UTIL_TEST_H
 #define UTIL_TEST_H
 
+#include "util.h"
 
-#include "gtest/gtest.h"
-#include "gmock/gmock-matchers.h"
-
-#include "../util.h"
-
-//#include <limits.h>
-//#include <iostream>
 #include <memory>
 
 // Test a simple tree file
