@@ -31,7 +31,6 @@ struct inner_node {
 };
 struct alternative_array {
 	multitree_node* begin;
-	multitree_node* cur;
 	multitree_node* end;
 };
 struct unexplored {
@@ -83,10 +82,9 @@ struct multitree_node {
 		num_trees = left->num_trees * right->num_trees;
 		return this;
 	}
-	multitree_node* as_alternative_array(std::pair<multitree_node*, multitree_node*> range,
-	                                     index leaves) {
+	multitree_node* as_alternative_array(multitree_node* begin, index leaves) {
 		type = multitree_node_type::alternative_array;
-		alternative_array = {range.first, range.first, range.second};
+		alternative_array = {begin, begin};
 		num_leaves = leaves;
 		num_trees = 0;
 		return this;

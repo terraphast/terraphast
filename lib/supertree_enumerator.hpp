@@ -22,7 +22,7 @@ private:
 	                    const constraints& constraints);
 
 public:
-	tree_enumerator(Callback cb) : cb{cb} {}
+	tree_enumerator(Callback&& cb) : cb{std::move(cb)} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
 	result_type run(index num_leaves, const constraints& constraints);
 	result_type run(const bitvector& leaves, const bitvector& constraint_occ,
