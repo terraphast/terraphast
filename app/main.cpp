@@ -77,8 +77,7 @@ int main(int argc, char** argv) try {
 	num_species = terraces::remap_to_leaves(tree, constraints, names, root_species);
 
 	std::cout << "Supertree:\n";
-	multitree_callback cb;
-	tree_enumerator<decltype(cb)> enumerator{cb};
+	tree_enumerator<multitree_callback> enumerator{{}};
 	std::cout << as_newick(enumerator.run(num_species, constraints, root_species), names);
 
 } catch (std::exception& e) {

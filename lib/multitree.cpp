@@ -44,26 +44,14 @@ std::ostream& print_multitree_node(std::ostream& stream, const multitree_node* n
 		}
 		return stream;
 	}
-	case multitree_node_type::alternative_list: {
-		auto& al = node->alternative_list;
-		for (auto it = al.begin; it != nullptr; it = it->alternative_list_node.next) {
-			assert(it->type == multitree_node_type::alternative_list_node);
-			if (it != al.begin) {
-				stream << '|';
-			}
-			print_multitree_node(stream, it->alternative_list_node.data, names);
-		}
-		return stream;
-	}
 	case multitree_node_type::unexplored: {
 		auto& u = node->unexplored;
 		return stream << '[' << utils::as_comma_separated_output(
 		                                index_array_view{u.begin, u.end}, names)
 		              << ']';
 	}
-	case multitree_node_type::alternative_list_node:
 	default:
-		assert(false && "This should not happen");
+		assert(false);
 		return stream;
 	}
 }

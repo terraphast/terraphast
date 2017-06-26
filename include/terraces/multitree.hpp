@@ -11,8 +11,6 @@ enum class multitree_node_type {
 	base_unconstrained,
 	inner_node,
 	alternative_array,
-	alternative_list,
-	alternative_list_node,
 	unexplored,
 };
 
@@ -33,15 +31,8 @@ struct inner_node {
 };
 struct alternative_array {
 	multitree_node* begin;
+	multitree_node* cur;
 	multitree_node* end;
-};
-struct alternative_list {
-	index size;
-	multitree_node* begin;
-};
-struct alternative_list_node {
-	multitree_node* data;
-	multitree_node* next;
 };
 struct unexplored {
 	index* begin;
@@ -59,8 +50,6 @@ struct multitree_node {
 		multitree_nodes::unconstrained unconstrained;
 		multitree_nodes::inner_node inner_node;
 		multitree_nodes::alternative_array alternative_array;
-		multitree_nodes::alternative_list alternative_list;
-		multitree_nodes::alternative_list_node alternative_list_node;
 		multitree_nodes::unexplored unexplored;
 	};
 
@@ -94,25 +83,12 @@ struct multitree_node {
 		num_trees = left->num_trees * right->num_trees;
 		return this;
 	}
-	multitree_node* as_alternative_array(multitree_node* begin, multitree_node* end) {
+	multitree_node* as_alternative_array(std::pair<multitree_node*, multitree_node*> range,
+	                                     index leaves) {
 		type = multitree_node_type::alternative_array;
-		alternative_array = {begin, end};
-		num_leaves = 0;
-		num_trees = 0;
-		return this;
-	}
-	multitree_node* as_alternative_list(index size, index leaves) {
-		type = multitree_node_type::alternative_list;
-		alternative_list = {size, nullptr};
+		alternative_array = {range.first, range.first, range.second};
 		num_leaves = leaves;
 		num_trees = 0;
-		return this;
-	}
-	multitree_node* as_alternative_list_node(multitree_node* data) {
-		type = multitree_node_type::alternative_list_node;
-		alternative_list_node = {data, nullptr};
-		num_leaves = data->num_leaves;
-		num_trees = data->num_trees;
 		return this;
 	}
 	multitree_node* as_unexplored(std::pair<index*, index*> range) {

@@ -95,6 +95,11 @@ public:
 class multitree_callback : public abstract_callback<multitree_node*> {
 private:
 	multitree_node* alloc_node() { return new multitree_node; }
+	std::pair<multitree_node*, multitree_node*> alloc_nodes(index num) {
+		auto res = new multitree_node[num];
+		return {res, res + num};
+	}
+
 	std::pair<index*, index*> alloc_leaves(const bitvector& leaves) {
 		auto size = leaves.count();
 		auto a_leaves = new index[size];
@@ -104,6 +109,8 @@ private:
 		}
 		return {a_leaves, a_leaves + size};
 	}
+
+	multitree_node m_temp_inner;
 
 public:
 	using return_type = multitree_node*;
@@ -120,24 +127,20 @@ public:
 
 	return_type begin_iteration(const bipartition_iterator& bip_it, const bitvector&,
 	                            const constraints&) {
-		return alloc_node()->as_alternative_list(bip_it.num_bip(), bip_it.leaves().count());
+		return alloc_node()->as_alternative_array(alloc_nodes(bip_it.num_bip()),
+		                                          bip_it.leaves().count());
 	}
 
-	return_type accumulate(multitree_node* acc, multitree_node* cur) {
-		auto node = alloc_node()->as_alternative_list_node(cur);
-		assert(acc->type == multitree_node_type::alternative_list);
-		assert(acc->alternative_list.begin == nullptr ||
-		       acc->alternative_list.begin->type ==
-		               multitree_node_type::alternative_list_node);
-		assert(acc->num_leaves == node->num_leaves);
-		acc->num_trees += cur->num_trees;
-		node->alternative_list_node.next = acc->alternative_list.begin;
-		acc->alternative_list.begin = node;
+	return_type accumulate(multitree_node* acc, multitree_node* node) {
+		auto& aa = acc->alternative_array;
+		assert(aa.begin <= aa.cur && aa.cur < aa.end);
+		*aa.cur = *node;
+		++aa.cur;
 		return acc;
 	}
 
 	return_type combine(multitree_node* left, multitree_node* right) {
-		return alloc_node()->as_inner_node(left, right);
+		return m_temp_inner.as_inner_node(left, right);
 	}
 };
 
