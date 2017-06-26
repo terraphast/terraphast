@@ -434,7 +434,6 @@ TEST(ListRootedTrees, Ficus_3) {
 // TODO: fix test to run with mpi (amount of trees on terrace to large for an integer)
 TEST(ListRootedTrees, Caryophyllaceae) {
     TEST_TIMEOUT_BEGIN
-    // test is commented since it throws an overflow conversion error
     test_rooted_trees("../input/Caryophyllaceae.nwk", "../input/Caryophyllaceae.data", 718346120625);
     TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS_)
 }

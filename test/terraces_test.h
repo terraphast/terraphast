@@ -8,15 +8,22 @@
 
 #define TIME_FOR_TESTS 1000*30
 
-#define TEST_TIMEOUT_BEGIN  std::promise<bool> promisedFinished; \
-                            auto futureResult = promisedFinished.get_future(); \
-                            std::thread([](std::promise<bool>& finished) {
+struct TerracesAnalysisCountTest {
+    const char *newick_file;
+    const char *data_file;
+    const char *expected_terraces_count;
 
-#define TEST_TIMEOUT_FAIL_END(X)    finished.set_value(true); \
-                                    }, std::ref(promisedFinished)).detach(); \
-                                    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) \
-                                        != std::future_status::timeout);
+    TerracesAnalysisCountTest(const char *p_newick_file,
+                              const char *p_data_file,
+                              const char *p_expected_terraces_count)
+            : newick_file(p_newick_file),
+              data_file(p_data_file),
+              expected_terraces_count(p_expected_terraces_count) {
+    }
+};
 
+class ComplexTerracesAnalysis : public ::testing::TestWithParam<TerracesAnalysisCountTest> {
+};
 
 static void test_terrace_analysis(const char *newick_file,
                                   const char *data_file,
@@ -340,56 +347,28 @@ TEST(TerracesAnalysis, example2_from_old_main) {
     fclose(f0);
 }
 
-TEST(TerracesAnalysis, Meusemann) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
+TEST_P(ComplexTerracesAnalysis, ExamplesFromModifiedInput) {
+    auto param = GetParam();
+
+    std::promise<bool> promisedFinished;
+    auto futureResult = promisedFinished.get_future();
+    std::thread([param](std::promise<bool> &finished) {
+        test_terrace_analysis(param.newick_file, param.data_file, param.expected_terraces_count);
+        finished.set_value(true);
+    }, std::ref(promisedFinished)).detach();
+    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(TIME_FOR_TESTS))
+                != std::future_status::timeout);
 }
 
-TEST(TerracesAnalysis, Allium_Tiny) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
-}
+INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, ComplexTerracesAnalysis, ::testing::Values(
+        TerracesAnalysisCountTest("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
+        TerracesAnalysisCountTest("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35"),
+        TerracesAnalysisCountTest("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1"),
+        TerracesAnalysisCountTest("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95"),
+        TerracesAnalysisCountTest("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "229"),
+        TerracesAnalysisCountTest("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "267"),
+        TerracesAnalysisCountTest("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "9"),
+        TerracesAnalysisCountTest("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759"),
+        TerracesAnalysisCountTest("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759")
+));
 
-TEST(TerracesAnalysis, Asplenium_1) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
-}
-
-TEST(TerracesAnalysis, Asplenium_2) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
-}
-
-TEST(TerracesAnalysis, Eucalyptus_1) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "27");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
-}
-
-TEST(TerracesAnalysis, Eucalyptus_2) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "147");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
-}
-
-TEST(TerracesAnalysis, Eucalyptus_3) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "1");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
-}
-
-TEST(TerracesAnalysis, Euphorbia_1) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
-}
-
-TEST(TerracesAnalysis, Euphorbia_2) {
-    TEST_TIMEOUT_BEGIN
-                test_terrace_analysis("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759");
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS)
-}
