@@ -1,8 +1,4 @@
 #include "gmp.h"
-
-#include "terraces.h"
-#include "debug.h"
-
 #include <limits.h>
 #include <iostream>
 #include <string>
@@ -10,15 +6,14 @@
 #include <cstdlib>
 #include <future>
 
-#define TIME_FOR_TESTS_ 1000 * 30
+#include "terraces.h"
+#include "parameters.h"
+#include "debug.h"
 
-#define TEST_TIMEOUT_BEGIN   std::promise<bool> promisedFinished; \
-                              auto futureResult = promisedFinished.get_future(); \
-                              std::thread([](std::promise<bool>& finished) {
- 
-#define TEST_TIMEOUT_FAIL_END(X)  finished.set_value(true); \
-                                   }, std::ref(promisedFinished)).detach(); \
-                                   EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) != std::future_status::timeout);
+typedef TerracesAnalysisTestParameter<const long> RootedTreesCountParameter;
+
+class RootedTreesAnalysis : public ::testing::TestWithParam<RootedTreesCountParameter> {
+};
 
 static void test_rooted_trees(const char* newick_file, const char* data_file, long trees_on_terrace) {
     
@@ -413,27 +408,24 @@ TEST(MergeSubtreesTest, simple_tree) {
     ASSERT_EQ(result[0]->right->label, std::string("leaf_2"));
 }
 
-TEST(ListRootedTrees, Ficus_1) {
-    TEST_TIMEOUT_BEGIN
-    test_rooted_trees("../input/modified/Ficus.nwk", "../input/modified/Ficus.data.1", 283815);
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS_)
+TEST_P(RootedTreesAnalysis, ExamplesFromModifiedInput) {
+    size_t max_time = 1000 * 30;
+
+    auto param = GetParam();
+
+    std::promise<bool> promisedFinished;
+    auto futureResult = promisedFinished.get_future();
+    std::thread([param](std::promise<bool> &finished) {
+        test_rooted_trees(param.newick_file, param.data_file, param.expected_value);
+        finished.set_value(true);
+    }, std::ref(promisedFinished)).detach();
+    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(max_time))
+                != std::future_status::timeout);
 }
 
-TEST(ListRootedTrees, Ficus_2) {
-    TEST_TIMEOUT_BEGIN
-    test_rooted_trees("../input/modified/Ficus.nwk", "../input/modified/Ficus.data.2", 851445);
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS_)
-}
-
-TEST(ListRootedTrees, Ficus_3) {
-    TEST_TIMEOUT_BEGIN
-    test_rooted_trees("../input/modified/Ficus.nwk", "../input/modified/Ficus.data.3", 851445);
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS_)
-}
-
-// TODO: fix test to run with mpi (amount of trees on terrace to large for an integer)
-TEST(ListRootedTrees, Caryophyllaceae) {
-    TEST_TIMEOUT_BEGIN
-    test_rooted_trees("../input/Caryophyllaceae.nwk", "../input/Caryophyllaceae.data", 718346120625);
-    TEST_TIMEOUT_FAIL_END(TIME_FOR_TESTS_)
-}
+INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, RootedTreesAnalysis, ::testing::Values(
+    RootedTreesCountParameter("../input/modified/Ficus.nwk", "../input/modified/Ficus.data.1", 283815),
+    RootedTreesCountParameter("../input/modified/Ficus.nwk", "../input/modified/Ficus.data.2", 851445),
+    RootedTreesCountParameter("../input/modified/Ficus.nwk", "../input/modified/Ficus.data.3", 851445),
+    RootedTreesCountParameter("../input/Caryophyllaceae.nwk", "../input/Caryophyllaceae.data", 718346120625)
+));
