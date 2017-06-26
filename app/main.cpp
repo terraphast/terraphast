@@ -14,6 +14,7 @@
 #include "../lib/supertree_enumerator.hpp"
 #include "../lib/supertree_variants.hpp"
 #include "../lib/supertree_variants_debug.hpp"
+#include "../lib/supertree_variants_multitree.hpp"
 
 using terraces::tree_enumerator;
 using terraces::variants::multitree_callback;

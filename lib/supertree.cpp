@@ -5,6 +5,7 @@
 #include "supertree_enumerator.hpp"
 #include "supertree_variants.hpp"
 #include "supertree_variants_debug.hpp"
+#include "supertree_variants_multitree.hpp"
 
 namespace terraces {
 
