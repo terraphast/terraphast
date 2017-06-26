@@ -20,18 +20,6 @@
 #include <gmp.h>
 #include <terraces.h>
 
-/*static size_t __count(const ntree_t* t) {
-    if(t->children_count == 0) {
-        return 1;
-    }
-
-    size_t sum = 0;
-    for(int i = 0; i < t->children_count; i++) {
-        sum += __count(t->children[i]);
-    }
-    return sum;
-}*/
-
 static std::vector<char*> __list(const ntree_t* t) {
     std::vector<char*> result;
     if(t->children_count == 0) {
@@ -45,22 +33,6 @@ static std::vector<char*> __list(const ntree_t* t) {
     }
     return result;
 }
-
-/*static std::shared_ptr<Tree> __convert(const ntree_t* t) {
-    assert(t->children_count == 0 || t->children_count == 2);
-    auto result = std::make_shared<Tree>();
-    if(t->children_count == 0) {
-        result->label = t->label;
-        return result;
-    }
-
-    result->left = __convert(t->children[0]);
-    result->left->parent = result;
-    result->right = __convert(t->children[1]);
-    result->right->parent = result;
-
-    return result;
-}*/
 
 int terraceAnalysis(missingData *m,
                     const char *newickTreeString,
