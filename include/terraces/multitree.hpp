@@ -101,10 +101,10 @@ struct multitree_node {
 		num_trees = 0;
 		return this;
 	}
-	multitree_node* as_alternative_list(index size, index num_leaves) {
+	multitree_node* as_alternative_list(index size, index leaves) {
 		type = multitree_node_type::alternative_list;
 		alternative_list = {size, nullptr};
-		this->num_leaves = num_leaves;
+		num_leaves = leaves;
 		num_trees = 0;
 		return this;
 	}
