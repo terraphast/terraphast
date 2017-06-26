@@ -54,9 +54,9 @@ size_t count_all_rooted_trees(const std::set<leaf_label> &leaves,
                               const std::vector<constraint> &constraints);
 
 /** Combines all sets (constraints need to be applied already) */
-std::vector<std::shared_ptr<UnrootedTree> > find_all_unrooted_trees(const std::set<leaf_label> &leaves,
-                                                                    const std::vector<constraint> &constraints,
-                                                                    const leaf_label &root_species_name);
+std::vector<std::shared_ptr<Tree> > find_all_unrooted_trees(const std::set<leaf_label> &leaves,
+                                                            const std::vector<constraint> &constraints,
+                                                            const leaf_label &root_species_name);
 
 /**
  * Returns a vector containing all constraints infered from the given supertree.

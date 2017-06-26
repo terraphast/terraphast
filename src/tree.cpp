@@ -25,23 +25,17 @@ std::string Tree::to_newick_string() {
 	return ss.str();
 }
 
-std::string UnrootedTree::to_newick_string() {
+std::string Tree::to_newick_string(const std::string &root_label) {
 	std::stringstream ss;
 	ss << "(";
-	if(this->elem1 != nullptr) {
-		to_newick_string_rec(ss, *this->elem1);
-	}
-	if(this->elem2 != nullptr) {
-		if(this->elem1 != nullptr) {
-			ss << ",";
-		}
-		to_newick_string_rec(ss, *this->elem2);
-	}
-	if(this->elem3 != nullptr) {
-		if(this->elem1 != nullptr || this->elem2 != nullptr) {
-			ss << ",";
-		}
-		to_newick_string_rec(ss, *this->elem3);
+	ss << root_label;
+	ss << ",";
+	if(this->is_leaf()) {
+		ss << this->label;
+	} else {
+		to_newick_string_rec(ss, *this->left);
+		ss << ",";
+		to_newick_string_rec(ss, *this->right);
 	}
 	ss << ");";
 	return ss.str();

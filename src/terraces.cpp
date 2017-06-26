@@ -117,8 +117,8 @@ int terraceAnalysis(missingData *m,
                                              root_species_name);
 
     if (enumerateTrees) {
-        for (std::shared_ptr<UnrootedTree> t : all_trees) {
-            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string().c_str());
+        for (std::shared_ptr<Tree> t : all_trees) {
+            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(root_species_name).c_str());
         }
     }
 

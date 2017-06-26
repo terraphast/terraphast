@@ -95,34 +95,19 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
     return result;
 }
 
-std::vector<std::shared_ptr<UnrootedTree> > find_all_unrooted_trees(
+std::vector<std::shared_ptr<Tree> > find_all_unrooted_trees(
         const std::set<leaf_label> &leafs,
         const std::vector<constraint> &constraints,
         const leaf_label &root_species_name) {
 
     assert(leafs.count(root_species_name) > 0);
 
-    auto part_left = std::make_shared<std::set<leaf_label> >();
     auto part_right = std::make_shared<std::set<leaf_label> >();
 
-    part_left->insert(root_species_name);
     part_right->insert(leafs.begin(), leafs.end());
     part_right->erase(root_species_name);
 
-    auto constraints_left = find_constraints(*part_left, constraints);
-    auto constraints_right = find_constraints(*part_right, constraints);
-
-    auto subtrees_left = find_all_rooted_trees(*part_left, constraints_left);
-    auto subtrees_right = find_all_rooted_trees(*part_right, constraints_right);
-    auto trees = merge_subtrees(subtrees_left, subtrees_right);
-
-    std::vector<std::shared_ptr<UnrootedTree> > result;
-    result.reserve(trees.size());
-    for (auto &t : trees) {
-        result.push_back(std::make_shared<UnrootedTree>(t));
-    }
-
-    return result;
+    return find_all_rooted_trees(*part_right, find_constraints(*part_right, constraints));
 }
 
 //TODO: structure is more or less duplicated. from find_all_rooted_trees

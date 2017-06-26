@@ -145,21 +145,21 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     ASSERT_EQ(count_all_rooted_trees(leafs, constraints), 17);
     ASSERT_EQ(result.size(), 15);
 
-    ASSERT_EQ(result[0]->to_newick_string(), "(s3,((s5,s1),s2),s4);");
-    ASSERT_EQ(result[1]->to_newick_string(), "(s3,(s5,(s2,s1)),s4);");
-    ASSERT_EQ(result[2]->to_newick_string(), "(s3,((s5,s2),s1),s4);");
-    ASSERT_EQ(result[3]->to_newick_string(), "(s3,(s5,s2),(s4,s1));");
-    ASSERT_EQ(result[4]->to_newick_string(), "(s3,((s5,s2),s4),s1);");
-    ASSERT_EQ(result[5]->to_newick_string(), "(s3,(s5,s1),(s4,s2));");
-    ASSERT_EQ(result[6]->to_newick_string(), "(s3,s5,((s4,s1),s2));");
-    ASSERT_EQ(result[7]->to_newick_string(), "(s3,s5,(s4,(s2,s1)));");
-    ASSERT_EQ(result[8]->to_newick_string(), "(s3,s5,((s4,s2),s1));");
-    ASSERT_EQ(result[9]->to_newick_string(), "(s3,(s5,(s4,s2)),s1);");
-    ASSERT_EQ(result[10]->to_newick_string(), "(s3,((s5,s1),s4),s2);");
-    ASSERT_EQ(result[11]->to_newick_string(), "(s3,(s5,(s4,s1)),s2);");
-    ASSERT_EQ(result[12]->to_newick_string(), "(s3,((s5,s4),s1),s2);");
-    ASSERT_EQ(result[13]->to_newick_string(), "(s3,(s5,s4),(s2,s1));");
-    ASSERT_EQ(result[14]->to_newick_string(), "(s3,((s5,s4),s2),s1);");
+    ASSERT_EQ(result[0]->to_newick_string(root_species_name), "(s3,((s5,s1),s2),s4);");
+    ASSERT_EQ(result[1]->to_newick_string(root_species_name), "(s3,(s5,(s2,s1)),s4);");
+    ASSERT_EQ(result[2]->to_newick_string(root_species_name), "(s3,((s5,s2),s1),s4);");
+    ASSERT_EQ(result[3]->to_newick_string(root_species_name), "(s3,(s5,s2),(s4,s1));");
+    ASSERT_EQ(result[4]->to_newick_string(root_species_name), "(s3,((s5,s2),s4),s1);");
+    ASSERT_EQ(result[5]->to_newick_string(root_species_name), "(s3,(s5,s1),(s4,s2));");
+    ASSERT_EQ(result[6]->to_newick_string(root_species_name), "(s3,s5,((s4,s1),s2));");
+    ASSERT_EQ(result[7]->to_newick_string(root_species_name), "(s3,s5,(s4,(s2,s1)));");
+    ASSERT_EQ(result[8]->to_newick_string(root_species_name), "(s3,s5,((s4,s2),s1));");
+    ASSERT_EQ(result[9]->to_newick_string(root_species_name), "(s3,(s5,(s4,s2)),s1);");
+    ASSERT_EQ(result[10]->to_newick_string(root_species_name), "(s3,((s5,s1),s4),s2);");
+    ASSERT_EQ(result[11]->to_newick_string(root_species_name), "(s3,(s5,(s4,s1)),s2);");
+    ASSERT_EQ(result[12]->to_newick_string(root_species_name), "(s3,((s5,s4),s1),s2);");
+    ASSERT_EQ(result[13]->to_newick_string(root_species_name), "(s3,(s5,s4),(s2,s1));");
+    ASSERT_EQ(result[14]->to_newick_string(root_species_name), "(s3,((s5,s4),s2),s1);");
 
     ntree_destroy(tree);
     freeMissingData(example1);
