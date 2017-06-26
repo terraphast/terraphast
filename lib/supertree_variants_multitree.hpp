@@ -110,7 +110,8 @@ public:
 	return_type accumulate(multitree_node* acc, multitree_node* node) {
 		assert(acc == m_accumulators.top());
 		assert(node == (acc->alternative_array.end - 1));
-		(void)node;
+		assert(acc->num_leaves == node->num_leaves);
+		acc->num_trees += node->num_trees;
 		// node is already linked from combine(.,.)
 		return acc;
 	}
