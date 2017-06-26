@@ -3,7 +3,7 @@
 #include <terraces/bitvector.hpp>
 
 namespace terraces {
-namespace test {
+namespace tests {
 
 TEST_CASE("fast_set1", "[fast_set]") {
 	bitvector set{10};
@@ -34,5 +34,5 @@ TEST_CASE("fast_set1", "[fast_set]") {
 	CHECK(count == set.count());
 }
 
-} // namespace test
+} // namespace tests
 } // namespace terraces
