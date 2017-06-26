@@ -22,6 +22,8 @@ struct small_bipartition {
 	bool is_valid() const { return m_cur_bip < m_end_bip; }
 	void next() {
 		assert(is_valid());
+		// credit goes to zch
+		// (see stackoverflow.com/questions/44767080/incrementing-masked-bitsets)
 		m_cur_bip = ((m_cur_bip | ~m_mask) + 1) & m_mask;
 	}
 	index mask() const { return m_mask; }

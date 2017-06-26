@@ -59,7 +59,9 @@ public:
 			auto result = m_blocks.back().get_range(required);
 			auto last_it = --m_blocks.end();
 			auto prev_it = --(--m_blocks.end());
-			std::iter_swap(last_it, prev_it);
+			std::iter_swap(
+			        last_it,
+			        prev_it); // TODO this might lead to some bad worst-case behaviour
 			return result;
 		}
 		return m_blocks.back().get_range(required);
