@@ -101,7 +101,7 @@ int terraceAnalysis(missingData *m,
     auto in_tree = __list(tree);
     for (size_t i = 0; i < in_tree.size(); i++) {
         if (leafs.count(std::string(in_tree[i])) == 0) {
-            dout("not found = " << in_tree[i] << "\n");
+            //dout("not found = " << in_tree[i] << "\n");
         }
     }
 
