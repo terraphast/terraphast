@@ -77,14 +77,14 @@ TEST_CASE("parsing a datafile with three species and two cols", "[parser],[data-
 	REQUIRE(mat.cols() == 2);
 	REQUIRE(mat.rows() == 4);
 
-	CHECK(mat.get(0, 0) == false);
-	CHECK(mat.get(0, 1) == false);
-	CHECK(mat.get(1, 0) == true);
-	CHECK(mat.get(1, 1) == true);
-	CHECK(mat.get(2, 0) == false);
-	CHECK(mat.get(2, 1) == true);
-	CHECK(mat.get(3, 0) == true);
-	CHECK(mat.get(3, 1) == true);
+	CHECK(!mat.get(0, 0));
+	CHECK(!mat.get(0, 1));
+	CHECK(mat.get(1, 0));
+	CHECK(mat.get(1, 1));
+	CHECK(!mat.get(2, 0));
+	CHECK(mat.get(2, 1));
+	CHECK(mat.get(3, 0));
+	CHECK(mat.get(3, 1));
 
 	CHECK(root_species == 1);
 }
