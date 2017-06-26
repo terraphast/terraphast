@@ -2,103 +2,58 @@
 #include <terraces/supertree.hpp>
 #include <terraces/union_find.hpp>
 
-#include <unordered_map>
+#include "supertree_enumerator.hpp"
+#include "supertree_variants.hpp"
+#include "supertree_variants_debug.hpp"
 
 namespace terraces {
 
-size_t count_supertree(index count, const constraints& c) {
-	fast_index_set leaves{count};
-	for (index i = 0; i < count; i++) {
-		leaves.insert(i);
-	}
-	fast_index_set c_occ{c.size()};
-	for (index i = 0; i < c.size(); ++i) {
-		c_occ.insert(i);
-	}
+template class tree_enumerator<variants::multitree_callback>;
+template class tree_enumerator<debug::variants::logging_decorator<variants::multitree_callback>>;
+template class tree_enumerator<
+        debug::variants::stack_state_decorator<variants::multitree_callback>>;
 
-	leaves.finalize_edit();
-	c_occ.finalize_edit();
-	return count_supertree(leaves, c_occ, c);
+template class tree_enumerator<variants::check_callback>;
+template class tree_enumerator<debug::variants::logging_decorator<variants::check_callback>>;
+template class tree_enumerator<debug::variants::stack_state_decorator<variants::check_callback>>;
+
+template class tree_enumerator<variants::count_callback>;
+template class tree_enumerator<debug::variants::logging_decorator<variants::count_callback>>;
+template class tree_enumerator<debug::variants::stack_state_decorator<variants::count_callback>>;
+
+index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root) {
+	auto leaves = leave_occ(t);
+	c = map_constraints(leaves, c);
+	auto new_names = name_map(leaves.count());
+	index i = 0;
+	for (auto leaf = leaves.first_set(); leaf < leaves.last_set();
+	     leaf = leaves.next_set(leaf)) {
+		new_names[i] = std::move(names[leaf]);
+		++i;
+	}
+	names = std::move(new_names);
+	root = leaves.rank(root);
+	return leaves.count();
 }
 
-size_t count_supertree(const tree& tree, const constraints& c) {
-	fast_index_set leaves{tree.size()};
-	for (index i = 0; i < tree.size(); i++) {
-		if (is_leaf(tree[i])) {
-			leaves.insert(i);
-		}
-	}
-	fast_index_set c_occ{c.size()};
-	for (index i = 0; i < c.size(); ++i) {
-		c_occ.insert(i);
-	}
-
-	leaves.finalize_edit();
-	c_occ.finalize_edit();
-	return count_supertree(leaves, c_occ, c);
+mpz_class count_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
+	tree_enumerator<variants::count_callback> counter{{}};
+	return counter.run(num_leaves, constraints, root_leaf);
 }
 
-size_t count_supertree(const fast_index_set& leaves, const fast_index_set& in_c_occ,
-                       const constraints& in_c) {
-	size_t number = 0;
-	fast_index_set c_occ{in_c_occ.max_size()};
+mpz_class count_supertree(index num_leaves, const constraints& constraints) {
+	tree_enumerator<variants::count_callback> counter{{}};
+	return counter.run(num_leaves, constraints);
+}
 
-	for (auto c_i : in_c_occ) {
-		if (leaves.contains(in_c[c_i].left) && leaves.contains(in_c[c_i].shared) &&
-		    leaves.contains(in_c[c_i].right)) {
-			c_occ.insert(c_i);
-		}
-	}
-	c_occ.finalize_edit(); // TODO unnecessary!
+bool check_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
+	tree_enumerator<variants::check_callback> counter{{}};
+	return counter.run(num_leaves, constraints, root_leaf) > 1;
+}
 
-	if (leaves.size() == 2) {
-		return 1;
-	}
-
-	if (c_occ.size() == 0) {
-		size_t res = 1;
-		for (size_t i = 3; i <= leaves.size() + 1; i++) {
-			res *= (2 * i - 5);
-		}
-		return res;
-	}
-
-	union_find sets = make_set(leaves.size());
-	for (auto c_i : c_occ) {
-		auto& c = in_c[c_i];
-		merge(sets, leaves.rank(c.left), leaves.rank(c.shared));
-	}
-	fast_index_set set_rep(leaves.size());
-	for (index i = 0; i < leaves.size(); ++i) {
-		set_rep.insert(find(sets, i));
-	}
-	set_rep.finalize_edit();
-
-	for (bipartition_iterator bip_it(set_rep.size()); bip_it.is_valid(); bip_it.increase()) {
-		fast_index_set subleaves{leaves.max_size()};
-		index ii = 0;
-		for (auto i : leaves) {
-			if (bip_it.get(set_rep.rank(find(sets, ii)))) {
-				subleaves.insert(i);
-			}
-			++ii;
-		}
-		subleaves.finalize_edit();
-		index count_left = count_supertree(subleaves, c_occ, in_c);
-		for (auto i : leaves) {
-			if (subleaves.contains(i)) {
-				subleaves.remove(i);
-			} else {
-				subleaves.insert(i);
-			}
-		}
-		subleaves.finalize_edit();
-		index count_right = count_supertree(subleaves, c_occ, in_c);
-
-		number += count_left * count_right;
-	}
-
-	return number;
+bool check_supertree(index num_leaves, const constraints& constraints) {
+	tree_enumerator<variants::check_callback> counter{{}};
+	return counter.run(num_leaves, constraints) > 1;
 }
 
 } // namespace terraces

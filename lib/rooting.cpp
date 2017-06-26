@@ -11,6 +11,8 @@ void reroot_inplace(tree& t, index root_leaf) {
 	                                     "The given index root_leaf is no leaf index.");
 	utils::ensure<std::invalid_argument>(t[root_leaf].rchild() == none,
 	                                     "The given index root_leaf is no leaf index.");
+	utils::ensure<std::invalid_argument>(terraces::is_valid_tree(t),
+	                                     "The given tree is no valid tree.");
 
 	node old_root = t[0]; // Copy
 
@@ -86,15 +88,14 @@ void reroot_inplace(tree& t, index root_leaf) {
 		}
 
 		// CLEANUP
-		if (t[original_parent_index].lchild() == current_node_index) {
-			coming_from_left = true;
-		} else {
-			coming_from_left = false;
-		}
+		coming_from_left = t[original_parent_index].lchild() == current_node_index;
 		current_node_index = original_parent_index;
 	}
 
 	t[0] = new_root;
+	utils::ensure<std::invalid_argument>(
+	        terraces::is_valid_tree(t),
+	        "The given tree is not a valid tree anymore. Please check tooting.cpp");
 }
 
 } // namespace terraces

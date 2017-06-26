@@ -105,15 +105,15 @@ TEST_CASE("parsing a complex datafile", "[parser],[data-parser]") {
 	REQUIRE(mat.cols() == 3);
 	REQUIRE(mat.rows() == 6);
 
-	CHECK(mat.get(0, 0) == false);
-	CHECK(mat.get(0, 1) == false);
-	CHECK(mat.get(0, 2) == false);
-	CHECK(mat.get(1, 0) == false);
-	CHECK(mat.get(1, 1) == true);
-	CHECK(mat.get(1, 2) == false);
-	CHECK(mat.get(2, 0) == true);
-	CHECK(mat.get(2, 1) == true);
-	CHECK(mat.get(2, 2) == true);
+	CHECK(!mat.get(0, 0));
+	CHECK(!mat.get(0, 1));
+	CHECK(!mat.get(0, 2));
+	CHECK(!mat.get(1, 0));
+	CHECK(mat.get(1, 1));
+	CHECK(!mat.get(1, 2));
+	CHECK(mat.get(2, 0));
+	CHECK(mat.get(2, 1));
+	CHECK(mat.get(2, 2));
 
 	CHECK(root_species == 2);
 }

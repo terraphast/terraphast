@@ -5,6 +5,7 @@
 #include <array>
 #include <stack>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
 #include "utils.hpp"
@@ -18,12 +19,16 @@ enum class token_type { lparen, rparen, name, seperator, eof };
 
 struct token {
 	token_type type;
-	std::string name = "";
+	std::string name;
+
+	token(token_type type, std::string name = "") : type{type}, name{std::move(name)} {}
 };
 
 struct parser_state {
-	index parent = none;
-	index self = 0u;
+	index parent;
+	index self;
+
+	parser_state(index parent, index self) : parent{parent}, self{self} {}
 };
 
 using parser_stack = std::stack<parser_state, std::vector<parser_state>>;
@@ -65,9 +70,7 @@ tree_set parse_nwk(const std::string& input) {
 	const auto end = input.end();
 
 	ret.emplace_back(none, none, none);
-	auto state = parsing::parser_state{
-	        none, 0u,
-	};
+	auto state = parsing::parser_state{none, 0};
 
 	for (auto token = parsing::next_token(it, end); token.type != parsing::token_type::eof;
 	     token = parsing::next_token(it, end)) {
