@@ -4,25 +4,13 @@
 
 #include "terraces.h"
 #include "util.h"
-#include "gtest/gtest.h"
+#include "parameters.h"
 
 #define TIME_FOR_TESTS 1000*30
 
-struct TerracesAnalysisCountTest {
-    const char *newick_file;
-    const char *data_file;
-    const char *expected_terraces_count;
+typedef TerracesAnalysisTestParameter<const char*> TACountParameter;
 
-    TerracesAnalysisCountTest(const char *p_newick_file,
-                              const char *p_data_file,
-                              const char *p_expected_terraces_count)
-            : newick_file(p_newick_file),
-              data_file(p_data_file),
-              expected_terraces_count(p_expected_terraces_count) {
-    }
-};
-
-class ComplexTerracesAnalysis : public ::testing::TestWithParam<TerracesAnalysisCountTest> {
+class ComplexTerracesAnalysis : public ::testing::TestWithParam<TACountParameter> {
 };
 
 static void test_terrace_analysis(const char *newick_file,
@@ -353,7 +341,7 @@ TEST_P(ComplexTerracesAnalysis, ExamplesFromModifiedInput) {
     std::promise<bool> promisedFinished;
     auto futureResult = promisedFinished.get_future();
     std::thread([param](std::promise<bool> &finished) {
-        test_terrace_analysis(param.newick_file, param.data_file, param.expected_terraces_count);
+        test_terrace_analysis(param.newick_file, param.data_file, param.expected_value);
         finished.set_value(true);
     }, std::ref(promisedFinished)).detach();
     EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(TIME_FOR_TESTS))
@@ -361,14 +349,13 @@ TEST_P(ComplexTerracesAnalysis, ExamplesFromModifiedInput) {
 }
 
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, ComplexTerracesAnalysis, ::testing::Values(
-        TerracesAnalysisCountTest("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
-        TerracesAnalysisCountTest("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35"),
-        TerracesAnalysisCountTest("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1"),
-        TerracesAnalysisCountTest("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95"),
-        TerracesAnalysisCountTest("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "229"),
-        TerracesAnalysisCountTest("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "267"),
-        TerracesAnalysisCountTest("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "9"),
-        TerracesAnalysisCountTest("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759"),
-        TerracesAnalysisCountTest("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759")
+        TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
+        TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35"),
+        TACountParameter("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.1", "1"),
+        TACountParameter("../input/modified/Asplenium.nwk", "../input/modified/Asplenium.data.2", "95"),
+        TACountParameter("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.1", "229"),
+        TACountParameter("../input/modified/Eucalyptus.nwk", "../input/modified/Eucalyptus.data.2", "267"),
+        TACountParameter("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "9"),
+        TACountParameter("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.1", "759"),
+        TACountParameter("../input/modified/Euphorbia.nwk", "../input/modified/Euphorbia.data.2", "759")
 ));
-
