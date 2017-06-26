@@ -8,17 +8,22 @@
 
 namespace terraces {
 
-using check = variants::check_callback;
-using count = variants::count_callback;
+namespace variants {
+template class fast_check_decorator<check_callback>;
+template class fast_check_decorator<count_callback>;
+template class fast_check_decorator<multitree_callback>;
+}
 
 namespace debug {
 namespace variants {
 using namespace terraces::variants;
 
-template class logging_decorator<check>;
-template class logging_decorator<count>;
-template class stack_state_decorator<check>;
-template class stack_state_decorator<count>;
+template class logging_decorator<check_callback>;
+template class logging_decorator<count_callback>;
+template class logging_decorator<multitree_callback>;
+template class stack_state_decorator<check_callback>;
+template class stack_state_decorator<count_callback>;
+template class stack_state_decorator<multitree_callback>;
 }
 }
 
@@ -48,12 +53,12 @@ mpz_class count_supertree(index num_leaves, const constraints& constraints) {
 }
 
 bool check_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
-	tree_enumerator<variants::check_callback> counter{{}};
+	tree_enumerator<variants::fast_check_decorator<variants::check_callback>> counter{{}};
 	return counter.run(num_leaves, constraints, root_leaf) > 1;
 }
 
 bool check_supertree(index num_leaves, const constraints& constraints) {
-	tree_enumerator<variants::check_callback> counter{{}};
+	tree_enumerator<variants::fast_check_decorator<variants::check_callback>> counter{{}};
 	return counter.run(num_leaves, constraints) > 1;
 }
 

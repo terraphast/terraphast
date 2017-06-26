@@ -55,6 +55,12 @@ std::ostream& print_multitree_node(std::ostream& stream, const multitree_node* n
 		}
 		return stream;
 	}
+	case multitree_node_type::unexplored: {
+		auto& u = node->unexplored;
+		return stream << '[' << utils::as_comma_separated_output(
+		                                index_array_view{u.begin, u.end}, names)
+		              << ']';
+	}
 	case multitree_node_type::alternative_list_node:
 	default:
 		assert(false && "This should not happen");
