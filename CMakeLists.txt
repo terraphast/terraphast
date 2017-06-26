@@ -55,9 +55,11 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Weverything \
-        -Wno-c++98-compat -Wno-padded -Wno-float-equal \
+        -Wno-c++98-compat -Wno-padded -Wno-float-equal -Wno-vla")
+    set(TEST_CXX_FLAGS "${TARGET_CXX_FLAGS} \
         -Wno-global-constructors -Wno-used-but-marked-unused \
-        -Wno-covered-switch-default -Wno-vla")
+        -Wno-covered-switch-default -Wno-gnu-zero-variadic-macro-arguments \
+        -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-weak-vtables")
 endif()
 
 add_library(terraces ${CORE_HEADERS} ${NEWICK_TOOLS_SRCS} ${CORE_SRCS})
@@ -105,11 +107,11 @@ set(TEST_HEADERS
         test/terraces_test.h)
 
 add_executable(terraces_tests test/gtest.cpp ${CORE_HEADERS} ${TEST_HEADERS})
-set_target_properties(terraces_tests PROPERTIES COMPILE_FLAGS "${TARGET_CXX_FLAGS}")
+set_target_properties(terraces_tests PROPERTIES COMPILE_FLAGS "${TEST_CXX_FLAGS}")
 target_link_libraries(terraces_tests terraces ${COMMON_LIBRARIEY} gtest gmock)
 add_test(terraces_tests terraces_tests)
 
 add_executable(terraces_benchmarks test/gbenchmark.cpp ${CORE_HEADERS} ${TEST_HEADERS})
-set_target_properties(terraces_benchmarks PROPERTIES COMPILE_FLAGS "${TARGET_CXX_FLAGS}")
+set_target_properties(terraces_benchmarks PROPERTIES COMPILE_FLAGS "${TEST_CXX_FLAGS}")
 target_link_libraries(terraces_benchmarks terraces ${COMMON_LIBRARIEY} benchmark)
 add_test(terraces_benchmarks terraces_benchmarks)
