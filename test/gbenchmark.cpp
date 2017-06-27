@@ -60,7 +60,23 @@ BENCHMARK_CAPTURE(BM_terrace_analysis__count, Euphorbia_1,
                   "../input/modified/Euphorbia.data.1");
 
 BENCHMARK_CAPTURE(BM_terrace_analysis__count, Euphorbia_2,
-                  "../input/modified/Euphorbia.nwk.1",
+                  "../input/modified/Euphorbia.nwk.2",
                   "../input/modified/Euphorbia.data.2");
+
+BENCHMARK_CAPTURE(BM_terrace_analysis__count, Ficus_1,
+                  "../input/modified/Ficus.nwk.1",
+                  "../input/modified/Ficus.data.1");
+
+BENCHMARK_CAPTURE(BM_terrace_analysis__count, Ficus_2,
+                  "../input/modified/Ficus.nwk.2",
+                  "../input/modified/Ficus.data.2");
+
+BENCHMARK_CAPTURE(BM_terrace_analysis__count, Ficus_3,
+                  "../input/modified/Ficus.nwk.3",
+                  "../input/modified/Ficus.data.3");
+
+//BENCHMARK_CAPTURE(BM_terrace_analysis__count, Caryophyllaceae,
+//                  "../input/modified/Caryophyllaceae.nwk",
+//                  "../input/modified/Caryophyllaceae.data");
 
 BENCHMARK_MAIN()
