@@ -24,6 +24,7 @@ struct leaves {
 struct unconstrained {
 	index* begin;
 	index* end;
+	index num_leaves() const;
 };
 struct inner_node {
 	multitree_node* left;
@@ -32,10 +33,12 @@ struct inner_node {
 struct alternative_array {
 	multitree_node* begin;
 	multitree_node* end;
+	index num_alternatives() const;
 };
 struct unexplored {
 	index* begin;
 	index* end;
+	index num_leaves() const;
 };
 }
 
@@ -71,7 +74,7 @@ struct multitree_node {
 		auto end = range.second;
 		type = multitree_node_type::base_unconstrained;
 		unconstrained = {begin, end};
-		num_leaves = (index)(end - begin);
+		num_leaves = unconstrained.num_leaves();
 		num_trees = count_unrooted_trees<index>(num_leaves);
 		return this;
 	}
@@ -94,7 +97,7 @@ struct multitree_node {
 		auto end = range.second;
 		type = multitree_node_type::unexplored;
 		unexplored = {begin, end};
-		num_leaves = (index)(end - begin);
+		num_leaves = unexplored.num_leaves();
 		num_trees = 0;
 		return this;
 	}
@@ -110,6 +113,12 @@ std::ostream& operator<<(std::ostream& stream, newick_multitree_t tree);
 inline newick_multitree_t as_newick(const multitree_node* root, const name_map& names) {
 	return {root, &names};
 }
+
+inline index multitree_nodes::alternative_array::num_alternatives() const {
+	return (index)(end - begin);
+}
+inline index multitree_nodes::unexplored::num_leaves() const { return (index)(end - begin); }
+inline index multitree_nodes::unconstrained::num_leaves() const { return (index)(end - begin); }
 
 } // namespace terraces
 
