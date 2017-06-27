@@ -35,10 +35,6 @@
 std::vector<std::shared_ptr<std::set<leaf_number>> > apply_constraints(
         const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
 
-/** Combines all sets (constraints need to be applied already) */
-std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(const std::set<leaf_number> &leaves,
-                                                          const std::vector<constraint> &constraints);
-
 //TODO: only temporarly
 size_t count_all_rooted_trees(const std::set<leaf_number> &leaves,
                               const std::vector<constraint> &constraints);
@@ -66,11 +62,8 @@ std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
 
 /** merges two sub-trees */
 std::vector<std::shared_ptr<Tree> > merge_subtrees(
-        std::vector<std::shared_ptr<Tree> > &left,
-        std::vector<std::shared_ptr<Tree> > &right);
-
-/** write the given tree to the gien file */
-void write_tree(Tree &tree, FILE &file);
+        const std::vector<std::shared_ptr<Tree> > &left,
+        const std::vector<std::shared_ptr<Tree> > &right);
 
 /**
  * Checks whenever the n-th bit is set in the given number
@@ -108,6 +101,73 @@ std::set<leaf_number> extract_leaf_labels_from_supertree(
  */
 std::tuple<std::shared_ptr<std::set<leaf_number>>, std::shared_ptr<std::set<leaf_number>> > get_nth_partition_tuple(
         std::vector<std::shared_ptr<std::set<leaf_number>> > &partitions, size_t n);
+
+template <typename T>
+class TerraceAlgorithm {
+public:
+    virtual ~TerraceAlgorithm() = default;
+
+    T scan_terrace(const std::set<leaf_number> &leafs, const std::vector<constraint> &constraints) {
+
+        if (constraints.empty()) {
+            auto result = scan_unconstraint_leaves(leafs);
+            return result;
+        }
+
+        auto partitions = apply_constraints(leafs, constraints);
+        T result;
+
+        for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
+            std::shared_ptr<std::set<leaf_number> > part_left;
+            std::shared_ptr<std::set<leaf_number> > part_right;
+            std::tie(part_left, part_right) = get_nth_partition_tuple(partitions, i);
+
+            auto constraints_left = find_constraints(*part_left, constraints);
+            auto constraints_right = find_constraints(*part_right, constraints);
+
+            auto subtrees_left = scan_terrace(*part_left, constraints_left);
+            auto subtrees_right = scan_terrace(*part_right, constraints_right);
+            auto trees = combine_part_results(subtrees_left, subtrees_right);
+
+            combine_bipartition_results(result, trees);
+        }
+
+        return result;
+    }
+protected:
+    inline
+    virtual T scan_unconstraint_leaves(const std::set<leaf_number> &leafs) = 0;
+
+    inline
+    virtual T combine_part_results(const T &left_part,
+                                   const T &right_part) = 0;
+
+    inline
+    virtual void combine_bipartition_results(T &aggregation,
+                                             const T &new_results) = 0;
+};
+
+typedef std::vector<std::shared_ptr<Tree> >  tree_result_list_t;
+
+class FindAllRootedTrees : public TerraceAlgorithm<tree_result_list_t> {
+protected:
+    inline
+    tree_result_list_t scan_unconstraint_leaves(const std::set<leaf_number> &leafs) {
+        return get_all_binary_trees(leafs);
+    }
+
+    inline
+    tree_result_list_t combine_part_results(const tree_result_list_t &left_part,
+                                            const tree_result_list_t &right_part) {
+        return merge_subtrees(left_part, right_part);
+    }
+
+    inline
+    void combine_bipartition_results(tree_result_list_t &aggregation,
+                                     const tree_result_list_t &new_results) {
+        aggregation.insert(aggregation.end(), new_results.begin(), new_results.end());
+    }
+};
 
 template<typename T>
 std::ostream& operator<<(std::ostream &strm, const std::set<T>& set) {

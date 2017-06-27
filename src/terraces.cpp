@@ -111,7 +111,8 @@ int terraceAnalysis(missingData *m,
         leaves.insert(leaf_number(k));
     }
 
-    auto all_trees = find_all_rooted_trees(leaves, constraints);
+    FindAllRootedTrees algo;
+    auto all_trees = algo.scan_terrace(leaves, constraints);
 
     if (enumerateTrees) {
         for (std::shared_ptr<Tree> t : all_trees) {

@@ -323,7 +323,8 @@ TEST(FindAllRootedTrees, example_from_slides) {
     constraints.push_back(cons1);
     constraints.push_back(cons2);
 
-    auto result = find_all_rooted_trees(leafs, constraints);
+    FindAllRootedTrees algo;
+    auto result = algo.scan_terrace(leafs, constraints);
 
     ASSERT_EQ(result.size(), 9);
     ASSERT_EQ(result[0]->to_newick_string(id_to_label), "((2,1),((5,3),4));");

@@ -140,61 +140,14 @@ size_t count_all_rooted_trees(const std::set<leaf_number> &leaves,
     return result;
 }
 
-std::vector<std::shared_ptr<Tree> > find_all_rooted_trees(
-        const std::set<leaf_number> &leafs,
-        const std::vector<constraint> &constraints) {
-
-    if (constraints.empty()) {
-        auto result = get_all_binary_trees(leafs);
-        //std::cerr << "<itr>\n";
-        //std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
-        //std::cerr << "<result count=\"" << result.size() << "\"/>\n";
-        //std::cerr << "</itr>\n";
-        return result;
-    }
-
-    auto partitions = apply_constraints(leafs, constraints);
-    std::vector<std::shared_ptr<Tree> > result;
-
-    //std::cerr << "<itr>\n";
-    //std::cerr << "<leafs val=\"" << leafs << "\"/>\n";
-    //std::cerr << "<constraints val=\"" << constraints << "\"/>\n";
-    //std::cerr << "<partitions val=\"" << partitions << "\"/>\n";
-
-    for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
-        std::shared_ptr<std::set<leaf_number> > part_left;
-        std::shared_ptr<std::set<leaf_number> > part_right;
-        std::tie(part_left, part_right) = get_nth_partition_tuple(partitions, i);
-
-        //std::cerr << "<bipartition l=\"" << *part_left << "\" r=\"" << *part_right << "\">\n";
-
-        auto constraints_left = find_constraints(*part_left, constraints);
-        auto constraints_right = find_constraints(*part_right, constraints);
-
-        auto subtrees_left = find_all_rooted_trees(*part_left, constraints_left);
-        auto subtrees_right = find_all_rooted_trees(*part_right, constraints_right);
-        auto trees = merge_subtrees(subtrees_left, subtrees_right);
-
-        //std::cerr << "<result count=\"" << trees.size() << "\"/>\n";
-        //std::cerr << "</bipartition>\n";
-
-        result.insert(result.end(), trees.begin(), trees.end());
-    }
-
-    //std::cerr << "<result count=\"" << result.size() << "\"/>\n";
-    //std::cerr << "</itr>\n";
-
-    return result;
-}
-
 std::vector<std::shared_ptr<Tree> > merge_subtrees(
-        std::vector<std::shared_ptr<Tree> > &left,
-        std::vector<std::shared_ptr<Tree> > &right) {
+        const std::vector<std::shared_ptr<Tree> > &left,
+        const std::vector<std::shared_ptr<Tree> > &right) {
 
     std::vector<std::shared_ptr<Tree> > merged_trees;
 
-    for (std::shared_ptr<Tree> &l : left) {
-        for (std::shared_ptr<Tree> &r : right) {
+    for (auto l : left) {
+        for (auto r : right) {
             auto new_tree = std::make_shared<Tree>(l, r);
             l->parent = new_tree;
             r->parent = new_tree;

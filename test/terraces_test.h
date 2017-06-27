@@ -130,7 +130,8 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     auto leafs = extract_leaf_labels_from_supertree(r_tree);
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
-    auto result = find_all_rooted_trees(leafs, constraints);
+    FindAllRootedTrees algo;
+    auto result = algo.scan_terrace(leafs, constraints);
     ASSERT_EQ(count_all_rooted_trees(leafs, constraints), 15);
     ASSERT_EQ(result.size(), 15);
 
@@ -346,5 +347,9 @@ INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, ComplexTerracesAnalysis, ::testing
     TACountParameter("../input/modified/Eucalyptus.nwk.1", "../input/modified/Eucalyptus.data.2", "267"),
     TACountParameter("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "9"),
     TACountParameter("../input/modified/Euphorbia.nwk.1", "../input/modified/Euphorbia.data.1", "759"),
-    TACountParameter("../input/modified/Euphorbia.nwk.2", "../input/modified/Euphorbia.data.2", "759")
+    TACountParameter("../input/modified/Euphorbia.nwk.2", "../input/modified/Euphorbia.data.2", "759"),
+    TACountParameter("../input/modified/Ficus.nwk.1", "../input/modified/Ficus.data.1", "283815"),
+    TACountParameter("../input/modified/Ficus.nwk.2", "../input/modified/Ficus.data.2", "851445"),
+    TACountParameter("../input/modified/Ficus.nwk.3", "../input/modified/Ficus.data.3", "851445")
+    //TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "718346120625")
 ));
