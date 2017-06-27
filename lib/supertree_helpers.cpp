@@ -2,7 +2,7 @@
 
 namespace terraces {
 
-bitvector filter_constraints(const bitvector& leaves, const bitvector& c_occ,
+bitvector filter_constraints(const ranked_bitvector& leaves, const bitvector& c_occ,
                              const constraints& c) {
 	bitvector result{c_occ.size()};
 	for (auto c_i = c_occ.first_set(); c_i < c_occ.last_set(); c_i = c_occ.next_set(c_i)) {
@@ -11,11 +11,10 @@ bitvector filter_constraints(const bitvector& leaves, const bitvector& c_occ,
 			result.set(c_i);
 		}
 	}
-	result.update_ranks();
 	return result;
 }
 
-union_find apply_constraints(const bitvector& leaves, const bitvector& c_occ,
+union_find apply_constraints(const ranked_bitvector& leaves, const bitvector& c_occ,
                              const constraints& c) {
 	auto sets = union_find(leaves.count());
 	for (auto c_i = c_occ.first_set(); c_i < c_occ.last_set(); c_i = c_occ.next_set(c_i)) {
@@ -25,7 +24,7 @@ union_find apply_constraints(const bitvector& leaves, const bitvector& c_occ,
 	return sets;
 }
 
-constraints map_constraints(const bitvector& leaves, const constraints& cs) {
+constraints map_constraints(const ranked_bitvector& leaves, const constraints& cs) {
 	auto result = cs;
 	for (auto& c : result) {
 		c.left = leaves.rank(c.left);
@@ -35,8 +34,8 @@ constraints map_constraints(const bitvector& leaves, const constraints& cs) {
 	return result;
 }
 
-bitvector leave_occ(const tree& tree) {
-	bitvector leaves{tree.size()};
+ranked_bitvector leave_occ(const tree& tree) {
+	ranked_bitvector leaves{tree.size()};
 	for (index i = 0; i < tree.size(); i++) {
 		if (is_leaf(tree[i])) {
 			leaves.set(i);

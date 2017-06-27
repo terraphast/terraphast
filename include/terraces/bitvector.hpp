@@ -43,14 +43,10 @@ public:
 	using value_type = index;
 	using iterator = bitvector_iterator;
 
-private:
+protected:
 	index m_size;
 	// TODO align blocks for SSE
 	std::vector<value_type> m_blocks;
-	std::vector<value_type> m_ranks;
-	index m_count;
-
-	debug_var(bool m_ranks_dirty);
 
 	void add_sentinel();
 
@@ -61,19 +57,16 @@ public:
 	void set(index i) {
 		assert(i < m_size);
 		m_blocks[bits::block_index(i)] |= bits::set_mask(i);
-		debug_code(m_ranks_dirty = true);
 	}
 	/** Clears a bit in the bitvector. */
 	void clr(index i) {
 		assert(i < m_size);
 		m_blocks[bits::block_index(i)] &= bits::clear_mask(i);
-		debug_code(m_ranks_dirty = true);
 	}
 	/** Flips a bit in the bitvector. */
 	void flip(index i) {
 		assert(i < m_size);
 		m_blocks[bits::block_index(i)] ^= bits::set_mask(i);
-		debug_code(m_ranks_dirty = true);
 	}
 	/** Returns a bit from the bitvector. */
 	bool get(index i) const {
@@ -82,6 +75,9 @@ public:
 	}
 	/** Returns the size of the bitvector. */
 	index size() const { return m_size; }
+
+	/** Returns true if and only if no bit is set. */
+	bool empty() const;
 
 	/** Clears all bits in the bitvector. */
 	void blank();
@@ -92,21 +88,6 @@ public:
 	/** Sets the values of this bitvector to the bitwise or of two bitvectors. */
 	void set_bitwise_or(const bitvector& fst, const bitvector& snd);
 
-	/** Updates the internal data structures after editing the vector. */
-	void update_ranks();
-	/** Returns the rank of an index, i.e. the number of set bits in the range [0..i) */
-	index rank(index i) const {
-		assert(!m_ranks_dirty);
-		assert(i <= m_size);
-		index b = bits::block_index(i);
-		return m_ranks[b] + bits::partial_popcount(m_blocks[b], bits::shift_index(i));
-	}
-	index select(index i) const;
-	/** Returns the number of set bits. */
-	index count() const {
-		assert(!m_ranks_dirty);
-		return m_count - 1;
-	}
 	/** Returns the index of the first set bit or size() if no bit is set. */
 	index first_set() const {
 		index b = 0;
@@ -140,6 +121,59 @@ public:
 	bool operator!=(const bitvector& other) const { return !(*this == other); }
 };
 
+class ranked_bitvector : public bitvector {
+
+protected:
+	std::vector<value_type> m_ranks;
+	index m_count;
+	debug_var(bool m_ranks_dirty);
+
+public:
+	ranked_bitvector(index size);
+
+	/** Sets a bit in the bitvector. */
+	void set(index i) {
+		bitvector::set(i);
+		debug_code(m_ranks_dirty = true);
+	}
+	/** Clears a bit in the bitvector. */
+	void clr(index i) {
+		bitvector::clr(i);
+		debug_code(m_ranks_dirty = true);
+	}
+	/** Flips a bit in the bitvector. */
+	void flip(index i) {
+		bitvector::flip(i);
+		debug_code(m_ranks_dirty = true);
+	}
+
+	/** Clears all bits in the bitvector. */
+	void blank();
+	/** Inverts all bits in the bitvector. */
+	void invert();
+	/** Applies element-wise xor from another bitvector. */
+	void bitwise_xor(const bitvector& other);
+	/** Sets the values of this bitvector to the bitwise or of two bitvectors. */
+	void set_bitwise_or(const bitvector& fst, const bitvector& snd);
+
+	/** Returns the number of set bits. */
+	index count() const {
+		assert(!m_ranks_dirty);
+		return m_count - 1;
+	}
+
+	/** Updates the internal data structures after editing the vector. */
+	void update_ranks();
+	/** Returns the rank of an index, i.e. the number of set bits in the range [0..i) */
+	index rank(index i) const {
+		assert(!m_ranks_dirty);
+		assert(i <= m_size);
+		index b = bits::block_index(i);
+		return m_ranks[b] + bits::partial_popcount(m_blocks[b], bits::shift_index(i));
+	}
+	index select(index i) const;
+};
+
 class bitvector_iterator {
 public:
 	using value_type = bitvector::value_type;
@@ -167,11 +201,18 @@ inline auto bitvector::end() const -> iterator { return {*this, last_set()}; }
 inline bitvector full_set(index size) {
 	bitvector set{size};
 	set.invert();
+	return set;
+}
+
+/** Returns a bitvector containing size elements. */
+inline ranked_bitvector full_ranked_set(index size) {
+	ranked_bitvector set{size};
+	set.invert();
 	set.update_ranks();
 	return set;
 }
 
-inline index bitvector::select(index i) const {
+inline index ranked_bitvector::select(index i) const {
 	assert(i < count());
 	auto it = first_set();
 	for (index j = 0; j < i; ++j) {

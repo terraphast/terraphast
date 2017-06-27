@@ -4,8 +4,9 @@
 
 namespace terraces {
 
-bitvector::bitvector(index size)
-        : m_size{size}, m_blocks(size / 64 + 1), m_ranks(m_blocks.size() + 1) {
+bitvector::bitvector(index size) : m_size{size}, m_blocks(size / 64 + 1) { add_sentinel(); }
+
+ranked_bitvector::ranked_bitvector(index size) : bitvector{size}, m_ranks(m_blocks.size() + 1) {
 	add_sentinel();
 	debug_code(m_ranks_dirty = false);
 }
@@ -15,12 +16,20 @@ void bitvector::add_sentinel() {
 	m_blocks[bits::block_index(m_size)] |= bits::set_mask(m_size);
 }
 
+bool bitvector::empty() const {
+	for (index b = 0; b < m_blocks.size() - 1; ++b) {
+		if (m_blocks[b]) {
+			return false;
+		}
+	}
+	return !(m_blocks[m_blocks.size() - 1] & bits::prefix_mask(bits::shift_index(m_size)));
+}
+
 void bitvector::blank() {
 	for (auto& el : m_blocks) {
 		el = 0;
 	}
 	add_sentinel();
-	debug_code(m_ranks_dirty = true);
 }
 
 void bitvector::bitwise_xor(const bitvector& other) {
@@ -29,7 +38,6 @@ void bitvector::bitwise_xor(const bitvector& other) {
 		m_blocks[b] ^= other.m_blocks[b];
 	}
 	add_sentinel();
-	debug_code(m_ranks_dirty = true);
 }
 
 void bitvector::invert() {
@@ -37,7 +45,6 @@ void bitvector::invert() {
 		m_blocks[b] = ~m_blocks[b];
 	}
 	m_blocks[m_blocks.size() - 1] ^= bits::prefix_mask(bits::shift_index(m_size));
-	debug_code(m_ranks_dirty = true);
 }
 
 void bitvector::set_bitwise_or(const bitvector& fst, const bitvector& snd) {
@@ -45,10 +52,29 @@ void bitvector::set_bitwise_or(const bitvector& fst, const bitvector& snd) {
 	for (index b = 0; b < m_blocks.size(); ++b) {
 		m_blocks[b] = fst.m_blocks[b] | snd.m_blocks[b];
 	}
+}
+
+void ranked_bitvector::blank() {
+	bitvector::blank();
 	debug_code(m_ranks_dirty = true);
 }
 
-void bitvector::update_ranks() {
+void ranked_bitvector::bitwise_xor(const bitvector& other) {
+	bitvector::bitwise_xor(other);
+	debug_code(m_ranks_dirty = true);
+}
+
+void ranked_bitvector::invert() {
+	bitvector::invert();
+	debug_code(m_ranks_dirty = true);
+}
+
+void ranked_bitvector::set_bitwise_or(const bitvector& fst, const bitvector& snd) {
+	bitvector::set_bitwise_or(fst, snd);
+	debug_code(m_ranks_dirty = true);
+}
+
+void ranked_bitvector::update_ranks() {
 	m_count = 0;
 	for (index b = 0; b < m_blocks.size(); ++b) {
 		m_count += bits::popcount(m_blocks[b]);

@@ -5,7 +5,7 @@
 
 namespace terraces {
 
-bipartition_iterator::bipartition_iterator(const bitvector& leaves, const union_find& sets)
+bipartition_iterator::bipartition_iterator(const ranked_bitvector& leaves, const union_find& sets)
         : m_leaves{leaves}, m_sets{sets}, m_set_rep{find_set_reps()}, m_subleaves{leaves.size()},
           m_bip{0}, m_end{(1ull << (m_set_rep.count() - 1))} {
 	assert(m_set_rep.count() < 64);
@@ -16,9 +16,9 @@ bool bipartition_iterator::in_left_partition(index i) const {
 	return (m_bip & (1ull << (i - 1))) != 0;
 }
 
-bitvector bipartition_iterator::find_set_reps() const {
+ranked_bitvector bipartition_iterator::find_set_reps() const {
 	// TODO ugly style :)
-	bitvector set_rep(m_leaves.count());
+	ranked_bitvector set_rep(m_leaves.count());
 	for (index i = 0; i < m_leaves.count(); ++i) {
 		set_rep.set(m_sets.find(i));
 	}
@@ -45,7 +45,7 @@ void bipartition_iterator::increase() {
 	}
 }
 
-const bitvector& bipartition_iterator::get_current_set() const { return m_subleaves; }
+const ranked_bitvector& bipartition_iterator::get_current_set() const { return m_subleaves; }
 
 void bipartition_iterator::flip_sets() {
 	m_subleaves.bitwise_xor(m_leaves);

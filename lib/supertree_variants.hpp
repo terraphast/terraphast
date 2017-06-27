@@ -53,7 +53,7 @@ class count_callback : public abstract_callback<mpz_class> {
 public:
 	mpz_class base_one_leaf(index) { return 1; }
 	mpz_class base_two_leaves(index, index) { return 1; }
-	mpz_class base_unconstrained(const bitvector& leaves) {
+	mpz_class base_unconstrained(const ranked_bitvector& leaves) {
 		index num_leaves = leaves.count();
 		mpz_class result = 1;
 		for (index i = 3; i <= num_leaves + 1; i++) {
@@ -92,7 +92,7 @@ public:
 	std::ostream* base_two_leaves(index i, index j) {
 		return &(*m_stream << "(" << m_names[i] << "," << m_names[j] << ")");
 	}
-	std::ostream* base_unconstrained(const bitvector& leaves) {
+	std::ostream* base_unconstrained(const ranked_bitvector& leaves) {
 		return &(*m_stream << "{" << utils::as_comma_separated_output(leaves, m_names)
 		                   << "}");
 	}

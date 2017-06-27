@@ -11,7 +11,7 @@
 namespace terraces {
 
 std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>& mapping,
-                                         const bitvector& leaves) {
+                                         const ranked_bitvector& leaves) {
 	std::vector<bitvector> bips(t.size(), {0});
 	std::vector<bitvector> subtrees(t.size(), {leaves.count()});
 	foreach_postorder(t, [&](index i) {

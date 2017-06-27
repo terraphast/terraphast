@@ -24,14 +24,14 @@ public:
 	tree_enumerator(Callback cb) : cb{cb} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
 	result_type run(index num_leaves, const constraints& constraints);
-	result_type run(const bitvector& leaves, const bitvector& constraint_occ,
+	result_type run(const ranked_bitvector& leaves, const bitvector& constraint_occ,
 	                const constraints& constraints);
 };
 
 template <typename Callback>
 auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constraints)
         -> result_type {
-	auto leaves = full_set(num_leaves);
+	auto leaves = full_ranked_set(num_leaves);
 	auto c_occ = full_set(constraints.size());
 	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
 	return run(leaves, c_occ, constraints);
@@ -40,7 +40,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 template <typename Callback>
 auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constraints,
                                     index root_leaf) -> result_type {
-	auto leaves = full_set(num_leaves);
+	auto leaves = full_ranked_set(num_leaves);
 	auto c_occ = full_set(constraints.size());
 	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
 	// enter the call
@@ -62,7 +62,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 }
 
 template <typename Callback>
-auto tree_enumerator<Callback>::run(const bitvector& leaves, const bitvector& constraint_occ,
+auto tree_enumerator<Callback>::run(const ranked_bitvector& leaves, const bitvector& constraint_occ,
                                     const constraints& constraints) -> result_type {
 	cb.enter(leaves);
 
@@ -80,7 +80,7 @@ auto tree_enumerator<Callback>::run(const bitvector& leaves, const bitvector& co
 
 	bitvector new_constraint_occ = filter_constraints(leaves, constraint_occ, constraints);
 	// base case: no constraints left
-	if (new_constraint_occ.count() == 0) {
+	if (new_constraint_occ.empty()) {
 		return cb.exit(cb.base_unconstrained(leaves));
 	}
 

@@ -11,7 +11,7 @@ namespace tests {
 
 TEST_CASE("bipartition1", "[bipartition]") {
 	union_find u(4);
-	bitvector s{4};
+	ranked_bitvector s{4};
 	s.set(0);
 	s.set(1);
 	s.set(2);

@@ -37,7 +37,7 @@ private:
 public:
 	stack_state_decorator(Callback cb) : Callback{cb} {}
 
-	void enter(const bitvector& leaves) {
+	void enter(const ranked_bitvector& leaves) {
 		Callback::enter(leaves);
 		m_stack.emplace_back(Callback::init_result());
 	}
@@ -93,7 +93,7 @@ public:
 	logging_decorator(Callback cb, std::ostream& output, const name_map& names)
 	        : Callback{cb}, m_output{output}, m_depth{0}, m_first_iteration{}, m_names{names} {}
 
-	void enter(const bitvector& leaves) {
+	void enter(const ranked_bitvector& leaves) {
 		Callback::enter(leaves);
 		output() << "<itr>\n";
 		++m_depth;
