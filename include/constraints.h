@@ -11,6 +11,12 @@ struct constraint {
     leaf_number bigger_left;
     leaf_number smaller_right;
     leaf_number bigger_right;
+
+    constraint() = default;
+
+    constraint(leaf_number smaller_left, leaf_number bigger_left, leaf_number smaller_right, leaf_number bigger_right)
+            : smaller_left(smaller_left), bigger_left(bigger_left), smaller_right(smaller_right),
+              bigger_right(bigger_right) {}
 };
 
 #endif // IFUGAO_CONSTRAINTS_H
