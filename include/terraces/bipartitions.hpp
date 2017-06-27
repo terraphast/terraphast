@@ -37,6 +37,7 @@ public:
 
 	index cur_bip() const { return m_bip; }
 	index end_bip() const { return m_end; }
+	index num_bip() const { return m_end - 1; }
 	const union_find& sets() const { return m_sets; }
 	const ranked_bitvector& leaves() const { return m_leaves; }
 };

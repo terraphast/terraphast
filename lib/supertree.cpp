@@ -5,21 +5,28 @@
 #include "supertree_enumerator.hpp"
 #include "supertree_variants.hpp"
 #include "supertree_variants_debug.hpp"
+#include "supertree_variants_multitree.hpp"
 
 namespace terraces {
 
-template class tree_enumerator<variants::multitree_callback>;
-template class tree_enumerator<debug::variants::logging_decorator<variants::multitree_callback>>;
-template class tree_enumerator<
-        debug::variants::stack_state_decorator<variants::multitree_callback>>;
+namespace variants {
+template class fast_check_decorator<check_callback>;
+template class fast_check_decorator<count_callback>;
+template class fast_check_decorator<multitree_callback>;
+}
 
-template class tree_enumerator<variants::check_callback>;
-template class tree_enumerator<debug::variants::logging_decorator<variants::check_callback>>;
-template class tree_enumerator<debug::variants::stack_state_decorator<variants::check_callback>>;
+namespace debug {
+namespace variants {
+using namespace terraces::variants;
 
-template class tree_enumerator<variants::count_callback>;
-template class tree_enumerator<debug::variants::logging_decorator<variants::count_callback>>;
-template class tree_enumerator<debug::variants::stack_state_decorator<variants::count_callback>>;
+template class logging_decorator<check_callback>;
+template class logging_decorator<count_callback>;
+template class logging_decorator<multitree_callback>;
+template class stack_state_decorator<check_callback>;
+template class stack_state_decorator<count_callback>;
+template class stack_state_decorator<multitree_callback>;
+}
+}
 
 index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root) {
 	auto leaves = leave_occ(t);
@@ -47,12 +54,12 @@ mpz_class count_supertree(index num_leaves, const constraints& constraints) {
 }
 
 bool check_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
-	tree_enumerator<variants::check_callback> counter{{}};
+	tree_enumerator<variants::fast_check_decorator<variants::check_callback>> counter{{}};
 	return counter.run(num_leaves, constraints, root_leaf) > 1;
 }
 
 bool check_supertree(index num_leaves, const constraints& constraints) {
-	tree_enumerator<variants::check_callback> counter{{}};
+	tree_enumerator<variants::fast_check_decorator<variants::check_callback>> counter{{}};
 	return counter.run(num_leaves, constraints) > 1;
 }
 

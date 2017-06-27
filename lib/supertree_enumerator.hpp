@@ -2,6 +2,7 @@
 #define SUPERTREE_ENUMERATOR_HPP
 
 #include <terraces/bipartitions.hpp>
+#include <terraces/multitree.hpp>
 #include <terraces/supertree.hpp>
 #include <terraces/union_find.hpp>
 
@@ -21,7 +22,7 @@ private:
 	                    const constraints& constraints);
 
 public:
-	tree_enumerator(Callback cb) : cb{cb} {}
+	tree_enumerator(Callback&& cb) : cb{std::move(cb)} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
 	result_type run(index num_leaves, const constraints& constraints);
 	result_type run(const ranked_bitvector& leaves, const bitvector& constraint_occ,
@@ -94,9 +95,11 @@ template <typename Callback>
 auto tree_enumerator<Callback>::iterate(bipartition_iterator& bip_it,
                                         const bitvector& new_constraint_occ,
                                         const constraints& constraints) -> result_type {
-	result_type result = cb.init_result();
+	if (cb.fast_return(bip_it)) {
+		return cb.fast_return_value(bip_it);
+	}
 
-	cb.begin_iteration(bip_it, new_constraint_occ, constraints);
+	auto result = cb.begin_iteration(bip_it, new_constraint_occ, constraints);
 	// iterate over all possible bipartitions
 	while (bip_it.is_valid() && cb.continue_iteration(result)) {
 		cb.step_iteration(bip_it);
