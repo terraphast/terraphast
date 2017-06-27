@@ -59,7 +59,8 @@ static void test_rooted_trees(const char* newick_file, const char* data_file, lo
         leaves.insert(leaf_number(k));
     }
 
-    auto result = count_all_rooted_trees(leaves, extract_constraints_from_supertree(rtree, m, id_to_label));
+    CountAllRootedTrees algo;
+    auto result = algo.scan_terrace(leaves, extract_constraints_from_supertree(rtree, m, id_to_label));
 
     ASSERT_EQ(result, trees_on_terrace);
 

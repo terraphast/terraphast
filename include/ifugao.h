@@ -35,10 +35,6 @@
 std::vector<std::shared_ptr<std::set<leaf_number>> > apply_constraints(
         const std::set<leaf_number> &leaves, const std::vector<constraint> &constraints);
 
-//TODO: only temporarly
-size_t count_all_rooted_trees(const std::set<leaf_number> &leaves,
-                              const std::vector<constraint> &constraints);
-
 /**
  * Returns a vector containing all constraints infered from the given supertree.
  *
@@ -115,7 +111,7 @@ public:
         }
 
         auto partitions = apply_constraints(leafs, constraints);
-        T result;
+        T result = initialize_result_type();
 
         for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
             std::shared_ptr<std::set<leaf_number> > part_left;
@@ -136,7 +132,10 @@ public:
     }
 protected:
     inline
-    virtual T scan_unconstraint_leaves(const std::set<leaf_number> &leafs) = 0;
+    virtual T initialize_result_type() = 0;
+
+    inline
+    virtual T scan_unconstraint_leaves(const std::set<leaf_number> &leaves) = 0;
 
     inline
     virtual T combine_part_results(const T &left_part,
@@ -152,8 +151,13 @@ typedef std::vector<std::shared_ptr<Tree> >  tree_result_list_t;
 class FindAllRootedTrees : public TerraceAlgorithm<tree_result_list_t> {
 protected:
     inline
-    tree_result_list_t scan_unconstraint_leaves(const std::set<leaf_number> &leafs) {
-        return get_all_binary_trees(leafs);
+    tree_result_list_t initialize_result_type() {
+        return tree_result_list_t();
+    }
+
+    inline
+    tree_result_list_t scan_unconstraint_leaves(const std::set<leaf_number> &leaves) {
+        return get_all_binary_trees(leaves);
     }
 
     inline
@@ -166,6 +170,33 @@ protected:
     void combine_bipartition_results(tree_result_list_t &aggregation,
                                      const tree_result_list_t &new_results) {
         aggregation.insert(aggregation.end(), new_results.begin(), new_results.end());
+    }
+};
+
+class CountAllRootedTrees : public TerraceAlgorithm<size_t> {
+protected:
+    inline
+    size_t initialize_result_type() {
+        return 0;
+    }
+
+    inline
+    size_t scan_unconstraint_leaves(const std::set<leaf_number> &leaves) {
+        size_t result = 1;
+        for(size_t i = 4; i <= (leaves.size() + 1); i++) {
+            result *= (2*i-5);
+        }
+        return result;
+    }
+
+    inline
+    size_t combine_part_results(const size_t &left_part, const size_t &right_part) {
+        return left_part * right_part;
+    }
+
+    inline
+    void combine_bipartition_results(size_t &aggregation, const size_t &new_results) {
+        aggregation += new_results;
     }
 };
 
