@@ -27,7 +27,8 @@ set(CORE_HEADERS
         include/terraces.h
         include/input_parser.h
         include/ifugao.h
-        include/leaf_set.h)
+        include/leaf_set.h
+        include/UnionFind.h)
 
 set(NEWICK_TOOLS_SRCS
         src/newick-tools/lex_ntree.cpp
@@ -42,7 +43,8 @@ set(CORE_SRCS
         src/terraces.cpp
         src/tree.cpp
         src/util.cpp
-        src/leaf_set.cpp)
+        src/leaf_set.cpp
+        src/UnionFind.cpp)
 
 #CMAKE_CXX_FLAGS is globally used in all projects.
 #TARGET_CXX_FLAGS is for own build targets only.
@@ -54,12 +56,12 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} /WX /W4")
 endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Weverything \
-        -Wno-c++98-compat -Wno-padded -Wno-float-equal -Wno-vla")
+    set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Weverything -Wno-shadow \
+        -Wno-c++98-compat -Wno-padded -Wno-float-equal -Wno-vla -Wno-weak-vtables")
     set(TEST_CXX_FLAGS "${TARGET_CXX_FLAGS} \
         -Wno-global-constructors -Wno-used-but-marked-unused \
         -Wno-covered-switch-default -Wno-gnu-zero-variadic-macro-arguments \
-        -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-weak-vtables")
+        -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-disabled-macro-expansion")
 endif()
 
 add_library(terraces ${CORE_HEADERS} ${NEWICK_TOOLS_SRCS} ${CORE_SRCS})
