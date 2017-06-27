@@ -20,20 +20,6 @@
 #include <gmp.h>
 #include <terraces.h>
 
-static std::vector<char*> __list(const ntree_t* t) {
-    std::vector<char*> result;
-    if(t->children_count == 0) {
-        result.push_back(t->label);
-        return result;
-    }
-
-    for(int i = 0; i < t->children_count; i++) {
-        auto elems = __list(t->children[i]);
-        result.insert(result.end(), elems.begin(), elems.end());
-    }
-    return result;
-}
-
 int terraceAnalysis(missingData *m,
                     const char *newickTreeString,
                     const int ta_outspec,
@@ -81,44 +67,55 @@ int terraceAnalysis(missingData *m,
     assert(tree != nullptr);
 
     std::string root_species_name;
-    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name);
+    std::vector<std::string> id_to_lable;
+    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_lable);
 
     //dout(newickTreeString << "\n");
 
     assert(rtree != nullptr);
-    //dout("rooted_tree = " << rtree->to_newick_string() << "\n");
+    //dout("rooted_tree = " << rtree->to_newick_string(id_to_lable) << "\n");
 
-    std::set<leaf_label> leafs;
+    std::set<std::string> m_labels;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {
+        bool noData = true;
         for (size_t j = 0; j < m->numberOfPartitions; j++) {
             if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
-                leafs.insert(leaf_label(m->speciesNames[k]));
+                noData = false;
                 break;
             }
         }
+        if(noData) {
+            dout("Species with no data in any partition: " << m->speciesNames[k] << "\n");
+            assert(0);
+        }
+        m_labels.insert(std::string(m->speciesNames[k]));
     }
 
-    auto in_tree = __list(tree);
-    for (size_t i = 0; i < in_tree.size(); i++) {
-        if (leafs.count(std::string(in_tree[i])) == 0) {
-            //dout("not found = " << in_tree[i] << "\n");
+    for (size_t i = 0; i < id_to_lable.size(); i++) {
+        if (m_labels.count(std::string(id_to_lable[i])) == 0) {
+            dout("Species appears in newick file, but not in missing data file:" << id_to_lable[i] << "\n");
+            assert(0);
         }
     }
 
-    auto constraints = extract_constraints_from_supertree(rtree, m);
+    auto constraints = extract_constraints_from_supertree(rtree, m, id_to_lable);
     //dout(constraints << "\n");
     //dout(extract_constraints_from_supertree(__convert(tree), m) << "\n");
 
     //auto r = find_all_rooted_trees(leafs,
     //                               extract_constraints_from_supertree(rtree, m));
     //dout("===== TREES: " << r.size() << "\n");
-    auto all_trees = find_all_unrooted_trees(leafs,
-                                             constraints,
-                                             root_species_name);
+
+    std::set<leaf_number> leaves;
+    for (size_t k = 0; k < id_to_lable.size(); k++) {
+        leaves.insert(leaf_number(k));
+    }
+
+    auto all_trees = find_all_rooted_trees(leaves, constraints);
 
     if (enumerateTrees) {
         for (std::shared_ptr<Tree> t : all_trees) {
-            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(root_species_name).c_str());
+            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_lable, root_species_name).c_str());
         }
     }
 
@@ -249,7 +246,8 @@ unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
 
 std::vector<constraint> extract_constraints_from_supertree(
         const std::shared_ptr<Tree> supertree,
-        const missingData *missing_data) {
+        const missingData *missing_data,
+        const std::vector<std::string> &id_to_label) {
 
 
     std::map<std::string, unsigned char> species_map;
@@ -261,7 +259,7 @@ std::vector<constraint> extract_constraints_from_supertree(
 
     for (size_t i = 0; i < missing_data->numberOfPartitions; i++) {
         auto partition = generate_induced_tree(supertree, missing_data,
-                                               species_map, i);
+                                               species_map, id_to_label, i);
 
         auto constraints = extract_constraints_from_tree(partition);
         //dout(partition << "\n");
@@ -269,8 +267,8 @@ std::vector<constraint> extract_constraints_from_supertree(
 
         for (auto &c : constraints) {
             //avoid duplications
-            std::string key = c.smaller_left + c.smaller_right + "__" + c.bigger_left
-                              + c.bigger_right;
+            std::string key = std::to_string(c.smaller_left) + std::to_string(c.smaller_right) + "__" +
+                              std::to_string(c.bigger_left) + std::to_string(c.bigger_right);
             if (constraint_map.count(key) == 0) {
                 constraint_map[key] = c;
             }

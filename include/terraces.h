@@ -146,7 +146,9 @@ void copyDataMatrix(const unsigned char *matrix, missingData *m);
  * @return All constraints of the given supertree.
  */
 std::vector<constraint> extract_constraints_from_supertree(
-		const std::shared_ptr<Tree> supertree, const missingData* missing_data);
+		const std::shared_ptr<Tree> supertree,
+		const missingData* missing_data,
+		const std::vector<std::string> &id_to_label);
 
 /**
  * Function that tells us, given a tree, and a missing data matrix as well as its dimensions,

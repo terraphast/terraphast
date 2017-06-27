@@ -3,14 +3,16 @@
 
 std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
                                             const missingData *missing_data,
-                                            std::map<std::string, unsigned char> &species_map, size_t partition) {
+                                            const std::map<std::string, unsigned char> &species_map,
+                                            const std::vector<std::string> &id_to_label,
+                                            const size_t partition) {
     if (tree == nullptr) {
         return nullptr;
     }
 
     if (tree->is_leaf()) {
-        if (species_map.count(tree->label) == 1
-            && getDataMatrix(missing_data, species_map[tree->label],
+        if (species_map.count(id_to_label[tree->id]) == 1
+            && getDataMatrix(missing_data, species_map.at(id_to_label[tree->id]),
                              partition)) {
             auto leave = std::make_shared<Tree>(*tree);
             leave->left = nullptr;
@@ -22,10 +24,10 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
         // Inner node case
         assert(tree->left != nullptr);
         auto left = generate_induced_tree(tree->left, missing_data, species_map,
-                                          partition);
+                                          id_to_label, partition);
         assert(tree->right != nullptr);
-        auto right = generate_induced_tree(tree->right, missing_data,
-                                           species_map, partition);
+        auto right = generate_induced_tree(tree->right, missing_data, species_map,
+                                           id_to_label, partition);
         //Left and right subtrees are included -> common ancestor is included
         if (left != nullptr && right != nullptr) {
             auto inner_node = std::make_shared<Tree>(*tree);
@@ -44,7 +46,9 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
 }
 
 std::shared_ptr<Tree> root_tree(ntree_t *tree,
-                                const missingData *missing_data, std::string &root_species_name) {
+                                const missingData *missing_data,
+                                std::string &root_species_name,
+                                std::vector<std::string> &id_to_label) {
     assert(tree != nullptr);
     size_t root_species_number = 0;
     bool root_specied_found = false;
@@ -72,7 +76,7 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree,
                          << " not found in tree" << std::endl);
             return nullptr;
         }
-        return root_at(future_root);
+        return root_at(future_root, id_to_label);
     } else {
         //tree cannot be rooted consistently
         return nullptr;
@@ -107,32 +111,20 @@ ntree_t *get_leaf_by_name(ntree_t *tree, const char *label) {
     return nullptr; //label not found
 }
 
-std::shared_ptr<Tree> root_at(ntree_t *leaf) {
+std::shared_ptr<Tree> root_at(ntree_t *leaf, std::vector<std::string> &id_to_label) {
     //if leaf->parent is null, leaf is the root => the tree is not binary, or the node is no leaf
     assert(leaf != nullptr);
     assert(leaf->parent != nullptr);
     assert(leaf->children_count == 0);  //should be a leaf
     ntree_t *neighbour = leaf->parent;
     std::shared_ptr<Tree> root = std::make_shared<Tree>();
-    std::shared_ptr<Tree> new_leaf = std::make_shared<Tree>();
-    std::shared_ptr<Tree> new_neighbour = std::make_shared<Tree>();
 
-    //initialize root
-    root->label = "";
-    root->left = new_leaf;
-    root->right = new_neighbour;
-
-    //initialize new_leaf and new_neighbour
-    new_leaf->parent = root;
-    new_neighbour->parent = root;
-
-    recursive_root(new_leaf, leaf, neighbour);
-    recursive_root(new_neighbour, neighbour, leaf);
+    recursive_root(root, neighbour, leaf, id_to_label);
     return root;
 }
 
 void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
-                    ntree_t *parent) {
+                    ntree_t *parent, std::vector<std::string> &id_to_label) {
 
     assert(current != nullptr);
     assert(current_ntree != nullptr);
@@ -143,10 +135,9 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
            || (current_ntree->children_count == 3
                && current_ntree->parent == nullptr));
 
-    if (current_ntree->label == nullptr) {
-        current->label = "";
-    } else {
-        current->label = current_ntree->label;
+    if (current_ntree->label != nullptr) {
+        current->id = id_to_label.size();
+        id_to_label.push_back(std::string(current_ntree->label));
     }
 
     if (current_ntree->children_count == 0) {   //is leaf
@@ -179,10 +170,10 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
         current->left = nullptr;
         current->right = nullptr;
         if(current_ntree->children[0] == parent) {
-            recursive_root(current, current_ntree->children[1], current_ntree);
+            recursive_root(current, current_ntree->children[1], current_ntree, id_to_label);
             return;
         } else {
-            recursive_root(current, current_ntree->children[0], current_ntree);
+            recursive_root(current, current_ntree->children[0], current_ntree, id_to_label);
             return;
         }
     } else {
@@ -202,8 +193,8 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
         }
     }
 
-    recursive_root(current->left, left_ntree, current_ntree);
-    recursive_root(current->right, right_ntree, current_ntree);
+    recursive_root(current->left, left_ntree, current_ntree, id_to_label);
+    recursive_root(current->right, right_ntree, current_ntree, id_to_label);
 }
 
 bool check_tree(ntree_t *tree) {
@@ -259,11 +250,6 @@ void get_leafs (std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<T
             get_leafs(leaf_list, neighbours.at(i), current_node);
         }
     }
-}
-
-bool node_compare(std::shared_ptr<Tree> node_1, std::shared_ptr<Tree> node_2) {
-    assert(node_1 != nullptr && node_2 != nullptr);
-    return (node_1->label.compare(node_2->label) < 0);
 }
 
 static void d_print_tree_rec(std::ostream &strm,

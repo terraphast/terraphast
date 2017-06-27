@@ -36,19 +36,19 @@ BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Allium_Tiny,
                   "../input/modified/Allium_Tiny.data");
 
 BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Asplenium_1,
-                  "../input/modified/Asplenium.nwk",
+                  "../input/modified/Asplenium.nwk.1",
                   "../input/modified/Asplenium.data.1");
 
 BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Asplenium_2,
-                  "../input/modified/Asplenium.nwk",
+                  "../input/modified/Asplenium.nwk.2",
                   "../input/modified/Asplenium.data.2");
 
 BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Eucalyptus_1,
-                  "../input/modified/Eucalyptus.nwk",
+                  "../input/modified/Eucalyptus.nwk.1",
                   "../input/modified/Eucalyptus.data.1");
 
 BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Eucalyptus_2,
-                  "../input/modified/Eucalyptus.nwk",
+                  "../input/modified/Eucalyptus.nwk.2",
                   "../input/modified/Eucalyptus.data.2");
 
 BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Eucalyptus_3,
@@ -56,11 +56,11 @@ BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Eucalyptus_3,
                   "../input/modified/Eucalyptus.data.3");
 
 BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Euphorbia_1,
-                  "../input/modified/Euphorbia.nwk",
+                  "../input/modified/Euphorbia.nwk.1",
                   "../input/modified/Euphorbia.data.1");
 
 BENCHMARK_CAPTURE(BM_terraphy_analysis__count, Euphorbia_2,
-                  "../input/modified/Euphorbia.nwk",
+                  "../input/modified/Euphorbia.nwk.1",
                   "../input/modified/Euphorbia.data.2");
 
 BENCHMARK_MAIN()

@@ -4,20 +4,22 @@
 #define IFUGAO_TREE_H
 
 #include "functional.h"
+#include "types.h"
 
 #include <memory>
+#include <vector>
 #include <assert.h>
 
 class Tree {
 public:
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-			std::shared_ptr<Tree> p_parent, std::string p_label) :
-			label(p_label), left(p_left), right(p_right), parent(p_parent) {
+			std::shared_ptr<Tree> p_parent, leaf_number p_id) :
+			id(p_id), left(p_left), right(p_right), parent(p_parent) {
 	}
 
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-			std::string p_label) :
-			label(p_label), left(p_left), right(p_right), parent(nullptr) {
+            leaf_number p_id) :
+			id(p_id), left(p_left), right(p_right), parent(nullptr) {
 	}
 
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :
@@ -29,20 +31,19 @@ public:
 			left(p_left), right(p_right), parent(p_parent) {
 	}
 
-	Tree(std::string p_label, std::shared_ptr<Tree> p_parent) :
-			label(p_label), left(nullptr), right(nullptr), parent(p_parent) {
+	Tree(leaf_number p_id, std::shared_ptr<Tree> p_parent) :
+			id(p_id), left(nullptr), right(nullptr), parent(p_parent) {
 	}
 
-	Tree(std::string p_label) :
-			label(p_label), left(nullptr), right(nullptr), parent(nullptr) {
+	Tree(leaf_number p_id) :
+			id(p_id), left(nullptr), right(nullptr), parent(nullptr) {
 	}
 
 	Tree() :
 			left(nullptr), right(nullptr), parent(nullptr) {
 	}
 
-	//TODO getter and setter? //performance vs. code quality?
-	std::string label;
+	leaf_number id;
 	std::shared_ptr<Tree> left;
 	std::shared_ptr<Tree> right;
 	std::shared_ptr<Tree> parent;
@@ -51,8 +52,8 @@ public:
 		return (left == nullptr && right == nullptr);
 	}
 
-	std::string to_newick_string();
-	std::string to_newick_string(const std::string &root_label);
+	std::string to_newick_string(const std::vector<std::string> &id_to_lable) const;
+	std::string to_newick_string(const std::vector<std::string> &id_to_lable, const std::string &root_label) const;
 
     template<typename T>
     using TreeNodeVisitor = T (*)(const Tree*);

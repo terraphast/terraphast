@@ -23,8 +23,10 @@
  * @return the subtree T|G_i.
  */
 std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
-		const missingData *missing_data,
-		std::map<std::string, unsigned char>& first, size_t partition);
+                                            const missingData *missing_data,
+                                            const std::map<std::string, unsigned char>& first,
+                                            const std::vector<std::string> &id_to_label,
+                                            const size_t partition);
 
 /**
  * This function roots the tree at an appropriate position according to the missing data array
@@ -33,7 +35,10 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
  * @param missing_data the data for the missing sequences on each partition
  * @return the new root of the tree, or NULL if the tree cannot be rooted (e.g. if there is no species that has data for every partition)
  */
-std::shared_ptr<Tree> root_tree(ntree_t *tree, const missingData *missing_data, std::string &root_species_name);
+std::shared_ptr<Tree> root_tree(ntree_t *tree,
+								const missingData *missing_data,
+								std::string &root_species_name,
+								std::vector<std::string> &id_to_label);
 
 /**
  * Returns a pointer to the leaf that has the label <label>
@@ -48,7 +53,7 @@ ntree_t* get_leaf_by_name(ntree_t *tree, const char *label);
  * @param root the leaf-edge
  * @return pointer to the new root
  */
-std::shared_ptr<Tree> root_at(ntree_t *root);
+std::shared_ptr<Tree> root_at(ntree_t *root, std::vector<std::string> &id_to_label);
 
 /**
  * private function
@@ -56,8 +61,10 @@ std::shared_ptr<Tree> root_at(ntree_t *root);
  * @param current_ntree the ntree_t coresponding to the current parameter. Here we get the children from
  * @param parent the ntree_t represention of the parent. this is needed to avoid calling the recursion on the parent
  */
-void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
-		ntree_t *parent);
+void recursive_root(std::shared_ptr<Tree> current,
+                    ntree_t *current_ntree,
+                    ntree_t *parent,
+                    std::vector<std::string> &id_to_label);
 
 /**
  * @brief check_tree do a dfs on the tree and check, if the childs parent is the current node.
@@ -78,16 +85,6 @@ void fix_tree(ntree_t *tree);
  * @return a vector containing the adjacent nodes.
  */
 std::vector<std::shared_ptr<Tree>> get_neighbours(std::shared_ptr<Tree> node);
-
-
-/**
- * @brief node_compare compares two instances of the Tree class by their label
- * TODO We can use a lambda function in std::sort in tree_to_string instead
- * @param node_1 this node is compared to the other paramater
- * @param node_2 this node is compared to the other paramater
- * @return true, iff the label of node_1 is smaller than the label of node_2
- */
-bool node_compare(std::shared_ptr<Tree> node_1, std::shared_ptr<Tree> node_2);
 
 /**
  * @brief get_leafs return a list the list of all leafs of the tree

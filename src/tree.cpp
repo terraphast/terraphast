@@ -1,41 +1,42 @@
 #include "tree.h"
 
-#include <string>
 #include <sstream>
-#include <memory>
 #include <map>
 #include <assert.h>
 
-static void to_newick_string_rec(std::stringstream &ss, Tree &node) {
+static void to_newick_string_rec(std::stringstream &ss,
+                                 const std::vector<std::string> &ids_to_lables,
+                                 const Tree &node) {
 	if(node.is_leaf()) {
-		ss << node.label;
+		ss << ids_to_lables[node.id];
 	} else {
 		ss << "(";
-		to_newick_string_rec(ss, *node.left);
+		to_newick_string_rec(ss, ids_to_lables, *node.left);
 		ss << ",";
-		to_newick_string_rec(ss, *node.right);
+		to_newick_string_rec(ss, ids_to_lables, *node.right);
 		ss << ")";
 	}
 }
 
-std::string Tree::to_newick_string() {
+std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables) const {
 	std::stringstream ss;
-	to_newick_string_rec(ss, *this);
+	to_newick_string_rec(ss, ids_to_lables, *this);
 	ss << ";";
 	return ss.str();
 }
 
-std::string Tree::to_newick_string(const std::string &root_label) {
+std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables,
+                                   const std::string &root_label) const {
 	std::stringstream ss;
 	ss << "(";
 	ss << root_label;
 	ss << ",";
 	if(this->is_leaf()) {
-		ss << this->label;
+		ss << ids_to_lables[this->id];
 	} else {
-		to_newick_string_rec(ss, *this->left);
+		to_newick_string_rec(ss, ids_to_lables, *this->left);
 		ss << ",";
-		to_newick_string_rec(ss, *this->right);
+		to_newick_string_rec(ss, ids_to_lables, *this->right);
 	}
 	ss << ");";
 	return ss.str();
@@ -61,7 +62,7 @@ static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree,
 	}
 
 	auto node = std::make_shared<Tree>();
-	node->label = tree->label;
+	node->id = tree->id;
 	cover_map[tree] = node;
 	cover_map[node] = node;
 
@@ -86,7 +87,11 @@ static void d_print_tree_rec(std::ostream &strm,
                 && (tree->parent->left == tree
                     || tree->parent->right == tree)));
 
-	strm << "Label:" << tree->label << std::endl;
+    if(tree->is_leaf()) {
+        strm << "Label:" << tree->id << std::endl;
+    } else {
+        strm << "Node" << std::endl;
+    }
 	if (tree->left != nullptr) {
 		for (int j = 0; j < depth * 4; j++) {
             strm << " ";
