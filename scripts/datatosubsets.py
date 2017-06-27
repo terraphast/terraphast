@@ -12,9 +12,9 @@ SITES = []
 SPECIES_COUNT = 0
 
 with open(ARGS.input, "r") as f:
-    first_line = f.readline()
-    sites_count = int(first_line.split(" ")[1])
-    SPECIES_COUNT = int(first_line.split()[0])
+    first_line = f.readline().split(" ")
+    sites_count = int(first_line[1])
+    SPECIES_COUNT = int(first_line[0])
     if __debug__:
         print("Data file contains {} species with {} sites.".format(
             SPECIES_COUNT, sites_count))
