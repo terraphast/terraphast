@@ -40,22 +40,22 @@ index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& roo
 }
 
 mpz_class count_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
-	tree_enumerator<variants::count_callback> counter{{}};
+	tree_enumerator<variants::count_callback> counter{{}, num_leaves, constraints.size()};
 	return counter.run(num_leaves, constraints, root_leaf);
 }
 
 mpz_class count_supertree(index num_leaves, const constraints& constraints) {
-	tree_enumerator<variants::count_callback> counter{{}};
+	tree_enumerator<variants::count_callback> counter{{}, num_leaves, constraints.size()};
 	return counter.run(num_leaves, constraints);
 }
 
 bool check_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
-	tree_enumerator<variants::check_callback> counter{{}};
+	tree_enumerator<variants::check_callback> counter{{}, num_leaves, constraints.size()};
 	return counter.run(num_leaves, constraints, root_leaf) > 1;
 }
 
 bool check_supertree(index num_leaves, const constraints& constraints) {
-	tree_enumerator<variants::check_callback> counter{{}};
+	tree_enumerator<variants::check_callback> counter{{}, num_leaves, constraints.size()};
 	return counter.run(num_leaves, constraints) > 1;
 }
 

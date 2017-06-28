@@ -87,7 +87,7 @@ int main(int argc, char** argv) try {
 
 	std::cout << "Supertree:\n";
 	multitree_callback cb{std::cout, names};
-	tree_enumerator<decltype(cb)> enumerator{cb};
+	tree_enumerator<decltype(cb)> enumerator{cb, num_species, constraints.size()};
 	enumerator.run(num_species, constraints, root_species);
 
 } catch (std::exception& e) {
