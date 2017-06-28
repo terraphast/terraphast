@@ -14,7 +14,8 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
         if (species_map.count(id_to_label[tree->id]) == 1
             && getDataMatrix(missing_data, species_map.at(id_to_label[tree->id]),
                              partition)) {
-            auto leave = std::make_shared<Tree>(*tree);
+            auto leave = std::make_shared<Tree>();
+            leave->id = tree->id;
             leave->left = nullptr;
             leave->right = nullptr;
             leave->parent = nullptr;
@@ -30,7 +31,7 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
                                            id_to_label, partition);
         //Left and right subtrees are included -> common ancestor is included
         if (left != nullptr && right != nullptr) {
-            auto inner_node = std::make_shared<Tree>(*tree);
+            auto inner_node = std::make_shared<Tree>();
             left->parent = inner_node;
             right->parent = inner_node;
             inner_node->left = left;
