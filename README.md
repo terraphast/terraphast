@@ -16,7 +16,7 @@ Both enhancements were chosen such that the result is standard newick format if 
 ### Implemented:
 
 - We introduced an optional, **compressed tree output format**. This format makes printing to terminal faster, since not all possible trees are listed in full detail. See section *Enhanced Newick Format* above. [https://git.scc.kit.edu/bioinfo2017/terraces/issues/8]
-- **Memory allocation in large blocks**, and managing them with free lists. [https://git.scc.kit.edu/bioinfo2017/terraces/issues/37]
+- **Memory allocation in large blocks**, and managing them with free lists. [https://git.scc.kit.edu/bioinfo2017/terraces/issues/37, https://git.scc.kit.edu/bioinfo2017/terraces/issues/13]
 - **Deletion of unnecessary constraints**. [https://git.scc.kit.edu/bioinfo2017/terraces/issues/23]
 - **Improved data structures**: We replaced index vectors representing the current leaves by bitvectors with rank support, thus improving space requirements and the efficiency of constraint filtering. The union-find data structure could be improved by storing the set ranks in out-of-bounds indices, thus halving the storage. [https://git.scc.kit.edu/bioinfo2017/terraces/issues/29]
 - **Remap constraints**: By removing inner nodes from the constraint numbering, we were able to halve the space requirements of most of our data structures. [https://git.scc.kit.edu/bioinfo2017/terraces/issues/21]
