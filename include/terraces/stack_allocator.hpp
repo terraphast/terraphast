@@ -63,6 +63,10 @@ public:
 		m_fl->push(std::move(p));
 	}
 
+	friend bool operator==(const stack_allocator& lhs, const stack_allocator& rhs) {
+		return lhs.m_expected_size == rhs.m_expected_size;
+	}
+
 private:
 	T* system_allocate(std::size_t n) {
 		auto size = n * sizeof(T);
@@ -73,6 +77,11 @@ private:
 	free_list* m_fl;
 	std::size_t m_expected_size;
 };
+
+template <typename T>
+bool operator==(const stack_allocator<T>& lhs, const stack_allocator<T>& rhs) {
+	return !(lhs == rhs);
+}
 
 } // namespace utils
 } // namespace terraces
