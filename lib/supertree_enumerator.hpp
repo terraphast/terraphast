@@ -18,11 +18,18 @@ class tree_enumerator {
 private:
 	Callback cb;
 
+	utils::free_list fl1;
+	utils::free_list fl2;
+	utils::stack_allocator<index> m_leave_allocator;
+	utils::stack_allocator<index> m_c_occ_allocator;
+
 	result_type iterate(bipartition_iterator& bip_it, const bitvector& new_constraint_occ,
 	                    const constraints& constraints);
 
 public:
-	tree_enumerator(Callback cb) : cb{cb} {}
+	// TODO: use real sizes (otherwise this just falls back to what std::allocator does
+	tree_enumerator(Callback cb)
+	        : cb{cb}, m_leave_allocator{fl1, 3}, m_c_occ_allocator{fl2, 4} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
 	result_type run(index num_leaves, const constraints& constraints);
 	result_type run(const bitvector& leaves, const bitvector& constraint_occ,
@@ -32,8 +39,8 @@ public:
 template <typename Callback>
 auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constraints)
         -> result_type {
-	auto leaves = full_set(num_leaves);
-	auto c_occ = full_set(constraints.size());
+	auto leaves = full_set(num_leaves, m_leave_allocator);
+	auto c_occ = full_set(constraints.size(), m_c_occ_allocator);
 	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
 	return run(leaves, c_occ, constraints);
 }
@@ -41,8 +48,8 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 template <typename Callback>
 auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constraints,
                                     index root_leaf) -> result_type {
-	auto leaves = full_set(num_leaves);
-	auto c_occ = full_set(constraints.size());
+	auto leaves = full_set(num_leaves, m_leave_allocator);
+	auto c_occ = full_set(constraints.size(), m_c_occ_allocator);
 	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
 	// enter the call
 	cb.enter(leaves);
@@ -61,7 +68,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 			sets.merge(rep, i);
 		}
 	}
-	auto bip_it = bipartition_iterator{leaves, sets};
+	auto bip_it = bipartition_iterator{leaves, sets, m_leave_allocator};
 	return cb.exit(iterate(bip_it, c_occ, constraints));
 }
 
@@ -88,10 +95,9 @@ auto tree_enumerator<Callback>::run(const bitvector& leaves, const bitvector& co
 		return cb.exit(cb.base_unconstrained(leaves));
 	}
 
-	auto fl = utils::free_list{};
-	auto alloc = utils::stack_allocator<index>{fl, leaves.count()};
-	union_find sets = apply_constraints(leaves, new_constraint_occ, constraints, alloc);
-	bipartition_iterator bip_it(leaves, sets);
+	union_find sets =
+	        apply_constraints(leaves, new_constraint_occ, constraints, m_leave_allocator);
+	bipartition_iterator bip_it(leaves, sets, m_leave_allocator);
 
 	return iterate(bip_it, new_constraint_occ, constraints);
 }

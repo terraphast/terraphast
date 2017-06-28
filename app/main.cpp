@@ -59,21 +59,30 @@ int main(int argc, char** argv) try {
 		std::cout << as_newick(subtree, names) << "\n";
 	}
 	auto constraints = terraces::compute_constraints(subtrees);
-	auto num_constraints = constraints.size();
+	{
+		const auto num_constraints = constraints.size();
+		auto fl = terraces::utils::free_list{};
+		auto alloc = terraces::utils::stack_allocator<terraces::index>{fl, num_constraints};
 
-	std::cout << "Constraints:\n"
-	          << as_comma_separated_output(full_set(num_constraints), constraints, names)
-	          << "\n";
-
+		std::cout << "Constraints:\n"
+		          << as_comma_separated_output(full_set(num_constraints, alloc),
+		                                       constraints, names)
+		          << "\n";
+	}
 	auto duplicate = terraces::deduplicate_constraints(constraints);
-	num_constraints = constraints.size();
-	std::cout << "Deleted " << duplicate << " unnecessary constraints, " << num_constraints
-	          << " remaining\n";
+	{
+		const auto num_constraints = constraints.size();
+		auto fl = terraces::utils::free_list{};
+		auto alloc = terraces::utils::stack_allocator<terraces::index>{fl, num_constraints};
 
-	std::cout << "Remaining constraints:\n"
-	          << as_comma_separated_output(full_set(num_constraints), constraints, names)
-	          << "\n";
+		std::cout << "Deleted " << duplicate << " unnecessary constraints, "
+		          << num_constraints << " remaining\n";
 
+		std::cout << "Remaining constraints:\n"
+		          << as_comma_separated_output(full_set(num_constraints, alloc),
+		                                       constraints, names)
+		          << "\n";
+	}
 	num_species = terraces::remap_to_leaves(tree, constraints, names, root_species);
 
 	std::cout << "Supertree:\n";

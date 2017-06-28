@@ -21,7 +21,7 @@ union_find apply_constraints(const bitvector& leaves, const bitvector& c_occ, co
 constraints map_constraints(const bitvector& leaves, const constraints& cs);
 
 /** Returns a set containing all leaves of the given tree. */
-bitvector leave_occ(const tree& tree);
+bitvector leave_occ(const tree& tree, utils::stack_allocator<index> a);
 
 } // namespace terraces
 

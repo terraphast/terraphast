@@ -1,4 +1,5 @@
 #include <terraces/bipartitions.hpp>
+#include <terraces/stack_allocator.hpp>
 #include <terraces/supertree.hpp>
 #include <terraces/union_find.hpp>
 
@@ -22,7 +23,9 @@ template class tree_enumerator<debug::variants::logging_decorator<variants::coun
 template class tree_enumerator<debug::variants::stack_state_decorator<variants::count_callback>>;
 
 index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root) {
-	auto leaves = leave_occ(t);
+	auto fl = utils::free_list{};
+	auto alloc = utils::stack_allocator<index>{fl, t.size()};
+	auto leaves = leave_occ(t, alloc);
 	c = map_constraints(leaves, c);
 	auto new_names = name_map(leaves.count());
 	index i = 0;

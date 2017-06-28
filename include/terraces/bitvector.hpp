@@ -38,13 +38,14 @@ inline bool has_next_bit0(index block) { return block != 0; }
 inline index partial_popcount(index block, index i) { return popcount(block & prefix_mask(i)); }
 } // namespace bits
 
+template <typename Bitvector>
 class bitvector_iterator;
 
 template <typename Allocator = std::allocator<index>>
 class basic_bitvector {
 public:
 	using value_type = index;
-	using iterator = bitvector_iterator;
+	using iterator = bitvector_iterator<basic_bitvector<Allocator>>;
 
 private:
 	index m_size;
@@ -59,7 +60,7 @@ private:
 
 public:
 	/** Initializes a bitvector with given size. */
-	basic_bitvector(index size, Allocator alloc = {});
+	basic_bitvector(index size, Allocator alloc);
 	/** Sets a bit in the bitvector. */
 	void set(index i) {
 		assert(i < m_size);
@@ -138,23 +139,26 @@ public:
 	iterator begin() const;
 	iterator end() const;
 
+	Allocator get_allocator() const { return m_blocks.get_allocator(); }
+
 	bool operator<(const basic_bitvector& other) const;
 	bool operator==(const basic_bitvector& other) const;
 	bool operator!=(const basic_bitvector& other) const { return !(*this == other); }
 };
 
-using bitvector = basic_bitvector<>;
+using bitvector = basic_bitvector<utils::stack_allocator<index>>;
 
+template <typename Bitvector>
 class bitvector_iterator {
 public:
-	using value_type = bitvector::value_type;
+	using value_type = typename Bitvector::value_type;
 
 private:
-	const bitvector& m_set;
+	const Bitvector& m_set;
 	index m_index;
 
 public:
-	bitvector_iterator(const bitvector& set, index i) : m_set{set}, m_index{i} {}
+	bitvector_iterator(const Bitvector& set, index i) : m_set{set}, m_index{i} {}
 	bitvector_iterator& operator++() {
 		m_index = m_set.next_set(m_index);
 		return *this;
@@ -182,7 +186,6 @@ inline basic_bitvector<Alloc> full_set(index size, Alloc a) {
 	set.update_ranks();
 	return set;
 }
-inline bitvector full_set(index size) { return full_set(size, std::allocator<index>{}); }
 
 template <typename Alloc>
 inline index basic_bitvector<Alloc>::select(index i) const {

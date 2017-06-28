@@ -4,7 +4,7 @@ namespace terraces {
 
 bitvector filter_constraints(const bitvector& leaves, const bitvector& c_occ,
                              const constraints& c) {
-	bitvector result{c_occ.size()};
+	bitvector result{c_occ.size(), c_occ.get_allocator()};
 	for (auto c_i = c_occ.first_set(); c_i < c_occ.last_set(); c_i = c_occ.next_set(c_i)) {
 		if (leaves.get(c[c_i].left) && leaves.get(c[c_i].shared) &&
 		    leaves.get(c[c_i].right)) {
@@ -35,8 +35,8 @@ constraints map_constraints(const bitvector& leaves, const constraints& cs) {
 	return result;
 }
 
-bitvector leave_occ(const tree& tree) {
-	bitvector leaves{tree.size()};
+bitvector leave_occ(const tree& tree, utils::stack_allocator<index> a) {
+	bitvector leaves{tree.size(), a};
 	for (index i = 0; i < tree.size(); i++) {
 		if (is_leaf(tree[i])) {
 			leaves.set(i);

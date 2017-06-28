@@ -6,7 +6,7 @@ namespace terraces {
 namespace test {
 
 TEST_CASE("fast_set1", "[fast_set]") {
-	bitvector set{10};
+	basic_bitvector<std::allocator<index>> set{10, {}};
 	for (auto&& el : set) {
 		(void)el;
 		FAIL("element in empty set!");

@@ -17,6 +17,7 @@ public:
 	using bitvector = basic_bitvector<Alloc>;
 
 private:
+	Alloc m_alloc;
 	const bitvector& m_leaves;
 	const union_find& m_sets;
 	const bitvector m_set_rep;
@@ -25,13 +26,11 @@ private:
 	index m_bip;
 	index m_end;
 
-	Alloc m_alloc;
-
 	bool in_left_partition(index i) const;
 	bitvector find_set_reps() const;
 
 public:
-	basic_bipartition_iterator(const bitvector& leaves, const union_find& sets, Alloc a = {});
+	basic_bipartition_iterator(const bitvector& leaves, const union_find& sets, Alloc);
 	/** Moves to the next bipartition. */
 	void increase();
 	/** Returns true if this bipartition is valid. */
@@ -51,13 +50,14 @@ public:
 template <typename Alloc>
 std::ostream& operator<<(std::ostream& stream, const basic_bipartition_iterator<Alloc>& it);
 
-using bipartition_iterator = basic_bipartition_iterator<std::allocator<index>>;
+// using bipartition_iterator = basic_bipartition_iterator<std::allocator<index>>;
+using bipartition_iterator = basic_bipartition_iterator<utils::stack_allocator<index>>;
 
 template <typename Alloc>
 basic_bipartition_iterator<Alloc>::basic_bipartition_iterator(const bitvector& leaves,
                                                               const union_find& sets, Alloc a)
-        : m_leaves{leaves}, m_sets{sets}, m_set_rep{find_set_reps()}, m_subleaves{leaves.size(), a},
-          m_bip{0}, m_end{(1ull << (m_set_rep.count() - 1))}, m_alloc{a} {
+        : m_alloc{a}, m_leaves{leaves}, m_sets{sets}, m_set_rep{find_set_reps()},
+          m_subleaves{leaves.size(), a}, m_bip{0}, m_end{(1ull << (m_set_rep.count() - 1))} {
 	assert(m_set_rep.count() < 64);
 	increase();
 }

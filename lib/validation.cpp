@@ -11,9 +11,10 @@
 namespace terraces {
 
 std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>& mapping,
-                                         const bitvector& leaves) {
-	std::vector<bitvector> bips(t.size(), {0});
-	std::vector<bitvector> subtrees(t.size(), {leaves.count()});
+                                         const bitvector& leaves,
+                                         utils::stack_allocator<index> alloc) {
+	std::vector<bitvector> bips(t.size(), {0, alloc});
+	std::vector<bitvector> subtrees(t.size(), {leaves.count(), alloc});
 	foreach_postorder(t, [&](index i) {
 		auto n = t[i];
 		if (is_leaf(n)) {
@@ -45,17 +46,19 @@ std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>
 bool is_isomorphic(const tree_set& fst, const tree_set& snd) {
 	assert(fst.tree.size() == snd.tree.size());
 
-	auto leaves = leave_occ(fst.tree);
+	auto fl = utils::free_list{};
+	auto alloc = utils::stack_allocator<index>{fl, fst.tree.size()};
+	auto leaves = leave_occ(fst.tree, alloc);
 	std::vector<index> mapping(fst.tree.size());
 	std::iota(mapping.begin(), mapping.end(), 0);
-	auto fst_bip = tree_bipartitions(fst.tree, mapping, leaves);
+	auto fst_bip = tree_bipartitions(fst.tree, mapping, leaves, alloc);
 	for (index i = 0; i < snd.tree.size(); ++i) {
 		if (is_leaf(snd.tree[i])) {
 			const std::string& name = snd.names[i];
 			mapping[i] = fst.indices.at(name);
 		}
 	}
-	auto snd_bip = tree_bipartitions(snd.tree, mapping, leaves);
+	auto snd_bip = tree_bipartitions(snd.tree, mapping, leaves, alloc);
 
 	return std::equal(fst_bip.begin(), fst_bip.end(), snd_bip.begin(), snd_bip.end());
 }

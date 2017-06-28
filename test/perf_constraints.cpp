@@ -3,6 +3,7 @@
 
 #include "../lib/supertree_helpers.hpp"
 #include <terraces/constraints.hpp>
+#include <terraces/stack_allocator.hpp>
 
 #include <algorithm>
 #include <vector>
@@ -19,31 +20,37 @@ TEST_CASE("performance of constraints", "[.][performance][performance_constraint
 	auto vec_03 = std::vector<std::uint32_t>{};
 	for (auto i = 0u; i < 10u; ++i) {
 		{
-			auto leaves = full_set(3);
+			auto fl = utils::free_list{};
+			auto alloc = utils::stack_allocator<index>{fl, 3};
+			auto leaves = full_set(3, alloc);
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();
-			terraces::filter_constraints(leaves, full_set(c.size()), c);
+			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c);
 			t.stop();
 			vec_01.push_back(t.nanoseconds());
 		}
 		{
-			auto leaves = full_set(11);
+			auto fl = utils::free_list{};
+			auto alloc = utils::stack_allocator<index>{fl, 11};
+			auto leaves = full_set(11, alloc);
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();
-			terraces::filter_constraints(leaves, full_set(c.size()), c);
+			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c);
 			t.stop();
 			vec_02.push_back(t.nanoseconds());
 		}
 		{
-			auto leaves = full_set(13);
+			auto fl = utils::free_list{};
+			auto alloc = utils::stack_allocator<index>{fl, 13};
+			auto leaves = full_set(13, alloc);
 			leaves.clr(9);
 			leaves.update_ranks();
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();
-			terraces::filter_constraints(leaves, full_set(c.size()), c);
+			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c);
 			t.stop();
 			vec_03.push_back(t.nanoseconds());
 		}
