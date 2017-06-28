@@ -10,11 +10,15 @@
 
 typedef TerracesAnalysisTestParameter<const char*> TACountParameter;
 
-class ComplexTerracesAnalysis : public ::testing::TestWithParam<TACountParameter> {
+class TACountFixture : public ::testing::TestWithParam<TACountParameter> {
+};
+
+class TACheckIfTerraceFixture : public ::testing::TestWithParam<TACountParameter> {
 };
 
 static void test_terrace_analysis(const char *newick_file,
                                   const char *data_file,
+                                  const int ta_outspec,
                                   const char *trees_on_terrace) {
     input_data *read_data = parse_input_data(data_file);
     assert(read_data != nullptr);
@@ -31,7 +35,7 @@ static void test_terrace_analysis(const char *newick_file,
     mpz_init(terraceSize);
     mpz_set_ui(terraceSize, 0);
 
-    int errorCode = terraceAnalysis(m, read_tree, TA_COUNT, nullptr, &terraceSize);
+    int errorCode = terraceAnalysis(m, read_tree, ta_outspec, nullptr, &terraceSize);
 
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
@@ -325,20 +329,33 @@ TEST(TerracesAnalysis, example2_from_old_main) {
     fclose(f0);
 }
 
-TEST_P(ComplexTerracesAnalysis, ExamplesFromModifiedInput) {
+TEST_P(TACountFixture, ExamplesFromModifiedInput) {
     auto param = GetParam();
 
     std::promise<bool> promisedFinished;
     auto futureResult = promisedFinished.get_future();
     std::thread([param](std::promise<bool> &finished) {
-        test_terrace_analysis(param.newick_file, param.data_file, param.expected_value);
+        test_terrace_analysis(param.newick_file, param.data_file, TA_COUNT, param.expected_value);
         finished.set_value(true);
     }, std::ref(promisedFinished)).detach();
     EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(TIME_FOR_TESTS))
                 != std::future_status::timeout);
 }
 
-INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, ComplexTerracesAnalysis, ::testing::Values(
+TEST_P(TACheckIfTerraceFixture, ExamplesFromModifiedInput) {
+    auto param = GetParam();
+
+    std::promise<bool> promisedFinished;
+    auto futureResult = promisedFinished.get_future();
+    std::thread([param](std::promise<bool> &finished) {
+        test_terrace_analysis(param.newick_file, param.data_file, TA_DETECT, param.expected_value);
+        finished.set_value(true);
+    }, std::ref(promisedFinished)).detach();
+    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(TIME_FOR_TESTS))
+                != std::future_status::timeout);
+}
+
+INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACountFixture, ::testing::Values(
     TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
     TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35"),
     TACountParameter("../input/modified/Asplenium.nwk.1", "../input/modified/Asplenium.data.1", "1"),
@@ -350,6 +367,23 @@ INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, ComplexTerracesAnalysis, ::testing
     TACountParameter("../input/modified/Euphorbia.nwk.2", "../input/modified/Euphorbia.data.2", "759"),
     TACountParameter("../input/modified/Ficus.nwk.1", "../input/modified/Ficus.data.1", "283815"),
     TACountParameter("../input/modified/Ficus.nwk.2", "../input/modified/Ficus.data.2", "851445"),
-    TACountParameter("../input/modified/Ficus.nwk.3", "../input/modified/Ficus.data.3", "851445")
-    //TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "718346120625")
+    TACountParameter("../input/modified/Ficus.nwk.3", "../input/modified/Ficus.data.3", "851445"),
+    TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "718346120625")
 ));
+
+INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACheckIfTerraceFixture, ::testing::Values(
+    TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "0"),
+    TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "2"),
+    TACountParameter("../input/modified/Asplenium.nwk.1", "../input/modified/Asplenium.data.1", "0"),
+    TACountParameter("../input/modified/Asplenium.nwk.2", "../input/modified/Asplenium.data.2", "2"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.1", "../input/modified/Eucalyptus.data.1", "2"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.1", "../input/modified/Eucalyptus.data.2", "2"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "2"),
+    TACountParameter("../input/modified/Euphorbia.nwk.1", "../input/modified/Euphorbia.data.1", "2"),
+    TACountParameter("../input/modified/Euphorbia.nwk.2", "../input/modified/Euphorbia.data.2", "2"),
+    TACountParameter("../input/modified/Ficus.nwk.1", "../input/modified/Ficus.data.1", "2"),
+    TACountParameter("../input/modified/Ficus.nwk.2", "../input/modified/Ficus.data.2", "2"),
+    TACountParameter("../input/modified/Ficus.nwk.3", "../input/modified/Ficus.data.3", "2"),
+    TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "2")
+));
+
