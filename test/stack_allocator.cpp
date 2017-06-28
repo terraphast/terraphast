@@ -1,7 +1,7 @@
 
 #include <catch.hpp>
 
-#include "../lib/stack_allocator.hpp"
+#include "terraces/stack_allocator.hpp"
 
 namespace terraces {
 namespace tests {
