@@ -134,17 +134,13 @@ protected:
         return result;
     }
 
-    inline
     virtual T initialize_result_type() = 0;
 
-    inline
     virtual T scan_unconstraint_leaves(LeafSet &leaves) = 0;
 
-    inline
     virtual T combine_part_results(const T &left_part,
                                    const T &right_part) = 0;
 
-    inline
     virtual void combine_bipartition_results(T &aggregation,
                                              const T &new_results) = 0;
 };
