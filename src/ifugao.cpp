@@ -9,8 +9,8 @@
 
 std::tuple<std::shared_ptr<std::set<leaf_number> >,
         std::shared_ptr<std::set<leaf_number> > > get_nth_partition_tuple(
-        std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions,
-        size_t n) {
+        const std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions,
+        const size_t n) {
 
     auto part_one = std::make_shared<std::set<leaf_number> >();
     auto part_two = std::make_shared<std::set<leaf_number> >();

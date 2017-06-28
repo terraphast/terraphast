@@ -79,7 +79,7 @@ inline bool is_bit_set(size_t num, size_t n) {
  * @return the number of partition tuples that can be formed from the given list
  */
 inline size_t number_partition_tuples(
-        std::vector<std::shared_ptr<std::set<leaf_number>> > &partitions) {
+        const std::vector<std::shared_ptr<std::set<leaf_number>> > &partitions) {
     assert(partitions.size() > 1);
 
     return (1 << (partitions.size() - 1)) - 1;
@@ -96,7 +96,7 @@ std::set<leaf_number> extract_leaf_labels_from_supertree(
  * @return the n-th partition tuple formed from the given partition list
  */
 std::tuple<std::shared_ptr<std::set<leaf_number>>, std::shared_ptr<std::set<leaf_number>> > get_nth_partition_tuple(
-        std::vector<std::shared_ptr<std::set<leaf_number>> > &partitions, size_t n);
+        const std::vector<std::shared_ptr<std::set<leaf_number>> > &partitions, const size_t n);
 
 template <typename T>
 class TerraceAlgorithm {
@@ -111,8 +111,14 @@ public:
         }
 
         auto partitions = apply_constraints(leafs, constraints);
-        T result = initialize_result_type();
 
+        return traverse_partitions(constraints, partitions);
+    }
+protected:
+    inline
+    virtual T traverse_partitions(const std::vector<constraint> &constraints,
+                                  const std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions) {
+        T result = initialize_result_type();
         for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
             std::shared_ptr<std::set<leaf_number> > part_left;
             std::shared_ptr<std::set<leaf_number> > part_right;
@@ -130,7 +136,7 @@ public:
 
         return result;
     }
-protected:
+
     inline
     virtual T initialize_result_type() = 0;
 
@@ -197,6 +203,38 @@ protected:
     inline
     void combine_bipartition_results(size_t &aggregation, const size_t &new_results) {
         aggregation += new_results;
+    }
+};
+
+class CheckIfTerrace : public TerraceAlgorithm<bool> {
+protected:
+    inline
+    bool traverse_partitions(const std::vector<constraint> &constraints,
+                             const std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions) {
+        if(number_partition_tuples(partitions) > 1) {
+            return true;
+        }
+        return TerraceAlgorithm<bool>::traverse_partitions(constraints, partitions);
+    }
+
+    inline
+    bool initialize_result_type() {
+        return false;
+    }
+
+    inline
+    bool scan_unconstraint_leaves(const std::set<leaf_number> &leaves) {
+        return leaves.size() >= 3;
+    }
+
+    inline
+    bool combine_part_results(const bool &left_part, const bool &right_part) {
+        return left_part || right_part;
+    }
+
+    inline
+    void combine_bipartition_results(bool &aggregation, const bool &new_results) {
+        aggregation = (aggregation || new_results);
     }
 };
 
