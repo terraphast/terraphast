@@ -28,14 +28,6 @@ std::tuple<std::shared_ptr<LeafSet>,
     return std::make_tuple(part_one, part_two);
 }
 
-static std::shared_ptr<Tree> root(std::shared_ptr<Tree> t) {
-    if (t->parent == nullptr) {
-        return t;
-    }
-
-    return root(t->parent);
-}
-
 static std::vector<std::shared_ptr<Tree> > add_leaf_to_tree(
         std::shared_ptr<Tree> current_tree, const leaf_number leaf) {
 

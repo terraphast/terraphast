@@ -18,6 +18,14 @@ static void to_newick_string_rec(std::stringstream &ss,
 	}
 }
 
+std::shared_ptr<Tree> root(std::shared_ptr<Tree> t) {
+    if (t->parent == nullptr) {
+        return t;
+    }
+
+    return root(t->parent);
+}
+
 std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables) const {
 	std::stringstream ss;
 	to_newick_string_rec(ss, ids_to_lables, *this);

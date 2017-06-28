@@ -75,6 +75,8 @@ public:
 
 std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree);
 
+std::shared_ptr<Tree> root(const std::shared_ptr<Tree> tree);
+
 std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree);
 
 #endif /* IFUGAO_TREE_H */
