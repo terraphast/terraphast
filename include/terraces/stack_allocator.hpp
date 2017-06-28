@@ -2,7 +2,6 @@
 #define TERRACES_STACK_ALLOCATOR_HPP
 
 #include <cstdint>
-#include <iostream>
 #include <memory>
 #include <new>
 #include <utility>
@@ -15,16 +14,11 @@ class free_list {
 public:
 	free_list(std::size_t initial_capacity = 0) { m_list.reserve(initial_capacity); }
 
-	void push(std::unique_ptr<char[]> ptr) {
-		std::cout << "fl.push(" << static_cast<const void*>(ptr.get()) << ")\n";
-		m_list.push_back(std::move(ptr));
-	}
+	void push(std::unique_ptr<char[]> ptr) { m_list.push_back(std::move(ptr)); }
 
 	std::unique_ptr<char[]> pop() {
 		if (not m_list.empty()) {
 			auto ret = std::move(m_list.back());
-			std::cout << "fl.pop() [size=" << m_list.size() << "] -> "
-			          << static_cast<const void*>(ret.get()) << "\n";
 			m_list.pop_back();
 			return ret;
 		}
