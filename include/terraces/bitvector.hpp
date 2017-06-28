@@ -6,6 +6,8 @@
 #include <terraces/trees.hpp>
 #include <vector>
 
+#include "stack_allocator.hpp"
+
 #ifdef NDEBUG
 #define debug_code(x)                                                                              \
 	do {                                                                                       \
@@ -38,7 +40,8 @@ inline index partial_popcount(index block, index i) { return popcount(block & pr
 
 class bitvector_iterator;
 
-class bitvector {
+template <typename Allocator = std::allocator<index>>
+class basic_bitvector {
 public:
 	using value_type = index;
 	using iterator = bitvector_iterator;
@@ -46,8 +49,8 @@ public:
 private:
 	index m_size;
 	// TODO align blocks for SSE
-	std::vector<value_type> m_blocks;
-	std::vector<value_type> m_ranks;
+	std::vector<value_type, Allocator> m_blocks;
+	std::vector<value_type, Allocator> m_ranks;
 	index m_count;
 
 	debug_var(bool m_ranks_dirty);
@@ -56,7 +59,7 @@ private:
 
 public:
 	/** Initializes a bitvector with given size. */
-	bitvector(index size);
+	basic_bitvector(index size, Allocator alloc = {});
 	/** Sets a bit in the bitvector. */
 	void set(index i) {
 		assert(i < m_size);
@@ -88,9 +91,9 @@ public:
 	/** Inverts all bits in the bitvector. */
 	void invert();
 	/** Applies element-wise xor from another bitvector. */
-	void bitwise_xor(const bitvector& other);
+	void bitwise_xor(const basic_bitvector& other);
 	/** Sets the values of this bitvector to the bitwise or of two bitvectors. */
-	void set_bitwise_or(const bitvector& fst, const bitvector& snd);
+	void set_bitwise_or(const basic_bitvector& fst, const basic_bitvector& snd);
 
 	/** Updates the internal data structures after editing the vector. */
 	void update_ranks();
@@ -135,10 +138,12 @@ public:
 	iterator begin() const;
 	iterator end() const;
 
-	bool operator<(const bitvector& other) const;
-	bool operator==(const bitvector& other) const;
-	bool operator!=(const bitvector& other) const { return !(*this == other); }
+	bool operator<(const basic_bitvector& other) const;
+	bool operator==(const basic_bitvector& other) const;
+	bool operator!=(const basic_bitvector& other) const { return !(*this == other); }
 };
+
+using bitvector = basic_bitvector<>;
 
 class bitvector_iterator {
 public:
@@ -159,25 +164,109 @@ public:
 	const index& operator*() const { return m_index; }
 };
 
-inline auto bitvector::begin() const -> iterator { return {*this, first_set()}; }
+template <typename Alloc>
+inline auto basic_bitvector<Alloc>::begin() const -> iterator {
+	return {*this, first_set()};
+}
 
-inline auto bitvector::end() const -> iterator { return {*this, last_set()}; }
+template <typename Alloc>
+inline auto basic_bitvector<Alloc>::end() const -> iterator {
+	return {*this, last_set()};
+}
 
-/** Returns a bitvector containing size elements. */
-inline bitvector full_set(index size) {
-	bitvector set{size};
+/** Returns a basic_bitvector<Alloc> containing size elements. */
+template <typename Alloc>
+inline basic_bitvector<Alloc> full_set(index size, Alloc a) {
+	(void)a;
+	basic_bitvector<Alloc> set{size, a};
 	set.invert();
 	set.update_ranks();
 	return set;
 }
+inline bitvector full_set(index size) { return full_set(size, std::allocator<index>{}); }
 
-inline index bitvector::select(index i) const {
+template <typename Alloc>
+inline index basic_bitvector<Alloc>::select(index i) const {
 	assert(i < count());
 	auto it = first_set();
 	for (index j = 0; j < i; ++j) {
 		++it;
 	}
 	return it;
+}
+
+template <typename Alloc>
+basic_bitvector<Alloc>::basic_bitvector(index size, Alloc a)
+        : m_size{size}, m_blocks(size / 64 + 1, a), m_ranks(m_blocks.size() + 1, a) {
+	add_sentinel();
+	debug_code(m_ranks_dirty = false);
+}
+
+template <typename Alloc>
+void basic_bitvector<Alloc>::add_sentinel() {
+	// add sentinel bit for iteration
+	m_blocks[bits::block_index(m_size)] |= bits::set_mask(m_size);
+}
+
+template <typename Alloc>
+void basic_bitvector<Alloc>::blank() {
+	for (auto& el : m_blocks) {
+		el = 0;
+	}
+	add_sentinel();
+	debug_code(m_ranks_dirty = true);
+}
+
+template <typename Alloc>
+void basic_bitvector<Alloc>::bitwise_xor(const basic_bitvector<Alloc>& other) {
+	assert(size() == other.size());
+	for (index b = 0; b < m_blocks.size(); ++b) {
+		m_blocks[b] ^= other.m_blocks[b];
+	}
+	add_sentinel();
+	debug_code(m_ranks_dirty = true);
+}
+
+template <typename Alloc>
+void basic_bitvector<Alloc>::invert() {
+	for (index b = 0; b < m_blocks.size() - 1; ++b) {
+		m_blocks[b] = ~m_blocks[b];
+	}
+	m_blocks[m_blocks.size() - 1] ^= bits::prefix_mask(bits::shift_index(m_size));
+	debug_code(m_ranks_dirty = true);
+}
+
+template <typename Alloc>
+void basic_bitvector<Alloc>::set_bitwise_or(const basic_bitvector<Alloc>& fst,
+                                            const basic_bitvector<Alloc>& snd) {
+	assert(size() == fst.size() && size() == snd.size());
+	for (index b = 0; b < m_blocks.size(); ++b) {
+		m_blocks[b] = fst.m_blocks[b] | snd.m_blocks[b];
+	}
+	debug_code(m_ranks_dirty = true);
+}
+
+template <typename Alloc>
+void basic_bitvector<Alloc>::update_ranks() {
+	m_count = 0;
+	for (index b = 0; b < m_blocks.size(); ++b) {
+		m_count += bits::popcount(m_blocks[b]);
+		m_ranks[b + 1] = m_count;
+	}
+	assert(m_count > 0);
+	debug_code(m_ranks_dirty = false);
+}
+
+template <typename Alloc>
+bool basic_bitvector<Alloc>::operator<(const basic_bitvector<Alloc>& other) const {
+	assert(size() == other.size());
+	return m_blocks < other.m_blocks;
+}
+
+template <typename Alloc>
+bool basic_bitvector<Alloc>::operator==(const basic_bitvector<Alloc>& other) const {
+	assert(size() == other.size());
+	return m_blocks == other.m_blocks;
 }
 
 } // namespace terraces
