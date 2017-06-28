@@ -3,34 +3,77 @@
 #ifndef IFUGAO_LEAF_SET_H
 #define IFUGAO_LEAF_SET_H
 
-//#include <boost/dynamic_bitset.hpp>
+#include <boost/dynamic_bitset.hpp>
 #include <tuple>
-#include <vector>
-#include <map>
+#include <set>
 
 #include "constraints.h"
 #include "UnionFind.h"
 
+template <class LSClass>
 class LeafSet {
 public:
     LeafSet() = default;
     LeafSet(const LeafSet&) = default;
     virtual ~LeafSet() = default;
-    virtual void apply_constraints(const std::vector<constraint> &constraints) = 0;
-    virtual bool contains(size_t leaf) = 0;
-    virtual std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet> > get_nth_partition_tuple(size_t n) = 0;
-    //virtual size_t size() const = 0;
-
-    //virtual bool compression_necessary();
-    //virtual LeafSet compress();
+    virtual bool contains(const size_t leaf) const = 0;
+    virtual size_t size() const = 0;
+    virtual leaf_number pop() = 0;
+    virtual LSClass& operator&=(const LSClass &other) = 0;
 };
 
-class StandardFindLeafSet : public LeafSet {
+class SimpleLeafSet : public LeafSet<SimpleLeafSet>, std::set<leaf_number> {
 public:
-    void apply_constraints(const std::vector<constraint> &constraints);
+    typedef std::set<leaf_number>::iterator iterator;
+    typedef std::set<leaf_number>::iterator const_iterator;
+    typedef leaf_number value_type;
+
+    SimpleLeafSet() = default;
+    SimpleLeafSet (std::initializer_list<leaf_number> l) : std::set<leaf_number>(l) {
+    }
+
+    inline
+    static SimpleLeafSet create(size_t size) {
+        SimpleLeafSet leaves;
+        for (size_t k = 0; k < size; k++) {
+            leaves.insert(leaf_number(k));
+        }
+        return leaves;
+    }
+
+    inline
+    bool contains(size_t leaf) const {
+        return this->count(leaf) > 0;
+    }
+    inline size_t size() const {
+        return std::set<leaf_number>::size();
+    }
+    inline
+    iterator begin() const {
+        return std::set<leaf_number>::begin();
+    }
+    inline
+    iterator end() const {
+        return std::set<leaf_number>::end();
+    }
+    inline
+    std::pair<iterator, bool> insert(const leaf_number l) {
+        return std::set<leaf_number>::insert(l);
+    }
+    inline leaf_number pop() {
+        auto itr = this->begin();
+        auto first_elem = *itr;
+        this->erase(itr);
+        return first_elem;
+    }
+    inline
+    SimpleLeafSet& operator&=(const SimpleLeafSet &other) {
+        std::set<leaf_number>::insert(other.begin(), other.end());
+        return *this;
+    }
 };
 
-class UnionFindLeafSet : public LeafSet {
+class UnionFindLeafSet  {
 public:
     UnionFindLeafSet(const UnionFindLeafSet& obj) {
         data_structure = obj.data_structure;
@@ -42,9 +85,10 @@ public:
         set_list = std::make_shared<std::vector<std::shared_ptr<UnionFindLeafSet> > >();
     }
 
-    void apply_constraints(const std::vector<constraint> &constraints);
     bool contains(size_t leaf);
-    std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet>> get_nth_partition_tuple(size_t n);
+
+    void apply_constraints(const std::vector<constraint> &constraints);
+    std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>> get_nth_partition_tuple(size_t n);
 private:
     std::shared_ptr<UnionFind> data_structure;
     size_t repr; //this is the number of the representative of this set. its an index to the array of the union find data structure
@@ -59,9 +103,5 @@ private:
         return repr;
     }
 };
-
-inline std::shared_ptr<LeafSet> create_leafSet(size_t num_elems) {
-    return std::make_shared<UnionFindLeafSet>(num_elems);
-}
 
 #endif // IFUGAO_LEAF_SET_H
