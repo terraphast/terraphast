@@ -2,9 +2,12 @@
 #include <fstream>
 #include <future>
 
+#include "gtest/gtest.h"
+
 #include "terraces.h"
 #include "util.h"
 #include "parameters.h"
+#include "debug.h"
 
 #define TIME_FOR_TESTS 1000*30
 
@@ -131,12 +134,12 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     std::string root_species_name;
     std::vector<std::string> id_to_label;
     std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name, id_to_label);
-    auto leafs = extract_leaf_labels_from_supertree(r_tree);
+    auto leaves = SimpleLeafSet::create(id_to_label.size());
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
     FindAllRootedTrees get_trees;
-    auto result = get_trees.scan_terrace(leafs, constraints);
-    ASSERT_EQ(CountAllRootedTrees().scan_terrace(leafs, constraints), 15);
+    ASSERT_EQ(CountAllRootedTrees().scan_terrace(leaves, constraints), 15);
+    auto result = get_trees.scan_terrace(leaves, constraints);
     ASSERT_EQ(result.size(), 15);
 
     ASSERT_EQ(result[0]->to_newick_string(id_to_label, root_species_name), "(s3,((s5,s1),s2),s4);");

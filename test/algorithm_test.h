@@ -54,10 +54,7 @@ static void test_rooted_trees(const char* newick_file, const char* data_file, lo
         }
     }
 
-    std::set<leaf_number> leaves;
-    for (size_t k = 0; k < id_to_label.size(); k++) {
-        leaves.insert(leaf_number(k));
-    }
+    auto leaves = SimpleLeafSet::create(id_to_label.size());
 
     CountAllRootedTrees algo;
     auto result = algo.scan_terrace(leaves, extract_constraints_from_supertree(rtree, m, id_to_label));
@@ -71,7 +68,7 @@ static void test_rooted_trees(const char* newick_file, const char* data_file, lo
 
 TEST(ApplyConstraintsTest, example_from_slides) {
 
-    std::set<leaf_number> leaves = {1, 2, 3, 4, 5};
+    SimpleLeafSet leaves = {1, 2, 3, 4, 5};
 
     std::vector<constraint> constraints;
 
@@ -81,8 +78,7 @@ TEST(ApplyConstraintsTest, example_from_slides) {
     constraints.push_back(cons1);
     constraints.push_back(cons2);
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > result =
-            apply_constraints(leaves, constraints);
+    auto result = apply_constraints(leaves, constraints);
 
     ASSERT_EQ(result.size(), 3);
 
@@ -93,7 +89,7 @@ TEST(ApplyConstraintsTest, example_from_slides) {
 
 TEST(ApplyConstraintsTest, merge_all_sets) {
 
-    std::set<leaf_number> leaves = {1, 2, 3, 4, 5};
+    SimpleLeafSet leaves = {1, 2, 3, 4, 5};
 
     std::vector<constraint> constraints;
 
@@ -107,8 +103,7 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
     constraints.push_back(cons3);
     constraints.push_back(cons4);
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > result =
-            apply_constraints(leaves, constraints);
+    auto result = apply_constraints(leaves, constraints);
 
     ASSERT_EQ(result.size(), 1);
 
@@ -118,7 +113,7 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
 
 TEST(ApplyConstraintsTest, no_merges) {
 
-    std::set<leaf_number> leaves = {1, 2, 3, 4, 5};
+    SimpleLeafSet leaves = {1, 2, 3, 4, 5};
 
     std::vector<constraint> constraints;
 
@@ -132,7 +127,7 @@ TEST(ApplyConstraintsTest, no_merges) {
 
 TEST(GetAllBinaryTrees, with_tree_leafs) {
 
-    std::set<leaf_number> leafs = {0, 1, 2};
+    SimpleLeafSet leafs = {0, 1, 2};
     std::vector<std::string> id_to_label;
     id_to_label.push_back("1");
     id_to_label.push_back("2");
@@ -149,7 +144,7 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
 
 TEST(GetAllBinaryTrees, with_four_leafs) {
 
-    std::set<leaf_number> leafs = {0, 1, 2, 3};
+    SimpleLeafSet leafs = {0, 1, 2, 3};
     std::vector<std::string> id_to_label;
     id_to_label.push_back("1");
     id_to_label.push_back("2");
@@ -179,7 +174,7 @@ TEST(GetAllBinaryTrees, with_four_leafs) {
 
 TEST(ApplyConstraintsTest, merges_to_two_parts) {
 
-    std::set<leaf_number> leafs = {1, 2, 3, 4};
+    SimpleLeafSet leafs = {1, 2, 3, 4};
 
     std::vector<constraint> constraints;
 
@@ -223,17 +218,17 @@ TEST(ExtractConstraintsFromTree, example_from_slides) {
 
 TEST(GetNthPartitionTuple, example_with_two_parts) {
 
-    std::set<leaf_number> part1 = {1, 2};
-    std::set<leaf_number> part2 = {3};
+    SimpleLeafSet part1 = {1, 2};
+    SimpleLeafSet part2 = {3};
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
+    std::vector<std::shared_ptr<SimpleLeafSet> > partitions;
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part1));
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part2));
 
     ASSERT_EQ(number_partition_tuples(partitions), 1);
 
-    std::shared_ptr<std::set<leaf_number> > part_one;
-    std::shared_ptr<std::set<leaf_number> > part_two;
+    std::shared_ptr<SimpleLeafSet> part_one;
+    std::shared_ptr<SimpleLeafSet> part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
     ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
     ASSERT_THAT(*part_two, testing::ElementsAre(3));
@@ -241,19 +236,19 @@ TEST(GetNthPartitionTuple, example_with_two_parts) {
 
 TEST(GetNthPartitionTuple, example_from_slides) {
 
-    std::set<leaf_number> part1 = {1, 2};
-    std::set<leaf_number> part2 = {3};
-    std::set<leaf_number> part3 = {4, 5};
+    SimpleLeafSet part1 = {1, 2};
+    SimpleLeafSet part2 = {3};
+    SimpleLeafSet part3 = {4, 5};
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part3));
+    std::vector<std::shared_ptr<SimpleLeafSet> > partitions;
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part1));
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part2));
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part3));
 
     ASSERT_EQ(number_partition_tuples(partitions), 3);
 
-    std::shared_ptr<std::set<leaf_number> > part_one;
-    std::shared_ptr<std::set<leaf_number> > part_two;
+    std::shared_ptr<SimpleLeafSet> part_one;
+    std::shared_ptr<SimpleLeafSet> part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
     ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
     ASSERT_THAT(*part_two, testing::ElementsAre(3, 4, 5));
@@ -267,21 +262,21 @@ TEST(GetNthPartitionTuple, example_from_slides) {
 
 TEST(GetNthPartitionTuple, with_four_partitions) {
 
-    std::set<leaf_number> part1 = {1, 2};
-    std::set<leaf_number> part2 = {3};
-    std::set<leaf_number> part3 = {4, 5};
-    std::set<leaf_number> part4 = {6, 7, 8};
+    SimpleLeafSet part1 = {1, 2};
+    SimpleLeafSet part2 = {3};
+    SimpleLeafSet part3 = {4, 5};
+    SimpleLeafSet part4 = {6, 7, 8};
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > partitions;
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part1));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part2));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part3));
-    partitions.push_back(std::make_shared<std::set<leaf_number>>(part4));
+    std::vector<std::shared_ptr<SimpleLeafSet> > partitions;
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part1));
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part2));
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part3));
+    partitions.push_back(std::make_shared<SimpleLeafSet>(part4));
 
     ASSERT_EQ(number_partition_tuples(partitions), 7);
 
-    std::shared_ptr<std::set<leaf_number> > part_one;
-    std::shared_ptr<std::set<leaf_number> > part_two;
+    std::shared_ptr<SimpleLeafSet> part_one;
+    std::shared_ptr<SimpleLeafSet> part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
     ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
     ASSERT_THAT(*part_two, testing::ElementsAre(3, 4, 5, 6, 7, 8));
@@ -308,7 +303,7 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
 
 TEST(FindAllRootedTrees, example_from_slides) {
 
-    std::set<leaf_number> leafs = {0, 1, 2, 3, 4};
+    SimpleLeafSet leaves = {0, 1, 2, 3, 4};
     std::vector<std::string> id_to_label;
     id_to_label.push_back("1");
     id_to_label.push_back("2");
@@ -325,7 +320,7 @@ TEST(FindAllRootedTrees, example_from_slides) {
     constraints.push_back(cons2);
 
     FindAllRootedTrees algo;
-    auto result = algo.scan_terrace(leafs, constraints);
+    auto result = algo.scan_terrace(leaves, constraints);
 
     ASSERT_EQ(result.size(), 9);
     ASSERT_EQ(result[0]->to_newick_string(id_to_label), "((2,1),((5,3),4));");
@@ -340,7 +335,7 @@ TEST(FindAllRootedTrees, example_from_slides) {
 }
 
 TEST(FindConstraintsTest, example_from_slides) {
-    std::set<leaf_number> leaves = {1, 2, 3};
+    SimpleLeafSet leaves = {1, 2, 3};
     std::vector<std::string> id_to_label;
     id_to_label.push_back("1");
     id_to_label.push_back("2");

@@ -7,21 +7,21 @@
 #include <sstream>
 #include <iomanip>
 
-std::tuple<std::shared_ptr<std::set<leaf_number> >,
-        std::shared_ptr<std::set<leaf_number> > > get_nth_partition_tuple(
-        const std::vector<std::shared_ptr<std::set<leaf_number> > > &partitions,
+std::tuple<std::shared_ptr<SimpleLeafSet>,
+        std::shared_ptr<SimpleLeafSet> > get_nth_partition_tuple(
+        const std::vector<std::shared_ptr<SimpleLeafSet> > &partitions,
         const size_t n) {
 
-    auto part_one = std::make_shared<std::set<leaf_number> >();
-    auto part_two = std::make_shared<std::set<leaf_number> >();
+    auto part_one = std::make_shared<SimpleLeafSet>();
+    auto part_two = std::make_shared<SimpleLeafSet>();
 
     assert(n > 0 && n <= number_partition_tuples(partitions));
 
     for (size_t i = 0; i < partitions.size(); i++) {
         if (is_bit_set(n, i)) {
-            part_one->insert(partitions[i]->begin(), partitions[i]->end());
+            *part_one &= *partitions[i];
         } else {
-            part_two->insert(partitions[i]->begin(), partitions[i]->end());
+            *part_two &= *partitions[i];
         }
     }
 
@@ -69,25 +69,22 @@ static std::vector<std::shared_ptr<Tree> > add_leaf_to_tree(
 }
 
 std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
-        const std::set<leaf_number> &leafs) {
+        SimpleLeafSet &leaves) {
 
     std::vector<std::shared_ptr<Tree> > result;
-    if (leafs.size() == 0) {
+    if (leaves.size() == 0) {
         return result;
     }
 
-    auto itr = leafs.begin();
-    leaf_number next_leaf = *itr;
-    itr++;
-    std::set<leaf_number> rest_leafs(itr, leafs.end());
+    auto next_leaf = leaves.pop();
 
-    if (leafs.size() == 1) {
+    if (leaves.size() == 0) {
         auto t = std::make_shared<Tree>(next_leaf);
         result.push_back(t);
         return result;
     }
 
-    for (auto t : get_all_binary_trees(rest_leafs)) {
+    for (auto t : get_all_binary_trees(leaves)) {
         auto new_trees = add_leaf_to_tree(t, next_leaf);
         result.insert(result.end(), new_trees.begin(), new_trees.end());
     }
@@ -114,15 +111,16 @@ std::vector<std::shared_ptr<Tree> > merge_subtrees(
     return merged_trees;
 }
 
-std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
-        const std::set<leaf_number> &leaves,
+std::vector<std::shared_ptr<SimpleLeafSet> > apply_constraints(
+        const SimpleLeafSet &leaves,
         const std::vector<constraint> &constraints) {
 
-    std::vector<std::shared_ptr<std::set<leaf_number> > > sets;
+    std::vector<std::shared_ptr<SimpleLeafSet> > sets;
+    sets.reserve(leaves.size());
 
     for (leaf_number l : leaves) {
         // create an empty set for each leave
-        std::shared_ptr<std::set<leaf_number>> set(new std::set<leaf_number>);
+        auto set = std::make_shared<SimpleLeafSet>();
         set->insert(l);
         sets.push_back(set);
     }
@@ -134,12 +132,12 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
 
     for (constraint cons : constraints) {
         for (size_t i = 0; i < sets.size(); i++) {
-            if (sets[i]->find(cons.smaller_left) != sets[i]->end()) {
+            if (sets[i]->contains(cons.smaller_left)) {
                 // set contains the left constraint
                 found_left_constraint = true;
                 index_containing_left_constraint = i;
             }
-            if (sets[i]->find(cons.smaller_right) != sets[i]->end()) {
+            if (sets[i]->contains(cons.smaller_right)) {
                 // set contains the right constraint
                 found_right_constraint = true;
                 index_containing_right_constraint = i;
@@ -154,10 +152,9 @@ std::vector<std::shared_ptr<std::set<leaf_number> > > apply_constraints(
         if (index_containing_left_constraint
             != index_containing_right_constraint) {
             // sets need to be merged
-            sets[index_containing_left_constraint]->insert(
-                    sets[index_containing_right_constraint]->begin(),
-                    sets[index_containing_right_constraint]->end());
-            sets.erase(sets.begin() + static_cast<decltype(sets)::difference_type>(index_containing_right_constraint));
+            *sets[index_containing_left_constraint] &= *sets[index_containing_right_constraint];
+            sets.erase(sets.begin() + static_cast<std::vector<std::shared_ptr<SimpleLeafSet> >::difference_type>(
+                                              index_containing_right_constraint));
         }
     }
     return sets;
@@ -206,27 +203,6 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_tree_rec(
     return std::make_tuple(l_left_most, r_right_most);
 }
 
-std::set<leaf_number> extract_leaf_labels_from_supertree(
-        std::shared_ptr<Tree> tree) {
-
-    std::set<leaf_number> result;
-
-    if (tree == nullptr) {
-        return result;
-    }
-
-    auto result_left = extract_leaf_labels_from_supertree(tree->left);
-    result.insert(result_left.begin(), result_left.end());
-    auto result_right = extract_leaf_labels_from_supertree(tree->right);
-    result.insert(result_right.begin(), result_right.end());
-
-    if (tree->is_leaf()) {
-        result.insert(tree->id);
-    }
-
-    return result;
-}
-
 std::vector<constraint> extract_constraints_from_tree(
         const std::shared_ptr<Tree> supertree) {
     std::vector<constraint> constraints;
@@ -238,24 +214,24 @@ std::vector<constraint> extract_constraints_from_tree(
     return constraints;
 }
 
-std::vector<constraint> find_constraints(const std::set<leaf_number> &leaves,
+std::vector<constraint> find_constraints(const SimpleLeafSet &leaves,
                                          const std::vector<constraint> &constraints) {
 
     std::vector<constraint> valid_constraints;
 
     for (constraint cons : constraints) {
         if (cons.smaller_left == cons.bigger_left) {
-            if (leaves.find(cons.smaller_left) != leaves.end()
-                && leaves.find(cons.smaller_right) != leaves.end()
-                && leaves.find(cons.bigger_right) != leaves.end()) {
+            if (leaves.contains(cons.smaller_left)
+                && leaves.contains(cons.smaller_right)
+                && leaves.contains(cons.bigger_right)) {
                 // constraint is valid on leaf set
                 valid_constraints.push_back(cons);
             }
         } else {
             // smaller_right == bigger_right
-            if (leaves.find(cons.smaller_left) != leaves.end()
-                && leaves.find(cons.smaller_right) != leaves.end()
-                && leaves.find(cons.bigger_left) != leaves.end()) {
+            if (leaves.contains(cons.smaller_left)
+                && leaves.contains(cons.smaller_right)
+                && leaves.contains(cons.bigger_left)) {
                 // constraint is valid on leaf set
                 valid_constraints.push_back(cons);
             }

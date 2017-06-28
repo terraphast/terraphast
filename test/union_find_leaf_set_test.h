@@ -15,8 +15,8 @@ TEST(DISABLED_get_nth_partition_tuple, no_constraints) {
     std::vector<constraint> constraints;
     leafset.apply_constraints(constraints);
 
-    std::shared_ptr<LeafSet> part_left;
-    std::shared_ptr<LeafSet> part_right;
+    std::shared_ptr<UnionFindLeafSet> part_left;
+    std::shared_ptr<UnionFindLeafSet> part_right;
     std::tie(part_left, part_right) = leafset.get_nth_partition_tuple(1);
 
     ASSERT_EQ(part_left->contains(0), true);
@@ -44,8 +44,8 @@ TEST(DISABLED_get_nth_partition_tuple, only_one_set) {
 
     leafset.apply_constraints(constraints);
 
-    std::shared_ptr<LeafSet> part_left;
-    std::shared_ptr<LeafSet> part_right;
+    std::shared_ptr<UnionFindLeafSet> part_left;
+    std::shared_ptr<UnionFindLeafSet> part_right;
     std::tie(part_left, part_right) = leafset.get_nth_partition_tuple(1);
 
     for (size_t i = 0; i < 10; i++) {
@@ -62,8 +62,8 @@ TEST(DISABLED_get_nth_partition_tuple, only_one_leaf) {
 
     leafset.apply_constraints(constraints);
 
-    std::shared_ptr<LeafSet> part_left;
-    std::shared_ptr<LeafSet> part_right;
+    std::shared_ptr<UnionFindLeafSet> part_left;
+    std::shared_ptr<UnionFindLeafSet> part_right;
     std::tie(part_left, part_right) = leafset.get_nth_partition_tuple(1);
 
     ASSERT_EQ(part_left->contains(1), true);

@@ -1,6 +1,6 @@
 #include "leaf_set.h"
 
-#include <set>
+#include <map>
 
 #include "debug.h"
 
@@ -34,7 +34,7 @@ bool UnionFindLeafSet::contains(size_t leaf) {
 
 //TODO speed can be improved, if the caller allocates the memory for part_one and part_two and hands the adresses to the callee as argument.
 //so we dont have to allocate new memory each time this method is called.
-std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet>> UnionFindLeafSet::get_nth_partition_tuple(size_t n) {
+std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>> UnionFindLeafSet::get_nth_partition_tuple(size_t n) {
     //idea: it may be possible to copy the datastructure only once, since the two sets are disjoint
 
     //TODO: Only heare because code is commented out!
@@ -74,13 +74,9 @@ std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet>> UnionFindLeafSet:
     part_one->set_repr(part_one->get_data_structure()->find(part_one->get_repr()));
     part_two->set_repr(part_two->get_data_structure()->find(part_two->get_repr()));*/
 
-    auto p1 = create_leafSet(1);
-    auto p2 = create_leafSet(1);
+    auto p1 = std::make_shared<UnionFindLeafSet>(1);
+    auto p2 = std::make_shared<UnionFindLeafSet>(1);
 
-    return std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet>>(p1, p2);
-}
-
-void StandardFindLeafSet::apply_constraints(const std::vector<constraint> &constraints) {
-    dout(constraints.size()<< "\n");
+    return std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>(p1, p2);
 }
 

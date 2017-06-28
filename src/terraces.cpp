@@ -104,10 +104,7 @@ int terraceAnalysis(missingData *m,
     //                               extract_constraints_from_supertree(rtree, m));
     //dout("===== TREES: " << r.size() << "\n");
 
-    std::set<leaf_number> leaves;
-    for (size_t k = 0; k < id_to_lable.size(); k++) {
-        leaves.insert(leaf_number(k));
-    }
+    auto leaves = SimpleLeafSet::create(id_to_lable.size());
 
     size_t count = 0;
     if(countTrees) {
