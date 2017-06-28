@@ -2,6 +2,7 @@
 #define TERRACES_STACK_ALLOCATOR_HPP
 
 #include <cstdint>
+#include <iostream>
 #include <memory>
 #include <new>
 #include <utility>
@@ -45,13 +46,18 @@ public:
 	using value_type = T;
 
 	T* allocate(std::size_t n) {
-		if (n != m_expected_size) {
+		std::clog << "allocate[expected: " << m_expected_size << "] " << n << " * "
+		          << sizeof(T) << " = " << n * sizeof(T) << " Bytes: ";
+		if (n > m_expected_size) {
+			std::clog << "system-allocator\n";
 			return system_allocate(n);
 		}
 		auto ret = m_fl->pop();
 		if (ret == nullptr) {
+			std::clog << "system-allocator [empty cache]\n";
 			return system_allocate(n);
 		}
+		std::clog << "cached\n";
 		return reinterpret_cast<T*>(ret.release());
 	}
 
