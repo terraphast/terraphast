@@ -11,7 +11,7 @@ set(COMMON_LIBRARIEY ${GMP_LIBRARIES})
 
 include_directories(include)
 
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -fomit-frame-pointer -funroll-loops")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fomit-frame-pointer -funroll-loops")
 
 # Guard against in-source builds and bad build-type strings
 include(ConfigSafeGuards)
