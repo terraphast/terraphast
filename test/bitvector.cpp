@@ -118,7 +118,7 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	basic_bitvector<std::allocator<index>> b2(500, {});
 	b2.set(128);
 	// bitvector b3(1042);
-	basic_bitvector<std::allocator<index>> b3(1024, {});
+	basic_bitvector<std::allocator<index>> b3(1042, {});
 	CHECK(b.rank(10) == 1);
 	CHECK(b.rank(63) == 1);
 	CHECK(b.rank(64) == 2);
