@@ -79,11 +79,11 @@ TEST(Util, generate_induced_tree) {
 
     auto part0 = generate_induced_tree(r_tree, example1, species_map, id_to_label, 0);
     ASSERT_TRUE(part0 != nullptr);
-    ASSERT_EQ(part0->to_newick_string(id_to_label), "(s1,s2);");
+    ASSERT_EQ(part0->to_newick_string(id_to_label), std::string("(s1,s2);"));
 
     auto part1 = generate_induced_tree(r_tree, example1, species_map, id_to_label, 1);
     ASSERT_TRUE(part1 != nullptr);
-    ASSERT_EQ(part1->to_newick_string(id_to_label), "(s4,s5);");
+    ASSERT_EQ(part1->to_newick_string(id_to_label), std::string("(s4,s5);"));
 
     ntree_destroy(tree);
     freeMissingData(example1);
