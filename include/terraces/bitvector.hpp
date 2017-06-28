@@ -177,7 +177,6 @@ inline auto basic_bitvector<Alloc>::end() const -> iterator {
 /** Returns a basic_bitvector<Alloc> containing size elements. */
 template <typename Alloc>
 inline basic_bitvector<Alloc> full_set(index size, Alloc a) {
-	(void)a;
 	basic_bitvector<Alloc> set{size, a};
 	set.invert();
 	set.update_ranks();
