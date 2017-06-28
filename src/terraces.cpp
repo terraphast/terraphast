@@ -197,16 +197,16 @@ missingData *initializeMissingData(size_t numberOfSpecies,
 /* free */
 
 void freeMissingData(missingData *m) {
-    free(m->missingDataMatrix);
+    delete [] m->missingDataMatrix;
 
     if (m->allocatedNameArray == 1) {
         size_t i;
         for (i = 0; i < m->numberOfSpecies; i++)
-            free(m->speciesNames[i]);
-        free(m->speciesNames);
+            delete [] m->speciesNames[i];
+        delete [] m->speciesNames;
     }
 
-    free(m);
+    delete m;
 }
 
 /* set an element in the missing data matrix */

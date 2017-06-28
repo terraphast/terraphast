@@ -11,12 +11,12 @@
 
 void free_input_data(input_data *d) {
     for (size_t i = 0; i < d->number_of_species; ++i) {
-        free(d->names[i]);
+        delete [] d->names[i];
     }
 
-    free(d->names);
-    free(d->matrix);
-    free(d);
+    delete [] d->names;
+    delete [] d->matrix;
+    delete d;
 }
 
 
@@ -40,10 +40,8 @@ char *read_newk_tree(const char *newk_file) {
 
     char *string = new char[static_cast<size_t>(fsize) + 1];
 
-    if (string != NULL) {
-        fread(string, static_cast<size_t>(fsize), 1, f);
-        string[static_cast<size_t>(fsize)] = 0;
-    }
+    fread(string, static_cast<size_t>(fsize), 1, f);
+    string[static_cast<size_t>(fsize)] = 0;
 
     fclose(f);
 
