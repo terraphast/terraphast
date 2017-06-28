@@ -33,8 +33,8 @@
  * @param constraints Constraints to apply.
  * @return Sets merged from given sets according to the given contraints.
  */
-std::vector<std::shared_ptr<SimpleLeafSet> > apply_constraints(
-        const SimpleLeafSet &leaves, const std::vector<constraint> &constraints);
+std::vector<std::shared_ptr<LeafSet> > apply_constraints(
+        const LeafSet &leaves, const std::vector<constraint> &constraints);
 
 /**
  * Returns a vector containing all constraints infered from the given supertree.
@@ -45,7 +45,7 @@ std::vector<std::shared_ptr<SimpleLeafSet> > apply_constraints(
 std::vector<constraint> extract_constraints_from_tree(
         const std::shared_ptr<Tree> supertree);
 
-std::vector<std::shared_ptr<Tree> > get_all_binary_trees(SimpleLeafSet &leafs);
+std::vector<std::shared_ptr<Tree> > get_all_binary_trees(LeafSet &leafs);
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
@@ -54,7 +54,7 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(SimpleLeafSet &leafs);
  * @param constraints All constraints that could still be valid.
  * @return All constraints that are still valid.
  */
-std::vector<constraint> find_constraints(const SimpleLeafSet &leaves,
+std::vector<constraint> find_constraints(const LeafSet &leaves,
                                          const std::vector<constraint> &constraints);
 
 /** merges two sub-trees */
@@ -80,7 +80,7 @@ inline bool is_bit_set(size_t num, size_t n) {
  * @return the number of partition tuples that can be formed from the given list
  */
 inline size_t number_partition_tuples(
-        const std::vector<std::shared_ptr<SimpleLeafSet> > &partitions) {
+        const std::vector<std::shared_ptr<LeafSet> > &partitions) {
     assert(partitions.size() > 1);
 
     return (1 << (partitions.size() - 1)) - 1;
@@ -92,15 +92,15 @@ inline size_t number_partition_tuples(
  * @param n the target n-th partition tuple to select, ranging from [1,2^(p-1)-1] where p is the number of partitions
  * @return the n-th partition tuple formed from the given partition list
  */
-std::tuple<std::shared_ptr<SimpleLeafSet>, std::shared_ptr<SimpleLeafSet> > get_nth_partition_tuple(
-        const std::vector<std::shared_ptr<SimpleLeafSet> > &partitions, const size_t n);
+std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet> > get_nth_partition_tuple(
+        const std::vector<std::shared_ptr<LeafSet> > &partitions, const size_t n);
 
 template <typename T>
 class TerraceAlgorithm {
 public:
     virtual ~TerraceAlgorithm() = default;
 
-    T scan_terrace(SimpleLeafSet &leaves, const std::vector<constraint> &constraints) {
+    T scan_terrace(LeafSet &leaves, const std::vector<constraint> &constraints) {
 
         if (constraints.empty()) {
             auto result = scan_unconstraint_leaves(leaves);
@@ -114,11 +114,11 @@ public:
 protected:
     inline
     virtual T traverse_partitions(const std::vector<constraint> &constraints,
-                                  const std::vector<std::shared_ptr<SimpleLeafSet> > &partitions) {
+                                  const std::vector<std::shared_ptr<LeafSet> > &partitions) {
         T result = initialize_result_type();
         for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
-            std::shared_ptr<SimpleLeafSet> part_left;
-            std::shared_ptr<SimpleLeafSet> part_right;
+            std::shared_ptr<LeafSet> part_left;
+            std::shared_ptr<LeafSet> part_right;
             std::tie(part_left, part_right) = get_nth_partition_tuple(partitions, i);
 
             auto constraints_left = find_constraints(*part_left, constraints);
@@ -138,7 +138,7 @@ protected:
     virtual T initialize_result_type() = 0;
 
     inline
-    virtual T scan_unconstraint_leaves(SimpleLeafSet &leaves) = 0;
+    virtual T scan_unconstraint_leaves(LeafSet &leaves) = 0;
 
     inline
     virtual T combine_part_results(const T &left_part,
@@ -149,29 +149,29 @@ protected:
                                              const T &new_results) = 0;
 };
 
-typedef std::vector<std::shared_ptr<Tree> >  tree_result_list_t;
+typedef std::vector<std::shared_ptr<Tree> >  tree_result_list;
 
-class FindAllRootedTrees : public TerraceAlgorithm<tree_result_list_t> {
+class FindAllRootedTrees : public TerraceAlgorithm<tree_result_list> {
 protected:
     inline
-    tree_result_list_t initialize_result_type() {
-        return tree_result_list_t();
+    tree_result_list initialize_result_type() {
+        return tree_result_list();
     }
 
     inline
-    tree_result_list_t scan_unconstraint_leaves(SimpleLeafSet &leaves) {
+    tree_result_list scan_unconstraint_leaves(LeafSet &leaves) {
         return get_all_binary_trees(leaves);
     }
 
     inline
-    tree_result_list_t combine_part_results(const tree_result_list_t &left_part,
-                                            const tree_result_list_t &right_part) {
+    tree_result_list combine_part_results(const tree_result_list &left_part,
+                                            const tree_result_list &right_part) {
         return merge_subtrees(left_part, right_part);
     }
 
     inline
-    void combine_bipartition_results(tree_result_list_t &aggregation,
-                                     const tree_result_list_t &new_results) {
+    void combine_bipartition_results(tree_result_list &aggregation,
+                                     const tree_result_list &new_results) {
         aggregation.insert(aggregation.end(), new_results.begin(), new_results.end());
     }
 };
@@ -183,7 +183,7 @@ protected:
         return 0;
     }
     inline
-    size_t scan_unconstraint_leaves(SimpleLeafSet &leaves) {
+    size_t scan_unconstraint_leaves(LeafSet &leaves) {
         size_t result = 1;
         for(size_t i = 4; i <= (leaves.size() + 1); i++) {
             result *= (2*i-5);
@@ -206,7 +206,7 @@ class CheckIfTerrace : public TerraceAlgorithm<bool> {
 protected:
     inline
     bool traverse_partitions(const std::vector<constraint> &constraints,
-                             const std::vector<std::shared_ptr<SimpleLeafSet> > &partitions) {
+                             const std::vector<std::shared_ptr<LeafSet> > &partitions) {
         if(number_partition_tuples(partitions) > 1) {
             return true;
         }
@@ -219,7 +219,7 @@ protected:
     }
 
     inline
-    bool scan_unconstraint_leaves(SimpleLeafSet &leaves) {
+    bool scan_unconstraint_leaves(LeafSet &leaves) {
         return leaves.size() >= 3;
     }
 

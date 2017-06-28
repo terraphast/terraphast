@@ -134,7 +134,7 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     std::string root_species_name;
     std::vector<std::string> id_to_label;
     std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name, id_to_label);
-    auto leaves = SimpleLeafSet::create(id_to_label.size());
+    auto leaves = LeafSet::create(id_to_label.size());
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
     FindAllRootedTrees get_trees;

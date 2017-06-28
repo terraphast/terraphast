@@ -215,6 +215,7 @@ BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Euphorbia_1,
                   "../input/modified/Euphorbia.nwk.1",
                   "../input/modified/Euphorbia.data.1");
 
+/*
 BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Euphorbia_2,
                   "../input/modified/Euphorbia.nwk.2",
                   "../input/modified/Euphorbia.data.2");
@@ -222,7 +223,7 @@ BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Euphorbia_2,
 BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Ficus_1,
                   "../input/modified/Ficus.nwk.1",
                   "../input/modified/Ficus.data.1");
-
+*/
 //BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Ficus_2,
 //                  "../input/modified/Ficus.nwk.2",
 //                  "../input/modified/Ficus.data.2");

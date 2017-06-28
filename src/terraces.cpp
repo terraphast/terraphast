@@ -104,7 +104,7 @@ int terraceAnalysis(missingData *m,
     //                               extract_constraints_from_supertree(rtree, m));
     //dout("===== TREES: " << r.size() << "\n");
 
-    auto leaves = SimpleLeafSet::create(id_to_lable.size());
+    auto leaves = LeafSet::create(id_to_lable.size());
 
     size_t count = 0;
     if(countTrees) {

@@ -7,13 +7,13 @@
 #include <sstream>
 #include <iomanip>
 
-std::tuple<std::shared_ptr<SimpleLeafSet>,
-        std::shared_ptr<SimpleLeafSet> > get_nth_partition_tuple(
-        const std::vector<std::shared_ptr<SimpleLeafSet> > &partitions,
+std::tuple<std::shared_ptr<LeafSet>,
+        std::shared_ptr<LeafSet> > get_nth_partition_tuple(
+        const std::vector<std::shared_ptr<LeafSet> > &partitions,
         const size_t n) {
 
-    auto part_one = std::make_shared<SimpleLeafSet>();
-    auto part_two = std::make_shared<SimpleLeafSet>();
+    auto part_one = std::make_shared<LeafSet>();
+    auto part_two = std::make_shared<LeafSet>();
 
     assert(n > 0 && n <= number_partition_tuples(partitions));
 
@@ -69,7 +69,7 @@ static std::vector<std::shared_ptr<Tree> > add_leaf_to_tree(
 }
 
 std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
-        SimpleLeafSet &leaves) {
+        LeafSet &leaves) {
 
     std::vector<std::shared_ptr<Tree> > result;
     if (leaves.size() == 0) {
@@ -111,16 +111,16 @@ std::vector<std::shared_ptr<Tree> > merge_subtrees(
     return merged_trees;
 }
 
-std::vector<std::shared_ptr<SimpleLeafSet> > apply_constraints(
-        const SimpleLeafSet &leaves,
+std::vector<std::shared_ptr<LeafSet> > apply_constraints(
+        const LeafSet &leaves,
         const std::vector<constraint> &constraints) {
 
-    std::vector<std::shared_ptr<SimpleLeafSet> > sets;
+    std::vector<std::shared_ptr<LeafSet> > sets;
     sets.reserve(leaves.size());
 
     for (leaf_number l : leaves) {
         // create an empty set for each leave
-        auto set = std::make_shared<SimpleLeafSet>();
+        auto set = std::make_shared<LeafSet>();
         set->insert(l);
         sets.push_back(set);
     }
@@ -153,7 +153,7 @@ std::vector<std::shared_ptr<SimpleLeafSet> > apply_constraints(
             != index_containing_right_constraint) {
             // sets need to be merged
             *sets[index_containing_left_constraint] &= *sets[index_containing_right_constraint];
-            sets.erase(sets.begin() + static_cast<std::vector<std::shared_ptr<SimpleLeafSet> >::difference_type>(
+            sets.erase(sets.begin() + static_cast<std::vector<std::shared_ptr<LeafSet> >::difference_type>(
                                               index_containing_right_constraint));
         }
     }
@@ -214,7 +214,7 @@ std::vector<constraint> extract_constraints_from_tree(
     return constraints;
 }
 
-std::vector<constraint> find_constraints(const SimpleLeafSet &leaves,
+std::vector<constraint> find_constraints(const LeafSet &leaves,
                                          const std::vector<constraint> &constraints) {
 
     std::vector<constraint> valid_constraints;

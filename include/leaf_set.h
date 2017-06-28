@@ -11,30 +11,30 @@
 #include "UnionFind.h"
 
 template <class LSClass>
-class LeafSet {
+class AbstractLeafSet {
 public:
-    LeafSet() = default;
-    LeafSet(const LeafSet&) = default;
-    virtual ~LeafSet() = default;
+    AbstractLeafSet() = default;
+    AbstractLeafSet(const AbstractLeafSet&) = default;
+    virtual ~AbstractLeafSet() = default;
     virtual bool contains(const size_t leaf) const = 0;
     virtual size_t size() const = 0;
     virtual leaf_number pop() = 0;
     virtual LSClass& operator&=(const LSClass &other) = 0;
 };
 
-class SimpleLeafSet : public LeafSet<SimpleLeafSet>, std::set<leaf_number> {
+class SimpleLeafSet : public AbstractLeafSet<SimpleLeafSet >, std::set<leaf_number> {
 public:
     typedef std::set<leaf_number>::iterator iterator;
     typedef std::set<leaf_number>::iterator const_iterator;
     typedef leaf_number value_type;
 
-    SimpleLeafSet() = default;
+    SimpleLeafSet () = default;
     SimpleLeafSet (std::initializer_list<leaf_number> l) : std::set<leaf_number>(l) {
     }
 
     inline
-    static SimpleLeafSet create(size_t size) {
-        SimpleLeafSet leaves;
+    static SimpleLeafSet  create(size_t size) {
+        SimpleLeafSet  leaves;
         for (size_t k = 0; k < size; k++) {
             leaves.insert(leaf_number(k));
         }
@@ -67,7 +67,7 @@ public:
         return first_elem;
     }
     inline
-    SimpleLeafSet& operator&=(const SimpleLeafSet &other) {
+    SimpleLeafSet & operator&=(const SimpleLeafSet  &other) {
         std::set<leaf_number>::insert(other.begin(), other.end());
         return *this;
     }
@@ -103,5 +103,8 @@ private:
         return repr;
     }
 };
+
+//Black Magick
+typedef SimpleLeafSet LeafSet;
 
 #endif // IFUGAO_LEAF_SET_H
