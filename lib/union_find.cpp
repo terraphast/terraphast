@@ -5,7 +5,7 @@
 
 namespace terraces {
 
-union_find::union_find(index n) : m_parent(n, n) {}
+union_find::union_find(index n, utils::stack_allocator<index> a) : m_parent(n, n, a) {}
 
 index union_find::find(index x) const {
 	index root = x;

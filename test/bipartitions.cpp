@@ -10,7 +10,9 @@ namespace terraces {
 namespace tests {
 
 TEST_CASE("bipartition1", "[bipartition]") {
-	union_find u(4);
+	auto fl = utils::free_list{};
+	auto alloc = utils::stack_allocator<index>{fl, 4};
+	union_find u(4, alloc);
 	bitvector s{4};
 	s.set(0);
 	s.set(1);

@@ -3,6 +3,7 @@
 
 #include <terraces/bitvector.hpp>
 #include <terraces/constraints.hpp>
+#include <terraces/stack_allocator.hpp>
 #include <terraces/trees.hpp>
 #include <terraces/union_find.hpp>
 
@@ -13,7 +14,8 @@ bitvector filter_constraints(const bitvector& leaves, const bitvector& c_occ, co
 
 /** Returns a union-find representation of the sets retrieved after applying all constraints from
  * c_occ. */
-union_find apply_constraints(const bitvector& leaves, const bitvector& c_occ, const constraints& c);
+union_find apply_constraints(const bitvector& leaves, const bitvector& c_occ, const constraints& c,
+                             utils::stack_allocator<index> a);
 
 /** Maps the given constraints to leaf indices. */
 constraints map_constraints(const bitvector& leaves, const constraints& cs);

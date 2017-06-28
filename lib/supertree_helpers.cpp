@@ -15,9 +15,9 @@ bitvector filter_constraints(const bitvector& leaves, const bitvector& c_occ,
 	return result;
 }
 
-union_find apply_constraints(const bitvector& leaves, const bitvector& c_occ,
-                             const constraints& c) {
-	auto sets = union_find(leaves.count());
+union_find apply_constraints(const bitvector& leaves, const bitvector& c_occ, const constraints& c,
+                             utils::stack_allocator<index> a) {
+	auto sets = union_find(leaves.count(), a);
 	for (auto c_i = c_occ.first_set(); c_i < c_occ.last_set(); c_i = c_occ.next_set(c_i)) {
 		auto& cons = c[c_i];
 		sets.merge(leaves.rank(cons.left), leaves.rank(cons.shared));

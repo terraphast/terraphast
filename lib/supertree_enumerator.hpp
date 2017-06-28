@@ -2,6 +2,7 @@
 #define SUPERTREE_ENUMERATOR_HPP
 
 #include <terraces/bipartitions.hpp>
+#include <terraces/stack_allocator.hpp>
 #include <terraces/supertree.hpp>
 #include <terraces/union_find.hpp>
 
@@ -49,7 +50,10 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 	assert(num_leaves > 2);
 	assert(!constraints.empty());
 	// build bipartition iterator:
-	auto sets = union_find{num_leaves};
+	// TODO: replace those by a centralized free_list:
+	auto fl = utils::free_list{};
+	auto alloc = utils::stack_allocator<index>{fl, num_leaves};
+	auto sets = union_find{num_leaves, alloc};
 	index rep = root_leaf == 0 ? 1 : 0;
 	// merge all non-root leaves into one set
 	for (index i = rep + 1; i < num_leaves; ++i) {
@@ -84,7 +88,9 @@ auto tree_enumerator<Callback>::run(const bitvector& leaves, const bitvector& co
 		return cb.exit(cb.base_unconstrained(leaves));
 	}
 
-	union_find sets = apply_constraints(leaves, new_constraint_occ, constraints);
+	auto fl = utils::free_list{};
+	auto alloc = utils::stack_allocator<index>{fl, leaves.count()};
+	union_find sets = apply_constraints(leaves, new_constraint_occ, constraints, alloc);
 	bipartition_iterator bip_it(leaves, sets);
 
 	return iterate(bip_it, new_constraint_occ, constraints);
