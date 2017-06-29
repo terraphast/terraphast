@@ -107,7 +107,7 @@ std::ostream& operator<<(std::ostream& s, newick_t tree_pair) {
 			stack.emplace(t.at(i).lchild(), 0);
 		} else if (visited == 1u) {
 			visited = 2u;
-			s << ", ";
+			s << ',';
 			stack.emplace(t.at(i).rchild(), 0);
 		} else if (visited == 2u) {
 			s << ')' << names.at(i);
