@@ -26,7 +26,7 @@ struct small_bipartition {
 	index masked_increment(index bip) const { return -(bip ^ m_mask) & m_mask; }
 
 	bool is_valid() const { return m_cur_bip < m_end_bip; }
-	bool is_next_valid() const { return masked_increment(m_cur_bip) < m_end_bip; }
+	bool has_next() const { return masked_increment(m_cur_bip) < m_end_bip; }
 
 	void next() {
 		assert(is_valid());
@@ -54,24 +54,22 @@ private:
 	tree& m_tree;
 	std::vector<index>& m_leaves;
 	index m_root;
-	index m_choice_point;
-	std::bitset<64> m_it_stack;
-	index m_it_level;
+	std::vector<index> m_choice_points;
 	std::vector<small_bipartition> m_bips;
 
 	index local_lchild(index i) const;
 	index local_rchild(index i) const;
 	index local_rsibling(index i) const;
 	index local_parent(index i) const;
+	bool is_local_left_child(index i) const;
 	bool is_local_leaf(index i) const;
-	void descend_subtree(index i);
 
 public:
 	unconstrained_tree_iterator(const multitree_nodes::unconstrained node, tree& tree,
 	                            std::vector<index>& leaves, index root);
-	void init_subtree(index i);
+	index init_subtree(index i);
 	void next();
-	bool is_valid() const;
+	bool has_next() const;
 };
 } // namespace terraces
 
