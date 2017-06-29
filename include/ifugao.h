@@ -33,8 +33,7 @@
  * @param constraints Constraints to apply.
  * @return Sets merged from given sets according to the given contraints.
  */
-std::vector<std::shared_ptr<LeafSet> > apply_constraints(
-        const LeafSet &leaves, const std::vector<constraint> &constraints);
+partition_list apply_constraints(const LeafSet &leaves, const std::vector<constraint> &constraints);
 
 /**
  * Returns a vector containing all constraints infered from the given supertree.

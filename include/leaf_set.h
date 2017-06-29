@@ -10,6 +10,13 @@
 #include "constraints.h"
 #include "UnionFind.h"
 
+class SimpleLeafSet;
+
+//Black Magic
+typedef SimpleLeafSet LeafSet;
+
+typedef std::vector<std::shared_ptr<LeafSet>> partition_list;
+
 template <class LSClass>
 class AbstractLeafSet {
 public:
@@ -24,9 +31,6 @@ public:
 
 class SimpleLeafSet : public AbstractLeafSet<SimpleLeafSet >, std::set<leaf_number> {
 public:
-    typedef std::set<leaf_number>::iterator iterator;
-    typedef std::set<leaf_number>::iterator const_iterator;
-    typedef leaf_number value_type;
 
     SimpleLeafSet () = default;
     SimpleLeafSet (std::initializer_list<leaf_number> l) : std::set<leaf_number>(l) {
@@ -40,7 +44,6 @@ public:
         }
         return leaves;
     }
-
     inline
     bool contains(size_t leaf) const {
         return this->count(leaf) > 0;
@@ -49,16 +52,26 @@ public:
         return std::set<leaf_number>::size();
     }
     inline
-    iterator begin() const {
-        return std::set<leaf_number>::begin();
+    void insert(const leaf_number l) {
+        std::set<leaf_number>::insert(l);
     }
     inline
-    iterator end() const {
-        return std::set<leaf_number>::end();
+    partition_list create_partition_list() const {
+        partition_list sets;
+        sets.reserve(this->size());
+
+        for (leaf_number l : *this) {
+            // create an empty set for each leave
+            auto set = std::make_shared<LeafSet>();
+            set->insert(l);
+            sets.push_back(set);
+        }
+
+        return sets;
     }
     inline
-    std::pair<iterator, bool> insert(const leaf_number l) {
-        return std::set<leaf_number>::insert(l);
+    std::set<leaf_number> to_set() {
+        return *this;
     }
     inline leaf_number pop() {
         auto itr = this->begin();
@@ -103,8 +116,5 @@ private:
         return repr;
     }
 };
-
-//Black Magick
-typedef SimpleLeafSet LeafSet;
 
 #endif // IFUGAO_LEAF_SET_H

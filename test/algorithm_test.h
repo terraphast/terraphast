@@ -82,9 +82,9 @@ TEST(ApplyConstraintsTest, example_from_slides) {
 
     ASSERT_EQ(result.size(), 3);
 
-    ASSERT_THAT(*result[0], testing::ElementsAre(1, 2));
-    ASSERT_THAT(*result[1], testing::ElementsAre(3));
-    ASSERT_THAT(*result[2], testing::ElementsAre(4, 5));
+    ASSERT_THAT(result[0]->to_set(), testing::ElementsAre(1, 2));
+    ASSERT_THAT(result[1]->to_set(), testing::ElementsAre(3));
+    ASSERT_THAT(result[2]->to_set(), testing::ElementsAre(4, 5));
 }
 
 TEST(ApplyConstraintsTest, merge_all_sets) {
@@ -107,7 +107,7 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
 
     ASSERT_EQ(result.size(), 1);
 
-    ASSERT_THAT(*result[0], testing::ElementsAre(1, 2, 3, 4, 5));
+    ASSERT_THAT(result[0]->to_set(), testing::ElementsAre(1, 2, 3, 4, 5));
 
 }
 
@@ -187,8 +187,8 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
     auto result = apply_constraints(leafs, constraints);
 
     ASSERT_EQ(result.size(), 2);
-    ASSERT_THAT(*result[0], testing::ElementsAre(1, 2, 3));
-    ASSERT_THAT(*result[1], testing::ElementsAre(4));
+    ASSERT_THAT(result[0]->to_set(), testing::ElementsAre(1, 2, 3));
+    ASSERT_THAT(result[1]->to_set(), testing::ElementsAre(4));
 }
 
 TEST(ExtractConstraintsFromTree, example_from_slides) {
@@ -230,8 +230,8 @@ TEST(GetNthPartitionTuple, example_with_two_parts) {
     std::shared_ptr<LeafSet> part_one;
     std::shared_ptr<LeafSet> part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
-    ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
-    ASSERT_THAT(*part_two, testing::ElementsAre(3));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(1, 2));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(3));
 }
 
 TEST(GetNthPartitionTuple, example_from_slides) {
@@ -250,14 +250,14 @@ TEST(GetNthPartitionTuple, example_from_slides) {
     std::shared_ptr<LeafSet> part_one;
     std::shared_ptr<LeafSet> part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
-    ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
-    ASSERT_THAT(*part_two, testing::ElementsAre(3, 4, 5));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(1, 2));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(3, 4, 5));
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 2);
-    ASSERT_THAT(*part_one, testing::ElementsAre(3));
-    ASSERT_THAT(*part_two, testing::ElementsAre(1, 2, 4, 5));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(3));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(1, 2, 4, 5));
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 3);
-    ASSERT_THAT(*part_one, testing::ElementsAre(1, 2, 3));
-    ASSERT_THAT(*part_two, testing::ElementsAre(4, 5));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(1, 2, 3));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(4, 5));
 }
 
 TEST(GetNthPartitionTuple, with_four_partitions) {
@@ -278,27 +278,27 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
     std::shared_ptr<LeafSet> part_one;
     std::shared_ptr<LeafSet> part_two;
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 1);
-    ASSERT_THAT(*part_one, testing::ElementsAre(1, 2));
-    ASSERT_THAT(*part_two, testing::ElementsAre(3, 4, 5, 6, 7, 8));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(1, 2));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(3, 4, 5, 6, 7, 8));
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 2);
-    ASSERT_THAT(*part_one, testing::ElementsAre(3));
-    ASSERT_THAT(*part_two,
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(3));
+    ASSERT_THAT(part_two->to_set(),
                 testing::ElementsAre(1, 2, 4, 5, 6, 7, 8));
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 3);
-    ASSERT_THAT(*part_one, testing::ElementsAre(1, 2, 3));
-    ASSERT_THAT(*part_two, testing::ElementsAre(4, 5, 6, 7, 8));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(1, 2, 3));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(4, 5, 6, 7, 8));
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 4);
-    ASSERT_THAT(*part_one, testing::ElementsAre(4, 5));
-    ASSERT_THAT(*part_two, testing::ElementsAre(1, 2, 3, 6, 7, 8));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(4, 5));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(1, 2, 3, 6, 7, 8));
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 5);
-    ASSERT_THAT(*part_one, testing::ElementsAre(1, 2, 4, 5));
-    ASSERT_THAT(*part_two, testing::ElementsAre(3, 6, 7, 8));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(1, 2, 4, 5));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(3, 6, 7, 8));
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 6);
-    ASSERT_THAT(*part_one, testing::ElementsAre(3, 4, 5));
-    ASSERT_THAT(*part_two, testing::ElementsAre(1, 2, 6, 7, 8));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(3, 4, 5));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(1, 2, 6, 7, 8));
     std::tie(part_one, part_two) = get_nth_partition_tuple(partitions, 7);
-    ASSERT_THAT(*part_one, testing::ElementsAre(1, 2, 3, 4, 5));
-    ASSERT_THAT(*part_two, testing::ElementsAre(6, 7, 8));
+    ASSERT_THAT(part_one->to_set(), testing::ElementsAre(1, 2, 3, 4, 5));
+    ASSERT_THAT(part_two->to_set(), testing::ElementsAre(6, 7, 8));
 }
 
 TEST(FindAllRootedTrees, example_from_slides) {

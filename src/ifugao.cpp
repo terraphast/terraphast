@@ -103,19 +103,9 @@ std::vector<std::shared_ptr<Tree> > merge_subtrees(
     return merged_trees;
 }
 
-std::vector<std::shared_ptr<LeafSet> > apply_constraints(
-        const LeafSet &leaves,
-        const std::vector<constraint> &constraints) {
+partition_list apply_constraints(const LeafSet &leaves, const std::vector<constraint> &constraints) {
 
-    std::vector<std::shared_ptr<LeafSet> > sets;
-    sets.reserve(leaves.size());
-
-    for (leaf_number l : leaves) {
-        // create an empty set for each leave
-        auto set = std::make_shared<LeafSet>();
-        set->insert(l);
-        sets.push_back(set);
-    }
+    partition_list sets = leaves.create_partition_list();
 
     bool found_left_constraint = false;
     bool found_right_constraint = false;
