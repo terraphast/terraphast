@@ -25,6 +25,41 @@
  * 
  */
 
+template<typename T>
+std::ostream& operator<<(std::ostream &strm, const std::set<T>& set) {
+    strm << "{";
+    bool first = true;
+    for(const T &elem : set) {
+        if(first) {
+            first = false;
+        } else {
+            strm << ",";
+        }
+        strm << elem;
+    }
+    return strm << "}";
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream &strm, const std::vector<T>& set) {
+    strm << "[";
+    bool first = true;
+    for(const T &elem : set) {
+        if(first) {
+            first = false;
+        } else {
+            strm << ",";
+        }
+        strm << elem;
+    }
+    return strm << "]";
+}
+
+std::ostream& operator<<(std::ostream &strm, const constraint& tree);
+
+std::ostream& operator<<(std::ostream &strm,
+                         const std::vector<std::shared_ptr<std::set<leaf_number>> >& set);
+
 /**
  * Applies the given constraints on a set of given leaves, by merging them if
  * they two of them are on the left side of a constraint.
@@ -107,7 +142,6 @@ public:
         }
 
         auto partitions = apply_constraints(leaves, constraints);
-
         return traverse_partitions(constraints, partitions);
     }
 protected:
@@ -144,7 +178,7 @@ protected:
                                              const T &new_results) = 0;
 };
 
-typedef std::vector<std::shared_ptr<Tree> >  tree_result_list;
+typedef std::vector<std::shared_ptr<Tree>> tree_result_list;
 
 class FindAllRootedTrees : public TerraceAlgorithm<tree_result_list> {
 protected:
@@ -228,40 +262,5 @@ protected:
         aggregation = (aggregation || new_results);
     }
 };
-
-template<typename T>
-std::ostream& operator<<(std::ostream &strm, const std::set<T>& set) {
-    strm << "{";
-    bool first = true;
-    for(const T &elem : set) {
-        if(first) {
-            first = false;
-        } else {
-            strm << ",";
-        }
-        strm << elem;
-    }
-    return strm << "}";
-}
-
-template<typename T>
-std::ostream& operator<<(std::ostream &strm, const std::vector<T>& set) {
-    strm << "[";
-    bool first = true;
-    for(const T &elem : set) {
-        if(first) {
-            first = false;
-        } else {
-            strm << ",";
-        }
-        strm << elem;
-    }
-    return strm << "]";
-}
-
-std::ostream& operator<<(std::ostream &strm, const constraint& tree);
-
-std::ostream& operator<<(std::ostream &strm,
-                         const std::vector<std::shared_ptr<std::set<leaf_number>> >& set);
 
 #endif /* IFUGAO_H */

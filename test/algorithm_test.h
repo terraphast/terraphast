@@ -218,12 +218,11 @@ TEST(ExtractConstraintsFromTree, example_from_slides) {
 
 TEST(GetNthPartitionTuple, example_with_two_parts) {
 
-    LeafSet part1 = {1, 2};
-    LeafSet part2 = {3};
-
-    std::vector<std::shared_ptr<LeafSet> > partitions;
-    partitions.push_back(std::make_shared<LeafSet>(part1));
-    partitions.push_back(std::make_shared<LeafSet>(part2));
+    LeafSet leafs = {1, 2, 3};
+    std::vector<constraint> constraints;
+    constraint cons1 = {1, 1, 2, 3};
+    constraints.push_back(cons1);
+    auto partitions = apply_constraints(leafs, constraints);
 
     ASSERT_EQ(number_partition_tuples(partitions), 1);
 
@@ -236,14 +235,11 @@ TEST(GetNthPartitionTuple, example_with_two_parts) {
 
 TEST(GetNthPartitionTuple, example_from_slides) {
 
-    LeafSet part1 = {1, 2};
-    LeafSet part2 = {3};
-    LeafSet part3 = {4, 5};
-
-    std::vector<std::shared_ptr<LeafSet> > partitions;
-    partitions.push_back(std::make_shared<LeafSet>(part1));
-    partitions.push_back(std::make_shared<LeafSet>(part2));
-    partitions.push_back(std::make_shared<LeafSet>(part3));
+    LeafSet leafs = {1, 2, 3, 4, 5};
+    std::vector<constraint> constraints;
+    constraints.push_back({1, 1, 2, 3});
+    constraints.push_back({4, 1, 5, 3});
+    auto partitions = apply_constraints(leafs, constraints);
 
     ASSERT_EQ(number_partition_tuples(partitions), 3);
 
@@ -262,16 +258,13 @@ TEST(GetNthPartitionTuple, example_from_slides) {
 
 TEST(GetNthPartitionTuple, with_four_partitions) {
 
-    LeafSet part1 = {1, 2};
-    LeafSet part2 = {3};
-    LeafSet part3 = {4, 5};
-    LeafSet part4 = {6, 7, 8};
-
-    std::vector<std::shared_ptr<LeafSet> > partitions;
-    partitions.push_back(std::make_shared<LeafSet>(part1));
-    partitions.push_back(std::make_shared<LeafSet>(part2));
-    partitions.push_back(std::make_shared<LeafSet>(part3));
-    partitions.push_back(std::make_shared<LeafSet>(part4));
+    LeafSet leafs = {1, 2, 3, 4, 5, 6, 7, 8};
+    std::vector<constraint> constraints;
+    constraints.push_back({1, 1, 2, 3});
+    constraints.push_back({4, 1, 5, 3});
+    constraints.push_back({6, 1, 7, 3});
+    constraints.push_back({7, 1, 8, 3});
+    auto partitions = apply_constraints(leafs, constraints);
 
     ASSERT_EQ(number_partition_tuples(partitions), 7);
 

@@ -9,19 +9,21 @@
 
 std::tuple<std::shared_ptr<LeafSet>,
         std::shared_ptr<LeafSet> > get_nth_partition_tuple(
-        const std::vector<std::shared_ptr<LeafSet> > &partitions,
+        const partition_list &partitions,
         const size_t n) {
 
-    auto part_one = std::make_shared<LeafSet>();
-    auto part_two = std::make_shared<LeafSet>();
+    assert(partitions.size() > 0);
+
+    auto part_one = partitions[0]->create_empty();
+    auto part_two = partitions[0]->create_empty();
 
     assert(n > 0 && n <= number_partition_tuples(partitions));
 
     for (size_t i = 0; i < partitions.size(); i++) {
         if (is_bit_set(n, i)) {
-            *part_one &= *partitions[i];
+            *part_one |= *partitions[i];
         } else {
-            *part_two &= *partitions[i];
+            *part_two |= *partitions[i];
         }
     }
 
@@ -113,7 +115,7 @@ partition_list apply_constraints(const LeafSet &leaves, const std::vector<constr
     size_t index_containing_right_constraint = 0;
 
     for (constraint cons : constraints) {
-        for (size_t i = 0; i < sets.size(); i++) {
+         for (size_t i = 0; i < sets.size(); i++) {
             if (sets[i]->contains(cons.smaller_left)) {
                 // set contains the left constraint
                 found_left_constraint = true;
@@ -125,19 +127,18 @@ partition_list apply_constraints(const LeafSet &leaves, const std::vector<constr
                 index_containing_right_constraint = i;
             }
         }
-        assert(
-                found_left_constraint
+        assert(found_left_constraint
                 && index_containing_left_constraint < sets.size());
         assert(
                 found_right_constraint
                 && index_containing_right_constraint < sets.size());
-        if (index_containing_left_constraint
-            != index_containing_right_constraint) {
+        if (index_containing_left_constraint != index_containing_right_constraint) {
             // sets need to be merged
-            *sets[index_containing_left_constraint] &= *sets[index_containing_right_constraint];
-            sets.erase(sets.begin() + static_cast<std::vector<std::shared_ptr<LeafSet> >::difference_type>(
+            *sets[index_containing_left_constraint] |= *sets[index_containing_right_constraint];
+            sets.erase(sets.begin() + static_cast<partition_list::difference_type>(
                                               index_containing_right_constraint));
         }
+
     }
     return sets;
 }
