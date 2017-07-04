@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef IFUGAO_DEBUG_H
-#define IFUGAO_DEBUG_H
-
 #include <iostream>
 
 /*
@@ -15,5 +12,3 @@
 #else
 #define dout(obj) do {} while(false)
 #endif
-
-#endif //IFUGAO_DEBUG_H

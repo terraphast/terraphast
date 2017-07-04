@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef IFUGAO_PARAMETERS_H
-#define IFUGAO_PARAMETERS_H
-
 template <typename T>
 struct TerracesAnalysisTestParameter {
     const char *newick_file;
@@ -16,5 +13,3 @@ struct TerracesAnalysisTestParameter {
               expected_value(p_expected_value) {
     }
 };
-
-#endif // IFUGAO_PARAMETERS_H

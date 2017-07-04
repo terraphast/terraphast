@@ -3,7 +3,6 @@
 #include <boost/dynamic_bitset.hpp>
 
 #include "types.h"
-#include "UnionFind.h"
 #include "debug.h"
 
 template <typename T>

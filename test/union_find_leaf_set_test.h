@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "leaf_set.h"
+#include "types.h"
 
 #include <vector>
 #include <iostream>

@@ -21,14 +21,14 @@ include(ConfigSafeGuards)
 set(CORE_HEADERS
         include/newick-tools/newick-tools.h
         include/newick-tools/parse_ntree.h
-        include/util.h
-        include/functional.h
-        include/tree.h
-        include/terraces.h
-        include/input_parser.h
+        include/types/functional.h
+        include/types/leaf_set.h
+        include/types/tree.h
+        include/types/UnionFind.h
         include/ifugao.h
-        include/leaf_set.h
-        include/UnionFind.h)
+        include/input_parser.h
+        include/terraces.h
+        include/util.h)
 
 set(NEWICK_TOOLS_SRCS
         src/newick-tools/lex_ntree.cpp
@@ -38,13 +38,13 @@ set(NEWICK_TOOLS_SRCS
         src/newick-tools/rtree.cpp)
 
 set(CORE_SRCS
+        src/types/leaf_set.cpp
+        src/types/tree.cpp
+        src/types/UnionFind.cpp
         src/ifugao.cpp
         src/input_parser.cpp
         src/terraces.cpp
-        src/tree.cpp
-        src/util.cpp
-        src/leaf_set.cpp
-        src/UnionFind.cpp)
+        src/util.cpp)
 
 #CMAKE_CXX_FLAGS is globally used in all projects.
 #TARGET_CXX_FLAGS is for own build targets only.

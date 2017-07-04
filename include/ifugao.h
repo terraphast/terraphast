@@ -14,9 +14,7 @@
  *      [recursion stop]
  *        get_all_binary_trees
  *      apply_constraints
- *     
  *   d_print_tree
- * 
  */
 
 template<typename T>

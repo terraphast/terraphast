@@ -24,7 +24,7 @@ struct constraint {
               bigger_right(bigger_right) {}
 };
 
-class UnionFind;
-
-#include "tree.h"
-#include "leaf_set.h" // includes all sub-LeafSet types itself
+class UnionFind; //forward declaration
+#include "types/UnionFind.h"
+#include "types/tree.h"
+#include "types/leaf_set.h" // includes all sub-LeafSet types it
