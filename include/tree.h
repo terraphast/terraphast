@@ -1,14 +1,7 @@
 #pragma once
 
-#ifndef IFUGAO_TREE_H
-#define IFUGAO_TREE_H
-
 #include "functional.h"
 #include "types.h"
-
-#include <memory>
-#include <vector>
-#include <assert.h>
 
 class Tree {
 public:
@@ -79,4 +72,3 @@ std::shared_ptr<Tree> root(const std::shared_ptr<Tree> tree);
 
 std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree);
 
-#endif /* IFUGAO_TREE_H */

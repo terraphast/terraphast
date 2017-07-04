@@ -6,13 +6,9 @@
  *      Changed a bit by Henning Meyerhenke to reflect union by rank and path compression
  *        as taught in "Algorithms 1"
  */
+#pragma once
 
-#ifndef UNIONFIND_H_
-#define UNIONFIND_H_
-
-#include <vector>
-#include <memory>
-#include <assert.h>
+#include "types.h"
 
 /**
  * @ingroup structures
@@ -92,5 +88,3 @@ public:
     }
 
 };
-
-#endif
