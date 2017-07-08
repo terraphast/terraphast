@@ -52,15 +52,15 @@ std::ostream& operator<<(std::ostream &strm, const constraint& tree);
 std::ostream& operator<<(std::ostream &strm,
                          const std::vector<std::shared_ptr<std::set<leaf_number>> >& set);
 
-/**
- * Applies the given constraints on a set of given leaves, by merging them if
- * they two of them are on the left side of a constraint.
- *
- * @param leaves Leaves to apply the constraints on.
- * @param constraints Constraints to apply.
- * @return Sets merged from given sets according to the given contraints.
- */
-partition_list apply_constraints(const LeafSet &leaves, const std::vector<constraint> &constraints);
+///**
+// * Applies the given constraints on a set of given leaves, by merging them if
+// * they two of them are on the left side of a constraint.
+// *
+// * @param leaves Leaves to apply the constraints on.
+// * @param constraints Constraints to apply.
+// * @return Sets merged from given sets according to the given contraints.
+// */
+//partition_list apply_constraints(const LeafSet &leaves, const std::vector<constraint> &constraints);
 
 /**
  * Returns a vector containing all constraints infered from the given supertree.
@@ -71,7 +71,7 @@ partition_list apply_constraints(const LeafSet &leaves, const std::vector<constr
 std::vector<constraint> extract_constraints_from_tree(
         const std::shared_ptr<Tree> supertree);
 
-std::vector<std::shared_ptr<Tree> > get_all_binary_trees(LeafSet &leafs);
+std::vector<std::shared_ptr<Tree> > get_all_binary_trees(LeafSet &leaves);
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
@@ -88,15 +88,7 @@ std::vector<std::shared_ptr<Tree> > merge_subtrees(
         const std::vector<std::shared_ptr<Tree> > &left,
         const std::vector<std::shared_ptr<Tree> > &right);
 
-/**
- * Checks whenever the n-th bit is set in the given number
- * @param num the number to check
- * @param n the n-th bit to check whenever it is set or not
- * @return true of the n-th bit is set
- */
-inline bool is_bit_set(size_t num, size_t n) {
-    return 1 == ((num >> n) & 1);
-}
+
 
 /**
  * Returns the number of partition tuples that can be formed by combining the
@@ -133,18 +125,18 @@ public:
             return result;
         }
 
-        auto partitions = apply_constraints(leaves, constraints);
-        return traverse_partitions(constraints, partitions);
+        return traverse_partitions(constraints, leaves);
     }
 protected:
     inline
     virtual T traverse_partitions(const std::vector<constraint> &constraints,
-                                  const std::vector<std::shared_ptr<LeafSet> > &partitions) {
+                                  LeafSet &leaves) {
         T result = initialize_result_type();
-        for (size_t i = 1; i <= number_partition_tuples(partitions); i++) {
+        leaves.apply_constraints(constraints);
+        for (size_t i = 1; i <= leaves.number_partition_tuples(); i++) {
             std::shared_ptr<LeafSet> part_left;
             std::shared_ptr<LeafSet> part_right;
-            std::tie(part_left, part_right) = get_nth_partition_tuple(partitions, i);
+            std::tie(part_left, part_right) = leaves.get_nth_partition_tuple(i);
 
             auto constraints_left = find_constraints(*part_left, constraints);
             auto constraints_right = find_constraints(*part_right, constraints);
@@ -227,11 +219,12 @@ class CheckIfTerrace : public TerraceAlgorithm<bool> {
 protected:
     inline
     bool traverse_partitions(const std::vector<constraint> &constraints,
-                             const std::vector<std::shared_ptr<LeafSet> > &partitions) {
-        if(number_partition_tuples(partitions) > 1) {
+                             LeafSet &leaves) {
+        leaves.apply_constraints(constraints);
+        if(leaves.number_partition_tuples() > 1) {
             return true;
         }
-        return TerraceAlgorithm<bool>::traverse_partitions(constraints, partitions);
+        return TerraceAlgorithm<bool>::traverse_partitions(constraints, leaves);
     }
 
     inline

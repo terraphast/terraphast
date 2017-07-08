@@ -5,28 +5,28 @@
 #include <sstream>
 #include <iomanip>
 
-std::tuple<std::shared_ptr<LeafSet>,
-        std::shared_ptr<LeafSet> > get_nth_partition_tuple(
-        const partition_list &partitions,
-        const size_t n) {
+//std::tuple<std::shared_ptr<LeafSet>,
+//        std::shared_ptr<LeafSet> > get_nth_partition_tuple(
+//        const partition_list &partitions,
+//        const size_t n) {
 
-    assert(partitions.size() > 0);
+//    assert(partitions.size() > 0);
 
-    auto part_one = partitions[0]->create_empty();
-    auto part_two = partitions[0]->create_empty();
+//    auto part_one = partitions[0]->create_empty();
+//    auto part_two = partitions[0]->create_empty();
 
-    assert(n > 0 && n <= number_partition_tuples(partitions));
+//    assert(n > 0 && n <= number_partition_tuples(partitions));
 
-    for (size_t i = 0; i < partitions.size(); i++) {
-        if (is_bit_set(n, i)) {
-            *part_one |= *partitions[i];
-        } else {
-            *part_two |= *partitions[i];
-        }
-    }
+//    for (size_t i = 0; i < partitions.size(); i++) {
+//        if (is_bit_set(n, i)) {
+//            *part_one |= *partitions[i];
+//        } else {
+//            *part_two |= *partitions[i];
+//        }
+//    }
 
-    return std::make_tuple(part_one, part_two);
-}
+//    return std::make_tuple(part_one, part_two);
+//}
 
 static std::vector<std::shared_ptr<Tree> > add_leaf_to_tree(
         std::shared_ptr<Tree> current_tree, const leaf_number leaf) {
@@ -103,43 +103,43 @@ std::vector<std::shared_ptr<Tree> > merge_subtrees(
     return merged_trees;
 }
 
-partition_list apply_constraints(const LeafSet &leaves, const std::vector<constraint> &constraints) {
+//partition_list apply_constraints(const LeafSet &leaves, const std::vector<constraint> &constraints) {
 
-    partition_list sets = leaves.create_partition_list();
+//    partition_list sets = leaves.create_partition_list();
 
-    bool found_left_constraint = false;
-    bool found_right_constraint = false;
-    size_t index_containing_left_constraint = 0;
-    size_t index_containing_right_constraint = 0;
+//    bool found_left_constraint = false;
+//    bool found_right_constraint = false;
+//    size_t index_containing_left_constraint = 0;
+//    size_t index_containing_right_constraint = 0;
 
-    for (constraint cons : constraints) {
-         for (size_t i = 0; i < sets.size(); i++) {
-            if (sets[i]->contains(cons.smaller_left)) {
-                // set contains the left constraint
-                found_left_constraint = true;
-                index_containing_left_constraint = i;
-            }
-            if (sets[i]->contains(cons.smaller_right)) {
-                // set contains the right constraint
-                found_right_constraint = true;
-                index_containing_right_constraint = i;
-            }
-        }
-        assert(found_left_constraint
-                && index_containing_left_constraint < sets.size());
-        assert(
-                found_right_constraint
-                && index_containing_right_constraint < sets.size());
-        if (index_containing_left_constraint != index_containing_right_constraint) {
-            // sets need to be merged
-            *sets[index_containing_left_constraint] |= *sets[index_containing_right_constraint];
-            sets.erase(sets.begin() + static_cast<partition_list::difference_type>(
-                                              index_containing_right_constraint));
-        }
+//    for (constraint cons : constraints) {
+//         for (size_t i = 0; i < sets.size(); i++) {
+//            if (sets[i]->contains(cons.smaller_left)) {
+//                // set contains the left constraint
+//                found_left_constraint = true;
+//                index_containing_left_constraint = i;
+//            }
+//            if (sets[i]->contains(cons.smaller_right)) {
+//                // set contains the right constraint
+//                found_right_constraint = true;
+//                index_containing_right_constraint = i;
+//            }
+//        }
+//        assert(found_left_constraint
+//                && index_containing_left_constraint < sets.size());
+//        assert(
+//                found_right_constraint
+//                && index_containing_right_constraint < sets.size());
+//        if (index_containing_left_constraint != index_containing_right_constraint) {
+//            // sets need to be merged
+//            *sets[index_containing_left_constraint] |= *sets[index_containing_right_constraint];
+//            sets.erase(sets.begin() + static_cast<partition_list::difference_type>(
+//                                              index_containing_right_constraint));
+//        }
 
-    }
-    return sets;
-}
+//    }
+//    return sets;
+//}
 
 static std::tuple<leaf_number, leaf_number> extract_constraints_from_tree_rec(
         const std::shared_ptr<Tree> node,

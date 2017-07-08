@@ -8,7 +8,9 @@
  */
 #pragma once
 
-#include "types.h"
+#include <vector>
+#include <cstdio>
+#include <cassert>
 
 /**
  * @ingroup structures
