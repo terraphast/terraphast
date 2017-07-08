@@ -62,7 +62,15 @@ int terraceAnalysis(missingData *m,
 
     ntree_t *tree = get_newk_tree_from_string(newickTreeString);
 
+    if(tree == nullptr) {
+        // error parsing the newick file
+        return TERRACE_NEWICK_ERROR;
+    }
     assert(tree != nullptr);
+
+    if(!isBinary(tree)) {
+      return TERRACE_TREE_NOT_BINARY_ERROR;
+    }
 
     std::string root_species_name;
     std::vector<std::string> id_to_lable;
@@ -72,6 +80,8 @@ int terraceAnalysis(missingData *m,
 
     assert(rtree != nullptr);
     //dout("rooted_tree = " << rtree->to_newick_string(id_to_lable) << "\n");
+
+    // TODO: check consistency of tree and data matrix
 
     std::set<std::string> m_labels;
     for (size_t k = 0; k < m->numberOfSpecies; k++) {

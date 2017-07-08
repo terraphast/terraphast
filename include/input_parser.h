@@ -60,6 +60,14 @@ ntree_t* get_newk_tree(const char* nwk_file);
  */
 ntree_t *get_newk_tree_from_string(const char *nwk_string);
 
+/**
+ * Checks whether a given tree is a binary tree
+ *
+ * @param tree The tree to check.
+ * @return true iff tree is binary.
+ */
+bool isBinary(ntree_t *tree);
+
 #ifdef __cplusplus
 }
 #endif

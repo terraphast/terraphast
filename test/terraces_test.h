@@ -390,3 +390,199 @@ INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACheckIfTerraceFixture, ::testing
     TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "2")
 ));
 
+TEST(CheckNewickError, examle_with_corrupt_newick_string_1) {
+    //open an output files for enumerating all trees on a terrace
+    FILE *f0 = fopen("tree1", "w");
+
+    const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5", "s6"};
+
+    const unsigned char dataMatrix[] = {1, 1, 1, 1, 1, 1,
+                                        0, 1, 0, 0, 0, 0,
+                                        0, 0, 1, 0, 0, 0,
+                                        0, 0, 0, 1, 0, 0,
+                                        0, 0, 0, 0, 1, 0,
+                                        0, 0, 0, 0, 0, 1};
+
+    const char *corruptTree = "((s1,s2),(s3,s4),(s5,s6);";
+
+    mpz_t terraceSize;
+
+    mpz_init(terraceSize);
+    mpz_set_ui(terraceSize, 0);
+
+    //initialize missing data data structure
+    missingData *example = initializeMissingData(6, 6, speciesNames);
+
+    copyDataMatrix(dataMatrix,example);
+
+    int errorCode;
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
+
+    freeMissingData(example);
+    fclose(f0);
+}
+
+TEST(CheckNewickError, examle_with_corrupt_newick_string_2) {
+    //open an output files for enumerating all trees on a terrace
+    FILE *f0 = fopen("tree1", "w");
+
+    const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5", "s6"};
+
+    const unsigned char dataMatrix[] = {1, 1, 1, 1, 1, 1,
+                                        0, 1, 0, 0, 0, 0,
+                                        0, 0, 1, 0, 0, 0,
+                                        0, 0, 0, 1, 0, 0,
+                                        0, 0, 0, 0, 1, 0,
+                                        0, 0, 0, 0, 0, 1};
+
+    const char *corruptTree = "((s1,s2)(s3,s4),(s5,s6));";
+
+    mpz_t terraceSize;
+
+    mpz_init(terraceSize);
+    mpz_set_ui(terraceSize, 0);
+
+    //initialize missing data data structure
+    missingData *example = initializeMissingData(6, 6, speciesNames);
+
+    copyDataMatrix(dataMatrix,example);
+
+    int errorCode;
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
+
+    freeMissingData(example);
+    fclose(f0);
+}
+
+TEST(CheckNewickError, examle_with_corrupt_newick_string_3) {
+    //open an output files for enumerating all trees on a terrace
+    FILE *f0 = fopen("tree1", "w");
+
+    const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5", "s6"};
+
+    const unsigned char dataMatrix[] = {1, 1, 1, 1, 1, 1,
+                                        0, 1, 0, 0, 0, 0,
+                                        0, 0, 1, 0, 0, 0,
+                                        0, 0, 0, 1, 0, 0,
+                                        0, 0, 0, 0, 1, 0,
+                                        0, 0, 0, 0, 0, 1};
+
+    const char *corruptTree = "((s1,s2),(s3,s4),(s5,s6))";
+
+    mpz_t terraceSize;
+
+    mpz_init(terraceSize);
+    mpz_set_ui(terraceSize, 0);
+
+    //initialize missing data data structure
+    missingData *example = initializeMissingData(6, 6, speciesNames);
+
+    copyDataMatrix(dataMatrix,example);
+
+    int errorCode;
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
+
+    freeMissingData(example);
+    fclose(f0);
+}
+
+TEST(CheckNewickError, examle_with_corrupt_newick_string_4) {
+    //open an output files for enumerating all trees on a terrace
+    FILE *f0 = fopen("tree1", "w");
+
+    const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5", "s6", "s55"};
+
+    const unsigned char dataMatrix[] = {1, 1, 1, 1, 1, 1, 1,
+                                        0, 1, 0, 0, 0, 0, 1,
+                                        0, 0, 1, 0, 0, 0, 1,
+                                        0, 0, 0, 1, 0, 0, 1,
+                                        0, 0, 0, 0, 1, 0, 1,
+                                        0, 0, 0, 0, 0, 1, 1,
+                                        0, 0, 0, 1, 0, 0, 1};
+
+    const char *corruptTree = "((s1,s2,s55),(s3,s4),(s5,s6))";
+
+    mpz_t terraceSize;
+
+    mpz_init(terraceSize);
+    mpz_set_ui(terraceSize, 0);
+
+    //initialize missing data data structure
+    missingData *example = initializeMissingData(7, 7, speciesNames);
+
+    copyDataMatrix(dataMatrix,example);
+
+    int errorCode;
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
+
+    freeMissingData(example);
+    fclose(f0);
+}
+
+TEST(CheckTreeNotBinaryError, examle_with_not_binary_newick_string_1) {
+    //open an output files for enumerating all trees on a terrace
+    FILE *f0 = fopen("tree1", "w");
+
+    const char *speciesNames[] = {"s1", "s2", "s3", "s4"};
+
+    const unsigned char dataMatrix[] = {1, 1, 1, 1,
+                                        0, 1, 0, 1,
+                                        0, 0, 1, 1,
+                                        0, 1, 0, 0};
+
+    const char *corruptTree = "(s1, s2, s3, s4);";
+
+    mpz_t terraceSize;
+
+    mpz_init(terraceSize);
+    mpz_set_ui(terraceSize, 0);
+
+    //initialize missing data data structure
+    missingData *example = initializeMissingData(4, 4, speciesNames);
+
+    copyDataMatrix(dataMatrix,example);
+
+    int errorCode;
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    ASSERT_EQ(errorCode, TERRACE_TREE_NOT_BINARY_ERROR);
+
+    freeMissingData(example);
+    fclose(f0);
+}
+
+TEST(CheckTreeNotBinaryError, examle_with_not_binary_newick_string_2) {
+  //open an output files for enumerating all trees on a terrace
+  FILE *f0 = fopen("tree1", "w");
+
+  const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5", "s6"};
+
+  const unsigned char dataMatrix[] = {1, 1, 1, 1, 1, 1,
+                                      0, 1, 0, 0, 0, 0,
+                                      0, 0, 1, 0, 0, 0,
+                                      0, 0, 0, 1, 0, 0,
+                                      0, 0, 0, 0, 1, 0,
+                                      0, 0, 0, 0, 0, 1};
+
+  const char *corruptTree = "((s1,s2,s3),s4,(s5,s6));";
+
+  mpz_t terraceSize;
+
+  mpz_init(terraceSize);
+  mpz_set_ui(terraceSize, 0);
+
+  //initialize missing data data structure
+  missingData *example = initializeMissingData(6, 6, speciesNames);
+
+  copyDataMatrix(dataMatrix,example);
+
+  int errorCode;
+  errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+  ASSERT_EQ(errorCode, TERRACE_TREE_NOT_BINARY_ERROR);
+
+  freeMissingData(example);
+  fclose(f0);
+}
