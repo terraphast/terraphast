@@ -2,7 +2,7 @@
 
 #include <sstream>
 #include <map>
-#include <assert.h>
+#include "debug.h"
 
 static void to_newick_string_rec(std::stringstream &ss,
                                  const std::vector<std::string> &ids_to_lables,
@@ -19,11 +19,11 @@ static void to_newick_string_rec(std::stringstream &ss,
 }
 
 std::shared_ptr<Tree> root(std::shared_ptr<Tree> t) {
-    if (t->parent == nullptr) {
+    if (t->parent.lock() == nullptr) {
         return t;
     }
 
-    return root(t->parent);
+    return root(t->parent.lock());
 }
 
 std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables) const {
@@ -74,16 +74,17 @@ static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree,
 	cover_map[tree] = node;
 	cover_map[node] = node;
 
-	node->parent = deep_copy(tree->parent, cover_map);
 	node->left = deep_copy(tree->left, cover_map);
 	node->right = deep_copy(tree->right, cover_map);
+	node->parent = deep_copy(tree->parent.lock(), cover_map);
 
 	return node;
 }
 
-std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree) {
+std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> deep_copy(std::shared_ptr<Tree> tree) {
 	std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> cover_map;
-	return deep_copy(tree, cover_map);
+    auto result = deep_copy(tree, cover_map);
+	return std::make_tuple(result, root(result));
 }
 
 static void d_print_tree_rec(std::ostream &strm,
@@ -91,9 +92,9 @@ static void d_print_tree_rec(std::ostream &strm,
                                     const int depth) {
     assert(
             depth == 1
-            || (tree->parent != nullptr
-                && (tree->parent->left == tree
-                    || tree->parent->right == tree)));
+            || (tree->parent.lock() != nullptr
+                && (tree->parent.lock()->left == tree
+                    || tree->parent.lock()->right == tree)));
 
     if(tree->is_leaf()) {
         strm << "Label:" << tree->id << std::endl;

@@ -359,6 +359,10 @@ TEST_P(TACheckIfTerraceFixture, ExamplesFromModifiedInput) {
 }
 
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACountFixture, ::testing::Values(
+    TACountParameter("../input/modified/Allium.nwk", "../input/modified/Allium.data", "8038035"), //TODO: Not verified
+    //TACountParameter("../input/modified/Bouchenak.nwk", "../input/modified/Bouchenak.data", "8038035"), //TODO: Not verified
+    //TACountParameter("../input/modified/Iris.nwk", "../input/modified/Iris.data", "8038035"), //TODO: Not verified
+    //TACountParameter("../input/modified/Pyron.nwk", "../input/modified/Pyron.data", "8038035"), //TODO: Not verified
     TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
     TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35"),
     TACountParameter("../input/modified/Asplenium.nwk.1", "../input/modified/Asplenium.data.1", "1"),
@@ -375,6 +379,10 @@ INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACountFixture, ::testing::Values(
 ));
 
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACheckIfTerraceFixture, ::testing::Values(
+    TACountParameter("../input/modified/Allium.nwk", "../input/modified/Allium.data", "2"), //TODO: Not verified
+    //TACountParameter("../input/modified/Bouchenak.nwk", "../input/modified/Bouchenak.data", "1"), //TODO: Not verified
+    //TACountParameter("../input/modified/Iris.nwk", "../input/modified/Iris.data", "1"), //TODO: Not verified
+    //TACountParameter("../input/modified/Pyron.nwk", "../input/modified/Pyron.data", "1"), //TODO: Not verified
     TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "0"),
     TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "2"),
     TACountParameter("../input/modified/Asplenium.nwk.1", "../input/modified/Asplenium.data.1", "0"),

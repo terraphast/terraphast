@@ -18,7 +18,6 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
             leave->id = tree->id;
             leave->left = nullptr;
             leave->right = nullptr;
-            leave->parent = nullptr;
             return tree;
         }
     } else {
@@ -231,10 +230,11 @@ std::vector<std::shared_ptr<Tree>> get_neighbours(std::shared_ptr<Tree> node) {
         neighbours.push_back(node->left);
     }
     if (node->right != nullptr) {
-        neighbours.push_back((node->right));
+        neighbours.push_back(node->right);
     }
-    if (node->parent != nullptr) {
-        neighbours.push_back(node->parent);
+    auto p = node->parent.lock();
+    if (p != nullptr) {
+        neighbours.push_back(p);
     }
     return neighbours;
 }

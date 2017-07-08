@@ -42,22 +42,25 @@ static std::vector<std::shared_ptr<Tree> > add_leaf_to_tree(
         result.insert(result.end(), result_right.begin(), result_right.end());
     }
 
-    auto tree_copy = deep_copy(current_tree);
+    std::shared_ptr<Tree> tree_copy;
+    std::shared_ptr<Tree> root_of_tree_copy;
+    std::tie(tree_copy, root_of_tree_copy) = deep_copy(current_tree);
 
     auto to_insert = std::make_shared<Tree>(leaf);
     auto new_tree = std::make_shared<Tree>(tree_copy, to_insert);
     new_tree->parent = tree_copy->parent;
-    if (tree_copy->parent != nullptr) {
-        if (tree_copy->parent->left == tree_copy) {
-            tree_copy->parent->left = new_tree;
+    auto p = tree_copy->parent.lock();
+    if (p != nullptr) {
+        if (p->left == tree_copy) {
+            p->left = new_tree;
         } else {
-            tree_copy->parent->right = new_tree;
+            p->right = new_tree;
         }
     }
     tree_copy->parent = new_tree;
     to_insert->parent = new_tree;
 
-    result.push_back(root(new_tree));
+    result.push_back(root(tree_copy));
 
     return result;
 }

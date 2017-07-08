@@ -23,6 +23,9 @@ void BM_terrace_analysis__detect(benchmark::State &state,
 
         terraceAnalysis(m, read_tree, TA_DETECT, nullptr, &terraceSize);
 
+        delete[](read_tree);
+        mpz_clear(terraceSize);
+        free_input_data(read_data);
         freeMissingData(m);
     }
 }
@@ -38,6 +41,7 @@ BENCHMARK_CAPTURE(BM_terrace_analysis__detect, Allium_Tiny,
 BENCHMARK_CAPTURE(BM_terrace_analysis__detect, Asplenium_1,
                   "../input/modified/Asplenium.nwk.1",
                   "../input/modified/Asplenium.data.1");
+
 
 BENCHMARK_CAPTURE(BM_terrace_analysis__detect, Asplenium_2,
                   "../input/modified/Asplenium.nwk.2",
@@ -100,6 +104,9 @@ void BM_terrace_analysis__count(benchmark::State &state,
 
         terraceAnalysis(m, read_tree, TA_COUNT, nullptr, &terraceSize);
 
+        delete[](read_tree);
+        mpz_clear(terraceSize);
+        free_input_data(read_data);
         freeMissingData(m);
     }
 }
@@ -179,6 +186,9 @@ void BM_terrace_analysis__enumerate(benchmark::State &state,
         terraceAnalysis(m, read_tree, TA_ENUMERATE, tmpf, &terraceSize);
         std::fclose(tmpf);
 
+        delete[](read_tree);
+        mpz_clear(terraceSize);
+        free_input_data(read_data);
         freeMissingData(m);
     }
 }
@@ -186,6 +196,7 @@ void BM_terrace_analysis__enumerate(benchmark::State &state,
 BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Meusemann,
                   "../input/modified/Meusemann.nwk",
                   "../input/modified/Meusemann.data");
+
 
 BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Allium_Tiny,
                   "../input/modified/Allium_Tiny.nwk",
@@ -215,25 +226,28 @@ BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Euphorbia_1,
                   "../input/modified/Euphorbia.nwk.1",
                   "../input/modified/Euphorbia.data.1");
 
-/*
+
 BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Euphorbia_2,
                   "../input/modified/Euphorbia.nwk.2",
                   "../input/modified/Euphorbia.data.2");
 
+
 BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Ficus_1,
                   "../input/modified/Ficus.nwk.1",
                   "../input/modified/Ficus.data.1");
+
+BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Ficus_2,
+                  "../input/modified/Ficus.nwk.2",
+                  "../input/modified/Ficus.data.2");
+
+BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Ficus_3,
+                  "../input/modified/Ficus.nwk.3",
+                  "../input/modified/Ficus.data.3");
+
+/*
+BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Caryophyllaceae,
+                  "../input/modified/Caryophyllaceae.nwk",
+                  "../input/modified/Caryophyllaceae.data");
 */
-//BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Ficus_2,
-//                  "../input/modified/Ficus.nwk.2",
-//                  "../input/modified/Ficus.data.2");
-
-//BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Ficus_3,
-//                  "../input/modified/Ficus.nwk.3",
-//                  "../input/modified/Ficus.data.3");
-
-//BENCHMARK_CAPTURE(BM_terrace_analysis__enumerate, Caryophyllaceae,
-//                  "../input/modified/Caryophyllaceae.nwk",
-//                  "../input/modified/Caryophyllaceae.data");
 
 BENCHMARK_MAIN()
