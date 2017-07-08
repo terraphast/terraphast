@@ -32,7 +32,6 @@ int terraceAnalysis(missingData *m,
     //dout("read_tree = " << newickTreeString << std::endl);
     //dout("missing_data = " << std::endl << *m);
 
-
     //dout("\n" << missing_data_to_nexus(m) << "\n");
 
     // figure out what we are supposed to calculate
@@ -46,6 +45,14 @@ int terraceAnalysis(missingData *m,
 
     assert(m->numberOfSpecies > 3 && m->numberOfPartitions > 1);
 
+    if(m->numberOfSpecies <= 3) {
+      return TERRACE_NUM_SPECIES_ERROR;
+    }
+
+    if(m->numberOfPartitions <= 1) {
+      return TERRACE_NUM_PARTITIONS_ERROR;
+    }
+
     for (size_t i = 0; i < m->numberOfSpecies; i++) {
         for (size_t j = 0; j < m->numberOfPartitions; j++) {
             if (!(getDataMatrix(m, i, j) == static_cast<unsigned char>(0)
@@ -53,6 +60,33 @@ int terraceAnalysis(missingData *m,
                 return TERRACE_MATRIX_ERROR;
             }
         }
+    }
+
+    std::set<std::string> m_labels;
+    bool speciesWithAllData = false;
+    for (size_t k = 0; k < m->numberOfSpecies; k++) {
+        bool speciesWithAllDataTemp = true;
+        bool noData = true;
+        for (size_t j = 0; j < m->numberOfPartitions; j++) {
+            if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
+                noData = false;
+            } else {
+                assert(getDataMatrix(m, k, j) == static_cast<unsigned char>(0));
+                speciesWithAllDataTemp = false;
+            }
+        }
+        if(noData) {
+            dout("Species with no data in any partition: " << m->speciesNames[k] << "\n");
+            assert(0);
+            return TERRACE_SPECIES_WITHOUT_PARTITION_ERROR;
+        }
+        if (speciesWithAllDataTemp) {
+            speciesWithAllData = true;
+        }
+        m_labels.insert(std::string(m->speciesNames[k]));
+    }
+    if(!speciesWithAllData) {
+        return TERRACE_NO_ROOT_SPECIES_ERROR;
     }
 
     if ((enumerateTrees || enumerateCompressedTrees)
@@ -72,6 +106,8 @@ int terraceAnalysis(missingData *m,
       return TERRACE_TREE_NOT_BINARY_ERROR;
     }
 
+    // TODO: check labels in tree = labels in matrix
+
     std::string root_species_name;
     std::vector<std::string> id_to_lable;
     std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_lable);
@@ -83,21 +119,6 @@ int terraceAnalysis(missingData *m,
 
     // TODO: check consistency of tree and data matrix
 
-    std::set<std::string> m_labels;
-    for (size_t k = 0; k < m->numberOfSpecies; k++) {
-        bool noData = true;
-        for (size_t j = 0; j < m->numberOfPartitions; j++) {
-            if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
-                noData = false;
-                break;
-            }
-        }
-        if(noData) {
-            dout("Species with no data in any partition: " << m->speciesNames[k] << "\n");
-            assert(0);
-        }
-        m_labels.insert(std::string(m->speciesNames[k]));
-    }
 
     for (size_t i = 0; i < id_to_lable.size(); i++) {
         if (m_labels.count(std::string(id_to_lable[i])) == 0) {

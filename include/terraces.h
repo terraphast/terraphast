@@ -35,6 +35,8 @@
 #define TERRACE_OUTPUT_FILE_ERROR        -7
 
 #define TERRACE_TREE_NOT_BINARY_ERROR    -8
+#define TERRACE_NO_ROOT_SPECIES_ERROR    -9
+#define TERRACE_SPECIES_WITHOUT_PARTITION_ERROR    -10
 /* to be extended */
 
 /* Argument to control output of terraceAnalysis function (ta_outspec) */

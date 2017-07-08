@@ -77,6 +77,12 @@ input_data *parse_input_data(const char *data_file) {
             fgetc(f);
 
             fgets(input_buffer, 256, f);
+
+            if(feof(f)!=0) {
+              // end of line reached, but there is more to read (num_species is too big)
+              return NULL;
+            }
+
             size_t len = strlen(input_buffer);
             if (len < 255) {
                 result->names[s] = new char[len];
@@ -87,6 +93,11 @@ input_data *parse_input_data(const char *data_file) {
                 assert(0);
             }
         }
+    }
+    fgets(input_buffer, 256, f);
+    if(feof(f) == 0) {
+        // end of line is not reached yet, but there are no more species to read (num_species is too small)
+        return NULL;
     }
 
     fclose(f);
