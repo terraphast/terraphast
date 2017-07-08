@@ -1,14 +1,8 @@
 #ifndef IFUGAO_H
 #define IFUGAO_H
 
-#include "tree.h"
-#include "constraints.h"
-#include "leaf_set.h"
+#include "types.h"
 
-#include <memory>
-#include <vector>
-#include <set>
-#include <assert.h>
 #include <iostream>
 #include <iterator>
 
@@ -20,9 +14,7 @@
  *      [recursion stop]
  *        get_all_binary_trees
  *      apply_constraints
- *     
  *   d_print_tree
- * 
  */
 
 template<typename T>

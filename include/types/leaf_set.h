@@ -1,15 +1,8 @@
 #pragma once
 
-#ifndef IFUGAO_LEAF_SET_H
-#define IFUGAO_LEAF_SET_H
-
 #include <boost/dynamic_bitset.hpp>
-#include <tuple>
-#include <set>
 
-#include "constraints.h"
-#include "UnionFind.h"
-
+#include "types.h"
 #include "debug.h"
 
 template <typename T>
@@ -195,5 +188,3 @@ private:
         return repr;
     }
 };
-
-#endif // IFUGAO_LEAF_SET_H

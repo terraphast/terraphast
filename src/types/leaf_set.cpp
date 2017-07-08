@@ -1,7 +1,4 @@
-#include "leaf_set.h"
-
-#include <map>
-
+#include "types/leaf_set.h"
 #include "debug.h"
 
 void UnionFindLeafSet::apply_constraints(

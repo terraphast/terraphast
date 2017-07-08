@@ -7,7 +7,7 @@
  *        as taught in "Algorithms 1"
  */
 
-#include "UnionFind.h"
+#include "types/UnionFind.h"
 
 void UnionFind::allToSingletons() {
 	for (size_t i = 0; i < parent.size(); ++i) {

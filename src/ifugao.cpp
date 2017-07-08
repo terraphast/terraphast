@@ -1,9 +1,7 @@
 #include "ifugao.h"
 #include "debug.h"
+#include "terraces.h"
 
-#include <assert.h>
-#include <terraces.h>
-#include <map>
 #include <sstream>
 #include <iomanip>
 

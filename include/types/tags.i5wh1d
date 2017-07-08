@@ -1,0 +1,80 @@
+Tree	tree.h	/^class Tree {$/;"	c
+Tree	tree.h	/^	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,$/;"	f	class:Tree
+Tree	tree.h	/^	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,$/;"	f	class:Tree
+Tree	tree.h	/^	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :$/;"	f	class:Tree
+Tree	tree.h	/^	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,$/;"	f	class:Tree
+Tree	tree.h	/^	Tree(leaf_number p_id, std::shared_ptr<Tree> p_parent) :$/;"	f	class:Tree
+Tree	tree.h	/^	Tree(leaf_number p_id) :$/;"	f	class:Tree
+Tree	tree.h	/^	Tree() :$/;"	f	class:Tree
+id	tree.h	/^	leaf_number id;$/;"	m	class:Tree
+left	tree.h	/^	std::shared_ptr<Tree> left;$/;"	m	class:Tree
+right	tree.h	/^	std::shared_ptr<Tree> right;$/;"	m	class:Tree
+parent	tree.h	/^	std::shared_ptr<Tree> parent;$/;"	m	class:Tree
+is_leaf	tree.h	/^	inline bool is_leaf() const {$/;"	f	class:Tree
+to_newick_string	tree.h	/^	std::string to_newick_string(const std::vector<std::string> &id_to_lable) const;$/;"	p	class:Tree
+to_newick_string	tree.h	/^	std::string to_newick_string(const std::vector<std::string> &id_to_lable, const std::string &root_label) const;$/;"	p	class:Tree
+fold	tree.h	/^    T fold (BinaryOperator<T> op, TreeNodeVisitor<T> v) const {$/;"	f	class:Tree
+count	tree.h	/^    size_t count() const;$/;"	p	class:Tree
+operator <<	tree.h	/^std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree);$/;"	p
+root	tree.h	/^std::shared_ptr<Tree> root(const std::shared_ptr<Tree> tree);$/;"	p
+deep_copy	tree.h	/^std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree);$/;"	p
+BitLeafSet	leaf_set.h	/^class BitLeafSet;$/;"	x
+LeafSet	leaf_set.h	/^typedef BitLeafSet LeafSet;$/;"	t
+partition_list	leaf_set.h	/^typedef list_of_leaf_sets<LeafSet> partition_list;$/;"	t
+AbstractLeafSet	leaf_set.h	/^class AbstractLeafSet {$/;"	c
+AbstractLeafSet	leaf_set.h	/^    AbstractLeafSet() = default;$/;"	p	class:AbstractLeafSet
+AbstractLeafSet	leaf_set.h	/^    AbstractLeafSet(const AbstractLeafSet&) = default;$/;"	p	class:AbstractLeafSet
+~AbstractLeafSet	leaf_set.h	/^    virtual ~AbstractLeafSet() = default;$/;"	p	class:AbstractLeafSet
+contains	leaf_set.h	/^    virtual bool contains(const size_t leaf) const = 0;$/;"	p	class:AbstractLeafSet
+size	leaf_set.h	/^    virtual size_t size() const = 0;$/;"	p	class:AbstractLeafSet
+pop	leaf_set.h	/^    virtual leaf_number pop() = 0;$/;"	p	class:AbstractLeafSet
+operator |=	leaf_set.h	/^    virtual LSClass& operator|=(const LSClass &other) = 0;$/;"	p	class:AbstractLeafSet
+SimpleLeafSet	leaf_set.h	/^class SimpleLeafSet : public AbstractLeafSet<SimpleLeafSet>, std::set<leaf_number> {$/;"	c
+SimpleLeafSet	leaf_set.h	/^    SimpleLeafSet () = default;$/;"	p	class:SimpleLeafSet
+SimpleLeafSet	leaf_set.h	/^    SimpleLeafSet (std::initializer_list<leaf_number> l) : std::set<leaf_number>(l) {$/;"	f	class:SimpleLeafSet
+create	leaf_set.h	/^    static SimpleLeafSet  create(size_t size) {$/;"	f	class:SimpleLeafSet
+contains	leaf_set.h	/^    bool contains(leaf_number leaf) const {$/;"	f	class:SimpleLeafSet
+size	leaf_set.h	/^    inline size_t size() const {$/;"	f	class:SimpleLeafSet
+insert	leaf_set.h	/^    void insert(const leaf_number l) {$/;"	f	class:SimpleLeafSet
+create_partition_list	leaf_set.h	/^    list_of_leaf_sets<SimpleLeafSet> create_partition_list() const {$/;"	f	class:SimpleLeafSet
+to_set	leaf_set.h	/^    std::set<leaf_number> to_set() {$/;"	f	class:SimpleLeafSet
+create_empty	leaf_set.h	/^    std::shared_ptr<SimpleLeafSet> create_empty() {$/;"	f	class:SimpleLeafSet
+pop	leaf_set.h	/^    leaf_number pop() {$/;"	f	class:SimpleLeafSet
+operator |=	leaf_set.h	/^    SimpleLeafSet & operator|=(const SimpleLeafSet  &other) {$/;"	f	class:SimpleLeafSet
+BitLeafSet	leaf_set.h	/^class BitLeafSet : public AbstractLeafSet<BitLeafSet>, boost::dynamic_bitset<> {$/;"	c
+BitLeafSet	leaf_set.h	/^    BitLeafSet() = default;$/;"	p	class:BitLeafSet
+BitLeafSet	leaf_set.h	/^    BitLeafSet (size_type num_bits, unsigned long value) : boost::dynamic_bitset<>(num_bits, value) {$/;"	f	class:BitLeafSet
+BitLeafSet	leaf_set.h	/^    BitLeafSet (std::initializer_list<leaf_number> l)  {$/;"	f	class:BitLeafSet
+create	leaf_set.h	/^    static BitLeafSet create(size_t size) {$/;"	f	class:BitLeafSet
+contains	leaf_set.h	/^    bool contains(leaf_number leaf) const {$/;"	f	class:BitLeafSet
+size	leaf_set.h	/^    inline size_t size() const {$/;"	f	class:BitLeafSet
+insert	leaf_set.h	/^    void insert(const leaf_number l) {$/;"	f	class:BitLeafSet
+create_partition_list	leaf_set.h	/^    list_of_leaf_sets<BitLeafSet> create_partition_list() const {$/;"	f	class:BitLeafSet
+to_set	leaf_set.h	/^    std::set<leaf_number> to_set() {$/;"	f	class:BitLeafSet
+create_empty	leaf_set.h	/^    std::shared_ptr<BitLeafSet> create_empty() {$/;"	f	class:BitLeafSet
+pop	leaf_set.h	/^    leaf_number pop() {$/;"	f	class:BitLeafSet
+operator |=	leaf_set.h	/^    BitLeafSet & operator|=(const BitLeafSet  &other) {$/;"	f	class:BitLeafSet
+UnionFindLeafSet	leaf_set.h	/^class UnionFindLeafSet  {$/;"	c
+UnionFindLeafSet	leaf_set.h	/^    UnionFindLeafSet(const UnionFindLeafSet& obj) {$/;"	f	class:UnionFindLeafSet
+UnionFindLeafSet	leaf_set.h	/^    UnionFindLeafSet(size_t num_elems) {$/;"	f	class:UnionFindLeafSet
+contains	leaf_set.h	/^    bool contains(size_t leaf);$/;"	p	class:UnionFindLeafSet
+apply_constraints	leaf_set.h	/^    void apply_constraints(const std::vector<constraint> &constraints);$/;"	p	class:UnionFindLeafSet
+get_nth_partition_tuple	leaf_set.h	/^    std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>> get_nth_partition_tuple(size_t n);$/;"	p	class:UnionFindLeafSet
+data_structure	leaf_set.h	/^    std::shared_ptr<UnionFind> data_structure;$/;"	m	class:UnionFindLeafSet
+repr	leaf_set.h	/^    size_t repr; \/\/this is the number of the representative of this set. its an index to the array of the union find data structure$/;"	m	class:UnionFindLeafSet
+set_list	leaf_set.h	/^    std::shared_ptr<std::vector<std::shared_ptr<UnionFindLeafSet> > > set_list;$/;"	m	class:UnionFindLeafSet
+get_data_structure	leaf_set.h	/^    inline std::shared_ptr<UnionFind> get_data_structure() {$/;"	f	class:UnionFindLeafSet
+set_repr	leaf_set.h	/^    inline void set_repr(size_t p_repr) {$/;"	f	class:UnionFindLeafSet
+get_repr	leaf_set.h	/^    inline size_t get_repr() {$/;"	f	class:UnionFindLeafSet
+UnionFind	UnionFind.h	/^class UnionFind {$/;"	c
+parent	UnionFind.h	/^    std::vector<size_t> parent;$/;"	m	class:UnionFind
+rank	UnionFind.h	/^	std::vector<unsigned char> rank;    \/\/TODO evtl uint verwenden?$/;"	m	class:UnionFind
+num_elems	UnionFind.h	/^    size_t num_elems;$/;"	m	class:UnionFind
+UnionFind	UnionFind.h	/^    UnionFind(size_t max_element) : parent(max_element), rank(max_element, 0), num_elems(max_element) {$/;"	f	class:UnionFind
+UnionFind	UnionFind.h	/^    UnionFind(std::vector<size_t> &p_parent, std::vector<unsigned char> &p_rank) : parent(p_parent), rank(p_rank), num_elems(parent.size()) {$/;"	f	class:UnionFind
+allToSingletons	UnionFind.h	/^	void allToSingletons();$/;"	p	class:UnionFind
+find	UnionFind.h	/^    size_t find(size_t u);$/;"	p	class:UnionFind
+merge	UnionFind.h	/^    void merge(size_t u, size_t v);$/;"	p	class:UnionFind
+size	UnionFind.h	/^    size_t size() {$/;"	f	class:UnionFind
+get_parent	UnionFind.h	/^    std::vector<size_t>& get_parent() {$/;"	f	class:UnionFind
+get_rank	UnionFind.h	/^    std::vector<unsigned char>& get_rank() {$/;"	f	class:UnionFind
