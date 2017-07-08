@@ -5,7 +5,7 @@
 /*
  * for debug statements
  */
-#ifndef DEBUG
+#ifndef NDEBUG
 #define dout(obj) do { \
    std::cerr << "" <<  __FILE__ << ":" << __LINE__ << ": " << obj; \
 } while(false)
