@@ -13,7 +13,6 @@ class BitLeafSet;
 typedef BitLeafSet LeafSet;
 typedef list_of_leaf_sets<LeafSet> partition_list;
 
-
 template <class LSClass>
 class AbstractLeafSet {
 public:

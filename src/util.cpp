@@ -165,6 +165,7 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
             right_ntree = current_ntree->children[1];
         } else {
             assert(0);
+            return;
         }
     } else if(current_ntree->parent == nullptr) { //we are at the regular root
         current->left = nullptr;
@@ -190,6 +191,7 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
             right_ntree = current_ntree->children[1];
         } else {
             assert(0);
+            return;
         }
     }
 
