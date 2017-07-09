@@ -301,6 +301,77 @@ static void d_print_tree_rec(std::ostream &strm,
     strm << "<node/>" << std::endl;
 }
 
+static short isBinaryAndConsistentRec(ntree_t *tree, std::set<std::string> &set) {
+    if(tree->children_count == 0) {
+      // tree consisting out of one leaf
+      if(set.erase(tree->label) != 1) {
+          // label is in tree but not in data file
+          return -2;
+      }
+      return 0;
+    } else if(tree->children_count == 2) {
+      short ret;
+      ret = isBinaryAndConsistentRec(tree->children[0], set);
+      if(ret != 0) {
+         return ret;
+      }
+      ret = isBinaryAndConsistentRec(tree->children[1], set);
+      if(ret != 0) {
+         return ret;
+      }
+      return 0;
+    } 
+    return -1;
+}
+
+short isBinaryAndConsistent(ntree_t *tree, missingData* missing_data) {
+    std::set<std::string> set;
+    for (size_t i = 0; i < missing_data->numberOfSpecies; i++) {
+        set.insert(missing_data->speciesNames[i]);
+    }
+
+    if(tree->children_count == 0) {
+      // tree consisting out of one leaf
+      if(set.erase(tree->label) != 1) {
+          // label is in tree but not in data file
+          return -2;
+      }
+    } else if(tree->children_count == 3) {
+      // unrooted tree
+      short ret;
+      ret = isBinaryAndConsistentRec(tree->children[0], set);
+      if(ret != 0) {
+         return ret;
+      }
+      ret = isBinaryAndConsistentRec(tree->children[1], set);
+      if(ret != 0) {
+         return ret;
+      }
+      ret = isBinaryAndConsistentRec(tree->children[2], set);
+      if(ret != 0) {
+         return ret;
+      }
+    } else if(tree->children_count == 2) {
+      // rooted tree
+      short ret;
+      ret = isBinaryAndConsistentRec(tree->children[0], set);
+      if(ret != 0) {
+         return ret;
+      }
+      ret = isBinaryAndConsistentRec(tree->children[1], set);
+      if(ret != 0) {
+         return ret;
+      }
+    } else {
+      return -1;
+    }
+
+    if(!set.empty()) {
+      return -2;
+    } 
+    return 0;
+}
+
 std::ostream &operator<<(std::ostream &strm, const ntree_t *tree) {
     strm << "Dump ntree_t:" << std::endl;
     d_print_tree_rec(strm, tree, 0);

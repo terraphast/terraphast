@@ -102,11 +102,13 @@ int terraceAnalysis(missingData *m,
     }
     assert(tree != nullptr);
 
-    if(!isBinary(tree)) {
+    short binAndCons = isBinaryAndConsistent(tree, m);
+    if(binAndCons == -1) {
       return TERRACE_TREE_NOT_BINARY_ERROR;
+    } else if (binAndCons == -2) {
+      return TERRACE_SPECIES_ERROR;
     }
-
-    // TODO: check labels in tree = labels in matrix
+    assert(binAndCons == 0);
 
     std::string root_species_name;
     std::vector<std::string> id_to_lable;
@@ -117,10 +119,8 @@ int terraceAnalysis(missingData *m,
     assert(rtree != nullptr);
     //dout("rooted_tree = " << rtree->to_newick_string(id_to_lable) << "\n");
 
-    // TODO: check consistency of tree and data matrix
-
-
-    std::map<std::string, bool> in_data_file;
+    // checking should be done by isBinaryAndConsistent now. commented code is probably unnecassary
+    /*std::map<std::string, bool> in_data_file;
     for (size_t i = 0; i < id_to_lable.size(); i++) {
         if (m_labels.count(std::string(id_to_lable[i])) == 0) {
             dout("Species appears in newick file, but not in missing data file:" << id_to_lable[i] << "\n");
@@ -136,7 +136,7 @@ int terraceAnalysis(missingData *m,
             dout("Species appears in missing data file, but not in newick file:" << m_label << "\n");
             assert(0);
         }
-    }
+    }*/
 
     auto constraints = extract_constraints_from_supertree(rtree, m, id_to_lable);
     //dout(constraints << "\n");
