@@ -24,21 +24,28 @@
  */
 std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
                                             const missingData *missing_data,
-                                            const std::map<std::string, leaf_number>& first,
+                                            const std::map<std::string, leaf_number> &first,
                                             const std::vector<std::string> &id_to_label,
                                             const size_t partition);
+
+/**
+ * @param missing_data the missing data matrix
+ * @return a list of all species that have data for all partitions on the given missing data matrix
+ */
+std::vector<std::string> get_root_species(const missingData *missing_data);
 
 /**
  * This function roots the tree at an appropriate position according to the missing data array
  *
  * @param tree the tree to be rooted
  * @param missing_data the data for the missing sequences on each partition
- * @return the new root of the tree, or NULL if the tree cannot be rooted (e.g. if there is no species that has data for every partition)
+ * @return the new root of the tree, or NULL if the tree cannot be rooted
+ * (e.g. if there is no species that has data for every partition)
  */
 std::shared_ptr<Tree> root_tree(ntree_t *tree,
-								const missingData *missing_data,
-								std::string &root_species_name,
-								std::vector<std::string> &id_to_label);
+                                const missingData *missing_data,
+                                std::string &root_species_name,
+                                std::vector<std::string> &id_to_label);
 
 /**
  * Returns a pointer to the leaf that has the label <label>
@@ -46,7 +53,7 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree,
  * @param tree a pointer to the root of the tree
  * @return a pointer to the leaf
  */
-ntree_t* get_leaf_by_name(ntree_t *tree, const char *label);
+ntree_t *get_leaf_by_name(ntree_t *tree, const char *label);
 
 /**
  * private function that roots the tree at a given leaf-edge
@@ -80,7 +87,8 @@ bool check_tree(ntree_t *tree);
 void fix_tree(ntree_t *tree);
 
 /**
- * @brief get_neighbours returns the neighbours of a given node in the tree. this can be used for easier usage of rooted trees as unrooted trees
+ * @brief get_neighbours returns the neighbours of a given node in the tree.
+ * This can be used for easier usage of rooted trees as unrooted trees
  * @param node the node of which we want to get the adjacent nodes
  * @return a vector containing the adjacent nodes.
  */
@@ -92,7 +100,8 @@ std::vector<std::shared_ptr<Tree>> get_neighbours(std::shared_ptr<Tree> node);
  * @param current_node the node, where the dfs is at the moment
  * @param parent the node where we come from. to avoid endles recursion
  */
-void get_leafs (std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<Tree> current_node, std::shared_ptr<Tree> parent);
+void get_leafs(std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<Tree> current_node,
+               std::shared_ptr<Tree> parent);
 
 /**
  * Converts a given newick tree to string
@@ -100,6 +109,6 @@ void get_leafs (std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<T
  * @param tree the tree whose string representation is requested
  * @return a textual representation of the given tree
  */
-std::ostream& operator<<(std::ostream &strm, const ntree_t *tree);
+std::ostream &operator<<(std::ostream &strm, const ntree_t *tree);
 
 #endif //include guard

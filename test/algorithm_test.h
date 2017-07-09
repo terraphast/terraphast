@@ -15,8 +15,8 @@ typedef TerracesAnalysisTestParameter<const long> RootedTreesCountParameter;
 class RootedTreesAnalysis : public ::testing::TestWithParam<RootedTreesCountParameter> {
 };
 
-static void test_rooted_trees(const char* newick_file, const char* data_file, long trees_on_terrace) {
-    
+static void test_rooted_trees(const char *newick_file, const char *data_file, long trees_on_terrace) {
+
     input_data *read_data = parse_input_data(data_file);
     assert(read_data != nullptr);
     ntree_t *tree = get_newk_tree(newick_file);
@@ -27,39 +27,46 @@ static void test_rooted_trees(const char* newick_file, const char* data_file, lo
                                            const_cast<const char **>(read_data->names));
     copyDataMatrix(read_data->matrix, m);
 
-    std::string root_species_name;
-    std::vector<std::string> id_to_label;
-    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_label);
+    for(auto &root_species_name : get_root_species(m)) {
 
-    std::set<std::string> m_labels;
-    for (size_t k = 0; k < m->numberOfSpecies; k++) {
-        bool noData = true;
-        for (size_t j = 0; j < m->numberOfPartitions; j++) {
-            if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
-                noData = false;
-                break;
+        std::vector<std::string> id_to_label;
+
+        ntree_t *future_root = get_leaf_by_name(tree,
+                                                root_species_name.c_str());
+        assert (future_root != nullptr);
+
+        std::shared_ptr<Tree> rtree = root_at(future_root, id_to_label);
+
+        std::set<std::string> m_labels;
+        for (size_t k = 0; k < m->numberOfSpecies; k++) {
+            bool noData = true;
+            for (size_t j = 0; j < m->numberOfPartitions; j++) {
+                if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
+                    noData = false;
+                    break;
+                }
+            }
+            if (noData) {
+                dout("Species with no data in any partition: " << m->speciesNames[k] << "\n");
+                assert(0);
+            }
+            m_labels.insert(std::string(m->speciesNames[k]));
+        }
+
+        for (size_t i = 0; i < id_to_label.size(); i++) {
+            if (m_labels.count(std::string(id_to_label[i])) == 0) {
+                dout("Species appears in newick file, but not in missing data file:" << id_to_label[i] << "\n");
+                assert(0);
             }
         }
-        if(noData) {
-            dout("Species with no data in any partition: " << m->speciesNames[k] << "\n");
-            assert(0);
-        }
-        m_labels.insert(std::string(m->speciesNames[k]));
+
+        auto leaves = LeafSet(id_to_label.size());
+
+        CountAllRootedTrees algo;
+        auto result = algo.scan_terrace(leaves, extract_constraints_from_supertree(rtree, m, id_to_label));
+
+        ASSERT_EQ(result, trees_on_terrace);
     }
-
-    for (size_t i = 0; i < id_to_label.size(); i++) {
-        if (m_labels.count(std::string(id_to_label[i])) == 0) {
-            dout("Species appears in newick file, but not in missing data file:" << id_to_label[i] << "\n");
-            assert(0);
-        }
-    }
-
-    auto leaves = LeafSet(id_to_label.size());
-
-    CountAllRootedTrees algo;
-    auto result = algo.scan_terrace(leaves, extract_constraints_from_supertree(rtree, m, id_to_label));
-
-    ASSERT_EQ(result, trees_on_terrace);
 
     ntree_destroy(tree);
     freeMissingData(m);
@@ -393,8 +400,58 @@ TEST_P(RootedTreesAnalysis, ExamplesFromModifiedInput) {
 }
 
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, RootedTreesAnalysis, ::testing::Values(
-    RootedTreesCountParameter("../input/modified/Ficus.nwk.1", "../input/modified/Ficus.data.1", 283815),
-    RootedTreesCountParameter("../input/modified/Ficus.nwk.2", "../input/modified/Ficus.data.2", 851445),
-    RootedTreesCountParameter("../input/modified/Ficus.nwk.3", "../input/modified/Ficus.data.3", 851445),
-    RootedTreesCountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", 718346120625)
+        RootedTreesCountParameter("../input/modified/Allium.nwk",
+                                  "../input/modified/Allium.data",
+                                  8038035),
+        RootedTreesCountParameter("../input/modified/Allium_Reduced.nwk",
+                                  "../input/modified/Allium_Reduced.data",
+                                  730680125),
+        RootedTreesCountParameter("../input/modified/Allium_Tiny.nwk",
+                                  "../input/modified/Allium_Tiny.data",
+                                  35),
+        RootedTreesCountParameter("../input/modified/Asplenium.nwk.1",
+                                  "../input/modified/Asplenium.data.1",
+                                  1),
+        RootedTreesCountParameter("../input/modified/Asplenium.nwk.2",
+                                  "../input/modified/Asplenium.data.2",
+                                  95),
+        RootedTreesCountParameter("../input/modified/Bouchenak.nwk",
+                                  "../input/modified/Bouchenak.data",
+                                  61261515),
+        RootedTreesCountParameter("../input/modified/Caryophyllaceae.nwk",
+                                  "../input/modified/Caryophyllaceae.data",
+                                  718346120625),
+        RootedTreesCountParameter("../input/modified/Eucalyptus.nwk.1",
+                                  "../input/modified/Eucalyptus.data.1",
+                                  229),
+        RootedTreesCountParameter("../input/modified/Eucalyptus.nwk.1",
+                                  "../input/modified/Eucalyptus.data.2",
+                                  267),
+        RootedTreesCountParameter("../input/modified/Eucalyptus.nwk.3",
+                                  "../input/modified/Eucalyptus.data.3",
+                                  9),
+        RootedTreesCountParameter("../input/modified/Euphorbia.nwk.1",
+                                  "../input/modified/Euphorbia.data.1",
+                                  759),
+        RootedTreesCountParameter("../input/modified/Euphorbia.nwk.2",
+                                  "../input/modified/Euphorbia.data.2",
+                                  759),
+        RootedTreesCountParameter("../input/modified/Ficus.nwk.1",
+                                  "../input/modified/Ficus.data.1",
+                                  283815),
+        RootedTreesCountParameter("../input/modified/Ficus.nwk.2",
+                                  "../input/modified/Ficus.data.2",
+                                  851445),
+        RootedTreesCountParameter("../input/modified/Ficus.nwk.3",
+                                  "../input/modified/Ficus.data.3",
+                                  851445),
+        RootedTreesCountParameter("../input/modified/Iris.nwk",
+                                  "../input/modified/Iris.data",
+                                  1),
+        RootedTreesCountParameter("../input/modified/Meusemann.nwk",
+                                  "../input/modified/Meusemann.data",
+                                  1),
+        RootedTreesCountParameter("../input/modified/Pyron.nwk",
+                                  "../input/modified/Pyron.data",
+                                  2205)
 ));
