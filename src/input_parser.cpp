@@ -49,7 +49,7 @@ char *read_newk_tree(const char *newk_file) {
 }
 
 
-//parse input data from input example files 
+//parse input data from input example files
 
 input_data *parse_input_data(const char *data_file) {
     FILE *f = fopen(data_file, "rb");
@@ -77,6 +77,12 @@ input_data *parse_input_data(const char *data_file) {
             fgetc(f);
 
             fgets(input_buffer, 256, f);
+
+            if(feof(f)!=0) {
+              // end of line reached, but there is more to read (num_species is too big)
+              return NULL;
+            }
+
             size_t len = strlen(input_buffer);
             if (len < 255) {
                 result->names[s] = new char[len];
@@ -87,6 +93,11 @@ input_data *parse_input_data(const char *data_file) {
                 assert(0);
             }
         }
+    }
+    fgets(input_buffer, 256, f);
+    if(feof(f) == 0) {
+        // end of line is not reached yet, but there are no more species to read (num_species is too small)
+        return NULL;
     }
 
     fclose(f);
@@ -102,6 +113,39 @@ ntree_t *get_newk_tree(const char *nwk_file) {
 
 ntree_t *get_newk_tree_from_string(const char *nwk_string) {
     ntree_t *tree = ntree_parse_newick_from_string(nwk_string);
+    if(tree == nullptr) {
+      return nullptr;
+    }
     fix_tree(tree); //necessary since tree seems to be corrupt
     return tree;
+}
+
+bool isBinaryRec(ntree_t *tree) {
+    if(tree->children_count == 0) {
+      // tree consisting out of one leaf
+      return true;
+    } else if(tree->children_count == 2) {
+      return isBinaryRec(tree->children[0])
+            && isBinaryRec(tree->children[1]);
+    } else {
+      return false;
+    }
+}
+
+bool isBinary(ntree_t *tree) {
+    if(tree->children_count == 0) {
+      // tree consisting out of one leaf
+      return true;
+    } else if(tree->children_count == 3) {
+      // unrooted tree
+      return isBinaryRec(tree->children[0])
+            && isBinaryRec(tree->children[1])
+            && isBinaryRec(tree->children[2]);
+    } else if(tree->children_count == 2) {
+      // rooted tree
+      return isBinaryRec(tree->children[0])
+            && isBinaryRec(tree->children[1]);
+    } else {
+      return false;
+    }
 }

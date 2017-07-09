@@ -15,7 +15,11 @@ int main(int argc, char *argv[]) {
 
     FILE *empiricalTrees = fopen("empiricalTrees", "w");
 
-    if (read_data != NULL && read_tree != NULL) {
+    if(read_data == NULL) {
+        std::cerr << "Could not parse data file.\n";
+    } else if(read_tree == NULL) {
+        std::cerr << "Could not read tree file.\n";
+    } else {
         missingData *m = initializeMissingData(read_data->number_of_species,
                                                read_data->number_of_partitions,
                                                const_cast<const char **>(read_data->names));
