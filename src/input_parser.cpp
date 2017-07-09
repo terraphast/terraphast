@@ -120,7 +120,7 @@ ntree_t *get_newk_tree_from_string(const char *nwk_string) {
     return tree;
 }
 
-bool isBinaryRec(ntree_t *tree) {
+static bool isBinaryRec(ntree_t *tree) {
     if(tree->children_count == 0) {
       // tree consisting out of one leaf
       return true;

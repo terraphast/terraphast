@@ -168,7 +168,6 @@ public:
      * Returns the number of partition tuples that can be formed by combining the
      * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
      * the list.
-     * @param partitions the list of partitions
      * @return the number of partition tuples that can be formed from the given list
      */
     inline size_t number_partition_tuples() {
@@ -314,6 +313,8 @@ public:
                 return i;
             }
         }
+        //TODO
+        return 0;
     }
 
     //TODO this method should be in the super class
@@ -321,7 +322,6 @@ public:
      * Returns the number of partition tuples that can be formed by combining the
      * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
      * the list.
-     * @param partitions the list of partitions
      * @return the number of partition tuples that can be formed from the given list
      */
     inline size_t number_partition_tuples() {
@@ -355,6 +355,8 @@ public:
       std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>
       get_nth_partition_tuple(size_t n) {
 //        //idea: it may be possible to copy the datastructure only once, since the two sets are disjoint
+
+          std::cerr << n << "\n";
 
 //        std::shared_ptr<UnionFind> uf_1 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
 //        std::shared_ptr<UnionFind> uf_2 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
