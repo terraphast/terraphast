@@ -1,2 +1,2 @@
 #!/bin/bash
-valgrind --tool=callgrind cmake-build-debug/terraces_main input/modified/Caryophyllaceae.data input/modified/Caryophyllaceae.nwk
+valgrind --tool=callgrind cmake-build-debug/terraces_main input/modified/Allium_Reduced.data input/modified/Allium_Reduced.nwk
