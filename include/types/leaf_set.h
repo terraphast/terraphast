@@ -12,6 +12,9 @@
 class BitLeafSet;
 typedef BitLeafSet LeafSet;
 
+//class UnionFindLeafSet;
+//typedef UnionFindLeafSet LeafSet;
+
 /**
  * Checks whenever the n-th bit is set in the given number
  * @param num the number to check
@@ -142,8 +145,8 @@ public:
         return pos;
     }
 
-    std::tuple<std::shared_ptr<LeafSet>,
-            std::shared_ptr<LeafSet> > get_nth_partition_tuple(const size_t n) {
+    std::tuple<std::shared_ptr<BitLeafSet>,
+            std::shared_ptr<BitLeafSet> > get_nth_partition_tuple(const size_t n) {
 
         assert(list_of_partitions.size() > 0);
 
@@ -266,8 +269,17 @@ public:
         //list_of_partitions = std::vector<std::shared_ptr<UnionFindLeafSet> >();
     }
 
+    UnionFindLeafSet (std::initializer_list<leaf_number> l)  {
+        auto max_val = *std::max_element(l.begin(), l.end());
+        data_structure = std::make_shared<UnionFind>(max_val + 1);
 
-    bool contains(size_t leaf) {
+        repr = *(l.begin());
+        for(size_t i = 1; i < l.size(); i++) {
+            data_structure->get_parent().at(i) = repr;
+        }
+    }
+
+    bool contains(size_t leaf) const {
         return data_structure->find(leaf) == repr;
     }
 
@@ -275,7 +287,6 @@ public:
         if (!repr_valid) {  //in this case we dont really represent a set
             return 0;
         } else {
-            //TODO the for loop is for verification only. Delete it is speed is required
             size_t count = 0;
             for (size_t i = 0; i < data_structure->size(); i++) {
                 if (data_structure->find(i) == repr) {
@@ -308,13 +319,16 @@ public:
         assert(repr_valid);
 
         for (size_t i = 0; i < data_structure->size(); i++) {
-            if (data_structure->find(i) == repr) {
+            if (i == repr) {    // we delete the last element of the set
+                repr_valid = false;
+                return i;
+            }
+            else if (data_structure->find(i) == repr) {
                 data_structure->get_parent().at(i) = i;
                 return i;
             }
         }
-        //TODO
-        return 0;
+        assert(false);  //this means that we have a valid set without any element
     }
 
     //TODO this method should be in the super class
@@ -324,7 +338,7 @@ public:
      * the list.
      * @return the number of partition tuples that can be formed from the given list
      */
-    inline size_t number_partition_tuples() {
+    inline size_t number_partition_tuples() const {
         assert(list_of_partitions.size() > 1);
         return (1 << (list_of_partitions.size() - 1)) - 1;
     }
@@ -335,8 +349,7 @@ public:
         data_structure->allToSingletons();
 
         for (constraint cons : constraints) {
-            data_structure->merge(data_structure->find(cons.smaller_left),
-                                                       data_structure->find(cons.smaller_right));
+            data_structure->merge(cons.smaller_left, cons.smaller_right);
         }
 
         //TODO how slow are std::sets? we could use a bool array as well
@@ -347,70 +360,65 @@ public:
             sets.insert(set_repr);
         }
         for (std::set<leaf_number>::iterator it=sets.begin(); it != sets.end(); ++it) {
-            list_of_partitions.push_back(std::make_shared<UnionFindLeafSet>(data_structure, *it));
+            list_of_partitions.push_back(*it);
         }
 
     }
 
-      std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>
-      get_nth_partition_tuple(size_t n) {
-//        //idea: it may be possible to copy the datastructure only once, since the two sets are disjoint
+    std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>
+    get_nth_partition_tuple(size_t n) const {
+        //idea: it may be possible to copy the datastructure only once, since the two sets are disjoint
+        assert(n > 0 && n <= number_partition_tuples());
+        assert(list_of_partitions.size() > 1);  //we need at least 2 sets, otherwise creating partitions does not make sense
 
-          std::cerr << n << "\n";
+        std::shared_ptr<UnionFind> uf_1 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
+        std::shared_ptr<UnionFind> uf_2 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
 
-//        std::shared_ptr<UnionFind> uf_1 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
-//        std::shared_ptr<UnionFind> uf_2 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
+        std::shared_ptr<UnionFindLeafSet> part_one = std::make_shared<UnionFindLeafSet>(uf_1);
+        std::shared_ptr<UnionFindLeafSet> part_two = std::make_shared<UnionFindLeafSet>(uf_2);
 
+        bool part_one_first_set = false;
+        bool part_two_first_set = false;
 
+        for (size_t i = 0; i < data_structure->size(); i++) {
+          if (is_bit_set(n, i)) { //put the set into part_one
+              if (!part_one_first_set) {
+                  part_one->repr = list_of_partitions.at(i);
+              } else {
+                  part_one->data_structure->merge(part_one->repr, list_of_partitions.at(i));
+              }
+          } else {    //put the set into part_two
+              if (!part_two_first_set) {
+                  part_two->repr = list_of_partitions.at(i);
+              } else {
+                  part_two->data_structure->merge(part_two->repr, list_of_partitions.at(i));
+              }
+          }
+        }
 
-//        auto part_one = std::make_shared<std::set<UnionFind>>(uf_1);    //why std::set?
-//        auto part_two = std::make_shared<std::set<UnionFind>>(uf_2);
-
-
-//        bool part_one_first_set = false;
-//        bool part_two_first_set = false;
-
-
-
-//        assert(n > 0 && n <= number_partition_tuples());
-
-//        for (size_t i = 0; i < set_list->size(); i++) {
-//            if (is_bit_set(n, i)) { //put the set into part_one
-//                if (!part_one_first_set) {
-//                    part_one->set_repr(set_list.at(i).get_repr());
-//                } else {
-//                    part_one->get_data_structure()->merge((part_one)->get_repr(), set_list->at(i).get_repr());
-//                }
-//            } else {    //put the set into part_two
-//                if (!part_two_first_set) {
-//                    part_two->set_repr(set_list.at(i).get_repr());
-//                } else {
-//                    part_two->get_data_structure()->merge(part_two->get_repr(), set_list->at(i).get_repr());
-//                }
-//            }
-//        }
-
-//        //set the representative to the correct element
-//        part_one->repr = part_one->get_data_structure()->find(part_one->get_repr());
-//        part_two->repr = part_two->get_data_structure()->find(part_two->get_repr());
-
-
-//        return std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>(part_one, part_two);
-          return std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>(nullptr, nullptr);
-      }
-
-    const partition_list& get_list_of_partitions() const {
-        return list_of_partitions;
+        return std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>(part_one, part_two);
     }
+
+    partition_list get_list_of_partitions() const {
+        partition_list ret;
+
+        for (size_t elem : list_of_partitions) {
+            std::shared_ptr<UnionFindLeafSet> temp = std::make_shared<UnionFindLeafSet>(this->data_structure, elem);
+            ret.push_back(temp);
+        }
+
+        return ret;
+    }
+
 
 private:
     std::shared_ptr<UnionFind> data_structure;
     size_t repr; //this is the number of the representative of this set. its an index to the array of the union find data structure
     bool repr_valid = false; //true iff the representative is valid
-    partition_list list_of_partitions;
+    std::vector<leaf_number> list_of_partitions;  //contains the id's of the representatives of the sets
 
     void merge(const UnionFindLeafSet &other) {
         assert(repr_valid && other.repr_valid);
-        data_structure->merge(repr, other.repr);
+        repr = data_structure->merge(repr, other.repr);
     }
 };

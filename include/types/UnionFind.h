@@ -63,7 +63,7 @@ public:
 	 *  @param u element u
 	 *  @param v element v
 	 */
-    void merge(size_t u, size_t v);
+    size_t merge(size_t u, size_t v);
 
     /**
      * @brief size getter for the size of the datastructure

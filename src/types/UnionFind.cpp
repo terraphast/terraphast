@@ -26,19 +26,25 @@ size_t UnionFind::find(size_t u) {
 	}
 }
 
-void UnionFind::merge(size_t u, size_t v) {
+//Johannes: added return value, so that the wrapper class
+//knows the new represetnative
+size_t UnionFind::merge(size_t u, size_t v) {
 	size_t set_u = find(u);
 	size_t set_v = find(v);
-	if (set_u == set_v) return;
+    if (set_u == set_v) {
+        return set_u;
+    }
 
 	if (rank[set_u] < rank[set_v]) {
 		parent[set_u] = set_v;
+        return set_v;
 	}
 	else {
 		parent[set_v] = set_u;
 		if (rank[set_u] == rank[set_v]) {
 			rank[set_u]++;
 		}
+        return set_u;
 	}
 }
 
