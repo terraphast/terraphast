@@ -1,0 +1,2 @@
+#!/bin/bash
+sed -e 's/(//g;s/)//g;s/,/\n/g;s/\;//g;s/:[0-9\.]*//g' $1 | sort
