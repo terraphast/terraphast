@@ -35,7 +35,7 @@ std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>
     //idea: it may be possible to copy the datastructure only once, since the two sets are disjoint
 
     //TODO: Only heare because code is commented out!
-    dout("N:" << n << "\n");
+    std::cerr << "N:" << n << "\n";
 
     /*std::shared_ptr<UnionFind> uf_1 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
     std::shared_ptr<UnionFind> uf_2 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());

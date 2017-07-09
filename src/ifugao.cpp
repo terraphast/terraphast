@@ -130,8 +130,7 @@ partition_list apply_constraints(const LeafSet &leaves, const std::vector<constr
         }
         assert(found_left_constraint
                 && index_containing_left_constraint < sets.size());
-        assert(
-                found_right_constraint
+        assert(found_right_constraint
                 && index_containing_right_constraint < sets.size());
         if (index_containing_left_constraint != index_containing_right_constraint) {
             // sets need to be merged
@@ -139,7 +138,6 @@ partition_list apply_constraints(const LeafSet &leaves, const std::vector<constr
             sets.erase(sets.begin() + static_cast<partition_list::difference_type>(
                                               index_containing_right_constraint));
         }
-
     }
     return sets;
 }

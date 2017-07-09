@@ -89,9 +89,20 @@ int terraceAnalysis(missingData *m,
         m_labels.insert(std::string(m->speciesNames[k]));
     }
 
+    std::map<std::string, bool> in_data_file;
     for (size_t i = 0; i < id_to_lable.size(); i++) {
         if (m_labels.count(std::string(id_to_lable[i])) == 0) {
             dout("Species appears in newick file, but not in missing data file:" << id_to_lable[i] << "\n");
+            assert(0);
+        } else {
+            in_data_file[*m_labels.find(std::string(id_to_lable[i]))] = true;
+        }
+    }
+
+    in_data_file[root_species_name] = true;
+    for (auto &m_label : m_labels) {
+        if(!in_data_file[m_label]) {
+            dout("Species appears in missing data file, but not in newick file:" << m_label << "\n");
             assert(0);
         }
     }
@@ -252,9 +263,8 @@ std::vector<constraint> extract_constraints_from_supertree(
         const missingData *missing_data,
         const std::vector<std::string> &id_to_label) {
 
-
-    std::map<std::string, unsigned char> species_map;
-    for (unsigned char i = 0; i < missing_data->numberOfSpecies; i++) {
+    std::map<std::string, leaf_number> species_map;
+    for (leaf_number i = 0; i < missing_data->numberOfSpecies; i++) {
         species_map[std::string(missing_data->speciesNames[i])] = i;
     }
 

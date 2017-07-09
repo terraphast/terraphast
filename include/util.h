@@ -24,7 +24,7 @@
  */
 std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
                                             const missingData *missing_data,
-                                            const std::map<std::string, unsigned char>& first,
+                                            const std::map<std::string, leaf_number>& first,
                                             const std::vector<std::string> &id_to_label,
                                             const size_t partition);
 

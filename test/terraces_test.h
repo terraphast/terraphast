@@ -9,7 +9,7 @@
 #include "parameters.h"
 #include "debug.h"
 
-#define TIME_FOR_TESTS 1000*30
+#define TIME_FOR_TESTS 1000*3000
 
 typedef TerracesAnalysisTestParameter<const char*> TACountParameter;
 
@@ -72,8 +72,8 @@ TEST(Util, generate_induced_tree) {
     std::string root_species_name;
     std::vector<std::string> id_to_label;
     std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name, id_to_label);
-    std::map<std::string, unsigned char> species_map;
-    for (unsigned char i = 0; i < example1->numberOfSpecies; i++) {
+    std::map<std::string, leaf_number> species_map;
+    for (leaf_number i = 0; i < example1->numberOfSpecies; i++) {
         species_map[std::string(example1->speciesNames[i])] = i;
     }
 
@@ -359,14 +359,13 @@ TEST_P(TACheckIfTerraceFixture, ExamplesFromModifiedInput) {
 }
 
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACountFixture, ::testing::Values(
-    TACountParameter("../input/modified/Allium.nwk", "../input/modified/Allium.data", "8038035"), //TODO: Not verified
-    //TACountParameter("../input/modified/Bouchenak.nwk", "../input/modified/Bouchenak.data", "8038035"), //TODO: Not verified
-    //TACountParameter("../input/modified/Iris.nwk", "../input/modified/Iris.data", "8038035"), //TODO: Not verified
-    //TACountParameter("../input/modified/Pyron.nwk", "../input/modified/Pyron.data", "8038035"), //TODO: Not verified
-    TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
+    TACountParameter("../input/modified/Allium.nwk", "../input/modified/Allium.data", "8038035"),
+    TACountParameter("../input/modified/Allium_Reduced.nwk", "../input/modified/Allium_Reduced.data", "730680125"),
     TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "35"),
     TACountParameter("../input/modified/Asplenium.nwk.1", "../input/modified/Asplenium.data.1", "1"),
     TACountParameter("../input/modified/Asplenium.nwk.2", "../input/modified/Asplenium.data.2", "95"),
+    TACountParameter("../input/modified/Bouchenak.nwk", "../input/modified/Bouchenak.data", "61261515"),
+    TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "718346120625"),
     TACountParameter("../input/modified/Eucalyptus.nwk.1", "../input/modified/Eucalyptus.data.1", "229"),
     TACountParameter("../input/modified/Eucalyptus.nwk.1", "../input/modified/Eucalyptus.data.2", "267"),
     TACountParameter("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "9"),
@@ -375,18 +374,19 @@ INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACountFixture, ::testing::Values(
     TACountParameter("../input/modified/Ficus.nwk.1", "../input/modified/Ficus.data.1", "283815"),
     TACountParameter("../input/modified/Ficus.nwk.2", "../input/modified/Ficus.data.2", "851445"),
     TACountParameter("../input/modified/Ficus.nwk.3", "../input/modified/Ficus.data.3", "851445"),
-    TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "718346120625")
+    TACountParameter("../input/modified/Iris.nwk", "../input/modified/Iris.data", "1"),
+    TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "1"),
+    TACountParameter("../input/modified/Pyron.nwk", "../input/modified/Pyron.data", "2205")
 ));
 
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACheckIfTerraceFixture, ::testing::Values(
-    TACountParameter("../input/modified/Allium.nwk", "../input/modified/Allium.data", "2"), //TODO: Not verified
-    //TACountParameter("../input/modified/Bouchenak.nwk", "../input/modified/Bouchenak.data", "1"), //TODO: Not verified
-    //TACountParameter("../input/modified/Iris.nwk", "../input/modified/Iris.data", "1"), //TODO: Not verified
-    //TACountParameter("../input/modified/Pyron.nwk", "../input/modified/Pyron.data", "1"), //TODO: Not verified
-    TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "0"),
+    TACountParameter("../input/modified/Allium.nwk", "../input/modified/Allium.data", "2"),
+    TACountParameter("../input/modified/Allium_Reduced.nwk", "../input/modified/Allium_Reduced.data", "2"),
     TACountParameter("../input/modified/Allium_Tiny.nwk", "../input/modified/Allium_Tiny.data", "2"),
     TACountParameter("../input/modified/Asplenium.nwk.1", "../input/modified/Asplenium.data.1", "0"),
     TACountParameter("../input/modified/Asplenium.nwk.2", "../input/modified/Asplenium.data.2", "2"),
+    TACountParameter("../input/modified/Bouchenak.nwk", "../input/modified/Bouchenak.data", "2"),
+    TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "2"),
     TACountParameter("../input/modified/Eucalyptus.nwk.1", "../input/modified/Eucalyptus.data.1", "2"),
     TACountParameter("../input/modified/Eucalyptus.nwk.1", "../input/modified/Eucalyptus.data.2", "2"),
     TACountParameter("../input/modified/Eucalyptus.nwk.3", "../input/modified/Eucalyptus.data.3", "2"),
@@ -395,6 +395,8 @@ INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACheckIfTerraceFixture, ::testing
     TACountParameter("../input/modified/Ficus.nwk.1", "../input/modified/Ficus.data.1", "2"),
     TACountParameter("../input/modified/Ficus.nwk.2", "../input/modified/Ficus.data.2", "2"),
     TACountParameter("../input/modified/Ficus.nwk.3", "../input/modified/Ficus.data.3", "2"),
-    TACountParameter("../input/modified/Caryophyllaceae.nwk", "../input/modified/Caryophyllaceae.data", "2")
+    TACountParameter("../input/modified/Iris.nwk", "../input/modified/Iris.data", "0"),
+    TACountParameter("../input/modified/Meusemann.nwk", "../input/modified/Meusemann.data", "0"),
+    TACountParameter("../input/modified/Pyron.nwk", "../input/modified/Pyron.data", "2")
 ));
 
