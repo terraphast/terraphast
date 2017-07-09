@@ -254,6 +254,7 @@ public:
     UnionFindLeafSet(const UnionFindLeafSet& obj) {
         data_structure = obj.data_structure;
         repr = obj.repr;
+        repr_valid = obj.repr_valid;
         //list_of_partitions = obj.list_of_partitions; I dont think we need to copy this
     }
 
@@ -277,6 +278,7 @@ public:
         for(size_t i = 1; i < l.size(); i++) {
             data_structure->get_parent().at(i) = repr;
         }
+        repr_valid = true;
     }
 
     bool contains(size_t leaf) const {
@@ -318,10 +320,15 @@ public:
     inline leaf_number pop() {
         assert(repr_valid);
 
+        //TODO this is inefficient. Pop can be efficiently implemented with backpointers
+        if (this->size() == 1) {
+            repr_valid = false;
+            return repr;
+        }
+
         for (size_t i = 0; i < data_structure->size(); i++) {
-            if (i == repr) {    // we delete the last element of the set
-                repr_valid = false;
-                return i;
+            if (i == repr) {
+                continue;
             }
             else if (data_structure->find(i) == repr) {
                 data_structure->get_parent().at(i) = i;
@@ -347,8 +354,10 @@ public:
 
         //if the datastrucute is not copied, we must apply "allToSingletons" only to the elements in the current set
         data_structure->allToSingletons();
+        repr_valid = false;
 
         for (constraint cons : constraints) {
+            assert(cons.smaller_left < data_structure->size() && cons.smaller_right < data_structure->size());
             data_structure->merge(cons.smaller_left, cons.smaller_right);
         }
 
@@ -380,18 +389,22 @@ public:
         bool part_one_first_set = false;
         bool part_two_first_set = false;
 
-        for (size_t i = 0; i < data_structure->size(); i++) {
+        for (size_t i = 0; i < list_of_partitions.size(); i++) {
           if (is_bit_set(n, i)) { //put the set into part_one
               if (!part_one_first_set) {
                   part_one->repr = list_of_partitions.at(i);
+                  part_one->repr_valid = true;
+                  part_one_first_set = true;
               } else {
-                  part_one->data_structure->merge(part_one->repr, list_of_partitions.at(i));
+                  part_one->repr = part_one->data_structure->merge(part_one->repr, list_of_partitions.at(i));
               }
           } else {    //put the set into part_two
               if (!part_two_first_set) {
                   part_two->repr = list_of_partitions.at(i);
+                  part_two->repr_valid = true;
+                  part_two_first_set = true;
               } else {
-                  part_two->data_structure->merge(part_two->repr, list_of_partitions.at(i));
+                  part_two->repr = part_two->data_structure->merge(part_two->repr, list_of_partitions.at(i));
               }
           }
         }
@@ -417,8 +430,8 @@ private:
     bool repr_valid = false; //true iff the representative is valid
     std::vector<leaf_number> list_of_partitions;  //contains the id's of the representatives of the sets
 
-    void merge(const UnionFindLeafSet &other) {
-        assert(repr_valid && other.repr_valid);
-        repr = data_structure->merge(repr, other.repr);
-    }
+//    void merge(const UnionFindLeafSet &other) {
+//        assert(repr_valid && other.repr_valid);
+//        repr = data_structure->merge(repr, other.repr);
+//    }
 };

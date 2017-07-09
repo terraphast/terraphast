@@ -90,28 +90,28 @@ std::vector<std::shared_ptr<Tree> > merge_subtrees(
 
 
 
-/**
- * Returns the number of partition tuples that can be formed by combining the
- * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
- * the list.
- * @param partitions the list of partitions
- * @return the number of partition tuples that can be formed from the given list
- */
-inline size_t number_partition_tuples(
-        const std::vector<std::shared_ptr<LeafSet> > &partitions) {
-    assert(partitions.size() > 1);
+///**
+// * Returns the number of partition tuples that can be formed by combining the
+// * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
+// * the list.
+// * @param partitions the list of partitions
+// * @return the number of partition tuples that can be formed from the given list
+// */
+//inline size_t number_partition_tuples(
+//        const std::vector<std::shared_ptr<LeafSet> > &partitions) {
+//    assert(partitions.size() > 1);
 
-    return (1 << (partitions.size() - 1)) - 1;
-}
+//    return (1 << (partitions.size() - 1)) - 1;
+//}
 
-/**
- * Returns the n-th partition tuple of the given partition list
- * @param partitions the list of partitions
- * @param n the target n-th partition tuple to select, ranging from [1,2^(p-1)-1] where p is the number of partitions
- * @return the n-th partition tuple formed from the given partition list
- */
-std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet> > get_nth_partition_tuple(
-        const std::vector<std::shared_ptr<LeafSet> > &partitions, const size_t n);
+///**
+// * Returns the n-th partition tuple of the given partition list
+// * @param partitions the list of partitions
+// * @param n the target n-th partition tuple to select, ranging from [1,2^(p-1)-1] where p is the number of partitions
+// * @return the n-th partition tuple formed from the given partition list
+// */
+//std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet> > get_nth_partition_tuple(
+//        const std::vector<std::shared_ptr<LeafSet> > &partitions, const size_t n);
 
 template <typename T>
 class TerraceAlgorithm {
