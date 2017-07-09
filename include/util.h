@@ -103,6 +103,18 @@ std::vector<std::shared_ptr<Tree>> get_neighbours(std::shared_ptr<Tree> node);
 void get_leafs(std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<Tree> current_node,
                std::shared_ptr<Tree> parent);
 
+
+/**
+ * Checks whether a given tree is a binary tree and whether the labels at 
+ * the leafs are consistent with the missing_data structure.
+ *
+ * @param tree The tree to check.
+ * @return 0 if the tree is binary and consistent with the missing_data
+ *         -1 if the tree is not binary
+ *         -2 if the tree is binary and inconsistent with the missing_data
+ */
+short isBinaryAndConsistent(ntree_t *tree, missingData* missing_data);
+
 /**
  * Converts a given newick tree to string
  * @param strm the output stream

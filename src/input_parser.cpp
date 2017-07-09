@@ -119,33 +119,3 @@ ntree_t *get_newk_tree_from_string(const char *nwk_string) {
     fix_tree(tree); //necessary since tree seems to be corrupt
     return tree;
 }
-
-static bool isBinaryRec(ntree_t *tree) {
-    if(tree->children_count == 0) {
-      // tree consisting out of one leaf
-      return true;
-    } else if(tree->children_count == 2) {
-      return isBinaryRec(tree->children[0])
-            && isBinaryRec(tree->children[1]);
-    } else {
-      return false;
-    }
-}
-
-bool isBinary(ntree_t *tree) {
-    if(tree->children_count == 0) {
-      // tree consisting out of one leaf
-      return true;
-    } else if(tree->children_count == 3) {
-      // unrooted tree
-      return isBinaryRec(tree->children[0])
-            && isBinaryRec(tree->children[1])
-            && isBinaryRec(tree->children[2]);
-    } else if(tree->children_count == 2) {
-      // rooted tree
-      return isBinaryRec(tree->children[0])
-            && isBinaryRec(tree->children[1]);
-    } else {
-      return false;
-    }
-}
