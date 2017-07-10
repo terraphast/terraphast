@@ -67,6 +67,7 @@ private:
 	bool is_local_leaf(index i) const;
 	bool is_local_root(index i) const;
 	bool subtree_has_next(index i) const;
+	index first_cp(index i) const;
 
 public:
 	unconstrained_tree_iterator(const multitree_nodes::unconstrained node, tree& tree,

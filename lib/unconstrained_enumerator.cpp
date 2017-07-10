@@ -35,6 +35,13 @@ bool unconstrained_tree_iterator::subtree_has_next(index i) const {
 	return m_choice_points[i] != none && m_bips[m_choice_points[i]].has_next();
 }
 
+index unconstrained_tree_iterator::first_cp(index i) const {
+	auto l_cp = m_choice_points[local_lchild(i)];
+	auto r_cp = m_choice_points[local_rchild(i)];
+	auto p_cp = m_bips[i].has_next() ? i : none;
+	return l_cp != none ? l_cp : (r_cp != none ? r_cp : p_cp);
+}
+
 index unconstrained_tree_iterator::init_subtree(index i) {
 	assert(m_bips[i].num_leaves() > 0);
 	const auto& bip = m_bips[i];
@@ -60,10 +67,9 @@ index unconstrained_tree_iterator::init_subtree(index i) {
 		(*m_leaves)[global_i] = none;
 		(*m_tree)[node.lchild()].parent() = global_i;
 		(*m_tree)[node.rchild()].parent() = global_i;
-		const auto l_cp = init_subtree(left);
-		const auto r_cp = init_subtree(right);
-		const auto p_cp = bip.has_next() ? i : none;
-		return (cp = (l_cp != none ? l_cp : (r_cp != none ? r_cp : p_cp)));
+		init_subtree(left);
+		init_subtree(right);
+		return (cp = first_cp(i));
 	}
 }
 
@@ -80,10 +86,16 @@ unconstrained_tree_iterator::unconstrained_tree_iterator(const multitree_nodes::
 void unconstrained_tree_iterator::next() {
 	auto cur = m_choice_points[0];
 	assert(cur != none);
-	index new_cp;
 	if (m_bips[cur].has_next()) {
 		m_bips[cur].next();
-		init_subtree(cur);
+		auto new_cp = init_subtree(cur);
+		if (new_cp != cur) {
+			// fix choice point upwards
+			while (cur != none) {
+				new_cp = (m_choice_points[cur] = first_cp(cur));
+				cur = is_local_root(cur) ? none : local_parent(cur);
+			}
+		}
 	} else {
 		index l;
 		index r;
@@ -92,7 +104,9 @@ void unconstrained_tree_iterator::next() {
 			cur = local_parent(cur);
 			l = local_lchild(cur);
 			r = local_rchild(cur);
-		} while (!(m_bips[cur].has_next() || subtree_has_next(l) || subtree_has_next(r)));
+		} while ((m_bips[cur].has_next() | subtree_has_next(l) | subtree_has_next(r)) == 0);
+
+		index new_cp;
 		// increment the first possible choice point
 		if (subtree_has_next(l)) {
 			m_bips[m_choice_points[l]].next();

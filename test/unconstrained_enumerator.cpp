@@ -76,10 +76,11 @@ TEST_CASE("unconstrained_tree_iterator small", "[unconstrained]") {
 		result[i] = {t, leaf_perm};
 		std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
 	}
+	CHECK(i == result.size());
 }
 
 TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
-	tree t(11, {none, none, none});
+	tree t(17, {none, none, none});
 	std::vector<index> leaf_perm(t.size(), 0);
 	t[0] = {none, 1, 2};
 	t[1] = {0, none, none};
@@ -87,7 +88,7 @@ TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
 	leaf_perm[0] = none;
 	leaf_perm[1] = 0;
 	multitree_nodes::unconstrained leaves;
-	index leaves_data[] = {1, 2, 3, 4, 5};
+	index leaves_data[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	leaves.begin = leaves_data;
 	leaves.end = leaves.begin + sizeof(leaves_data) / sizeof(index);
 	std::vector<std::pair<tree, std::vector<index>>> result(135135, {t, leaf_perm});
@@ -101,6 +102,7 @@ TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
 		result[i] = {t, leaf_perm};
 		std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
 	}
+	CHECK(i == result.size());
 }
 
 } // namespace tests
