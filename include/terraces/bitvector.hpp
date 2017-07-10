@@ -210,11 +210,11 @@ inline ranked_bitvector full_ranked_set(index size) {
 
 inline index ranked_bitvector::select(index i) const {
 	assert(i < count());
-	auto it = first_set();
+	auto it = begin();
 	for (index j = 0; j < i; ++j) {
 		++it;
 	}
-	return it;
+	return *it;
 }
 
 } // namespace terraces
