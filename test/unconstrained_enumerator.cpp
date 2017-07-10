@@ -2,6 +2,7 @@
 #include <catch.hpp>
 
 #include <terraces/unconstrained_enumerator.hpp>
+#include <terraces/validation.hpp>
 
 namespace terraces {
 namespace tests {
@@ -65,18 +66,17 @@ TEST_CASE("unconstrained_tree_iterator small", "[unconstrained]") {
 	index leaves_data[] = {0, 1, 2};
 	leaves.begin = leaves_data;
 	leaves.end = leaves.begin + sizeof(leaves_data) / sizeof(index);
-	std::vector<std::pair<tree, std::vector<index>>> result(3, {t, leaf_perm});
 	unconstrained_tree_iterator it{leaves, t, leaf_perm, 0};
-	index i = 0;
-	result[i] = {t, leaf_perm};
-	std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
-	while (it.has_next()) {
-		++i;
+	std::vector<std::vector<bitvector>> leaf_bipartitions{};
+	index i = 1;
+	do {
 		it.next();
-		result[i] = {t, leaf_perm};
-		std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
-	}
-	CHECK(i == result.size() - 1);
+		++i;
+	} while (it.has_next());
+	std::sort(leaf_bipartitions.begin(), leaf_bipartitions.end(), bipartition_cmp);
+	CHECK(i == 3);
+	CHECK(std::adjacent_find(leaf_bipartitions.begin(), leaf_bipartitions.end(),
+	                         bipartition_equal) == leaf_bipartitions.end());
 }
 
 TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
@@ -91,18 +91,21 @@ TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
 	index leaves_data[] = {1, 2, 3, 4, 5, 6};
 	leaves.begin = leaves_data;
 	leaves.end = leaves.begin + sizeof(leaves_data) / sizeof(index);
-	std::vector<std::pair<tree, std::vector<index>>> result(945, {t, leaf_perm});
 	unconstrained_tree_iterator it{leaves, t, leaf_perm, 2};
+	std::vector<std::vector<bitvector>> leaf_bipartitions{};
+	bool first = true;
 	index i = 0;
-	result[i] = {t, leaf_perm};
-	std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
-	while (it.has_next()) {
-		++i;
-		it.next();
-		result[i] = {t, leaf_perm};
-		std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
-	}
-	CHECK(i == result.size() - 1);
+	do {
+		if (!first) {
+			++i;
+			it.next();
+		}
+		first = false;
+		leaf_bipartitions.emplace_back(tree_bipartitions(t, leaf_perm));
+	} while (it.has_next());
+	std::sort(leaf_bipartitions.begin(), leaf_bipartitions.end(), bipartition_cmp);
+	CHECK(std::adjacent_find(leaf_bipartitions.begin(), leaf_bipartitions.end(),
+	                         bipartition_equal) == leaf_bipartitions.end());
 }
 
 } // namespace tests
