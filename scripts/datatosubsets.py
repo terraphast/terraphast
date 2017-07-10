@@ -22,30 +22,24 @@ with open(ARGS.input, "r") as f:
     for i in range(sites_count):
         SITES.append([])
 
-    current_species = 1
     for line in f:
         data = line.split(" ")
-        del(data[-1])
+        data[-1] = data[-1].split("\n")[0]
         if __debug__:
             print("Encountered species with {} sites.".format(len(data)))
-        for j in range(len(data)):
+        for j in range(len(data) - 1):
             if data[j] == "1":
-                SITES[j].append("s{}".format(current_species))
+                SITES[j].append(data[-1])
             elif data[j] == "0":
                 pass
             else:
-                raise RuntimeError("Species number {} contains illegal site existence denominator ({})".format(
-                    current_species, data[j]))
-        current_species += 1
+                raise RuntimeError("Species {} contains illegal site existence denominator ({})".format(
+                    data[-1], data[j]))
 
     for k in range(sites_count):
         assert len(SITES[k]) <= SPECIES_COUNT
 
 with open(ARGS.output, "w") as f:
-    species_overview = " ".join(["s{}".format(i)
-                                 for i in range(1, SPECIES_COUNT + 1)])
-    f.write(species_overview)
-
     for s in SITES:
         species_represenation = " ".join([element for element in s])
         f.write("\n")
