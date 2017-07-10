@@ -109,6 +109,7 @@ void get_leafs(std::vector<std::shared_ptr<Tree>> &leaf_list, std::shared_ptr<Tr
  * the leafs are consistent with the missing_data structure.
  *
  * @param tree The tree to check.
+ * @param missing_data The missing data to check consistency against.
  * @return 0 if the tree is binary and consistent with the missing_data
  *         -1 if the tree is not binary
  *         -2 if the tree is binary and inconsistent with the missing_data
