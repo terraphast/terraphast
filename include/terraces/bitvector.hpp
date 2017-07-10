@@ -22,7 +22,7 @@ namespace bits {
 inline index block_index(index i) { return i / word_bits; }
 inline index base_index(index block) { return block * word_bits; }
 inline uint8_t shift_index(index i) { return i % word_bits; }
-inline index set_mask(index i) { return 1ull << (i & word_bits - 1); }
+inline index set_mask(index i) { return 1ull << (i & (word_bits - 1)); }
 inline index clear_mask(index i) { return ~set_mask(i); }
 inline index prefix_mask(index i) { return set_mask(i) - 1; }
 inline index next_bit(uint64_t block, index i) { return i + bitscan(block >> shift_index(i)); }

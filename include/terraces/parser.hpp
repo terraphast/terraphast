@@ -13,7 +13,7 @@
 namespace terraces {
 
 struct tree_set {
-	tree tree;
+	terraces::tree tree;
 	name_map names;
 	index_map indices;
 };
