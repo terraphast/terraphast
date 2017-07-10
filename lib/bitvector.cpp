@@ -8,7 +8,9 @@ bitvector::bitvector(index size) : m_size{size}, m_blocks(size / 64 + 1) { add_s
 
 ranked_bitvector::ranked_bitvector(index size) : bitvector{size}, m_ranks(m_blocks.size() + 1) {
 	add_sentinel();
-	debug_code(m_ranks_dirty = false);
+#ifndef NDEBUG
+	m_ranks_dirty = true;
+#endif
 }
 
 void bitvector::add_sentinel() {
@@ -56,22 +58,30 @@ void bitvector::set_bitwise_or(const bitvector& fst, const bitvector& snd) {
 
 void ranked_bitvector::blank() {
 	bitvector::blank();
-	debug_code(m_ranks_dirty = true);
+#ifndef NDEBUG
+	m_ranks_dirty = true;
+#endif
 }
 
 void ranked_bitvector::bitwise_xor(const bitvector& other) {
 	bitvector::bitwise_xor(other);
-	debug_code(m_ranks_dirty = true);
+#ifndef NDEBUG
+	m_ranks_dirty = true;
+#endif
 }
 
 void ranked_bitvector::invert() {
 	bitvector::invert();
-	debug_code(m_ranks_dirty = true);
+#ifndef NDEBUG
+	m_ranks_dirty = true;
+#endif
 }
 
 void ranked_bitvector::set_bitwise_or(const bitvector& fst, const bitvector& snd) {
 	bitvector::set_bitwise_or(fst, snd);
-	debug_code(m_ranks_dirty = true);
+#ifndef NDEBUG
+	m_ranks_dirty = true;
+#endif
 }
 
 void ranked_bitvector::update_ranks() {
@@ -81,7 +91,9 @@ void ranked_bitvector::update_ranks() {
 		m_ranks[b + 1] = m_count;
 	}
 	assert(m_count > 0);
-	debug_code(m_ranks_dirty = false);
+#ifndef NDEBUG
+	m_ranks_dirty = false;
+#endif
 }
 
 bool bitvector::operator<(const bitvector& other) const {

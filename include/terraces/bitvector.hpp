@@ -6,16 +6,6 @@
 #include <terraces/trees.hpp>
 #include <vector>
 
-#ifdef NDEBUG
-#define debug_code(x)                                                                              \
-	do {                                                                                       \
-	} while (0)
-#define debug_var(x) static_assert(true, "")
-#else
-#define debug_code(x) x
-#define debug_var(x) x
-#endif
-
 namespace terraces {
 
 namespace bits {
@@ -122,7 +112,7 @@ class ranked_bitvector : public bitvector {
 protected:
 	std::vector<value_type> m_ranks;
 	index m_count;
-	debug_var(bool m_ranks_dirty);
+	bool m_ranks_dirty;
 
 public:
 	ranked_bitvector(index size);
@@ -130,17 +120,23 @@ public:
 	/** Sets a bit in the bitvector. */
 	void set(index i) {
 		bitvector::set(i);
-		debug_code(m_ranks_dirty = true);
+#ifndef NDEBUG
+		m_ranks_dirty = true;
+#endif
 	}
 	/** Clears a bit in the bitvector. */
 	void clr(index i) {
 		bitvector::clr(i);
-		debug_code(m_ranks_dirty = true);
+#ifndef NDEBUG
+		m_ranks_dirty = true;
+#endif
 	}
 	/** Flips a bit in the bitvector. */
 	void flip(index i) {
 		bitvector::flip(i);
-		debug_code(m_ranks_dirty = true);
+#ifndef NDEBUG
+		m_ranks_dirty = true;
+#endif
 	}
 
 	/** Clears all bits in the bitvector. */
