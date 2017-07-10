@@ -66,6 +66,9 @@ target_link_libraries(convert terraces)
 add_executable(isomorphic "app/isomorphic.cpp")
 target_link_libraries(isomorphic terraces)
 
+add_executable(reroot "app/reroot.cpp")
+target_link_libraries(reroot terraces)
+
 # Most of our files only compile with disabled language extensions for VC++
 # Unfortunately, Catch uses some windows-specific features, so we have to
 # enable these extensions for the Catch main method (more specific: not disable them)
