@@ -19,7 +19,9 @@ struct small_bipartition {
 	index m_end_bip;
 	index m_cur_bip;
 
-	small_bipartition(index mask) : m_mask{mask}, m_end_bip{1ull << rbitscan(mask)} { reset(); }
+	small_bipartition(index mask = 1) : m_mask{mask}, m_end_bip{1ull << rbitscan(mask)} {
+		reset();
+	}
 
 	// credit goes to nglee
 	// (see stackoverflow.com/questions/44767080/incrementing-masked-bitsets)
@@ -51,8 +53,8 @@ class unconstrained_tree_iterator {
 private:
 	const multitree_nodes::unconstrained m_unconstrained;
 	index m_num_leaves;
-	tree& m_tree;
-	std::vector<index>& m_leaves;
+	tree* m_tree;
+	std::vector<index>* m_leaves;
 	index m_root;
 	std::vector<index> m_choice_points;
 	std::vector<small_bipartition> m_bips;
@@ -63,6 +65,8 @@ private:
 	index local_parent(index i) const;
 	bool is_local_left_child(index i) const;
 	bool is_local_leaf(index i) const;
+	bool is_local_root(index i) const;
+	bool subtree_has_next(index i) const;
 
 public:
 	unconstrained_tree_iterator(const multitree_nodes::unconstrained node, tree& tree,

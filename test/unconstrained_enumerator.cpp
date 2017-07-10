@@ -49,9 +49,16 @@ TEST_CASE("small_bipartition", "[unconstrained]") {
 	CHECK(!bip.is_valid());
 }
 
+name_map make_names(const std::vector<index>& leaves) {
+	name_map result;
+	result.reserve(leaves.size());
+	std::transform(leaves.begin(), leaves.end(), std::back_inserter(result),
+	               [](index i) { return i == none ? "" : std::to_string(i); });
+	return result;
+}
+
 TEST_CASE("unconstrained_tree_iterator small", "[unconstrained]") {
 	tree t(5, {none, none, none});
-	name_map names{"0", "1", "2", "3", "4"};
 	std::vector<index> leaf_perm(t.size(), 0);
 	t[0] = {none, none, none};
 	multitree_nodes::unconstrained leaves;
@@ -62,37 +69,37 @@ TEST_CASE("unconstrained_tree_iterator small", "[unconstrained]") {
 	unconstrained_tree_iterator it{leaves, t, leaf_perm, 0};
 	index i = 0;
 	result[i] = {t, leaf_perm};
-	std::cout << as_newick(t, names) << "\n";
+	std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
 	while (it.has_next()) {
 		++i;
 		it.next();
 		result[i] = {t, leaf_perm};
-		std::cout << as_newick(t, names) << "\n";
+		std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
 	}
 }
 
 TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
-	tree t(19, {none, none, none});
-	name_map names(19, "");
+	tree t(9, {none, none, none});
 	std::vector<index> leaf_perm(t.size(), 0);
 	t[0] = {none, 1, 2};
 	t[1] = {0, none, none};
 	t[2] = {0, none, none};
+	leaf_perm[0] = none;
 	leaf_perm[1] = 0;
 	multitree_nodes::unconstrained leaves;
-	index leaves_data[] = {1, 2, 3, 4, 5, 6, 7, 8};
+	index leaves_data[] = {1, 2, 3, 4};
 	leaves.begin = leaves_data;
 	leaves.end = leaves.begin + sizeof(leaves_data) / sizeof(index);
 	std::vector<std::pair<tree, std::vector<index>>> result(135135, {t, leaf_perm});
 	unconstrained_tree_iterator it{leaves, t, leaf_perm, 2};
 	index i = 0;
 	result[i] = {t, leaf_perm};
-	std::cout << as_newick(t, names) << "\n";
+	std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
 	while (it.has_next()) {
 		++i;
 		it.next();
 		result[i] = {t, leaf_perm};
-		/*std::cout << as_newick(t, names) << "\n";*/
+		std::cout << as_newick(t, make_names(leaf_perm)) << "\n";
 	}
 }
 
