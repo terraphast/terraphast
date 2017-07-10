@@ -21,7 +21,7 @@ ranked_bitvector bipartition_iterator::find_set_reps() const {
 	// TODO ugly style :)
 	ranked_bitvector set_rep(m_leaves.count());
 	for (index i = 0; i < m_leaves.count(); ++i) {
-		set_rep.set(m_sets.find(i));
+		set_rep.set(m_sets.simple_find(i));
 	}
 	set_rep.update_ranks();
 	return set_rep;
@@ -37,7 +37,7 @@ void bipartition_iterator::increase() {
 		index ii = 0;
 		for (auto i = m_leaves.first_set(); i < m_leaves.last_set();
 		     i = m_leaves.next_set(i)) {
-			if (in_left_partition(m_set_rep.rank(m_sets.find(ii)))) {
+			if (in_left_partition(m_set_rep.rank(m_sets.simple_find(ii)))) {
 				m_subleaves.set(i);
 			}
 			++ii;

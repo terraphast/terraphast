@@ -21,6 +21,7 @@ union_find apply_constraints(const ranked_bitvector& leaves, const bitvector& c_
 		auto& cons = c[c_i];
 		sets.merge(leaves.rank(cons.left), leaves.rank(cons.shared));
 	}
+	sets.compress();
 	return sets;
 }
 

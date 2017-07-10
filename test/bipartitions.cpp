@@ -18,6 +18,7 @@ TEST_CASE("bipartition1", "[bipartition]") {
 	s.set(3);
 	s.update_ranks();
 	u.merge(0, 1);
+	u.compress();
 	bipartition_iterator bip_it(s, u);
 	CHECK(!bip_it.get_current_set().get(0));
 	CHECK(!bip_it.get_current_set().get(1));

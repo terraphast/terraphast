@@ -58,6 +58,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 			sets.merge(rep, i);
 		}
 	}
+	sets.compress();
 	auto bip_it = bipartition_iterator{leaves, sets};
 	return cb.exit(iterate(bip_it, c_occ, constraints));
 }
