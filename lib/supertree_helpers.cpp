@@ -35,7 +35,7 @@ constraints map_constraints(const ranked_bitvector& leaves, const constraints& c
 	return result;
 }
 
-ranked_bitvector leave_occ(const tree& tree, utils::stack_allocator<index> a) {
+ranked_bitvector leaf_occ(const tree& tree, utils::stack_allocator<index> a) {
 	ranked_bitvector leaves{tree.size(), a};
 	for (index i = 0; i < tree.size(); i++) {
 		if (is_leaf(tree[i])) {

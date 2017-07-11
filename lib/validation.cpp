@@ -48,7 +48,7 @@ bool is_isomorphic(const tree_set& fst, const tree_set& snd) {
 
 	auto fl = utils::free_list{};
 	auto alloc = utils::stack_allocator<index>{fl, fst.tree.size()};
-	auto leaves = leave_occ(fst.tree, alloc);
+	auto leaves = leaf_occ(fst.tree, alloc);
 	std::vector<index> mapping(fst.tree.size());
 	std::iota(mapping.begin(), mapping.end(), 0);
 	auto fst_bip = tree_bipartitions(fst.tree, mapping, leaves, alloc);

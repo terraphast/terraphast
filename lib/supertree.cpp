@@ -32,7 +32,7 @@ template class stack_state_decorator<multitree_callback>;
 index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& root) {
 	auto fl = utils::free_list{};
 	auto alloc = utils::stack_allocator<index>{fl, t.size()};
-	auto leaves = leave_occ(t, alloc);
+	auto leaves = leaf_occ(t, alloc);
 	c = map_constraints(leaves, c);
 	auto new_names = name_map(leaves.count());
 	index i = 0;
