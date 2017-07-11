@@ -21,7 +21,10 @@ private:
 public:
 	union_find(index, utils::stack_allocator<index> a);
 	index find(index);
-	index simple_find(index) const;
+	index simple_find(index x) const {
+		assert(m_compressed);
+		return is_representative(x) ? x : m_parent[x];
+	}
 	index size() const;
 	void compress();
 	void merge(index, index);

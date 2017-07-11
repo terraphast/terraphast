@@ -23,11 +23,6 @@ index union_find::find(index x) {
 	return root;
 }
 
-index union_find::simple_find(index x) const {
-	assert(m_compressed);
-	return is_representative(x) ? x : m_parent[x];
-}
-
 index union_find::size() const { return m_parent.size(); }
 
 void union_find::compress() {
