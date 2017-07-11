@@ -14,12 +14,12 @@ TEST(GetNewickTreeFromStringTest, simple_tree) {
     ASSERT_TRUE(tree != nullptr);
     ASSERT_TRUE(check_tree(tree));
     ASSERT_EQ(tree->parent, nullptr);
-	ASSERT_STREQ("A", tree->children[0]->label);
-	ASSERT_STREQ("B", tree->children[1]->label);
-	ASSERT_STREQ("C", tree->children[2]->children[0]->label);
+    ASSERT_STREQ("A", tree->children[0]->label);
+    ASSERT_STREQ("B", tree->children[1]->label);
+    ASSERT_STREQ("C", tree->children[2]->children[0]->label);
     ASSERT_STREQ("D", tree->children[2]->children[1]->label);
-	ASSERT_STREQ("A",
-			tree->children[2]->children[1]->parent->parent->children[0]->label);
+    ASSERT_STREQ("A",
+            tree->children[2]->children[1]->parent->parent->children[0]->label);
 
     ntree_destroy(tree);
 }
@@ -27,8 +27,8 @@ TEST(GetNewickTreeFromStringTest, simple_tree) {
 // Test a simple tree file
 TEST(GetNewickTreeTest, simple_tree) {
     ntree_t *tree = get_newk_tree("../test/input/simple_tree.nwk");
-    assert(tree != nullptr);
-    assert(check_tree(tree));
+    ASSERT_TRUE(tree != nullptr); // make sure file was read correctly
+    ASSERT_TRUE(check_tree(tree));
     ASSERT_EQ(tree->parent, nullptr);
     ASSERT_STREQ("A", tree->children[0]->label);
     ASSERT_STREQ("B", tree->children[1]->label);
