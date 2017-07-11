@@ -14,7 +14,9 @@ public:
 
 private:
 	std::vector<index, utils::stack_allocator<index>> m_parent;
+#ifndef NDEBUG
 	bool m_compressed;
+#endif
 
 public:
 	union_find(index, utils::stack_allocator<index> a);

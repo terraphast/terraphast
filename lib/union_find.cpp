@@ -5,8 +5,11 @@
 
 namespace terraces {
 
-union_find::union_find(index n, utils::stack_allocator<index> a)
-        : m_parent(n, n, a), m_compressed{true} {}
+union_find::union_find(index n, utils::stack_allocator<index> a) : m_parent(n, n, a) {
+#ifndef NDEBUG
+	m_compressed = true;
+#endif
+}
 
 index union_find::find(index x) {
 	index root = x;

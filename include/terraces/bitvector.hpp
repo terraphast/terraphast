@@ -140,21 +140,21 @@ public:
 
 	/** Sets a bit in the bitvector. */
 	void set(index i) {
-		bitvector::set(i);
+		basic_bitvector<Alloc>::set(i);
 #ifndef NDEBUG
 		m_ranks_dirty = true;
 #endif
 	}
 	/** Clears a bit in the bitvector. */
 	void clr(index i) {
-		bitvector::clr(i);
+		basic_bitvector<Alloc>::clr(i);
 #ifndef NDEBUG
 		m_ranks_dirty = true;
 #endif
 	}
 	/** Flips a bit in the bitvector. */
 	void flip(index i) {
-		bitvector::flip(i);
+		basic_bitvector<Alloc>::flip(i);
 #ifndef NDEBUG
 		m_ranks_dirty = true;
 #endif
@@ -165,9 +165,9 @@ public:
 	/** Inverts all bits in the bitvector. */
 	void invert();
 	/** Applies element-wise xor from another bitvector. */
-	void bitwise_xor(const bitvector& other);
+	void bitwise_xor(const basic_bitvector<Alloc>& other);
 	/** Sets the values of this bitvector to the bitwise or of two bitvectors. */
-	void set_bitwise_or(const bitvector& fst, const bitvector& snd);
+	void set_bitwise_or(const basic_bitvector<Alloc>& fst, const basic_bitvector<Alloc>& snd);
 
 	/** Returns the number of set bits. */
 	index count() const {
@@ -230,6 +230,16 @@ template <typename Alloc>
 void basic_bitvector<Alloc>::add_sentinel() {
 	// add sentinel bit for iteration
 	m_blocks[bits::block_index(m_size)] |= bits::set_mask(m_size);
+}
+
+template <typename Alloc>
+bool basic_bitvector<Alloc>::empty() const {
+	for (index b = 0; b < m_blocks.size() - 1; ++b) {
+		if (m_blocks[b]) {
+			return false;
+		}
+	}
+	return !(m_blocks[m_blocks.size() - 1] & bits::prefix_mask(bits::shift_index(m_size)));
 }
 
 template <typename Alloc>
@@ -313,7 +323,7 @@ void basic_ranked_bitvector<Alloc>::blank() {
 }
 
 template <typename Alloc>
-void basic_ranked_bitvector<Alloc>::bitwise_xor(const bitvector& other) {
+void basic_ranked_bitvector<Alloc>::bitwise_xor(const basic_bitvector<Alloc>& other) {
 	basic_bitvector<Alloc>::bitwise_xor(other);
 #ifndef NDEBUG
 	m_ranks_dirty = true;
@@ -329,7 +339,8 @@ void basic_ranked_bitvector<Alloc>::invert() {
 }
 
 template <typename Alloc>
-void basic_ranked_bitvector<Alloc>::set_bitwise_or(const bitvector& fst, const bitvector& snd) {
+void basic_ranked_bitvector<Alloc>::set_bitwise_or(const basic_bitvector<Alloc>& fst,
+                                                   const basic_bitvector<Alloc>& snd) {
 	basic_bitvector<Alloc>::set_bitwise_or(fst, snd);
 #ifndef NDEBUG
 	m_ranks_dirty = true;
