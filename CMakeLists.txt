@@ -22,6 +22,7 @@ set(CORE_HEADERS
         include/newick-tools/newick-tools.h
         include/newick-tools/parse_ntree.h
         include/types/functional.h
+        include/types/leaf_label_mapper.h
         include/types/leaf_set.h
         include/types/tree.h
         include/types/UnionFind.h
@@ -38,6 +39,7 @@ set(NEWICK_TOOLS_SRCS
         src/newick-tools/rtree.cpp)
 
 set(CORE_SRCS
+        src/types/leaf_label_mapper.cpp
         src/types/leaf_set.cpp
         src/types/tree.cpp
         src/types/UnionFind.cpp
