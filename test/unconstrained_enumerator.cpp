@@ -95,6 +95,9 @@ TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
 	std::vector<std::vector<bitvector>> leaf_bipartitions{};
 	bool first = true;
 	index i = 0;
+	for (int k = 0; i < 699; ++i) {
+		it.next();
+	}
 	do {
 		if (!first) {
 			++i;
@@ -102,10 +105,12 @@ TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
 		}
 		first = false;
 		leaf_bipartitions.emplace_back(tree_bipartitions(t, leaf_perm));
+		std::cout << as_newick(t, make_names(leaf_perm)) << "\n" << std::flush;
 	} while (it.has_next());
 	std::sort(leaf_bipartitions.begin(), leaf_bipartitions.end(), bipartition_cmp);
 	CHECK(std::adjacent_find(leaf_bipartitions.begin(), leaf_bipartitions.end(),
 	                         bipartition_equal) == leaf_bipartitions.end());
+	CHECK(leaf_bipartitions.size() == 945);
 }
 
 } // namespace tests

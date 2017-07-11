@@ -114,6 +114,8 @@ void unconstrained_tree_iterator::next() {
 		} else if (subtree_has_next(r)) {
 			if (m_choice_points[l] != none) {
 				m_bips[m_choice_points[l]].reset();
+			} else {
+				m_bips[l].reset();
 			}
 			m_bips[m_choice_points[r]].next();
 			const auto l_cp = init_subtree(l);
