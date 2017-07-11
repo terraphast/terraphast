@@ -20,8 +20,10 @@ private:
 
 	utils::free_list fl1;
 	utils::free_list fl2;
+	utils::free_list fl3;
 	utils::stack_allocator<index> m_leave_allocator;
 	utils::stack_allocator<index> m_c_occ_allocator;
+	utils::stack_allocator<index> m_union_find_allocator;
 
 	result_type iterate(bipartition_iterator& bip_it, const bitvector& new_constraint_occ,
 	                    const constraints& constraints);
@@ -30,7 +32,8 @@ public:
 	// TODO: use real sizes (otherwise this just falls back to what std::allocator does
 	tree_enumerator(Callback cb, index leave_count, index constraint_count)
 	        : cb{cb}, m_leave_allocator{fl1, leave_count / 64u + 2u},
-	          m_c_occ_allocator{fl2, constraint_count} {}
+	          m_c_occ_allocator{fl2, constraint_count / 64u + 1u}, m_union_find_allocator{
+	                                                                       fl3, leave_count} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
 	result_type run(index num_leaves, const constraints& constraints);
 	result_type run(const bitvector& leaves, const bitvector& constraint_occ,
@@ -59,9 +62,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 	assert(!constraints.empty());
 	// build bipartition iterator:
 	// TODO: replace those by a centralized free_list:
-	auto fl = utils::free_list{};
-	auto alloc = utils::stack_allocator<index>{fl, num_leaves};
-	auto sets = union_find{num_leaves, alloc};
+	auto sets = union_find{num_leaves, m_union_find_allocator};
 	index rep = root_leaf == 0 ? 1 : 0;
 	// merge all non-root leaves into one set
 	for (index i = rep + 1; i < num_leaves; ++i) {
@@ -97,7 +98,7 @@ auto tree_enumerator<Callback>::run(const bitvector& leaves, const bitvector& co
 	}
 
 	union_find sets =
-	        apply_constraints(leaves, new_constraint_occ, constraints, m_leave_allocator);
+	        apply_constraints(leaves, new_constraint_occ, constraints, m_union_find_allocator);
 	bipartition_iterator bip_it(leaves, sets, m_leave_allocator);
 
 	return iterate(bip_it, new_constraint_occ, constraints);
