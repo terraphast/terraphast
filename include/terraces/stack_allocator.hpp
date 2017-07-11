@@ -62,7 +62,7 @@ public:
 	}
 
 	void deallocate(T* ptr, std::size_t n) {
-		if (n > m_expected_size) {
+		if (n < m_expected_size) {
 			return ::operator delete(ptr);
 		}
 		auto p = std::unique_ptr<char[]>{reinterpret_cast<char*>(ptr)};
