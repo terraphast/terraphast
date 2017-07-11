@@ -43,27 +43,21 @@ class stack_allocator {
 	friend class stack_allocator;
 
 public:
-	stack_allocator(free_list& fl, std::size_t expected_size)
-	        : m_fl{&fl}, m_expected_size{expected_size} {}
+	stack_allocator(free_list& fl, std::size_t n) : m_fl{&fl}, m_expected_size{n * sizeof(T)} {}
 	template <typename U>
 	stack_allocator(const stack_allocator<U>& other)
-	        : m_fl{other.m_fl}, m_expected_size{other.m_expected_size * sizeof(U) / sizeof(T)} {
-	}
+	        : m_fl{other.m_fl}, m_expected_size{other.m_expected_size} {}
 
 	using value_type = T;
 
 	T* allocate(std::size_t n) {
-		std::clog << "allocate[expected: " << m_expected_size << "] " << n << " * "
-		          << sizeof(T) << " = " << n * sizeof(T) << " Bytes: ";
-		if (n > m_expected_size) {
+		if (n * sizeof(T) > m_expected_size) {
 			throw std::logic_error{"Oversized allocation from stack-allocator"};
 		}
 		auto ret = m_fl->pop();
 		if (ret == nullptr) {
-			std::clog << "system-allocator [empty cache]\n";
-			return system_allocate(n);
+			return system_allocate();
 		}
-		std::clog << "cached\n";
 		return reinterpret_cast<T*>(ret.release());
 	}
 
@@ -77,8 +71,8 @@ public:
 	}
 
 private:
-	T* system_allocate(std::size_t n) {
-		auto ret = ::operator new[](sizeof(T) * n);
+	T* system_allocate() {
+		auto ret = ::operator new[](m_expected_size);
 		return reinterpret_cast<T*>(ret);
 	}
 
