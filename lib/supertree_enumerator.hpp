@@ -31,19 +31,19 @@ private:
 public:
 	// TODO: use real sizes (otherwise this just falls back to what std::allocator does
 	tree_enumerator(Callback cb, index leave_count, index constraint_count)
-	        : cb{cb}, m_leave_allocator{fl1, leave_count / 64u + 2u},
+	        : cb{std::move(cb)}, m_leave_allocator{fl1, leave_count / 64u + 2u},
 	          m_c_occ_allocator{fl2, constraint_count / 64u + 2u}, m_union_find_allocator{
 	                                                                       fl3, leave_count} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
 	result_type run(index num_leaves, const constraints& constraints);
-	result_type run(const bitvector& leaves, const bitvector& constraint_occ,
+	result_type run(const ranked_bitvector& leaves, const bitvector& constraint_occ,
 	                const constraints& constraints);
 };
 
 template <typename Callback>
 auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constraints)
         -> result_type {
-	auto leaves = full_set(num_leaves, m_leave_allocator);
+	auto leaves = full_ranked_set(num_leaves, m_leave_allocator);
 	auto c_occ = full_set(constraints.size(), m_c_occ_allocator);
 	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
 	return run(leaves, c_occ, constraints);
@@ -52,7 +52,7 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 template <typename Callback>
 auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constraints,
                                     index root_leaf) -> result_type {
-	auto leaves = full_set(num_leaves, m_leave_allocator);
+	auto leaves = full_ranked_set(num_leaves, m_leave_allocator);
 	auto c_occ = full_set(constraints.size(), m_c_occ_allocator);
 	assert(filter_constraints(leaves, c_occ, constraints) == c_occ);
 	// enter the call
@@ -61,7 +61,6 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 	assert(num_leaves > 2);
 	assert(!constraints.empty());
 	// build bipartition iterator:
-	// TODO: replace those by a centralized free_list:
 	auto sets = union_find{num_leaves, m_union_find_allocator};
 	index rep = root_leaf == 0 ? 1 : 0;
 	// merge all non-root leaves into one set
@@ -70,12 +69,13 @@ auto tree_enumerator<Callback>::run(index num_leaves, const constraints& constra
 			sets.merge(rep, i);
 		}
 	}
+	sets.compress();
 	auto bip_it = bipartition_iterator{leaves, sets, m_leave_allocator};
 	return cb.exit(iterate(bip_it, c_occ, constraints));
 }
 
 template <typename Callback>
-auto tree_enumerator<Callback>::run(const bitvector& leaves, const bitvector& constraint_occ,
+auto tree_enumerator<Callback>::run(const ranked_bitvector& leaves, const bitvector& constraint_occ,
                                     const constraints& constraints) -> result_type {
 	cb.enter(leaves);
 
@@ -93,7 +93,7 @@ auto tree_enumerator<Callback>::run(const bitvector& leaves, const bitvector& co
 
 	bitvector new_constraint_occ = filter_constraints(leaves, constraint_occ, constraints);
 	// base case: no constraints left
-	if (new_constraint_occ.count() == 0) {
+	if (new_constraint_occ.empty()) {
 		return cb.exit(cb.base_unconstrained(leaves));
 	}
 
@@ -108,9 +108,11 @@ template <typename Callback>
 auto tree_enumerator<Callback>::iterate(bipartition_iterator& bip_it,
                                         const bitvector& new_constraint_occ,
                                         const constraints& constraints) -> result_type {
-	result_type result = cb.init_result();
+	if (cb.fast_return(bip_it)) {
+		return cb.fast_return_value(bip_it);
+	}
 
-	cb.begin_iteration(bip_it, new_constraint_occ, constraints);
+	auto result = cb.begin_iteration(bip_it, new_constraint_occ, constraints);
 	// iterate over all possible bipartitions
 	while (bip_it.is_valid() && cb.continue_iteration(result)) {
 		cb.step_iteration(bip_it);

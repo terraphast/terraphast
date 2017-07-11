@@ -64,7 +64,7 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 	// 0 1 2 3 4 5 6 7 8 9
 	// 0 1 1 0 1 0 1 0 1 1
 	// bitvector b(10);
-	basic_bitvector<std::allocator<index>> b(10, {});
+	basic_ranked_bitvector<std::allocator<index>> b(10, {});
 	b.set(1);
 	b.set(2);
 	b.set(4);
@@ -103,7 +103,7 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 
 TEST_CASE("efficient bitvector large", "[bitvector]") {
 	// bitvector b(519);
-	basic_bitvector<std::allocator<index>> b(519, {});
+	basic_ranked_bitvector<std::allocator<index>> b(519, {});
 	b.set(1);
 	b.set(63);
 	b.set(128);
@@ -115,10 +115,10 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	b.invert();
 	b.update_ranks();
 	// bitvector b2(500);
-	basic_bitvector<std::allocator<index>> b2(500, {});
+	basic_ranked_bitvector<std::allocator<index>> b2(500, {});
 	b2.set(128);
 	// bitvector b3(1042);
-	basic_bitvector<std::allocator<index>> b3(1042, {});
+	basic_ranked_bitvector<std::allocator<index>> b3(1042, {});
 	CHECK(b.rank(10) == 1);
 	CHECK(b.rank(63) == 1);
 	CHECK(b.rank(64) == 2);
@@ -148,7 +148,7 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 
 TEST_CASE("efficient bitvector xor", "[bitvector]") {
 	// bitvector b(10);
-	basic_bitvector<std::allocator<index>> b(10, {});
+	basic_ranked_bitvector<std::allocator<index>> b(10, {});
 	b.set(1);
 	b.set(2);
 	b.set(4);

@@ -136,6 +136,15 @@ bool is_rooted_tree(const tree& t);
  */
 bool is_valid_tree(const tree& t);
 
+template <typename Result>
+Result count_unrooted_trees(index num_leaves) {
+	Result result = 1;
+	for (index i = 3; i <= num_leaves + 1; i++) {
+		result *= (2 * i - 5);
+	}
+	return result;
+}
+
 /**
  * Traverses a tree in post-order while calling a given callback on every node.
  */
@@ -202,9 +211,6 @@ std::vector<index> postorder(const tree& t);
 // output trees
 void print_tree_dot_unrooted(const tree& t, const name_map& names, std::ostream& output,
                              std::string name_prefix = "");
-void print_tree_dot(const tree& t, const name_map& names, std::ostream& output);
-void print_tree_gml(const tree& t, const name_map& names, std::ostream& output);
-
 } // namespace terraces
 
 #endif

@@ -22,7 +22,7 @@ TEST_CASE("performance of constraints", "[.][performance][performance_constraint
 		{
 			auto fl = utils::free_list{};
 			auto alloc = utils::stack_allocator<index>{fl, 3};
-			auto leaves = full_set(3, alloc);
+			auto leaves = full_ranked_set(3, alloc);
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();
@@ -33,7 +33,7 @@ TEST_CASE("performance of constraints", "[.][performance][performance_constraint
 		{
 			auto fl = utils::free_list{};
 			auto alloc = utils::stack_allocator<index>{fl, 11};
-			auto leaves = full_set(11, alloc);
+			auto leaves = full_ranked_set(11, alloc);
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();
@@ -44,7 +44,7 @@ TEST_CASE("performance of constraints", "[.][performance][performance_constraint
 		{
 			auto fl = utils::free_list{};
 			auto alloc = utils::stack_allocator<index>{fl, 13};
-			auto leaves = full_set(13, alloc);
+			auto leaves = full_ranked_set(13, alloc);
 			leaves.clr(9);
 			leaves.update_ranks();
 			constraints c = {constraint{7, 8, 9}};

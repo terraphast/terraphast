@@ -49,7 +49,7 @@ private:
 	index next(index i) const {
 		index j = i;
 		for (; j < m_sets.size(); ++j) {
-			if (m_sets.find(j) == m_rep) {
+			if (m_sets.simple_find(j) == m_rep) {
 				break;
 			}
 		}

@@ -13,13 +13,15 @@ public:
 	using value_type = index;
 
 private:
-	// mutable because of path compression
-	mutable std::vector<index, utils::stack_allocator<index>> m_parent;
+	std::vector<index, utils::stack_allocator<index>> m_parent;
+	bool m_compressed;
 
 public:
 	union_find(index, utils::stack_allocator<index> a);
-	index find(index) const;
+	index find(index);
+	index simple_find(index) const;
 	index size() const;
+	void compress();
 	void merge(index, index);
 	bool is_representative(index) const;
 };

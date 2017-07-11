@@ -107,7 +107,7 @@ std::ostream& operator<<(std::ostream& s, newick_t tree_pair) {
 			stack.emplace(t.at(i).lchild(), 0);
 		} else if (visited == 1u) {
 			visited = 2u;
-			s << ", ";
+			s << ',';
 			stack.emplace(t.at(i).rchild(), 0);
 		} else if (visited == 2u) {
 			s << ')' << names.at(i);
@@ -177,55 +177,4 @@ void print_tree_dot_unrooted(const tree& t, const name_map& names, std::ostream&
 	}
 	output << "}";
 }
-
-void print_tree_dot(const tree& t, const name_map& names, std::ostream& output) {
-	output << "graph {\n";
-	index i = 0;
-	for (auto n : t) {
-		for (auto v : n.data) {
-			if (v != none) {
-				if (names[i] == "") {
-					output << i;
-				} else {
-					output << "\"" << names[i] << "\"";
-				}
-				output << " -- ";
-				if (names[v] == "") {
-					output << v;
-				} else {
-					output << "\"" << names[v] << "\"";
-				}
-				output << ";\r\n";
-			}
-		}
-		if (names[i] == "") {
-			output << i << " [shape=point];\r\n";
-		}
-		++i;
-	}
-	output << "}";
-}
-
-void print_tree_gml(const tree& t, const name_map& names, std::ostream& output) {
-	output << "graph [\n";
-	for (index i = 0; i < t.size(); ++i) {
-		output << "\tnode [\n\t\tid " << i << "\n";
-		if (names[i] != "") {
-			output << "\t\tlabel \"" << names[i] << "\"\n";
-		}
-		output << "\t]\n";
-	}
-	index i = 0;
-	for (auto n : t) {
-		for (auto v : n.data) {
-			if (v != none) {
-				output << "\tedge [\n\t\tsource " << i << "\n\t\ttarget " << v
-				       << "\n\t]\n";
-			}
-		}
-		++i;
-	}
-	output << "]";
-}
-
 } // namespace terraces

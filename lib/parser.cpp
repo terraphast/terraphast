@@ -35,7 +35,7 @@ using parser_stack = std::stack<parser_state, std::vector<parser_state>>;
 
 template <typename Iterator>
 token next_token(Iterator& it, Iterator end) {
-	constexpr static auto special_tokens = std::array<char, 3>{{'(', ')', ','}};
+	constexpr static std::array<char, 3> special_tokens{{'(', ')', ','}};
 	it = utils::skip_ws(it, end);
 	if (it == end) {
 		return {token_type::eof};

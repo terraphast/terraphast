@@ -13,13 +13,14 @@ TEST_CASE("bipartition1", "[bipartition]") {
 	auto fl = utils::free_list{};
 	auto alloc = utils::stack_allocator<index>{fl, 4};
 	union_find u(4, alloc);
-	bitvector s{4, alloc};
+	ranked_bitvector s{4, alloc};
 	s.set(0);
 	s.set(1);
 	s.set(2);
 	s.set(3);
 	s.update_ranks();
 	u.merge(0, 1);
+	u.compress();
 	bipartition_iterator bip_it(s, u, alloc);
 	CHECK(!bip_it.get_current_set().get(0));
 	CHECK(!bip_it.get_current_set().get(1));

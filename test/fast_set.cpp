@@ -3,10 +3,10 @@
 #include <terraces/bitvector.hpp>
 
 namespace terraces {
-namespace test {
+namespace tests {
 
 TEST_CASE("fast_set1", "[fast_set]") {
-	basic_bitvector<std::allocator<index>> set{10, {}};
+	basic_ranked_bitvector<std::allocator<index>> set{10, {}};
 	for (auto&& el : set) {
 		(void)el;
 		FAIL("element in empty set!");
@@ -34,5 +34,5 @@ TEST_CASE("fast_set1", "[fast_set]") {
 	CHECK(count == set.count());
 }
 
-} // namespace test
+} // namespace tests
 } // namespace terraces

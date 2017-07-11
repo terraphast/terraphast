@@ -2,7 +2,6 @@ project(terrace-searcher)
 
 cmake_minimum_required(VERSION 3.5)
 
-
 # create sane environment
 #####################################################################
 set(CMAKE_CXX_STANDARD 14)
@@ -25,12 +24,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BASIC_WARNINGS} ${OPTIMIZATION_FLAGS}"
 include_directories("include" "Catch/include")
 enable_testing()
 
-
-Option(DEV_ENVIRONMENT "DEV_ENVIRONMENT" OFF)
-if(DEV_ENVIRONMENT AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_DEBUG -Werror")
-endif()
-
 # Get Libraries
 #####################################################################
 
@@ -42,11 +35,6 @@ file(GLOB lib_sources "lib/*.cpp")
 file(GLOB lib_int_headers "lib/*.hpp")
 add_library(terraces ${lib_sources} ${lib_headers} ${lib_int_headers})
 target_link_libraries(terraces)
-Option(ASM_OUTPUT "ASM_OUTPUT" OFF)
-if(ASM_OUTPUT)
-	target_compile_options(terraces PRIVATE "-save-temps")
-endif()
-
 
 file(GLOB test_headers "test/*.hpp")
 file(GLOB test_sources "test/*.cpp")
@@ -66,6 +54,9 @@ target_link_libraries(convert terraces)
 add_executable(isomorphic "app/isomorphic.cpp")
 target_link_libraries(isomorphic terraces)
 
+add_executable(reroot "app/reroot.cpp")
+target_link_libraries(reroot terraces)
+
 # Most of our files only compile with disabled language extensions for VC++
 # Unfortunately, Catch uses some windows-specific features, so we have to
 # enable these extensions for the Catch main method (more specific: not disable them)
@@ -73,4 +64,31 @@ if(WIN32)
 	file(GLOB test_main_source "test/main.cpp")
 	list(REMOVE_ITEM test_sources ${test_main_source})
 	set_source_files_properties(${lib_sources} ${test_sources} ${app_sources} PROPERTIES COMPILE_FLAGS "-Za")
+endif()
+
+# Test coverage generation
+Option(GCOV_OUTPUT "GCOV_OUTPUT" OFF)
+if(GCOV_OUTPUT)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-dir=${CMAKE_BINARY_DIR}")
+	add_custom_command(
+		 TARGET unittests
+		 COMMENT "Generate test coverage statistics"
+		 POST_BUILD
+		 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		 COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> -R "unittests" --output-on-failures
+		 COMMAND lcov --no-external --base-directory ${CMAKE_SOURCE_DIR} --capture --directory . --output-file coverage.info
+		 COMMAND genhtml coverage.info --output-directory out
+	)
+endif()
+
+# Assembly generation
+Option(ASM_OUTPUT "ASM_OUTPUT" OFF)
+if(ASM_OUTPUT)
+	target_compile_options(terraces PRIVATE "-save-temps")
+endif()
+
+# Use debug version of STL
+Option(DEV_ENVIRONMENT "DEV_ENVIRONMENT" OFF)
+if(DEV_ENVIRONMENT AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_DEBUG -Werror")
 endif()

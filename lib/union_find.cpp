@@ -5,9 +5,10 @@
 
 namespace terraces {
 
-union_find::union_find(index n, utils::stack_allocator<index> a) : m_parent(n, n, a) {}
+union_find::union_find(index n, utils::stack_allocator<index> a)
+        : m_parent(n, n, a), m_compressed{true} {}
 
-index union_find::find(index x) const {
+index union_find::find(index x) {
 	index root = x;
 	while (!is_representative(root)) {
 		root = m_parent[root];
@@ -19,9 +20,26 @@ index union_find::find(index x) const {
 	return root;
 }
 
+index union_find::simple_find(index x) const {
+	assert(m_compressed);
+	return is_representative(x) ? x : m_parent[x];
+}
+
 index union_find::size() const { return m_parent.size(); }
 
+void union_find::compress() {
+	for (index i = 0; i < m_parent.size(); ++i) {
+		find(i);
+	}
+#ifndef NDEBUG
+	m_compressed = true;
+#endif
+}
+
 void union_find::merge(index x, index y) {
+#ifndef NDEBUG
+	m_compressed = false;
+#endif
 	index i = find(x);
 	index j = find(y);
 	if (i == j) {

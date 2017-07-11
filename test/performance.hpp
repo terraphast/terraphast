@@ -56,7 +56,7 @@ inline void report_performance_results(const std::string& desc,
 	std::cout << '\n';
 }
 
-} // namespace test
+} // namespace tests
 } // namespace terraces
 
 #endif
