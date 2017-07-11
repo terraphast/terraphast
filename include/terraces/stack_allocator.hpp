@@ -11,13 +11,20 @@
 namespace terraces {
 namespace utils {
 
+class array_deleter {
+public:
+	void operator()(char* ptr) { ::operator delete[](static_cast<void*>(ptr)); }
+};
+
+using char_buffer = std::unique_ptr<char[], array_deleter>;
+
 class free_list {
 public:
 	free_list(std::size_t initial_capacity = 0) { m_list.reserve(initial_capacity); }
 
-	void push(std::unique_ptr<char[]> ptr) { m_list.push_back(std::move(ptr)); }
+	void push(char_buffer ptr) { m_list.push_back(std::move(ptr)); }
 
-	std::unique_ptr<char[]> pop() {
+	char_buffer pop() {
 		if (not m_list.empty()) {
 			auto ret = std::move(m_list.back());
 			m_list.pop_back();
@@ -27,7 +34,7 @@ public:
 	}
 
 private:
-	std::vector<std::unique_ptr<char[]>> m_list;
+	std::vector<char_buffer> m_list;
 };
 
 template <typename T>
@@ -49,8 +56,7 @@ public:
 		std::clog << "allocate[expected: " << m_expected_size << "] " << n << " * "
 		          << sizeof(T) << " = " << n * sizeof(T) << " Bytes: ";
 		if (n > m_expected_size) {
-			std::clog << "system-allocator\n";
-			return system_allocate(n);
+			throw std::logic_error{"Oversized allocation from stack-allocator"};
 		}
 		auto ret = m_fl->pop();
 		if (ret == nullptr) {
@@ -61,11 +67,8 @@ public:
 		return reinterpret_cast<T*>(ret.release());
 	}
 
-	void deallocate(T* ptr, std::size_t n) {
-		if (n < m_expected_size) {
-			return ::operator delete(ptr);
-		}
-		auto p = std::unique_ptr<char[]>{reinterpret_cast<char*>(ptr)};
+	void deallocate(T* ptr, std::size_t) {
+		auto p = char_buffer{reinterpret_cast<char*>(ptr)};
 		m_fl->push(std::move(p));
 	}
 
@@ -75,9 +78,8 @@ public:
 
 private:
 	T* system_allocate(std::size_t n) {
-		auto size = n * sizeof(T);
-		auto ptr = ::operator new(size);
-		return reinterpret_cast<T*>(ptr);
+		auto ret = ::operator new[](sizeof(T) * n);
+		return reinterpret_cast<T*>(ret);
 	}
 
 	free_list* m_fl;
