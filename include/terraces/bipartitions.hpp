@@ -4,7 +4,7 @@
 #include <cmath>
 #include <iosfwd>
 
-#include "bitvector.hpp"
+#include "ranked_bitvector.hpp"
 #include "trees.hpp"
 #include "union_find.hpp"
 

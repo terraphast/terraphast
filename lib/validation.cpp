@@ -1,4 +1,4 @@
-#include <terraces/bitvector.hpp>
+#include <terraces/ranked_bitvector.hpp>
 #include <terraces/validation.hpp>
 
 #include <numeric>

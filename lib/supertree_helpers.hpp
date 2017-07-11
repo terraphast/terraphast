@@ -1,8 +1,8 @@
 #ifndef SUPERTREE_HELPERS_HPP
 #define SUPERTREE_HELPERS_HPP
 
-#include <terraces/bitvector.hpp>
 #include <terraces/constraints.hpp>
+#include <terraces/ranked_bitvector.hpp>
 #include <terraces/stack_allocator.hpp>
 #include <terraces/trees.hpp>
 #include <terraces/union_find.hpp>

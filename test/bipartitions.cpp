@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include <terraces/bipartitions.hpp>
-#include <terraces/bitvector.hpp>
+#include <terraces/ranked_bitvector.hpp>
 #include <terraces/union_find.hpp>
 
 namespace terraces {

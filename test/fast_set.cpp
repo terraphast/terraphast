@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include <terraces/bitvector.hpp>
+#include <terraces/ranked_bitvector.hpp>
 
 namespace terraces {
 namespace tests {
