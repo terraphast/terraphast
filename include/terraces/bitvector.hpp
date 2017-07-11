@@ -21,14 +21,19 @@ public:
 
 protected:
 	index m_size;
-	// TODO align blocks for SSE
 	std::vector<value_type, Allocator> m_blocks;
 
-	void add_sentinel();
+	void add_sentinel() {
+		// add sentinel bit for iteration
+		m_blocks[bits::block_index(m_size)] |= bits::set_mask(m_size);
+	}
 
 public:
 	/** Initializes a bitvector with given size. */
-	basic_bitvector(index size, Allocator alloc);
+	basic_bitvector(index size, Allocator alloc)
+	        : m_size{size}, m_blocks(size / bits::word_bits + 1, alloc) {
+		add_sentinel();
+	}
 	/** Sets a bit in the bitvector. */
 	void set(index i) {
 		assert(i < m_size);
@@ -66,27 +71,9 @@ public:
 	                    const basic_bitvector<Allocator>& snd);
 
 	/** Returns the index of the first set bit or size() if no bit is set. */
-	index first_set() const {
-		index b = 0;
-		while (!bits::has_next_bit0(m_blocks[b])) {
-			++b;
-		}
-		return bits::next_bit0(m_blocks[b], bits::base_index(b));
-	}
+	index first_set() const;
 	/** Returns the index of the next set bit after the index or size() if no bit is set. */
-	index next_set(index i) const {
-		++i;
-		index b = bits::block_index(i);
-		if (bits::has_next_bit(m_blocks[b], i)) {
-			// the next bit is in the current block
-			return bits::next_bit(m_blocks[b], i);
-		}
-		// the next bit is in a far-away block
-		do {
-			++b;
-		} while (!bits::has_next_bit0(m_blocks[b]));
-		return bits::next_bit0(m_blocks[b], bits::base_index(b));
-	}
+	index next_set(index i) const;
 	/** Returns the index one past the last element. */
 	index last_set() const { return m_size; }
 
@@ -95,8 +82,14 @@ public:
 
 	Allocator get_allocator() const { return m_blocks.get_allocator(); }
 
-	bool operator<(const basic_bitvector<Allocator>& other) const;
-	bool operator==(const basic_bitvector<Allocator>& other) const;
+	bool operator<(const basic_bitvector<Allocator>& other) const {
+		assert(size() == other.size());
+		return m_blocks < other.m_blocks;
+	}
+	bool operator==(const basic_bitvector<Allocator>& other) const {
+		assert(size() == other.size());
+		return m_blocks == other.m_blocks;
+	}
 	bool operator!=(const basic_bitvector<Allocator>& other) const { return !(*this == other); }
 };
 
@@ -123,25 +116,13 @@ public:
 };
 
 template <typename Alloc>
-inline auto basic_bitvector<Alloc>::begin() const -> iterator {
+auto basic_bitvector<Alloc>::begin() const -> iterator {
 	return {*this, first_set()};
 }
 
 template <typename Alloc>
-inline auto basic_bitvector<Alloc>::end() const -> iterator {
+auto basic_bitvector<Alloc>::end() const -> iterator {
 	return {*this, last_set()};
-}
-
-template <typename Alloc>
-basic_bitvector<Alloc>::basic_bitvector(index size, Alloc a)
-        : m_size{size}, m_blocks(size / 64 + 1, a) {
-	add_sentinel();
-}
-
-template <typename Alloc>
-void basic_bitvector<Alloc>::add_sentinel() {
-	// add sentinel bit for iteration
-	m_blocks[bits::block_index(m_size)] |= bits::set_mask(m_size);
 }
 
 template <typename Alloc>
@@ -189,20 +170,32 @@ void basic_bitvector<Alloc>::set_bitwise_or(const basic_bitvector<Alloc>& fst,
 }
 
 template <typename Alloc>
-bool basic_bitvector<Alloc>::operator<(const basic_bitvector<Alloc>& other) const {
-	assert(size() == other.size());
-	return m_blocks < other.m_blocks;
+index basic_bitvector<Alloc>::first_set() const {
+	index b = 0;
+	while (!bits::has_next_bit0(m_blocks[b])) {
+		++b;
+	}
+	return bits::next_bit0(m_blocks[b], bits::base_index(b));
 }
 
 template <typename Alloc>
-bool basic_bitvector<Alloc>::operator==(const basic_bitvector<Alloc>& other) const {
-	assert(size() == other.size());
-	return m_blocks == other.m_blocks;
+index basic_bitvector<Alloc>::next_set(index i) const {
+	++i;
+	index b = bits::block_index(i);
+	if (bits::has_next_bit(m_blocks[b], i)) {
+		// the next bit is in the current block
+		return bits::next_bit(m_blocks[b], i);
+	}
+	// the next bit is in a far-away block
+	do {
+		++b;
+	} while (!bits::has_next_bit0(m_blocks[b]));
+	return bits::next_bit0(m_blocks[b], bits::base_index(b));
 }
 
 /** Returns a bitvector containing size elements. */
 template <typename Alloc>
-inline basic_bitvector<Alloc> full_set(index size, Alloc a) {
+basic_bitvector<Alloc> full_set(index size, Alloc a) {
 	basic_bitvector<Alloc> set{size, a};
 	set.invert();
 	return set;

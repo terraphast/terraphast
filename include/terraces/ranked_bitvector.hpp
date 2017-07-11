@@ -67,29 +67,23 @@ public:
 	/** Updates the internal data structures after editing the vector. */
 	void update_ranks();
 	/** Returns the rank of an index, i.e. the number of set bits in the range [0..i) */
-	index rank(index i) const {
-		assert(!m_ranks_dirty);
-		assert(i <= basic_bitvector<Alloc>::m_size);
-		index b = bits::block_index(i);
-		return m_ranks[b] + bits::partial_popcount(basic_bitvector<Alloc>::m_blocks[b],
-		                                           bits::shift_index(i));
-	}
+	index rank(index i) const;
 	index select(index i) const;
 };
 
 using ranked_bitvector = basic_ranked_bitvector<utils::stack_allocator<index>>;
 
-/** Returns a basic_ranked_bitvector<Alloc> containing size elements. */
 template <typename Alloc>
-inline basic_ranked_bitvector<Alloc> full_ranked_set(index size, Alloc a) {
-	basic_ranked_bitvector<Alloc> set{size, a};
-	set.invert();
-	set.update_ranks();
-	return set;
+index basic_ranked_bitvector<Alloc>::rank(index i) const {
+	assert(!m_ranks_dirty);
+	assert(i <= basic_bitvector<Alloc>::m_size);
+	index b = bits::block_index(i);
+	return m_ranks[b] +
+	       bits::partial_popcount(basic_bitvector<Alloc>::m_blocks[b], bits::shift_index(i));
 }
 
 template <typename Alloc>
-inline index basic_ranked_bitvector<Alloc>::select(index i) const {
+index basic_ranked_bitvector<Alloc>::select(index i) const {
 	assert(i < count());
 	auto it = basic_bitvector<Alloc>::first_set();
 	for (index j = 0; j < i; ++j) {
@@ -97,6 +91,7 @@ inline index basic_ranked_bitvector<Alloc>::select(index i) const {
 	}
 	return it;
 }
+
 template <typename Alloc>
 void basic_ranked_bitvector<Alloc>::blank() {
 	basic_bitvector<Alloc>::blank();
@@ -141,6 +136,15 @@ void basic_ranked_bitvector<Alloc>::update_ranks() {
 #ifndef NDEBUG
 	m_ranks_dirty = false;
 #endif
+}
+
+/** Returns a basic_ranked_bitvector<Alloc> containing size elements. */
+template <typename Alloc>
+basic_ranked_bitvector<Alloc> full_ranked_set(index size, Alloc a) {
+	basic_ranked_bitvector<Alloc> set{size, a};
+	set.invert();
+	set.update_ranks();
+	return set;
 }
 
 } // namespace terraces
