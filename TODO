@@ -1,0 +1,5 @@
+optional optimizations:
+* {}-syntax
+* cache tree outputs
+* mapping of sets to smaller sets, if a set is rather empty
+
