@@ -193,14 +193,24 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
-
     leaves.apply_constraints(constraints);
     auto result = leaves.get_list_of_partitions();
 
     ASSERT_EQ(result.size(), 3);
-    ASSERT_THAT(result[0]->to_set(), testing::ElementsAre(0));
-    ASSERT_THAT(result[1]->to_set(), testing::ElementsAre(1, 2, 3));
-    ASSERT_THAT(result[2]->to_set(), testing::ElementsAre(4));
+    
+    std::vector<size_t> elements = {0,1,2,3,4};
+    std::set<size_t> set_0 (elements.begin(),     elements.begin() + 1);
+    std::set<size_t> set_1 (elements.begin() + 1, elements.begin() + 4);
+    std::set<size_t> set_2 (elements.begin() + 4, elements.end());
+    
+    std::vector<std::set<size_t>> sets = {set_0, set_1, set_2};
+    std::set<std::set<size_t>> sets_set(sets.begin(), sets.end());
+    
+    ASSERT_EQ(result.size(), sets_set.size());
+    
+    for(auto r : result) {
+        ASSERT_TRUE(sets_set.find(r->to_set()) != sets_set.end());
+    }
 }
 
 TEST(ExtractConstraintsFromTree, example_from_slides) {
