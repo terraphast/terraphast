@@ -19,6 +19,8 @@ public:
 	using value_type = index;
 	using iterator = bitvector_iterator<Allocator>;
 
+	static index alloc_size(index size) { return size / bits::word_bits + 1; }
+
 protected:
 	index m_size;
 	std::vector<value_type, Allocator> m_blocks;
@@ -31,7 +33,7 @@ protected:
 public:
 	/** Initializes a bitvector with given size. */
 	basic_bitvector(index size, Allocator alloc)
-	        : m_size{size}, m_blocks(size / bits::word_bits + 1, alloc) {
+	        : m_size{size}, m_blocks(alloc_size(size), alloc) {
 		add_sentinel();
 	}
 	/** Sets a bit in the bitvector. */

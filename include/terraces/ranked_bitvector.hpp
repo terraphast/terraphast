@@ -11,6 +11,8 @@ public:
 	using value_type = typename basic_bitvector<Alloc>::value_type;
 
 private:
+	using base = basic_bitvector<Alloc>;
+
 	std::vector<value_type, Alloc> m_ranks;
 	index m_count;
 #ifndef NDEBUG
@@ -19,9 +21,8 @@ private:
 
 public:
 	basic_ranked_bitvector(index size, Alloc alloc)
-	        : basic_bitvector<Alloc>{size, alloc},
-	          m_ranks(basic_bitvector<Alloc>::m_blocks.size() + 1, alloc) {
-		basic_bitvector<Alloc>::add_sentinel();
+	        : basic_bitvector<Alloc>{size, alloc}, m_ranks(base::m_blocks.size(), alloc) {
+		base::add_sentinel();
 #ifndef NDEBUG
 		m_ranks_dirty = true;
 #endif
@@ -29,21 +30,21 @@ public:
 
 	/** Sets a bit in the bitvector. */
 	void set(index i) {
-		basic_bitvector<Alloc>::set(i);
+		base::set(i);
 #ifndef NDEBUG
 		m_ranks_dirty = true;
 #endif
 	}
 	/** Clears a bit in the bitvector. */
 	void clr(index i) {
-		basic_bitvector<Alloc>::clr(i);
+		base::clr(i);
 #ifndef NDEBUG
 		m_ranks_dirty = true;
 #endif
 	}
 	/** Flips a bit in the bitvector. */
 	void flip(index i) {
-		basic_bitvector<Alloc>::flip(i);
+		base::flip(i);
 #ifndef NDEBUG
 		m_ranks_dirty = true;
 #endif
@@ -78,23 +79,23 @@ index basic_ranked_bitvector<Alloc>::rank(index i) const {
 	assert(!m_ranks_dirty);
 	assert(i <= basic_bitvector<Alloc>::m_size);
 	index b = bits::block_index(i);
-	return m_ranks[b] +
-	       bits::partial_popcount(basic_bitvector<Alloc>::m_blocks[b], bits::shift_index(i));
+	return (b == 0 ? 0 : m_ranks[b - 1]) +
+	       bits::partial_popcount(base::m_blocks[b], bits::shift_index(i));
 }
 
 template <typename Alloc>
 index basic_ranked_bitvector<Alloc>::select(index i) const {
-	assert(i < count());
-	auto it = basic_bitvector<Alloc>::first_set();
+	assert(i <= count());
+	auto it = base::begin();
 	for (index j = 0; j < i; ++j) {
 		++it;
 	}
-	return it;
+	return *it;
 }
 
 template <typename Alloc>
 void basic_ranked_bitvector<Alloc>::blank() {
-	basic_bitvector<Alloc>::blank();
+	base::blank();
 #ifndef NDEBUG
 	m_ranks_dirty = true;
 #endif
@@ -102,7 +103,7 @@ void basic_ranked_bitvector<Alloc>::blank() {
 
 template <typename Alloc>
 void basic_ranked_bitvector<Alloc>::bitwise_xor(const basic_bitvector<Alloc>& other) {
-	basic_bitvector<Alloc>::bitwise_xor(other);
+	base::bitwise_xor(other);
 #ifndef NDEBUG
 	m_ranks_dirty = true;
 #endif
@@ -110,7 +111,7 @@ void basic_ranked_bitvector<Alloc>::bitwise_xor(const basic_bitvector<Alloc>& ot
 
 template <typename Alloc>
 void basic_ranked_bitvector<Alloc>::invert() {
-	basic_bitvector<Alloc>::invert();
+	base::invert();
 #ifndef NDEBUG
 	m_ranks_dirty = true;
 #endif
@@ -119,7 +120,7 @@ void basic_ranked_bitvector<Alloc>::invert() {
 template <typename Alloc>
 void basic_ranked_bitvector<Alloc>::set_bitwise_or(const basic_bitvector<Alloc>& fst,
                                                    const basic_bitvector<Alloc>& snd) {
-	basic_bitvector<Alloc>::set_bitwise_or(fst, snd);
+	base::set_bitwise_or(fst, snd);
 #ifndef NDEBUG
 	m_ranks_dirty = true;
 #endif
@@ -128,9 +129,9 @@ void basic_ranked_bitvector<Alloc>::set_bitwise_or(const basic_bitvector<Alloc>&
 template <typename Alloc>
 void basic_ranked_bitvector<Alloc>::update_ranks() {
 	m_count = 0;
-	for (index b = 0; b < basic_bitvector<Alloc>::m_blocks.size(); ++b) {
-		m_count += bits::popcount(basic_bitvector<Alloc>::m_blocks[b]);
-		m_ranks[b + 1] = m_count;
+	for (index b = 0; b < base::m_blocks.size(); ++b) {
+		m_count += bits::popcount(base::m_blocks[b]);
+		m_ranks[b] = m_count;
 	}
 	assert(m_count > 0);
 #ifndef NDEBUG

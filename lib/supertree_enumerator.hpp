@@ -31,8 +31,8 @@ private:
 public:
 	// TODO: use real sizes (otherwise this just falls back to what std::allocator does
 	tree_enumerator(Callback cb, index leave_count, index constraint_count)
-	        : cb{std::move(cb)}, m_leave_allocator{fl1, leave_count / 64u + 2u},
-	          m_c_occ_allocator{fl2, constraint_count / 64u + 2u},
+            : cb{std::move(cb)}, m_leave_allocator{fl1, bitvector::alloc_size(leave_count)},
+              m_c_occ_allocator{fl2, bitvector::alloc_size(constraint_count)},
 	          m_union_find_allocator{fl3, leave_count} {}
 	result_type run(index num_leaves, const constraints& constraints, index root_leaf);
 	result_type run(index num_leaves, const constraints& constraints);
