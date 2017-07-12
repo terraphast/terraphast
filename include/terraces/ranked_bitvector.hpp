@@ -21,7 +21,7 @@ private:
 
 public:
 	basic_ranked_bitvector(index size, Alloc alloc)
-	        : basic_bitvector<Alloc>{size, alloc}, m_ranks(base::m_blocks.size(), alloc) {
+	        : basic_bitvector<Alloc>{size, alloc}, m_ranks(base::m_blocks.size(), 0, alloc) {
 		base::add_sentinel();
 #ifndef NDEBUG
 		m_ranks_dirty = true;

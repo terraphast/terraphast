@@ -20,8 +20,6 @@ using char_buffer = std::unique_ptr<char[], array_deleter>;
 
 class free_list {
 public:
-	free_list(std::size_t initial_capacity = 0) { m_list.reserve(initial_capacity); }
-
 	void push(char_buffer ptr) { m_list.push_back(std::move(ptr)); }
 
 	char_buffer pop() {

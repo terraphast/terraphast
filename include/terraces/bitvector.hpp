@@ -33,7 +33,7 @@ protected:
 public:
 	/** Initializes a bitvector with given size. */
 	basic_bitvector(index size, Allocator alloc)
-	        : m_size{size}, m_blocks(alloc_size(size), alloc) {
+	        : m_size{size}, m_blocks(alloc_size(size), 0, alloc) {
 		add_sentinel();
 	}
 	/** Sets a bit in the bitvector. */
