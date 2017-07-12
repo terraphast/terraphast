@@ -78,10 +78,13 @@ tree_set parse_nwk(const std::string& input) {
 		case parsing::token_type::lparen: {
 			const auto parent = state.self;
 			const auto self = ret.size();
+			utils::ensure<bad_input_error>(
+			        names[parent] == "",
+			        "inner node names must come AFTER their children");
 			stack.push(state);
 			state = parsing::parser_state{parent, self};
 			ret.emplace_back(parent, none, none);
-			ret.at(parent).lchild() = self;
+			ret[parent].lchild() = self;
 			names.emplace_back();
 			break;
 		}
@@ -90,7 +93,10 @@ tree_set parse_nwk(const std::string& input) {
 			const auto self = ret.size();
 			state.self = self;
 			ret.emplace_back(parent, none, none);
-			ret.at(parent).rchild() = self;
+			auto& parent_node = ret[parent];
+			utils::ensure<bad_input_error>(parent_node.rchild() == none,
+			                               "input tree is not binary");
+			parent_node.rchild() = self;
 			names.emplace_back();
 			break;
 			// no need to update state as the tree is binary to
@@ -103,8 +109,10 @@ tree_set parse_nwk(const std::string& input) {
 			break;
 		}
 		case parsing::token_type::name: {
-			names.at(state.self) = token.name;
-			indices[token.name] = state.self;
+			if (is_leaf(ret[state.self])) {
+				names[state.self] = token.name;
+				indices[token.name] = state.self;
+			}
 			break;
 		}
 		case parsing::token_type::eof:
@@ -114,6 +122,7 @@ tree_set parse_nwk(const std::string& input) {
 	if (not names.front().empty() and names.front().back() == ';') {
 		names.front().pop_back();
 	}
+	utils::ensure<bad_input_error>(stack.empty(), "parentheses left unclosed");
 	return {std::move(ret), std::move(names), std::move(indices)};
 }
 
@@ -122,7 +131,7 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 	auto cols = index{};
 	auto rows = index{}; // mostly a dummy;
 	input >> rows >> cols >> std::ws;
-	utils::ensure<bad_input_error>(rows <= tree_size, "mismatching tree-sizes");
+	utils::ensure<bad_input_error>(2 * rows - 1 == tree_size, "mismatching tree-sizes");
 	auto line = std::string{};
 	auto mat = bitmatrix{tree_size, cols};
 	auto suitable_root = none;

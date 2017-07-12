@@ -23,7 +23,7 @@ TEST_CASE("parsing a tree with just a root-node", "[parser]") {
 }
 
 TEST_CASE("parsing a tree with one real node", "[parser]") {
-	const auto results = parse_nwk("(foo)");
+	const auto results = parse_nwk("(foo)bar");
 	const auto& tree = results.tree;
 	const auto& names = results.names;
 	const auto& indices = results.indices;
@@ -34,12 +34,14 @@ TEST_CASE("parsing a tree with one real node", "[parser]") {
 	CHECK(tree[1].parent() == 0);
 	CHECK(tree[1].lchild() == none);
 	CHECK(tree[1].rchild() == none);
+	CHECK(names[0] == "");
 	CHECK(names[1] == "foo");
 	CHECK(indices.at("foo") == 1);
+	CHECK(indices.size() == 1);
 }
 
 TEST_CASE("parsing a tree with three leaves and two inner nodes", "[parser]") {
-	const auto results = parse_nwk("((foo,bar), baz)");
+	const auto results = parse_nwk("((foo,bar)inner, baz)outer");
 	const auto& tree = results.tree;
 	const auto& names = results.names;
 	const auto& indices = results.indices;
@@ -59,12 +61,33 @@ TEST_CASE("parsing a tree with three leaves and two inner nodes", "[parser]") {
 	CHECK(tree[4].parent() == 0);
 	CHECK(tree[4].lchild() == none);
 	CHECK(tree[4].rchild() == none);
+	CHECK(names[0] == "");
+	CHECK(names[1] == "");
 	CHECK(names[2] == "foo");
 	CHECK(names[3] == "bar");
 	CHECK(names[4] == "baz");
 	CHECK(indices.at("foo") == 2);
 	CHECK(indices.at("bar") == 3);
 	CHECK(indices.at("baz") == 4);
+	CHECK(indices.size() == 3);
+}
+
+TEST_CASE("parsing trees with mismatching parentheses", "[parser]") {
+	// too many closing parentheses
+	CHECK_THROWS_AS(parse_nwk("((,),))"), bad_input_error);
+	// too many opening parentheses
+	CHECK_THROWS_AS(parse_nwk("((,)"), bad_input_error);
+	// too many opening parentheses
+	CHECK_THROWS_AS(parse_nwk("((,),"), bad_input_error);
+	// ternary nodes (simple)
+	CHECK_THROWS_AS(parse_nwk("((,,),"), bad_input_error);
+	// ternary nodes (complex)
+	CHECK_THROWS_AS(parse_nwk("((,),((,),),)"), bad_input_error);
+}
+
+TEST_CASE("parsing trees invalid format", "[parser]") {
+	// inner node names must come after their children.
+	CHECK_THROWS_AS(parse_nwk("a(,)"), bad_input_error);
 }
 
 TEST_CASE("parsing a datafile with three species and two cols", "[parser],[data-parser]") {
