@@ -38,6 +38,7 @@ public:
 	result_type run(index num_leaves, const constraints& constraints);
 	result_type run(const ranked_bitvector& leaves, const bitvector& constraint_occ,
 	                const constraints& constraints);
+	const Callback& callback() const { return cb; }
 };
 
 template <typename Callback>

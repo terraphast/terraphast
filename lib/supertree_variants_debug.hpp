@@ -38,11 +38,13 @@ public:
 	template <typename... Args>
 	stack_state_decorator(Args&&... args) : Callback{std::forward<Args>(args)...} {}
 
-	void begin_iteration(const bipartition_iterator& bip_it, const bitvector& c_occ,
-	                     const constraints& constraints) {
-		m_stack.emplace_back(Callback::begin_iteration(bip_it, c_occ, constraints));
+	result_type begin_iteration(const bipartition_iterator& bip_it, const bitvector& c_occ,
+	                            const constraints& constraints) {
+		auto result = Callback::begin_iteration(bip_it, c_occ, constraints);
+		m_stack.emplace_back(result);
 		m_stack.back().current_bip = bip_it.cur_bip();
 		m_stack.back().max_bip = bip_it.end_bip();
+		return result;
 	}
 
 	void step_iteration(const bipartition_iterator& bip_it) {
@@ -70,6 +72,8 @@ public:
 		m_stack.back().intermediate = result;
 		return result;
 	}
+
+	const std::vector<stack_state<result_type>>& stack() const { return m_stack; }
 };
 
 template <typename Callback>
