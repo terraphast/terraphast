@@ -40,16 +40,28 @@ token next_token(Iterator& it, Iterator end) {
 	if (it == end) {
 		return {token_type::eof};
 	}
-	switch (*it) {
-	case '(':
+	if (*it != '\'') {
+		switch (*it) {
+		case '(':
+			++it;
+			return {token_type::lparen};
+		case ')':
+			++it;
+			return {token_type::rparen};
+		case ',':
+			++it;
+			return {token_type::seperator};
+		}
+	} else {
 		++it;
-		return {token_type::lparen};
-	case ')':
+		const auto name_begin = it;
+		it = std::find(it, end, '\'');
+		const auto name_end = it;
+		utils::ensure<bad_input_error>(name_end != end,
+		                               std::string{"quotes left unclosed at "} +
+		                                       std::string{name_begin, name_end});
 		++it;
-		return {token_type::rparen};
-	case ',':
-		++it;
-		return {token_type::seperator};
+		return {token_type::name, {name_begin, name_end}};
 	}
 	const auto name_begin = it;
 	it = std::find_first_of(it, end, special_tokens.begin(), special_tokens.end());

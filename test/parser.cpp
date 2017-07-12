@@ -72,6 +72,38 @@ TEST_CASE("parsing a tree with three leaves and two inner nodes", "[parser]") {
 	CHECK(indices.size() == 3);
 }
 
+TEST_CASE("parsing a tree with quotes, three leaves and two inner nodes", "[parser]") {
+	const auto results = parse_nwk("((foo,bar)'inner', 'baz')outer");
+	const auto& tree = results.tree;
+	const auto& names = results.names;
+	const auto& indices = results.indices;
+	REQUIRE(tree.size() == 5);
+	CHECK(tree[0].parent() == none);
+	CHECK(tree[0].lchild() == 1);
+	CHECK(tree[0].rchild() == 4);
+	CHECK(tree[1].parent() == 0);
+	CHECK(tree[1].lchild() == 2);
+	CHECK(tree[1].rchild() == 3);
+	CHECK(tree[2].parent() == 1);
+	CHECK(tree[2].lchild() == none);
+	CHECK(tree[2].rchild() == none);
+	CHECK(tree[3].parent() == 1);
+	CHECK(tree[3].lchild() == none);
+	CHECK(tree[3].rchild() == none);
+	CHECK(tree[4].parent() == 0);
+	CHECK(tree[4].lchild() == none);
+	CHECK(tree[4].rchild() == none);
+	CHECK(names[0] == "");
+	CHECK(names[1] == "");
+	CHECK(names[2] == "foo");
+	CHECK(names[3] == "bar");
+	CHECK(names[4] == "baz");
+	CHECK(indices.at("foo") == 2);
+	CHECK(indices.at("bar") == 3);
+	CHECK(indices.at("baz") == 4);
+	CHECK(indices.size() == 3);
+}
+
 TEST_CASE("parsing trees with mismatching parentheses", "[parser]") {
 	// too many closing parentheses
 	CHECK_THROWS_AS(parse_nwk("((,),))"), bad_input_error);
@@ -88,6 +120,10 @@ TEST_CASE("parsing trees with mismatching parentheses", "[parser]") {
 TEST_CASE("parsing trees invalid format", "[parser]") {
 	// inner node names must come after their children.
 	CHECK_THROWS_AS(parse_nwk("a(,)"), bad_input_error);
+}
+
+TEST_CASE("parsing trees with unclosed quotes", "[parser]") {
+	CHECK_THROWS_AS(parse_nwk("(('a',''),(('c,),),)"), bad_input_error);
 }
 
 TEST_CASE("parsing a datafile with three species and two cols", "[parser],[data-parser]") {
