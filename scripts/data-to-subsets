@@ -40,7 +40,5 @@ with open(ARGS.input, "r") as f:
         assert len(SITES[k]) <= SPECIES_COUNT
 
 with open(ARGS.output, "w") as f:
-    for s in SITES:
-        species_represenation = " ".join([element for element in s])
-        f.write("\n")
-        f.write(species_represenation)
+    species_represenation = "\n".join([" ".join(s) for s in SITES]);
+    f.write(species_represenation)
