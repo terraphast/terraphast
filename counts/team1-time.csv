@@ -1,0 +1,19 @@
+tree,dataset,time (s),memory (kB)
+Allium.nwk,Allium.data,0.009,3672
+Allium_Reduced.nwk,Allium_Reduced.data,1.828,3692
+Allium_Tiny.nwk,Allium_Tiny.data,0.003,3696
+Asplenium.nwk.1,Asplenium.data.1,0.004,3804
+Asplenium.nwk.2,Asplenium.data.2,0.004,3668
+Bouchenak.nwk,Bouchenak.data,0.006,3740
+Caryophyllaceae.nwk,Caryophyllaceae.data,0.010,3596
+Eucalyptus.nwk.1,Eucalyptus.data.1,0.007,3772
+Eucalyptus.nwk.2,Eucalyptus.data.2,0.008,3620
+Eucalyptus.nwk.3,Eucalyptus.data.3,0.002,3592
+Euphorbia.nwk.1,Euphorbia.data.1,0.003,3692
+Euphorbia.nwk.2,Euphorbia.data.2,0.005,3612
+Ficus.nwk.1,Ficus.data.1,0.003,3760
+Ficus.nwk.2,Ficus.data.2,0.004,3672
+Ficus.nwk.3,Ficus.data.3,0.010,3724
+Iris.nwk,Iris.data,0.003,3756
+Meusemann.nwk,Meusemann.data,0.006,4012
+Pyron.nwk,Pyron.data,0.006,4084
