@@ -91,14 +91,14 @@ TEST_CASE("parsing trees invalid format", "[parser]") {
 }
 
 TEST_CASE("parsing a datafile with three species and two cols", "[parser],[data-parser]") {
-	auto stream = std::istringstream{"2 2\n0 1 foo\n1 1 bar\n1 1 baz\n"};
+	auto stream = std::istringstream{"3 2\n0 1 foo\n1 1 bar\n1 1 baz\n"};
 	const auto map = terraces::index_map{{"foo", 2}, {"bar", 1}, {"baz", 3}};
-	const auto res = terraces::parse_bitmatrix(stream, map, 4);
+	const auto res = terraces::parse_bitmatrix(stream, map, 5);
 	const auto& mat = res.first;
 	const auto& root_species = res.second;
 
 	REQUIRE(mat.cols() == 2);
-	REQUIRE(mat.rows() == 4);
+	REQUIRE(mat.rows() == 5);
 
 	CHECK(!mat.get(0, 0));
 	CHECK(!mat.get(0, 1));
@@ -112,6 +112,18 @@ TEST_CASE("parsing a datafile with three species and two cols", "[parser],[data-
 	CHECK(root_species == 1);
 }
 
+TEST_CASE("parsing a datafile with unknown species", "[parser],[data-parser]") {
+	auto stream = std::istringstream{"3 2\n0 1 f00\n1 1 bar\n1 1 baz\n"};
+	const auto map = terraces::index_map{{"foo", 2}, {"bar", 1}, {"baz", 3}};
+	CHECK_THROWS_AS(terraces::parse_bitmatrix(stream, map, 5), bad_input_error);
+}
+
+TEST_CASE("parsing a datafile with missing species", "[parser],[data-parser]") {
+	auto stream = std::istringstream{"3 2\n1 1 bar\n1 1 baz\n"};
+	const auto map = terraces::index_map{{"foo", 2}, {"bar", 1}, {"baz", 3}};
+	CHECK_THROWS_AS(terraces::parse_bitmatrix(stream, map, 5), bad_input_error);
+}
+
 TEST_CASE("parsing a complex datafile", "[parser],[data-parser]") {
 	auto stream = std::istringstream{"5 3\n"
 	                                 "0 1 0 foo\n"
@@ -121,12 +133,12 @@ TEST_CASE("parsing a complex datafile", "[parser],[data-parser]") {
 	                                 "1 1 0 gähn\n"};
 	const auto map =
 	        terraces::index_map{{"foo", 1}, {"bar", 2}, {"bla", 3}, {"blub", 4}, {"gähn", 5}};
-	const auto res = terraces::parse_bitmatrix(stream, map, 6);
+	const auto res = terraces::parse_bitmatrix(stream, map, 9);
 	const auto& mat = res.first;
 	const auto& root_species = res.second;
 
 	REQUIRE(mat.cols() == 3);
-	REQUIRE(mat.rows() == 6);
+	REQUIRE(mat.rows() == 9);
 
 	CHECK(!mat.get(0, 0));
 	CHECK(!mat.get(0, 1));

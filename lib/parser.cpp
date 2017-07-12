@@ -133,15 +133,21 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 	input >> rows >> cols >> std::ws;
 	utils::ensure<bad_input_error>(2 * rows - 1 == tree_size, "mismatching tree-sizes");
 	auto line = std::string{};
-	auto mat = bitmatrix{tree_size, cols};
 	auto suitable_root = none;
-	auto species_per_site = std::vector<std::size_t>(cols, 0u);
+	// last column used to check if all species are present
+	auto mat = bitmatrix{tree_size, cols + 1};
+	auto species_per_site = std::vector<std::size_t>(cols, 0);
 	while (std::getline(input, line)) {
 		if (line.empty()) {
 			continue;
 		}
 		const auto name_start = std::find(line.rbegin(), line.rend(), ' ').base();
-		const auto species = indices.at({name_start, line.end()});
+		const auto species_name = std::string{name_start, line.end()};
+		const auto species_it = indices.find(species_name);
+		utils::ensure<bad_input_error>(species_it != indices.end(),
+		                               std::string{"unknown species "} + species_name);
+		const auto species = (*species_it).second;
+
 		auto it = line.begin();
 		auto end = name_start;
 		auto all_data_available = true;
@@ -151,22 +157,29 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 			auto c = *it++;
 			if (c == '1') {
 				mat.set(species, i, true);
-				species_per_site[i] += 1u;
+				mat.set(species, cols, true);
+				++species_per_site[i];
 			} else {
 				all_data_available = false;
 			}
 		}
+		utils::ensure<bad_input_error>(++it == end, "bad table in input");
 		if (all_data_available and suitable_root == none) {
 			suitable_root = species;
 		}
 	}
-	auto interessting_cols = std::vector<std::size_t>();
+	for (auto name_pair : indices) {
+		bool has_species = mat.get(name_pair.second, cols);
+		utils::ensure<bad_input_error>(has_species,
+		                               std::string{"missing species "} + name_pair.first);
+	}
+	auto interesting_cols = std::vector<std::size_t>();
 	for (auto i = std::size_t{}; i < cols; ++i) {
 		if (species_per_site[i] > 1u) {
-			interessting_cols.push_back(i);
+			interesting_cols.push_back(i);
 		}
 	}
-	return {mat.get_cols(interessting_cols), suitable_root};
+	return {mat.get_cols(interesting_cols), suitable_root};
 }
 
 } // namespace terraces
