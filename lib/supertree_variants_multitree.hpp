@@ -105,6 +105,7 @@ public:
 	return_type base_unconstrained(const ranked_bitvector& leaves) {
 		return alloc_node()->as_unconstrained(alloc_leaves(leaves));
 	}
+	return_type null_result() { return nullptr; }
 
 	return_type fast_return_value(const bipartition_iterator& bip_it) {
 		return alloc_node()->as_unexplored(alloc_leaves(bip_it.leaves()));

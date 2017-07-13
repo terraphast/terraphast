@@ -3,8 +3,8 @@
 namespace terraces {
 
 bitvector filter_constraints(const ranked_bitvector& leaves, const bitvector& c_occ,
-                             const constraints& c) {
-	bitvector result{c_occ.size(), c_occ.get_allocator()};
+                             const constraints& c, utils::stack_allocator<index> a) {
+	bitvector result{c_occ.size(), a};
 	for (auto c_i = c_occ.first_set(); c_i < c_occ.last_set(); c_i = c_occ.next_set(c_i)) {
 		if (leaves.get(c[c_i].left) && leaves.get(c[c_i].shared) &&
 		    leaves.get(c[c_i].right)) {

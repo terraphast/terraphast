@@ -67,7 +67,7 @@ std::vector<std::tuple<std::string, std::string, mpz_class>> data_sets{
         make_tuple("Yang.caryo.1122.nwk", "Yang.caryo.1122.data", 1),
         make_tuple("Yang.caryo.209.nwk", "Yang.caryo.209.data", 1)};
 
-TEST_CASE("app", "[app], [.]") {
+TEST_CASE("app", "[app][.]") {
 	for (auto set : data_sets) {
 		CHECK(helper(std::get<0>(set), std::get<1>(set)) == std::get<2>(set));
 	}

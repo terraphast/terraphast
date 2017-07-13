@@ -26,7 +26,7 @@ TEST_CASE("performance of constraints", "[.][performance][performance_constraint
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();
-			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c);
+			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c, alloc);
 			t.stop();
 			vec_01.push_back(t.nanoseconds());
 		}
@@ -37,7 +37,7 @@ TEST_CASE("performance of constraints", "[.][performance][performance_constraint
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();
-			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c);
+			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c, alloc);
 			t.stop();
 			vec_02.push_back(t.nanoseconds());
 		}
@@ -50,7 +50,7 @@ TEST_CASE("performance of constraints", "[.][performance][performance_constraint
 			constraints c = {constraint{7, 8, 9}};
 			auto t = timer{};
 			t.start();
-			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c);
+			terraces::filter_constraints(leaves, full_set(c.size(), alloc), c, alloc);
 			t.stop();
 			vec_03.push_back(t.nanoseconds());
 		}
