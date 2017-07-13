@@ -1,7 +1,7 @@
 #ifndef RANKED_BITVECTOR_HPP
 #define RANKED_BITVECTOR_HPP
 
-#include <terraces/bitvector.hpp>
+#include "bitvector.hpp"
 
 namespace terraces {
 

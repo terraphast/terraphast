@@ -1,10 +1,11 @@
 #ifndef SUPERTREE_ENUMERATOR_HPP
 #define SUPERTREE_ENUMERATOR_HPP
 
-#include <terraces/bipartitions.hpp>
-#include <terraces/stack_allocator.hpp>
 #include <terraces/supertree.hpp>
-#include <terraces/union_find.hpp>
+
+#include "bipartitions.hpp"
+#include "stack_allocator.hpp"
+#include "union_find.hpp"
 
 #include "supertree_helpers.hpp"
 #include "utils.hpp"

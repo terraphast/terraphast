@@ -3,8 +3,9 @@
 
 #include <algorithm>
 
+#include <terraces/trees.hpp>
+
 #include "stack_allocator.hpp"
-#include "trees.hpp"
 
 namespace terraces {
 

@@ -1,7 +1,7 @@
 #ifndef UNION_FIND_DEBUG_HPP
 #define UNION_FIND_DEBUG_HPP
 
-#include <terraces/union_find.hpp>
+#include "union_find.hpp"
 
 namespace terraces {
 namespace debug {

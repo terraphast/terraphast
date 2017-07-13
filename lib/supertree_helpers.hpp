@@ -2,10 +2,11 @@
 #define SUPERTREE_HELPERS_HPP
 
 #include <terraces/constraints.hpp>
-#include <terraces/ranked_bitvector.hpp>
-#include <terraces/stack_allocator.hpp>
 #include <terraces/trees.hpp>
-#include <terraces/union_find.hpp>
+
+#include "ranked_bitvector.hpp"
+#include "stack_allocator.hpp"
+#include "union_find.hpp"
 
 namespace terraces {
 

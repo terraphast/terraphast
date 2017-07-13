@@ -1,8 +1,9 @@
-#include <terraces/bipartitions.hpp>
-#include <terraces/bits.hpp>
+#include "bipartitions.hpp"
 
 #include <cassert>
 #include <ostream>
+
+#include "bits.hpp"
 
 namespace terraces {
 

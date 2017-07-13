@@ -1,7 +1,7 @@
 
 #include <catch.hpp>
 
-#include <terraces/unconstrained_enumerator.hpp>
+#include "../lib/unconstrained_enumerator.hpp"
 
 namespace terraces {
 namespace tests {

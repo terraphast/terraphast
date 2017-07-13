@@ -1,4 +1,3 @@
-#include <terraces/ranked_bitvector.hpp>
 #include <terraces/validation.hpp>
 
 #include <numeric>
@@ -6,6 +5,7 @@
 
 #include <algorithm>
 
+#include "ranked_bitvector.hpp"
 #include "supertree_helpers.hpp"
 
 namespace terraces {

@@ -1,9 +1,9 @@
 
 #include <catch.hpp>
 
+#include "../lib/stack_allocator.hpp"
 #include "../lib/supertree_helpers.hpp"
 #include <terraces/constraints.hpp>
-#include <terraces/stack_allocator.hpp>
 
 #include <algorithm>
 #include <vector>

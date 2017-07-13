@@ -2,7 +2,7 @@
 
 #include <ostream>
 
-#include <terraces/union_find.hpp>
+#include "union_find.hpp"
 
 namespace terraces {
 

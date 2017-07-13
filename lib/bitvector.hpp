@@ -2,10 +2,11 @@
 #define BITVECTOR_H
 
 #include <cstdint>
-#include <terraces/bits.hpp>
-#include <terraces/trees.hpp>
 #include <vector>
 
+#include <terraces/trees.hpp>
+
+#include "bits.hpp"
 #include "stack_allocator.hpp"
 
 namespace terraces {

@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-#include <terraces/bipartitions.hpp>
-#include <terraces/ranked_bitvector.hpp>
-#include <terraces/union_find.hpp>
+#include "../lib/bipartitions.hpp"
+#include "../lib/ranked_bitvector.hpp"
+#include "../lib/union_find.hpp"
 
 namespace terraces {
 namespace tests {

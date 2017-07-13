@@ -1,7 +1,9 @@
-#include <terraces/bipartitions.hpp>
-#include <terraces/stack_allocator.hpp>
 #include <terraces/supertree.hpp>
-#include <terraces/union_find.hpp>
+
+#include "bipartitions.hpp"
+#include "bitvector.hpp"
+#include "stack_allocator.hpp"
+#include "union_find.hpp"
 
 #include "supertree_enumerator.hpp"
 #include "supertree_variants.hpp"

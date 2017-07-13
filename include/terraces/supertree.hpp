@@ -1,13 +1,13 @@
 #ifndef TERRACES_SUPERTREE_HPP
 #define TERRACES_SUPERTREE_HPP
 
-#include "bitvector.hpp"
-#include "constraints.hpp"
-#include "trees.hpp"
-#include "union_find.hpp"
-#include <gmpxx.h>
 #include <string>
 #include <tuple>
+
+#include <gmpxx.h>
+
+#include "constraints.hpp"
+#include "trees.hpp"
 
 namespace terraces {
 

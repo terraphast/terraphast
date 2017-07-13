@@ -1,7 +1,7 @@
 
 #include <catch.hpp>
 
-#include <terraces/bits.hpp>
+#include "../lib/bits.hpp"
 
 namespace terraces {
 namespace tests {

@@ -1,13 +1,13 @@
 #ifndef SUPERTREE_VARIANTS_HPP
 #define SUPERTREE_VARIANTS_HPP
 
-#include <terraces/bipartitions.hpp>
 #include <terraces/constraints.hpp>
+#include <terraces/io_utils.hpp>
 #include <terraces/trees.hpp>
 
 #include <gmpxx.h>
 
-#include <terraces/io_utils.hpp>
+#include "bipartitions.hpp"
 
 namespace terraces {
 namespace variants {
