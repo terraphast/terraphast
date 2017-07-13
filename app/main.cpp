@@ -23,16 +23,26 @@ using terraces::utils::as_comma_separated_output;
 using terraces::full_set;
 
 int main(int argc, char** argv) try {
-	if (argc != 3) {
-		std::cerr << "Usage: " << argv[0] << " <tree-file> <occurrence file>" << std::endl;
+	auto tree_file_name = std::string{};
+	auto data_file_name = std::string{};
+	if (argc == 2) {
+		tree_file_name = argv[1] + std::string{".nwk"};
+		data_file_name = argv[1] + std::string{".data"};
+	} else if (argc == 3) {
+		tree_file_name = argv[1];
+		data_file_name = argv[1];
+	} else {
+		std::cerr << "Usage: \n"
+		          << argv[0] << " <tree-file> <occurrence file>\n"
+		          << argv[0] << " <common-basename>\n";
 		return 1;
 	}
-	auto tree_file = std::ifstream{argv[1]};
+	auto tree_file = std::ifstream{tree_file_name};
 	auto tree_string = std::string{};
 	std::getline(tree_file, tree_string);
 	auto data = terraces::parse_nwk(tree_string);
 
-	auto data_file = std::ifstream{argv[2]};
+	auto data_file = std::ifstream{data_file_name};
 	const auto data_res = terraces::parse_bitmatrix(data_file, data.indices, data.tree.size());
 	const auto num_nodes = data_res.first.rows();
 	auto num_species = data.indices.size();
