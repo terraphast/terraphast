@@ -47,6 +47,13 @@ public:
 	storage_blocks(index block_size = 1024) : m_blocks{}, m_block_size{block_size} {
 		m_blocks.emplace_back(m_block_size);
 	}
+	storage_blocks(const storage_blocks<T>& other) : storage_blocks{other.m_block_size} {}
+	storage_blocks(storage_blocks<T>&& other) = default;
+	storage_blocks<T>& operator=(const storage_blocks<T>& other) {
+		m_block_size = other.m_block_size;
+		return *this;
+	}
+	storage_blocks<T>& operator=(storage_blocks<T>&& other) = default;
 
 	T* get() {
 		if (!m_blocks.back().has_space()) {
