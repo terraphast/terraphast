@@ -28,7 +28,7 @@ namespace tests {
 
 mpz_class helper(std::string, std::string);
 
-std::vector<std::tuple<std::string, std::string, index>> data_sets = {
+std::vector<std::tuple<std::string, std::string, mpz_class>> data_sets = {
         {"Allium.nwk", "Allium.data", 8038035},
         {"Allium_Reduced.nwk", "Allium_Reduced.data", 730680125},
         {"Allium_Tiny.nwk", "Allium_Tiny.data", 35},
@@ -54,8 +54,8 @@ std::vector<std::tuple<std::string, std::string, index>> data_sets = {
         {"Rabosky.scincids.nwk", "Rabosky.scincids.data", 3},
         {"Ranunculus.nwk", "Ranunculus.data", 3},
         {"Rhododendron.nwk", "Rhododendron.data", 81},
-        //        {"Rosaceae.nwk","Rosaceae.data",171924246129452853684375},
-        //        {"Shi.bats.nwk","Shi.bats.data",242234933881884349476362274404296875},
+        {"Rosaceae.nwk", "Rosaceae.data", mpz_class{"171924246129452853684375"}},
+        {"Shi.bats.nwk", "Shi.bats.data", mpz_class{"242234933881884349476362274404296875"}},
         {"Solanum.nwk", "Solanum.data", 211865625},
         {"Springer.primates.nwk", "Springer.primates.data", 70840575},
         {"Szygium.nwk.1", "Szygium.data.1", 45},
