@@ -66,7 +66,7 @@ std::vector<std::tuple<std::string, std::string, index>> data_sets = {
         {"Yang.caryo.1122.nwk", "Yang.caryo.1122.data", 1},
         {"Yang.caryo.209.nwk", "Yang.caryo.209.data", 1}};
 
-TEST_CASE("app", "[app]") {
+TEST_CASE("app", "[app], [.]") {
 	for (auto set : data_sets) {
 		CHECK(helper(std::get<0>(set), std::get<1>(set)) == std::get<2>(set));
 	}
