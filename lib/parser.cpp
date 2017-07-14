@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include <terraces/errors.hpp>
+
 #include "utils.hpp"
 
 namespace terraces {
@@ -136,6 +138,11 @@ tree_set parse_nwk(const std::string& input) {
 	}
 	utils::ensure<bad_input_error>(stack.empty(), "parentheses left unclosed");
 	return {std::move(ret), std::move(names), std::move(indices)};
+}
+
+tree_set parse_nwk(std::istream& input) {
+	using it = std::istreambuf_iterator<char>;
+	return parse_nwk({it{input}, it{}});
 }
 
 std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices,

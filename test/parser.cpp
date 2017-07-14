@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 
+#include <terraces/errors.hpp>
 #include <terraces/parser.hpp>
 
 namespace terraces {
