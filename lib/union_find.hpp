@@ -26,10 +26,10 @@ public:
 		assert(m_compressed);
 		return is_representative(x) ? x : m_parent[x];
 	}
-	index size() const;
+	index size() const { return m_parent.size(); }
 	void compress();
 	void merge(index, index);
-	bool is_representative(index) const;
+	bool is_representative(index x) const { return m_parent[x] >= m_parent.size(); }
 };
 
 } // namespace terraces
