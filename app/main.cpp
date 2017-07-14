@@ -30,7 +30,7 @@ int main(int argc, char** argv) try {
 		data_file_name = argv[1] + std::string{".data"};
 	} else if (argc == 3) {
 		tree_file_name = argv[1];
-		data_file_name = argv[1];
+		data_file_name = argv[2];
 	} else {
 		std::cerr << "Usage: \n"
 		          << argv[0] << " <tree-file> <occurrence file>\n"

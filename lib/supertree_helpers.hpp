@@ -12,7 +12,7 @@ namespace terraces {
 
 /** Removes all constraints from c_occ that don't lie fully within the leave set. */
 bitvector filter_constraints(const ranked_bitvector& leaves, const bitvector& c_occ,
-                             const constraints& c);
+                             const constraints& c, utils::stack_allocator<index> a);
 
 /** Returns a union-find representation of the sets retrieved after applying all constraints from
  * c_occ. */

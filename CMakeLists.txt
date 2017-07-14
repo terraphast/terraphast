@@ -36,34 +36,34 @@ file(GLOB lib_headers "include/terraces/*.hpp")
 file(GLOB lib_sources "lib/*.cpp")
 file(GLOB lib_int_headers "lib/*.hpp")
 add_library(terraces ${lib_sources} ${lib_headers} ${lib_int_headers})
-target_link_libraries(terraces)
+target_link_libraries(terraces ${THREAD_LIBS})
 
 file(GLOB test_headers "test/*.hpp")
 file(GLOB test_sources "test/*.cpp")
 add_executable(unittests ${test_sources} ${test_headers})
-target_link_libraries(unittests terraces ${GMP_LIBS})
+target_link_libraries(unittests terraces ${GMP_LIBS} ${THREAD_LIBS})
 add_test(NAME unittests COMMAND unittests)
 
 file(GLOB app_headers "app/*.hpp")
 file(GLOB app_sources "app/*.cpp")
 
 add_executable(app "app/main.cpp")
-target_link_libraries(app terraces ${GMP_LIBS})
+target_link_libraries(app terraces ${GMP_LIBS} ${THREAD_LIBS})
 
 add_executable(progress-app "app/progress-app.cpp")
 target_link_libraries(progress-app terraces ${GMP_LIBS} ${THREAD_LIBS})
 
 add_executable(convert "app/convert.cpp")
-target_link_libraries(convert terraces)
+target_link_libraries(convert terraces ${THREAD_LIBS})
 
 add_executable(isomorphic "app/isomorphic.cpp")
-target_link_libraries(isomorphic terraces)
+target_link_libraries(isomorphic terraces ${THREAD_LIBS})
 
 add_executable(reroot "app/reroot.cpp")
-target_link_libraries(reroot terraces)
+target_link_libraries(reroot terraces ${THREAD_LIBS})
 
 add_executable(subtree "app/subtree.cpp")
-target_link_libraries(subtree terraces)
+target_link_libraries(subtree terraces ${THREAD_LIBS})
 
 # Most of our files only compile with disabled language extensions for VC++
 # Unfortunately, Catch uses some windows-specific features, so we have to

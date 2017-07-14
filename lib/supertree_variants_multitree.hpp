@@ -47,6 +47,13 @@ public:
 	storage_blocks(index block_size = 1024) : m_blocks{}, m_block_size{block_size} {
 		m_blocks.emplace_back(m_block_size);
 	}
+	storage_blocks(const storage_blocks<T>& other) : storage_blocks{other.m_block_size} {}
+	storage_blocks(storage_blocks<T>&& other) = default;
+	storage_blocks<T>& operator=(const storage_blocks<T>& other) {
+		m_block_size = other.m_block_size;
+		return *this;
+	}
+	storage_blocks<T>& operator=(storage_blocks<T>&& other) = default;
 
 	T* get() {
 		if (!m_blocks.back().has_space()) {
@@ -98,6 +105,7 @@ public:
 	return_type base_unconstrained(const ranked_bitvector& leaves) {
 		return alloc_node()->as_unconstrained(alloc_leaves(leaves));
 	}
+	return_type null_result() { return nullptr; }
 
 	return_type fast_return_value(const bipartition_iterator& bip_it) {
 		return alloc_node()->as_unexplored(alloc_leaves(bip_it.leaves()));
