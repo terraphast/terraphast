@@ -4,9 +4,11 @@
 //TODO: Not that intuitive
 int main(int argc, char *argv[]) {
     if (argc != 3) {
-        printf(
-                "Specify .data and .nwk as first and second argument to analyze them.\n");
+        printf("Specify .data and .nwk as first and second argument");
+        printf(" to analyze them.\n");
+        std::exit(TERRACE_THINK_ON_YOUR_OWN_ERROR);
     }
+    
     input_data *read_data = parse_input_data(argv[1]);
     char *read_tree = read_newk_tree(argv[2]);
 
