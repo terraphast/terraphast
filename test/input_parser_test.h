@@ -101,3 +101,13 @@ TEST(Tree_root_Test, simple_tree) {
     freeMissingData(example1);
     freeMissingData(example2);
 }
+
+TEST(CheckCorruptDataFileError, number_of_species_to_low) {
+  input_data *read_data = parse_input_data("../test/input/Allium_wrong_numbers1.data");
+  ASSERT_TRUE(read_data == NULL);
+}
+
+TEST(CheckCorruptDataFileError, number_of_species_to_high) {
+  input_data *read_data = parse_input_data("../test/input/Allium_wrong_numbers2.data");
+  ASSERT_TRUE(read_data == NULL);
+}
