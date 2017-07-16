@@ -5,9 +5,6 @@
 #include "types.h"
 #include "debug.h"
 
-//template <typename T>
-//using list_of_leaf_sets = std::vector<std::shared_ptr<T>>;
-
 //Black Magic
 class BitLeafSet;
 typedef BitLeafSet LeafSet;
@@ -335,7 +332,8 @@ public:
                 return i;
             }
         }
-        assert(false);  //this means that we have a valid set without any element
+        assert(0);  //this means that we have a valid set without any element
+        return 0;
     }
 
     //TODO this method should be in the super class
