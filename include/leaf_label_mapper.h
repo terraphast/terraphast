@@ -3,6 +3,15 @@
 #include "terraces.h" // for missingData
 
 /**
+ * Struct to compare strings (used for label comparison)
+ */
+struct label_compare {
+   bool operator()(char const *label1, char const *label2) const {
+      return std::strcmp(label1, label2) < 0;
+   }
+};
+
+/**
  * Static variables and methods to map leaf_id <->label
  */
 class LeafLabelMapper {
@@ -19,10 +28,11 @@ private:
     /**
      * Mapping of leaf labels to their IDs
      */
-    static std::map<const char*, size_t> label_to_leaf_id;
+    static std::map<const char*, size_t, label_compare> label_to_leaf_id;
     
     /**
      * Mapping of leaf IDs to their labels
      */
     static char **species_names;
 };
+
