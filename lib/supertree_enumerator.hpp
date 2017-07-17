@@ -209,7 +209,8 @@ auto tree_enumerator<Callback, Parallel>::iterate(bipartition_iterator& bip_it,
 template <typename Callback, bool Parallel>
 bool tree_enumerator<Callback, Parallel>::should_resume_parallel(
         const bipartition_iterator& bip_it) const {
-	return Parallel && bip_it.num_bip() > 2 && bip_it.leaves().count() > 8;
+	return Parallel && bip_it.num_bip() > std::thread::hardware_concurrency() &&
+	       bip_it.leaves().count() > 8;
 }
 
 } // namespace terraces
