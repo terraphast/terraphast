@@ -32,14 +32,13 @@ int main(int argc, char *argv[]) {
         int errorCode = terraceAnalysis(m, read_tree, TA_COUNT + TA_ENUMERATE,
                                         empiricalTrees, &alliumTerraceSize);
         if (errorCode == TERRACE_SUCCESS) {
-            char *alliumTerraceSizeString = nullptr;
-            alliumTerraceSizeString = mpz_get_str(alliumTerraceSizeString, 10,
+            char *terraceSizeString = nullptr;
+            terraceSizeString = mpz_get_str(terraceSizeString, 10,
                                                   alliumTerraceSize);
 
-            printf("Empirical data set %s terrace size %s \n", argv[1],
-                   alliumTerraceSizeString);
+            puts(terraceSizeString);
 
-            free(alliumTerraceSizeString);
+            free(terraceSizeString);
         } else {
             printf("Error %i\n", errorCode);
         }
