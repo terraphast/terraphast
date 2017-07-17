@@ -148,7 +148,7 @@ int terraceAnalysis(missingData *m,
 
     auto leaves = LeafSet(id_to_lable.size());
 
-    size_t count = 0;
+    mpz_class count = 0;
     if(countTrees) {
         CountAllRootedTrees algo;
         count = algo.scan_terrace(leaves, constraints);
@@ -164,7 +164,7 @@ int terraceAnalysis(missingData *m,
         }
     }
 
-    mpz_set_ui(*terraceSize, count);
+    mpz_set(*terraceSize, count.get_mpz_t());
 
     /* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
 

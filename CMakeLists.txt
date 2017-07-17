@@ -7,7 +7,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 
 find_package(GMP REQUIRED)
 
-set(COMMON_LIBRARIEY ${GMP_LIBRARIES})
+set(COMMON_LIBRARIEY ${GMP_LIBRARIES} ${GMPXX_LIBRARIES})
 
 include_directories(include)
 

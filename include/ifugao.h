@@ -5,17 +5,7 @@
 
 #include <iostream>
 #include <iterator>
-
-/**
- * Method calling overview:
- * 
- *  list_trees
- *    combine_sets
- *      [recursion stop]
- *        get_all_binary_trees
- *      apply_constraints
- *   d_print_tree
- */
+#include <gmpxx.h>
 
 template<typename T>
 std::ostream& operator<<(std::ostream &strm, const std::set<T>& set) {
@@ -52,16 +42,6 @@ std::ostream& operator<<(std::ostream &strm, const constraint& tree);
 std::ostream& operator<<(std::ostream &strm,
                          const std::vector<std::shared_ptr<std::set<leaf_number>> >& set);
 
-///**
-// * Applies the given constraints on a set of given leaves, by merging them if
-// * they two of them are on the left side of a constraint.
-// *
-// * @param leaves Leaves to apply the constraints on.
-// * @param constraints Constraints to apply.
-// * @return Sets merged from given sets according to the given contraints.
-// */
-//partition_list apply_constraints(const LeafSet &leaves, const std::vector<constraint> &constraints);
-
 /**
  * Returns a vector containing all constraints infered from the given supertree.
  *
@@ -87,31 +67,6 @@ std::vector<constraint> find_constraints(const LeafSet &leaves,
 std::vector<std::shared_ptr<Tree> > merge_subtrees(
         const std::vector<std::shared_ptr<Tree> > &left,
         const std::vector<std::shared_ptr<Tree> > &right);
-
-
-
-///**
-// * Returns the number of partition tuples that can be formed by combining the
-// * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
-// * the list.
-// * @param partitions the list of partitions
-// * @return the number of partition tuples that can be formed from the given list
-// */
-//inline size_t number_partition_tuples(
-//        const std::vector<std::shared_ptr<LeafSet> > &partitions) {
-//    assert(partitions.size() > 1);
-
-//    return (1 << (partitions.size() - 1)) - 1;
-//}
-
-///**
-// * Returns the n-th partition tuple of the given partition list
-// * @param partitions the list of partitions
-// * @param n the target n-th partition tuple to select, ranging from [1,2^(p-1)-1] where p is the number of partitions
-// * @return the n-th partition tuple formed from the given partition list
-// */
-//std::tuple<std::shared_ptr<LeafSet>, std::shared_ptr<LeafSet> > get_nth_partition_tuple(
-//        const std::vector<std::shared_ptr<LeafSet> > &partitions, const size_t n);
 
 template <typename T>
 class TerraceAlgorithm {
@@ -189,15 +144,15 @@ protected:
     }
 };
 
-class CountAllRootedTrees : public TerraceAlgorithm<size_t> {
+class CountAllRootedTrees : public TerraceAlgorithm<mpz_class> {
 protected:
     inline
-    size_t initialize_result_type() {
-        return 0;
+    mpz_class initialize_result_type() {
+        return mpz_class(0);
     }
     inline
-    size_t scan_unconstraint_leaves(LeafSet &leaves) {
-        size_t result = 1;
+    mpz_class scan_unconstraint_leaves(LeafSet &leaves) {
+        mpz_class result = 1;
         for(size_t i = 4; i <= (leaves.size() + 1); i++) {
             result *= (2*i-5);
         }
@@ -205,12 +160,12 @@ protected:
     }
 
     inline
-    size_t combine_part_results(const size_t &left_part, const size_t &right_part) {
+    mpz_class combine_part_results(const mpz_class &left_part, const mpz_class &right_part) {
         return left_part * right_part;
     }
 
     inline
-    void combine_bipartition_results(size_t &aggregation, const size_t &new_results) {
+    void combine_bipartition_results(mpz_class &aggregation, const mpz_class &new_results) {
         aggregation += new_results;
     }
 };
