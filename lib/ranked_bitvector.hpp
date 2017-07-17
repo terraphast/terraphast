@@ -79,8 +79,7 @@ index basic_ranked_bitvector<Alloc>::rank(index i) const {
 	assert(!m_ranks_dirty);
 	assert(i <= basic_bitvector<Alloc>::m_size);
 	index b = bits::block_index(i);
-	return (b == 0 ? 0 : m_ranks[b - 1]) +
-	       bits::partial_popcount(base::m_blocks[b], bits::shift_index(i));
+	return m_ranks[b] + bits::partial_popcount(base::m_blocks[b], bits::shift_index(i));
 }
 
 template <typename Alloc>
@@ -130,8 +129,8 @@ template <typename Alloc>
 void basic_ranked_bitvector<Alloc>::update_ranks() {
 	m_count = 0;
 	for (index b = 0; b < base::m_blocks.size(); ++b) {
-		m_count += bits::popcount(base::m_blocks[b]);
 		m_ranks[b] = m_count;
+		m_count += bits::popcount(base::m_blocks[b]);
 	}
 	assert(m_count > 0);
 #ifndef NDEBUG
