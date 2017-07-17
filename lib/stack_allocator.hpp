@@ -1,6 +1,7 @@
 #ifndef TERRACES_STACK_ALLOCATOR_HPP
 #define TERRACES_STACK_ALLOCATOR_HPP
 
+#include <cassert>
 #include <cstdint>
 #include <iostream>
 #include <memory>
@@ -49,9 +50,8 @@ public:
 	using value_type = T;
 
 	T* allocate(std::size_t n) {
-		if (n * sizeof(T) > m_expected_size) {
-			throw std::logic_error{"Oversized allocation from stack-allocator"};
-		}
+		assert(n * sizeof(T) <= m_expected_size);
+		(void)n;
 		auto ret = m_fl->pop();
 		if (ret == nullptr) {
 			return system_allocate();
