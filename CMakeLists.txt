@@ -7,6 +7,15 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 
 find_package(GMP REQUIRED)
 
+option(USE_OpenMP "Use OpenMP" ON)
+if (USE_OpenMP)
+    find_package(OpenMP)
+    if (OPENMP_FOUND)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    endif ()
+endif ()
+
 set(COMMON_LIBRARIEY ${GMP_LIBRARIES} ${GMPXX_LIBRARIES})
 
 include_directories(include)
@@ -53,10 +62,10 @@ set(CORE_SRCS
 set(TARGET_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Wall")
-endif()
+endif ()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} /WX /W4")
-endif()
+endif ()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(TARGET_CXX_FLAGS "${TARGET_CXX_FLAGS} -Werror -Weverything -Wno-shadow \
         -Wno-c++98-compat -Wno-padded -Wno-float-equal -Wno-vla -Wno-weak-vtables")
@@ -64,7 +73,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         -Wno-global-constructors -Wno-used-but-marked-unused \
         -Wno-covered-switch-default -Wno-gnu-zero-variadic-macro-arguments \
         -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-disabled-macro-expansion")
-endif()
+endif ()
 
 add_library(terraces ${CORE_HEADERS} ${NEWICK_TOOLS_SRCS} ${CORE_SRCS})
 # ${NEWICK_TOOLS_SRCS} produces to much warnings, so only check ${CORE_SRCS}
@@ -83,9 +92,9 @@ include(${CMAKE_MODULE_PATH}/DownloadProject/DownloadProject.cmake)
 
 #set(gtest_disable_pthreads on) #needed in MinGW
 download_project(
-        PROJ                googletest
-        GIT_REPOSITORY      https://github.com/google/googletest.git
-        GIT_TAG             master
+        PROJ googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG master
         UPDATE_DISCONNECTED 1
 )
 include_directories(SYSTEM "${googletest_SOURCE_DIR}/googletest/include")
@@ -95,9 +104,9 @@ add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_
 # Disable tests in googlebenchmark
 set(BENCHMARK_ENABLE_TESTING OFF)
 download_project(
-        PROJ                googlebenchmark
-        GIT_REPOSITORY      https://github.com/google/benchmark.git
-        GIT_TAG             master
+        PROJ googlebenchmark
+        GIT_REPOSITORY https://github.com/google/benchmark.git
+        GIT_TAG master
         UPDATE_DISCONNECTED 1
 )
 add_subdirectory(${googlebenchmark_SOURCE_DIR} ${googlebenchmark_BINARY_DIR} EXCLUDE_FROM_ALL)
