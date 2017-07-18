@@ -17,7 +17,7 @@ enum class multitree_node_type {
 struct multitree_node;
 
 namespace multitree_nodes {
-struct leaves {
+struct two_leaves {
 	index left_leaf;
 	index right_leaf;
 };
@@ -48,7 +48,7 @@ struct multitree_node {
 	index num_trees; // TODO use mpz_class? Maybe double?
 	union {
 		index single_leaf;
-		multitree_nodes::leaves two_leaves;
+		multitree_nodes::two_leaves two_leaves;
 		multitree_nodes::unconstrained unconstrained;
 		multitree_nodes::inner_node inner_node;
 		multitree_nodes::alternative_array alternative_array;
