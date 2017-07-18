@@ -80,6 +80,7 @@ public:
             return result;
         }
 
+        leaves.apply_constraints(constraints);
         return traverse_partitions(constraints, leaves);
     }
 protected:
@@ -87,7 +88,6 @@ protected:
     virtual T traverse_partitions(const std::vector<constraint> &constraints,
                                   LeafSet &leaves) {
         T result = initialize_result_type();
-        leaves.apply_constraints(constraints);
         for (size_t i = 1; i <= leaves.number_partition_tuples(); i++) {
             std::shared_ptr<LeafSet> part_left;
             std::shared_ptr<LeafSet> part_right;
@@ -201,7 +201,6 @@ protected:
     inline
     bool traverse_partitions(const std::vector<constraint> &constraints,
                              LeafSet &leaves) {
-        leaves.apply_constraints(constraints);
         if(leaves.number_partition_tuples() > 1) {
             return true;
         }
