@@ -16,8 +16,8 @@ struct small_bipartition {
 	index m_cur_bip;
 
 	small_bipartition(index mask)
-	        : m_mask{mask}, m_end_bip{1ull << rbitscan(mask)},
-	          m_cur_bip{1ull << bitscan(mask)} {}
+	        : m_mask{mask}, m_end_bip{1ull << rbitscan(mask)}, m_cur_bip{1ull
+	                                                                     << bitscan(mask)} {}
 
 	bool is_valid() const { return m_cur_bip < m_end_bip; }
 	void next() {
