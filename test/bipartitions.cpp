@@ -22,16 +22,21 @@ TEST_CASE("bipartition1", "[bipartition]") {
 	u.merge(0, 1);
 	u.compress();
 	bipartition_iterator bip_it(s, u, alloc);
+	CHECK(bip_it.end_bip() == 4);
+	CHECK(bip_it.num_bip() == 3);
+	CHECK(bip_it.cur_bip() == 1);
 	CHECK(!bip_it.get_current_set().get(0));
 	CHECK(!bip_it.get_current_set().get(1));
 	CHECK(bip_it.get_current_set().get(2));
 	CHECK(!bip_it.get_current_set().get(3));
 	bip_it.increase();
+	CHECK(bip_it.cur_bip() == 2);
 	CHECK(!bip_it.get_current_set().get(0));
 	CHECK(!bip_it.get_current_set().get(1));
 	CHECK(!bip_it.get_current_set().get(2));
 	CHECK(bip_it.get_current_set().get(3));
 	bip_it.increase();
+	CHECK(bip_it.cur_bip() == 3);
 	CHECK(!bip_it.get_current_set().get(0));
 	CHECK(!bip_it.get_current_set().get(1));
 	CHECK(bip_it.get_current_set().get(2));
@@ -39,6 +44,8 @@ TEST_CASE("bipartition1", "[bipartition]") {
 	CHECK(bip_it.is_valid());
 	bip_it.increase();
 	CHECK(!bip_it.is_valid());
+	CHECK(bip_it.end_bip() == 4);
+	CHECK(bip_it.num_bip() == 3);
 }
 
 } // namespace tests
