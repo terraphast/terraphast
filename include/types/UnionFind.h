@@ -11,6 +11,7 @@
 #include <vector>
 #include <cstdio>
 #include <cassert>
+#include <limits>
 
 /**
  * @ingroup structures
@@ -69,7 +70,7 @@ public:
      * @brief size getter for the size of the datastructure
      * @return size getter for the size of the datastructure
      */
-    size_t size() {
+    size_t size() const {
         return num_elems;
     }
 

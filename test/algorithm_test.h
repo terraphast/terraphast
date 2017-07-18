@@ -147,9 +147,15 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
 
     ASSERT_EQ(result.size(), 3);
 
-    ASSERT_EQ(result[0]->to_newick_string(id_to_label), "((3,1),2);");
-    ASSERT_EQ(result[1]->to_newick_string(id_to_label), "(3,(2,1));");
-    ASSERT_EQ(result[2]->to_newick_string(id_to_label), "((3,2),1);");
+    std::vector<std::string> result_strings;
+
+    for (auto temp : result) {
+        result_strings.push_back(temp->to_newick_string(id_to_label));
+    }
+
+    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "((3,1),2);") != result_strings.end());
+    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "(3,(2,1));") != result_strings.end());
+    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "((3,2),1);") != result_strings.end());
 }
 
 TEST(GetAllBinaryTrees, with_four_leafs) {
@@ -382,28 +388,25 @@ TEST(FindCompressedTree, example_from_slides) {
 }
 
 TEST(FindConstraintsTest, example_from_slides) {
-    LeafSet leaves = {1, 2, 3};
+    LeafSet leaves = {0, 1, 2};
     std::vector<std::string> id_to_label;
     id_to_label.push_back("1");
     id_to_label.push_back("2");
     id_to_label.push_back("3");
-
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 3, 2, 2};
-    constraint cons2 = {4, 4, 5, 2};
-
+    constraint cons1 = {0, 2, 1, 1};
+    constraint cons2 = {3, 3, 4, 1};
     constraints.push_back(cons1);
     constraints.push_back(cons2);
-
     std::vector<constraint> result = find_constraints(leaves, constraints);
-
     ASSERT_EQ(result.size(), 1);
-    ASSERT_EQ(result[0].smaller_left, 1);
-    ASSERT_EQ(result[0].bigger_left, 3);
-    ASSERT_EQ(result[0].smaller_right, 2);
-    ASSERT_EQ(result[0].bigger_right, 2);
+    ASSERT_EQ(result[0].smaller_left, 0);
+    ASSERT_EQ(result[0].bigger_left, 2);
+    ASSERT_EQ(result[0].smaller_right, 1);
+    ASSERT_EQ(result[0].bigger_right, 1);
 }
+
 
 TEST(MergeSubtreesTest, simple_tree) {
     auto leaf_1 = std::make_shared<Tree>(1);

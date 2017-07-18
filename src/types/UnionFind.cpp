@@ -11,11 +11,23 @@
 
 void UnionFind::allToSingletons() {
 	for (size_t i = 0; i < parent.size(); ++i) {
-		parent[i] = i;
+        if (parent.at(i) != std::numeric_limits<size_t>::max()) {
+            parent[i] = i;
+        }
 	}
 }
 
+//Johannes: added check if element is valid
 size_t UnionFind::find(size_t u) {
+    //TODO not sure whether we should just assert this
+    if (u >= this->num_elems) {
+        return std::numeric_limits<size_t>::max();
+    }
+
+    if (parent[u] == std::numeric_limits<size_t>::max()) {
+        return parent[u];
+    }
+
 	if (parent[u] == u) {
 		return u;
 	}
