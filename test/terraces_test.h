@@ -138,8 +138,8 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
     FindAllRootedTrees get_trees;
-    ASSERT_EQ(CountAllRootedTrees().scan_terrace(leaves, constraints), 15);
-    auto result = get_trees.scan_terrace(leaves, constraints);
+    ASSERT_EQ(CountAllRootedTrees().perform(leaves, constraints), 15);
+    auto result = get_trees.perform(leaves, constraints);
     ASSERT_EQ(result.size(), 15);
 
     ASSERT_EQ(result[0]->to_newick_string(id_to_label, root_species_name), "(s3,((s5,s1),s2),s4);");

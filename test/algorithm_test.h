@@ -63,7 +63,7 @@ static void test_rooted_trees(const char *newick_file, const char *data_file, lo
         auto leaves = LeafSet(id_to_label.size());
 
         CountAllRootedTrees algo;
-        auto result = algo.scan_terrace(leaves, extract_constraints_from_supertree(rtree, m, id_to_label));
+        auto result = algo.perform(leaves, extract_constraints_from_supertree(rtree, m, id_to_label));
 
         ASSERT_EQ(result, trees_on_terrace);
     }
@@ -342,7 +342,7 @@ TEST(FindAllRootedTrees, example_from_slides) {
     constraints.push_back(cons2);
 
     FindAllRootedTrees algo;
-    auto result = algo.scan_terrace(leaves, constraints);
+    auto result = algo.perform(leaves, constraints);
 
     ASSERT_EQ(result.size(), 9);
     ASSERT_EQ(result[0]->to_newick_string(id_to_label), "((2,1),((5,3),4));");

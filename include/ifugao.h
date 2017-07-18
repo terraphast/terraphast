@@ -73,6 +73,14 @@ class TerraceAlgorithm {
 public:
     virtual ~TerraceAlgorithm() = default;
 
+    T perform(LeafSet &leaves, const std::vector<constraint> &constraints) {
+        T result;
+        //#pragma omp parallel
+        //#pragma omp single nowait
+        result = scan_terrace(leaves, constraints);
+        return result;
+    }
+protected:
     T scan_terrace(LeafSet &leaves, const std::vector<constraint> &constraints) {
 
         if (constraints.empty()) {
@@ -82,13 +90,18 @@ public:
 
         return traverse_partitions(constraints, leaves);
     }
-protected:
+
     inline
     virtual T traverse_partitions(const std::vector<constraint> &constraints,
                                   LeafSet &leaves) {
-        T result = initialize_result_type();
         leaves.apply_constraints(constraints);
-        for (size_t i = 1; i <= leaves.number_partition_tuples(); i++) {
+
+        auto partition_count = leaves.number_partition_tuples();
+        std::vector<T> partitions;
+        partitions.resize(partition_count);
+        for (size_t i = 1; i <= partition_count; i++)
+        //#pragma omp task shared(partitions) if(partition_count > 20)
+        {
             std::shared_ptr<LeafSet> part_left;
             std::shared_ptr<LeafSet> part_right;
             std::tie(part_left, part_right) = leaves.get_nth_partition_tuple(i);
@@ -98,8 +111,12 @@ protected:
 
             auto subtrees_left = scan_terrace(*part_left, constraints_left);
             auto subtrees_right = scan_terrace(*part_right, constraints_right);
-            auto trees = combine_part_results(subtrees_left, subtrees_right);
+            partitions[i-1] = combine_part_results(subtrees_left, subtrees_right);
+        }
+        //#pragma omp taskwait
 
+        T result = initialize_result_type();
+        for(auto trees : partitions) {
             combine_bipartition_results(result, trees);
         }
 

@@ -151,13 +151,13 @@ int terraceAnalysis(missingData *m,
     mpz_class count = 0;
     if(countTrees) {
         CountAllRootedTrees algo;
-        count = algo.scan_terrace(leaves, constraints);
+        count = algo.perform(leaves, constraints);
     } else if(treeIsOnTerrace) {
         CheckIfTerrace algo;
-        count = algo.scan_terrace(leaves, constraints) ? 2 : 0;
+        count = algo.perform(leaves, constraints) ? 2 : 0;
     } else if (enumerateTrees) {
         FindAllRootedTrees algo;
-        auto all_trees = algo.scan_terrace(leaves, constraints);
+        auto all_trees = algo.perform(leaves, constraints);
         count = all_trees.size();
         for (std::shared_ptr<Tree> t : all_trees) {
             fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_lable, root_species_name).c_str());
