@@ -55,7 +55,7 @@ private:
 	const multitree_nodes::unconstrained m_unconstrained;
 	index m_num_leaves;
 	tree* m_tree;
-	std::vector<index>* m_leaves;
+	permutation* m_leaves;
 	index m_root;
 	std::vector<index> m_choice_points;
 	std::vector<small_bipartition> m_bips;
@@ -72,7 +72,7 @@ private:
 
 public:
 	unconstrained_tree_iterator(const multitree_nodes::unconstrained node, tree& tree,
-	                            std::vector<index>& leaves, index root);
+	                            permutation& leaves, index root);
 	index init_subtree(index i);
 	void next();
 	bool has_next() const;

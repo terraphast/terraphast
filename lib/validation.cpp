@@ -9,7 +9,7 @@
 
 namespace terraces {
 
-std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>& mapping,
+std::vector<bitvector> tree_bipartitions(const tree& t, const permutation& mapping,
                                          const ranked_bitvector& leaves,
                                          utils::stack_allocator<index> alloc) {
 	std::vector<bitvector> bips(t.size(), {0, alloc});
@@ -42,7 +42,7 @@ std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>
 	return bips;
 }
 
-std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>& leaves,
+std::vector<bitvector> tree_bipartitions(const tree& t, const permutation& leaves,
                                          utils::stack_allocator<index> alloc) {
 	std::vector<bitvector> bips(t.size(), {0, alloc});
 	std::vector<bitvector> subtrees(t.size(), {(t.size() + 1) / 2, alloc});
@@ -80,7 +80,7 @@ bool is_isomorphic(const tree_set& fst, const tree_set& snd) {
 	auto fl = utils::free_list{};
 	auto alloc = utils::stack_allocator<index>{fl, fst.tree.size()};
 	auto leaves = leaf_occ(fst.tree, alloc);
-	std::vector<index> mapping(fst.tree.size());
+	permutation mapping(fst.tree.size());
 	std::iota(mapping.begin(), mapping.end(), 0);
 	auto fst_bip = tree_bipartitions(fst.tree, mapping, leaves, alloc);
 	for (index i = 0; i < snd.tree.size(); ++i) {
@@ -94,19 +94,19 @@ bool is_isomorphic(const tree_set& fst, const tree_set& snd) {
 	return std::equal(fst_bip.begin(), fst_bip.end(), snd_bip.begin(), snd_bip.end());
 }
 
-bool is_isomorphic(const tree& fst, const std::vector<index>& fst_leaves, const tree& snd,
-                   const std::vector<index>& snd_leaves) {
+bool is_isomorphic(const tree& fst, const permutation& fst_leaves, const tree& snd,
+                   const permutation& snd_leaves) {
 	assert(fst.size() == snd.size());
 	auto n = fst.size();
 
 	utils::free_list fl;
 	utils::stack_allocator<index> alloc{fl, bitvector::alloc_size(fst.size())};
 	auto leaves = leaf_occ(fst, alloc);
-	std::vector<index> mapping(n);
+	permutation mapping(n);
 	std::iota(mapping.begin(), mapping.end(), 0);
 	auto fst_bip = tree_bipartitions(fst, mapping, leaves, alloc);
 
-	std::vector<index> snd_mapping(n);
+	permutation snd_mapping(n);
 	std::iota(snd_mapping.begin(), snd_mapping.end(), 0);
 	std::sort(snd_mapping.begin(), snd_mapping.end(),
 	          [&](index i, index j) { return snd_leaves[i] < snd_leaves[j]; });

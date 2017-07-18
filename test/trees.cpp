@@ -157,7 +157,7 @@ TEST_CASE("tree_printing", "[trees][tree-printing]") {
 	const auto names = name_map{"root", "foo", "", "bar", "baz"};
 	std::ostringstream stream;
 	stream << as_newick(t, names);
-	CHECK(stream.str() == "(foo,(bar,baz))root;");
+	CHECK(stream.str() == "(foo,(bar,baz));");
 }
 
 } // namespace tests

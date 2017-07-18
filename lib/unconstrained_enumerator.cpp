@@ -74,7 +74,7 @@ index unconstrained_tree_iterator::init_subtree(index i) {
 }
 
 unconstrained_tree_iterator::unconstrained_tree_iterator(const multitree_nodes::unconstrained node,
-                                                         tree& tree, std::vector<index>& leaves,
+                                                         tree& tree, permutation& leaves,
                                                          index root)
         : m_unconstrained{node}, m_num_leaves{node.num_leaves()}, m_tree{&tree}, m_leaves{&leaves},
           m_root{root}, m_choice_points(2 * m_num_leaves - 1, 0),
