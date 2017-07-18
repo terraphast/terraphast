@@ -17,12 +17,12 @@ void Tree::to_newick_string(std::stringstream &ss,
     }
 }
 
-std::shared_ptr<Tree> root(std::shared_ptr<Tree> t) {
-    if (t->parent.lock() == nullptr) {
-        return t;
+std::shared_ptr<Tree> Tree::root() {
+    if (this->parent.lock() == nullptr) {
+        return shared_from_this();
     }
 
-    return root(t->parent.lock());
+    return this->parent.lock()->root();
 }
 
 std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables) const {
@@ -49,31 +49,33 @@ std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables
     return ss.str();
 }
 
-static std::shared_ptr<Tree> deep_copy(std::shared_ptr<Tree> tree,
-                                       std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> &cover_map) {
-    if (tree == nullptr) {
-        return nullptr;
-    }
-    if (cover_map.count(tree) > 0) {
-        return cover_map[tree];
+std::shared_ptr<Tree> Tree::deep_copy(std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> &cover_map) {
+    if (cover_map.count(shared_from_this()) > 0) {
+        return cover_map[shared_from_this()];
     }
 
     auto node = std::make_shared<Tree>();
-    node->id = tree->id;
-    cover_map[tree] = node;
+    node->id = this->id;
     cover_map[node] = node;
+    cover_map[shared_from_this()] = node;
 
-    node->left = deep_copy(tree->left, cover_map);
-    node->right = deep_copy(tree->right, cover_map);
-    node->parent = deep_copy(tree->parent.lock(), cover_map);
-
+    if(this->left != nullptr) {
+        node->left = this->left->deep_copy(cover_map);
+    }
+    if(this->right != nullptr) {
+        node->right = this->right->deep_copy(cover_map);
+    }
+    auto parent  = this->parent.lock();
+    if(parent != nullptr) {
+        node->parent = parent->deep_copy(cover_map);
+    }
     return node;
 }
 
-std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> deep_copy(std::shared_ptr<Tree> tree) {
+std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> Tree::deep_copy() {
     std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> cover_map;
-    auto result = deep_copy(tree, cover_map);
-    return std::make_tuple(result, root(result));
+    auto result = this->deep_copy(cover_map);
+    return std::make_tuple(result, result->root());
 }
 
 static void d_print_tree_rec(std::ostream &strm,
