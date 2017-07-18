@@ -178,22 +178,27 @@ public:
     void apply_constraints(const std::vector<constraint> &constraints) {
         list_of_partitions = create_partition_list();
 
-        bool found_left_constraint = false;
-        bool found_right_constraint = false;
-        size_t index_containing_left_constraint = 0;
-        size_t index_containing_right_constraint = 0;
-
         for (constraint cons : constraints) {
+            bool found_left_constraint = false;
+            bool found_right_constraint = false;
+            size_t index_containing_left_constraint = 0;
+            size_t index_containing_right_constraint = 0;
              for (size_t i = 0; i < list_of_partitions.size(); i++) {
                 if (list_of_partitions[i]->contains(cons.smaller_left)) {
                     // set contains the left constraint
                     found_left_constraint = true;
                     index_containing_left_constraint = i;
+                    if(found_right_constraint) {
+                        break;
+                    }
                 }
                 if (list_of_partitions[i]->contains(cons.smaller_right)) {
                     // set contains the right constraint
                     found_right_constraint = true;
                     index_containing_right_constraint = i;
+                    if(found_left_constraint) {
+                        break;
+                    }
                 }
             }
             assert(found_left_constraint
