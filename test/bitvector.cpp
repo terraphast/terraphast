@@ -1,10 +1,19 @@
 
 #include <catch.hpp>
 
-#include <terraces/bitvector.hpp>
+#include "../lib/ranked_bitvector.hpp"
 
 namespace terraces {
 namespace tests {
+
+TEST_CASE("popcount tests", "[bitvector]") {
+	CHECK(bits::popcount(0b1010111010101101010001010100000101000011000010111100000101001000) ==
+	      26);
+	CHECK(bits::popcount(0b0000000000000000000000000000000000000000000000000000000000000000) ==
+	      0);
+	CHECK(bits::popcount(0b0000001000000100000000000010000000001000000000001000000010001100) ==
+	      8);
+}
 
 TEST_CASE("prefix mask test", "[bitvector]") {
 	CHECK(bits::prefix_mask(63) ==
@@ -54,7 +63,8 @@ TEST_CASE("bit iteration tests", "[bitvector]") {
 TEST_CASE("efficient bitvector", "[bitvector]") {
 	// 0 1 2 3 4 5 6 7 8 9
 	// 0 1 1 0 1 0 1 0 1 1
-	ranked_bitvector b(10);
+	// bitvector b(10);
+	basic_ranked_bitvector<std::allocator<index>> b(10, {});
 	b.set(1);
 	b.set(2);
 	b.set(4);
@@ -92,7 +102,8 @@ TEST_CASE("efficient bitvector", "[bitvector]") {
 }
 
 TEST_CASE("efficient bitvector large", "[bitvector]") {
-	ranked_bitvector b(519);
+	// bitvector b(519);
+	basic_ranked_bitvector<std::allocator<index>> b(519, {});
 	b.set(1);
 	b.set(63);
 	b.set(128);
@@ -103,9 +114,11 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	b.invert();
 	b.invert();
 	b.update_ranks();
-	ranked_bitvector b2(500);
+	// bitvector b2(500);
+	basic_ranked_bitvector<std::allocator<index>> b2(500, {});
 	b2.set(128);
-	ranked_bitvector b3(1042);
+	// bitvector b3(1042);
+	basic_ranked_bitvector<std::allocator<index>> b3(1042, {});
 	CHECK(b.rank(10) == 1);
 	CHECK(b.rank(63) == 1);
 	CHECK(b.rank(64) == 2);
@@ -141,7 +154,8 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 }
 
 TEST_CASE("efficient bitvector xor", "[bitvector]") {
-	ranked_bitvector b(10);
+	// bitvector b(10);
+	basic_ranked_bitvector<std::allocator<index>> b(10, {});
 	b.set(1);
 	b.set(2);
 	b.set(4);

@@ -46,5 +46,12 @@ TEST_CASE("constraint extraction: example", "[subtree_extraction],[constraints]"
 	CHECK(result == required);
 }
 
+TEST_CASE("constraint deduplication", "[deduplication], [contraints]") {
+	auto dup = constraints{{0, 1, 2}, {0, 1, 2}, {3, 4, 5}, {4, 3, 5}, {7, 6, 8}, {6, 7, 8}};
+	auto num = deduplicate_constraints(dup);
+	CHECK(num == 3);
+	CHECK(dup == (constraints{{0, 1, 2}, {3, 4, 5}, {6, 7, 8}}));
+}
+
 } // namespace tests
 } // namespace terraces

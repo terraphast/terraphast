@@ -1,7 +1,7 @@
 #ifndef UNION_FIND_DEBUG_HPP
 #define UNION_FIND_DEBUG_HPP
 
-#include <terraces/union_find.hpp>
+#include "union_find.hpp"
 
 namespace terraces {
 namespace debug {
@@ -49,7 +49,7 @@ private:
 	index next(index i) const {
 		index j = i;
 		for (; j < m_sets.size(); ++j) {
-			if (m_sets.find(j) == m_rep) {
+			if (m_sets.simple_find(j) == m_rep) {
 				break;
 			}
 		}

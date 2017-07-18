@@ -1,13 +1,13 @@
 #ifndef SUPERTREE_VARIANTS_HPP
 #define SUPERTREE_VARIANTS_HPP
 
-#include <terraces/bipartitions.hpp>
 #include <terraces/constraints.hpp>
+#include <terraces/io_utils.hpp>
 #include <terraces/trees.hpp>
 
 #include <gmpxx.h>
 
-#include <terraces/io_utils.hpp>
+#include "bipartitions.hpp"
 
 namespace terraces {
 namespace variants {
@@ -28,6 +28,8 @@ public:
 	Result base_two_leaves(index, index);
 	/** Returns the result for multiple leaves without constraints. */
 	Result base_unconstrained(const ranked_bitvector&);
+	/** Returns an empty result. */
+	Result null_result();
 
 	bool fast_return(const bipartition_iterator&) { return false; }
 	Result fast_return_value(const bipartition_iterator&);
@@ -54,12 +56,13 @@ public:
 
 class count_callback : public abstract_callback<mpz_class> {
 public:
-	using return_type = mpz_class;
+	using return_type = abstract_callback::result_type;
 	return_type base_one_leaf(index) { return 1; }
 	return_type base_two_leaves(index, index) { return 1; }
 	return_type base_unconstrained(const ranked_bitvector& leaves) {
 		return count_unrooted_trees<return_type>(leaves.count());
 	}
+	return_type null_result() { return 0; }
 
 	index fast_return_value(const bipartition_iterator& bip_it) { return bip_it.num_bip(); }
 
@@ -74,6 +77,7 @@ public:
 	index base_one_leaf(index) { return 1; }
 	index base_two_leaves(index, index) { return 1; }
 	index base_unconstrained(const ranked_bitvector&) { return 2; }
+	return_type null_result() { return 0; }
 
 	index fast_return_value(const bipartition_iterator& bip_it) { return bip_it.num_bip(); }
 

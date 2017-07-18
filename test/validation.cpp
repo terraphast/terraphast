@@ -4,7 +4,8 @@
 
 #include <terraces/parser.hpp>
 #include <terraces/rooting.hpp>
-#include <terraces/validation.hpp>
+
+#include "../lib/validation.hpp"
 
 namespace terraces {
 namespace tests {

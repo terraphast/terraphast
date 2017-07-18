@@ -5,8 +5,9 @@
 #include <terraces/parser.hpp>
 #include <terraces/rooting.hpp>
 #include <terraces/trees.hpp>
-#include <terraces/validation.hpp>
 #include <vector>
+
+#include "../lib/validation.hpp"
 
 using namespace terraces;
 

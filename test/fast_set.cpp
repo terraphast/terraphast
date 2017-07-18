@@ -1,12 +1,12 @@
 #include <catch.hpp>
 
-#include <terraces/bitvector.hpp>
+#include "../lib/ranked_bitvector.hpp"
 
 namespace terraces {
 namespace tests {
 
 TEST_CASE("fast_set1", "[fast_set]") {
-	ranked_bitvector set{10};
+	basic_ranked_bitvector<std::allocator<index>> set{10, {}};
 	for (auto&& el : set) {
 		(void)el;
 		FAIL("element in empty set!");

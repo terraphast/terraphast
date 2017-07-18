@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include <terraces/errors.hpp>
+
 #include "utils.hpp"
 
 namespace terraces {
@@ -35,21 +37,33 @@ using parser_stack = std::stack<parser_state, std::vector<parser_state>>;
 
 template <typename Iterator>
 token next_token(Iterator& it, Iterator end) {
-	constexpr static auto special_tokens = std::array<char, 3>{{'(', ')', ','}};
+	constexpr static std::array<char, 3> special_tokens{{'(', ')', ','}};
 	it = utils::skip_ws(it, end);
 	if (it == end) {
 		return {token_type::eof};
 	}
-	switch (*it) {
-	case '(':
+	if (*it != '\'') {
+		switch (*it) {
+		case '(':
+			++it;
+			return {token_type::lparen};
+		case ')':
+			++it;
+			return {token_type::rparen};
+		case ',':
+			++it;
+			return {token_type::seperator};
+		}
+	} else {
 		++it;
-		return {token_type::lparen};
-	case ')':
+		const auto name_begin = it;
+		it = std::find(it, end, '\'');
+		const auto name_end = it;
+		utils::ensure<bad_input_error>(name_end != end,
+		                               std::string{"quotes left unclosed at "} +
+		                                       std::string{name_begin, name_end});
 		++it;
-		return {token_type::rparen};
-	case ',':
-		++it;
-		return {token_type::seperator};
+		return {token_type::name, {name_begin, name_end}};
 	}
 	const auto name_begin = it;
 	it = std::find_first_of(it, end, special_tokens.begin(), special_tokens.end());
@@ -78,10 +92,13 @@ tree_set parse_nwk(const std::string& input) {
 		case parsing::token_type::lparen: {
 			const auto parent = state.self;
 			const auto self = ret.size();
+			utils::ensure<bad_input_error>(
+			        names[parent] == "",
+			        "inner node names must come AFTER their children");
 			stack.push(state);
 			state = parsing::parser_state{parent, self};
 			ret.emplace_back(parent, none, none);
-			ret.at(parent).lchild() = self;
+			ret[parent].lchild() = self;
 			names.emplace_back();
 			break;
 		}
@@ -90,7 +107,10 @@ tree_set parse_nwk(const std::string& input) {
 			const auto self = ret.size();
 			state.self = self;
 			ret.emplace_back(parent, none, none);
-			ret.at(parent).rchild() = self;
+			auto& parent_node = ret[parent];
+			utils::ensure<bad_input_error>(parent_node.rchild() == none,
+			                               "input tree is not binary");
+			parent_node.rchild() = self;
 			names.emplace_back();
 			break;
 			// no need to update state as the tree is binary to
@@ -103,8 +123,10 @@ tree_set parse_nwk(const std::string& input) {
 			break;
 		}
 		case parsing::token_type::name: {
-			names.at(state.self) = token.name;
-			indices[token.name] = state.self;
+			if (is_leaf(ret[state.self])) {
+				names[state.self] = token.name;
+				indices[token.name] = state.self;
+			}
 			break;
 		}
 		case parsing::token_type::eof:
@@ -114,7 +136,13 @@ tree_set parse_nwk(const std::string& input) {
 	if (not names.front().empty() and names.front().back() == ';') {
 		names.front().pop_back();
 	}
+	utils::ensure<bad_input_error>(stack.empty(), "parentheses left unclosed");
 	return {std::move(ret), std::move(names), std::move(indices)};
+}
+
+tree_set parse_nwk(std::istream& input) {
+	using it = std::istreambuf_iterator<char>;
+	return parse_nwk({it{input}, it{}});
 }
 
 std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices,
@@ -122,17 +150,23 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 	auto cols = index{};
 	auto rows = index{}; // mostly a dummy;
 	input >> rows >> cols >> std::ws;
-	utils::ensure<bad_input_error>(rows <= tree_size, "mismatching tree-sizes");
+	utils::ensure<bad_input_error>(2 * rows - 1 == tree_size, "mismatching tree-sizes");
 	auto line = std::string{};
-	auto mat = bitmatrix{tree_size, cols};
 	auto suitable_root = none;
-	auto species_per_site = std::vector<std::size_t>(cols, 0u);
+	// last column used to check if all species are present
+	auto mat = bitmatrix{tree_size, cols + 1};
+	auto species_per_site = std::vector<std::size_t>(cols, 0);
 	while (std::getline(input, line)) {
 		if (line.empty()) {
 			continue;
 		}
 		const auto name_start = std::find(line.rbegin(), line.rend(), ' ').base();
-		const auto species = indices.at({name_start, line.end()});
+		const auto species_name = std::string{name_start, line.end()};
+		const auto species_it = indices.find(species_name);
+		utils::ensure<bad_input_error>(species_it != indices.end(),
+		                               std::string{"unknown species "} + species_name);
+		const auto species = (*species_it).second;
+
 		auto it = line.begin();
 		auto end = name_start;
 		auto all_data_available = true;
@@ -142,22 +176,29 @@ std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map
 			auto c = *it++;
 			if (c == '1') {
 				mat.set(species, i, true);
-				species_per_site[i] += 1u;
+				mat.set(species, cols, true);
+				++species_per_site[i];
 			} else {
 				all_data_available = false;
 			}
 		}
+		utils::ensure<bad_input_error>(++it == end, "bad table in input");
 		if (all_data_available and suitable_root == none) {
 			suitable_root = species;
 		}
 	}
-	auto interessting_cols = std::vector<std::size_t>();
+	for (auto name_pair : indices) {
+		bool has_species = mat.get(name_pair.second, cols);
+		utils::ensure<bad_input_error>(has_species,
+		                               std::string{"missing species "} + name_pair.first);
+	}
+	auto interesting_cols = std::vector<std::size_t>();
 	for (auto i = std::size_t{}; i < cols; ++i) {
 		if (species_per_site[i] > 1u) {
-			interessting_cols.push_back(i);
+			interesting_cols.push_back(i);
 		}
 	}
-	return {mat.get_cols(interessting_cols), suitable_root};
+	return {mat.get_cols(interesting_cols), suitable_root};
 }
 
 } // namespace terraces

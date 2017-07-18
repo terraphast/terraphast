@@ -13,7 +13,7 @@
 namespace terraces {
 
 struct tree_set {
-	tree tree;
+	terraces::tree tree;
 	name_map names;
 	index_map indices;
 };
@@ -22,16 +22,15 @@ struct tree_set {
  * Parses a string in Newick-format and returns an
  * unrooted tree and name-table
  *
+ * Will throw bad_input_error if the format is not obeyed.
+ *
  * Warning/TODO: The exact type of the input will likely be
  * changed to something along the lines of std::string_view,
  * which should however not impact normal users in ways other than
  * performance improvements.
  */
 tree_set parse_nwk(const std::string& input);
-
-class bad_input_error : public std::runtime_error {
-	using std::runtime_error::runtime_error;
-};
+tree_set parse_nwk(std::istream& input);
 
 /**
  * Parses a data-file and returns the associated bit-matrix as well

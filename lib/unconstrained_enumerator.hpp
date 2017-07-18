@@ -1,12 +1,13 @@
 #ifndef UNCONSTRAINED_ENUMERATOR_CPP
 #define UNCONSTRAINED_ENUMERATOR_CPP
 
-#include <terraces/bits.hpp>
 #include <terraces/multitree.hpp>
 
 #include <bitset>
 #include <cassert>
 #include <vector>
+
+#include "bits.hpp"
 
 namespace terraces {
 

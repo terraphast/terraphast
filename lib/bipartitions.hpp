@@ -4,14 +4,16 @@
 #include <cmath>
 #include <iosfwd>
 
-#include "bitvector.hpp"
-#include "trees.hpp"
+#include <terraces/trees.hpp>
+
+#include "ranked_bitvector.hpp"
 #include "union_find.hpp"
 
 namespace terraces {
 
 class bipartition_iterator {
 private:
+	utils::stack_allocator<index> m_alloc;
 	const ranked_bitvector& m_leaves;
 	const union_find& m_sets;
 	const ranked_bitvector m_set_rep;
@@ -24,7 +26,8 @@ private:
 	ranked_bitvector find_set_reps() const;
 
 public:
-	bipartition_iterator(const ranked_bitvector& leaves, const union_find& sets);
+	bipartition_iterator(const ranked_bitvector& leaves, const union_find& sets,
+	                     utils::stack_allocator<index>);
 	/** Moves to the next bipartition. */
 	void increase();
 	/** Returns true if this bipartition is valid. */

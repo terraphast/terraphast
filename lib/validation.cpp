@@ -1,18 +1,19 @@
-#include <terraces/validation.hpp>
-
 #include <numeric>
 #include <unordered_map>
 
 #include <algorithm>
 
+#include "ranked_bitvector.hpp"
 #include "supertree_helpers.hpp"
+#include "validation.hpp"
 
 namespace terraces {
 
 std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>& mapping,
-                                         const ranked_bitvector& leaves) {
-	std::vector<bitvector> bips(t.size(), {0});
-	std::vector<bitvector> subtrees(t.size(), {leaves.count()});
+                                         const ranked_bitvector& leaves,
+                                         utils::stack_allocator<index> alloc) {
+	std::vector<bitvector> bips(t.size(), {0, alloc});
+	std::vector<bitvector> subtrees(t.size(), {leaves.count(), alloc});
 	foreach_postorder(t, [&](index i) {
 		auto n = t[i];
 		if (is_leaf(n)) {
@@ -41,9 +42,10 @@ std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>
 	return bips;
 }
 
-std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>& leaves) {
-	std::vector<bitvector> bips(t.size(), {0});
-	std::vector<bitvector> subtrees(t.size(), {(t.size() + 1) / 2});
+std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>& leaves,
+                                         utils::stack_allocator<index> alloc) {
+	std::vector<bitvector> bips(t.size(), {0, alloc});
+	std::vector<bitvector> subtrees(t.size(), {(t.size() + 1) / 2, alloc});
 	foreach_postorder(t, [&](index i) {
 		auto n = t[i];
 		if (is_leaf(n)) {
@@ -75,17 +77,19 @@ std::vector<bitvector> tree_bipartitions(const tree& t, const std::vector<index>
 bool is_isomorphic(const tree_set& fst, const tree_set& snd) {
 	assert(fst.tree.size() == snd.tree.size());
 
-	auto leaves = leave_occ(fst.tree);
+	auto fl = utils::free_list{};
+	auto alloc = utils::stack_allocator<index>{fl, fst.tree.size()};
+	auto leaves = leaf_occ(fst.tree, alloc);
 	std::vector<index> mapping(fst.tree.size());
 	std::iota(mapping.begin(), mapping.end(), 0);
-	auto fst_bip = tree_bipartitions(fst.tree, mapping, leaves);
+	auto fst_bip = tree_bipartitions(fst.tree, mapping, leaves, alloc);
 	for (index i = 0; i < snd.tree.size(); ++i) {
 		if (is_leaf(snd.tree[i])) {
 			const std::string& name = snd.names[i];
 			mapping[i] = fst.indices.at(name);
 		}
 	}
-	auto snd_bip = tree_bipartitions(snd.tree, mapping, leaves);
+	auto snd_bip = tree_bipartitions(snd.tree, mapping, leaves, alloc);
 
 	return std::equal(fst_bip.begin(), fst_bip.end(), snd_bip.begin(), snd_bip.end());
 }
@@ -95,10 +99,12 @@ bool is_isomorphic(const tree& fst, const std::vector<index>& fst_leaves, const 
 	assert(fst.size() == snd.size());
 	auto n = fst.size();
 
-	auto leaves = leave_occ(fst);
+	utils::free_list fl;
+	utils::stack_allocator<index> alloc{fl, bitvector::alloc_size(fst.size())};
+	auto leaves = leaf_occ(fst, alloc);
 	std::vector<index> mapping(n);
 	std::iota(mapping.begin(), mapping.end(), 0);
-	auto fst_bip = tree_bipartitions(fst, mapping, leaves);
+	auto fst_bip = tree_bipartitions(fst, mapping, leaves, alloc);
 
 	std::vector<index> snd_mapping(n);
 	std::iota(snd_mapping.begin(), snd_mapping.end(), 0);
@@ -113,19 +119,9 @@ bool is_isomorphic(const tree& fst, const std::vector<index>& fst_leaves, const 
 			        [&](index val, index idx) { return val < snd_leaves[idx]; }));
 		}
 	}
-	auto snd_bip = tree_bipartitions(snd, mapping, leaves);
+	auto snd_bip = tree_bipartitions(snd, mapping, leaves, alloc);
 
-	return std::equal(fst_bip.begin(), fst_bip.end(), snd_bip.begin(), snd_bip.end());
-}
-
-bool bipartition_equal(const std::vector<bitvector>& fst_bip,
-                       const std::vector<bitvector>& snd_bip) {
-	return std::equal(fst_bip.begin(), fst_bip.end(), snd_bip.begin(), snd_bip.end());
-}
-
-bool bipartition_cmp(const std::vector<bitvector>& fst_bip, const std::vector<bitvector>& snd_bip) {
-	return std::lexicographical_compare(fst_bip.begin(), fst_bip.end(), snd_bip.begin(),
-	                                    snd_bip.end());
+	return fst_bip == snd_bip;
 }
 
 } // namespace terraces

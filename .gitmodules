@@ -1,3 +1,6 @@
 [submodule "Catch"]
 	path = Catch
 	url = https://github.com/philsquared/Catch.git
+[submodule "bioinfo-data"]
+	path = data
+	url = https://git.scc.kit.edu/uycyd/bioinfo-data.git

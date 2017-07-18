@@ -1,8 +1,8 @@
 
 #include <catch.hpp>
 
-#include <terraces/unconstrained_enumerator.hpp>
-#include <terraces/validation.hpp>
+#include "../lib/unconstrained_enumerator.hpp"
+#include "../lib/validation.hpp"
 
 namespace terraces {
 namespace tests {
@@ -73,10 +73,10 @@ TEST_CASE("unconstrained_tree_iterator small", "[unconstrained]") {
 		it.next();
 		++i;
 	} while (it.has_next());
-	std::sort(leaf_bipartitions.begin(), leaf_bipartitions.end(), bipartition_cmp);
+	std::sort(leaf_bipartitions.begin(), leaf_bipartitions.end());
 	CHECK(i == 3);
-	CHECK(std::adjacent_find(leaf_bipartitions.begin(), leaf_bipartitions.end(),
-	                         bipartition_equal) == leaf_bipartitions.end());
+	CHECK(std::adjacent_find(leaf_bipartitions.begin(), leaf_bipartitions.end()) ==
+	      leaf_bipartitions.end());
 }
 
 TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
@@ -92,6 +92,8 @@ TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
 	leaves.begin = leaves_data;
 	leaves.end = leaves.begin + sizeof(leaves_data) / sizeof(index);
 	unconstrained_tree_iterator it{leaves, t, leaf_perm, 2};
+	utils::free_list fl;
+	utils::stack_allocator<index> alloc{fl, bitvector::alloc_size(t.size())};
 	std::vector<std::vector<bitvector>> leaf_bipartitions{};
 	bool first = true;
 	index i = 0;
@@ -104,12 +106,12 @@ TEST_CASE("unconstrained_tree_iterator", "[unconstrained]") {
 			it.next();
 		}
 		first = false;
-		leaf_bipartitions.emplace_back(tree_bipartitions(t, leaf_perm));
+		leaf_bipartitions.emplace_back(tree_bipartitions(t, leaf_perm, alloc));
 		std::cout << as_newick(t, make_names(leaf_perm)) << "\n" << std::flush;
 	} while (it.has_next());
-	std::sort(leaf_bipartitions.begin(), leaf_bipartitions.end(), bipartition_cmp);
-	CHECK(std::adjacent_find(leaf_bipartitions.begin(), leaf_bipartitions.end(),
-	                         bipartition_equal) == leaf_bipartitions.end());
+	std::sort(leaf_bipartitions.begin(), leaf_bipartitions.end());
+	CHECK(std::adjacent_find(leaf_bipartitions.begin(), leaf_bipartitions.end()) ==
+	      leaf_bipartitions.end());
 	CHECK(leaf_bipartitions.size() == 945);
 }
 
