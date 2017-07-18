@@ -50,11 +50,22 @@ index multitree_iterator::init_subtree_unconstrained(index i, multitree_nodes::u
 	const auto& bip = m_unconstrained_choices[i];
 	auto& cp = m_unconstrained_choice_points[i];
 	auto& node = tree[i];
-	if (bip.num_leaves() == 1) {
-		leaves[i] = data.begin[bip.leftmost_leaf()];
-		node.lchild() = none;
-		node.rchild() = none;
-		return (cp = none);
+	if (bip.num_leaves() <= 2) {
+		if (bip.num_leaves() == 1) {
+			leaves[i] = data.begin[bip.leftmost_leaf()];
+			node.lchild() = none;
+			node.rchild() = none;
+			return (cp = none);
+		} else {
+			leaves[i] = none;
+			leaves[i + 1] = data.begin[bip.leftmost_leaf()];
+			leaves[i + 2] = data.begin[bip.rightmost_leaf()];
+			node.lchild() = i + 1;
+			node.rchild() = i + 2;
+			tree[i + 1] = {i, none, none};
+			tree[i + 2] = {i, none, none};
+			return (cp = none);
+		}
 	} else {
 		const auto lbip = small_bipartition{bip.left_mask()};
 		const auto rbip = small_bipartition{bip.right_mask()};
@@ -130,5 +141,9 @@ index multitree_iterator::init_subtree(index i) {
 	}
 	return cp;
 }
+
+void multitree_iterator::next() { assert(is_valid()); }
+
+bool multitree_iterator::is_valid() const { return m_choice_points[0] != none; }
 
 } // namespace terraces

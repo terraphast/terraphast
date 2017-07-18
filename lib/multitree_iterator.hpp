@@ -39,7 +39,6 @@ struct multitree_iterator_choicepoint {
 
 class multitree_iterator {
 private:
-	multitree_node* m_root_node;
 	tree* m_tree;
 	permutation* m_leaves;
 	std::vector<index> m_choice_points;
