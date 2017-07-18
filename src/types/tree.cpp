@@ -2,8 +2,17 @@
 
 #include <sstream>
 
+std::shared_ptr<Tree> Tree::root() {
+    auto parent = this->parent.lock();
+    if (parent == nullptr) {
+        return shared_from_this();
+    }
+
+    return parent->root();
+}
+
 void Tree::to_newick_string(std::stringstream &ss,
-                                   const std::vector<std::string> &ids_to_lables) const {
+                            const std::vector<std::string> &ids_to_lables) const {
     if (this->is_leaf()) {
         ss << ids_to_lables[this->id];
     } else {
@@ -15,13 +24,39 @@ void Tree::to_newick_string(std::stringstream &ss,
     }
 }
 
-std::shared_ptr<Tree> Tree::root() {
-    auto parent = this->parent.lock();
-    if (parent == nullptr) {
-        return shared_from_this();
+void PartitionNode::to_newick_string(std::stringstream &ss,
+                                     const std::vector<std::string> &ids_to_lables) const {
+    this->partitions[0]->to_newick_string(ss, ids_to_lables);
+    for (size_t i = 1; i < this->partitions.size(); i++) {
+        ss << "|";
+        this->partitions[i]->to_newick_string(ss, ids_to_lables);
     }
+}
 
-    return parent->root();
+void LeafSetNode::to_newick_string(std::stringstream &ss,
+                                   const std::vector<std::string> &ids_to_lables) const {
+
+    if(this->leaves.size() == 1) {
+        ss << ids_to_lables[*this->leaves.begin()];
+        return;
+    }
+    char start_symbol = '{';
+    char end_symbol = '}';
+    if (this->leaves.size() == 2) {
+        start_symbol = '(';
+        end_symbol = ')';
+    }
+    ss << start_symbol;
+    bool first = true;
+    for(const leaf_number &elem : this->leaves) {
+        if(first) {
+            first = false;
+        } else {
+            ss << ",";
+        }
+        ss << ids_to_lables[elem];
+    }
+    ss << end_symbol;
 }
 
 std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables) const {

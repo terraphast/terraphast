@@ -119,6 +119,32 @@ protected:
 
 typedef std::vector<std::shared_ptr<Tree>> tree_result_list;
 
+class FindCompressedTree : public TerraceAlgorithm<std::shared_ptr<Tree>> {
+protected:
+    inline
+    std::shared_ptr<Tree> initialize_result_type() {
+        return std::make_shared<PartitionNode>();
+    }
+
+    inline
+    std::shared_ptr<Tree> scan_unconstraint_leaves(LeafSet &leaves) {
+        return std::make_shared<LeafSetNode>(leaves.to_set());
+    }
+
+    inline
+    std::shared_ptr<Tree> combine_part_results(const std::shared_ptr<Tree> &left_part,
+                                          const std::shared_ptr<Tree> &right_part) {
+        return std::make_shared<Tree>(left_part, right_part);
+    }
+
+    inline
+    void combine_bipartition_results(std::shared_ptr<Tree> &aggregation,
+                                     const std::shared_ptr<Tree> &new_results) {
+        auto p = std::static_pointer_cast<PartitionNode>(aggregation);
+        p->partitions.push_back(new_results);
+    }
+};
+
 class FindAllRootedTrees : public TerraceAlgorithm<tree_result_list> {
 protected:
     inline
