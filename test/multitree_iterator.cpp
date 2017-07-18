@@ -54,5 +54,20 @@ TEST_CASE("multitree_iterator init simple", "[multitree]") {
 	std::cout << as_newick(t, names, leaves);
 }
 
+TEST_CASE("multitree_iterator init unconstrained", "[multitree]") {
+	name_map names{"1", "2", "3", "4", "5", "6"};
+	constraints constraints{{0, 1, 2}};
+	index root_species = 0;
+	tree_enumerator<variants::multitree_callback> enumerator{
+	        {}, names.size(), constraints.size()};
+	auto result = enumerator.run(names.size(), constraints, root_species);
+
+	tree t(2 * names.size() - 1);
+	permutation leaves(t.size(), none);
+	multitree_iterator(result, t, leaves);
+
+	std::cout << as_newick(t, names, leaves);
+}
+
 } // namespace tests
 } // namespace terraces

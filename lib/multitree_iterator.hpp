@@ -1,7 +1,7 @@
 #ifndef MULTITREE_ITERATOR_H
 #define MULTITREE_ITERATOR_H
 
-#include "unconstrained_enumerator.hpp"
+#include "small_bipartition.hpp"
 #include <terraces/multitree.hpp>
 
 namespace terraces {
@@ -25,13 +25,16 @@ struct multitree_iterator_choicepoint {
 
 	bool has_choices() const { return alternatives != nullptr; }
 
-	bool has_next() const {
-		return has_choices() && (current + 1) != alternatives->alternative_array.end;
+	bool is_valid() const {
+		return has_choices() && current != alternatives->alternative_array.end;
 	}
+
 	void next() {
-		assert(has_next());
+		assert(is_valid());
 		++current;
 	}
+
+	void reset() { current = alternatives->alternative_array.begin; }
 };
 
 class multitree_iterator {
@@ -40,18 +43,21 @@ private:
 	tree* m_tree;
 	permutation* m_leaves;
 	std::vector<index> m_choice_points;
+	std::vector<index> m_unconstrained_choice_points;
 	std::vector<multitree_iterator_choicepoint> m_choices;
+	std::vector<small_bipartition> m_unconstrained_choices;
 
 	index init_subtree(index subtree_root, index single_leaf);
 	index init_subtree(index subtree_root, multitree_nodes::two_leaves two_leaves);
 	index init_subtree(index subtree_root, multitree_nodes::inner_node inner);
 	index init_subtree(index subtree_root, multitree_nodes::unconstrained unconstrained);
+	index init_subtree_unconstrained(index subtree_root, multitree_nodes::unconstrained data);
 	index init_subtree(index subtree_root);
 
 public:
 	multitree_iterator(const multitree_node* root, tree& tree, permutation& leaves);
 	void next();
-	bool has_next() const;
+	bool is_valid() const;
 };
 
 } // namespace terraces
