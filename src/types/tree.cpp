@@ -66,23 +66,6 @@ std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables
     return ss.str();
 }
 
-std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables,
-                                   const std::string &root_label) const {
-    std::stringstream ss;
-    ss << "(";
-    ss << root_label;
-    ss << ",";
-    if (this->is_leaf()) {
-        ss << ids_to_lables[this->id];
-    } else {
-        this->left->to_newick_string(ss, ids_to_lables);
-        ss << ",";
-        this->right->to_newick_string(ss, ids_to_lables);
-    }
-    ss << ");";
-    return ss.str();
-}
-
 std::shared_ptr<Tree> Tree::deep_copy(std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> &cover_map) {
     if (cover_map.count(shared_from_this()) > 0) {
         return cover_map[shared_from_this()];
@@ -104,6 +87,45 @@ std::shared_ptr<Tree> Tree::deep_copy(std::map<std::shared_ptr<Tree>, std::share
         node->parent = parent->deep_copy(cover_map);
     }
     return node;
+}
+
+std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables,
+                                   const std::string &root_label) const {
+    std::stringstream ss;
+    ss << "(";
+    ss << root_label;
+    ss << ",";
+    if (this->is_leaf()) {
+        ss << ids_to_lables[this->id];
+    } else {
+        this->left->to_newick_string(ss, ids_to_lables);
+        ss << ",";
+        this->right->to_newick_string(ss, ids_to_lables);
+    }
+    ss << ");";
+    return ss.str();
+}
+
+std::string PartitionNode::to_newick_string(const std::vector<std::string> &ids_to_lables,
+                                   const std::string &root_label) const {
+    std::stringstream ss;
+    ss << "(";
+    ss << root_label;
+    ss << ",";
+    this->to_newick_string(ss, ids_to_lables);
+    ss << ");";
+    return ss.str();
+}
+
+std::string LeafSetNode::to_newick_string(const std::vector<std::string> &ids_to_lables,
+                                          const std::string &root_label) const {
+    std::stringstream ss;
+    ss << "(";
+    ss << root_label;
+    ss << ",";
+    this->to_newick_string(ss, ids_to_lables);
+    ss << ");";
+    return ss.str();
 }
 
 std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> Tree::deep_copy() {

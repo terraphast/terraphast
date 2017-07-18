@@ -5,6 +5,11 @@
 
 class Tree : public std::enable_shared_from_this<Tree> {
 public:
+    leaf_number id;
+    std::shared_ptr<Tree> left;
+    std::shared_ptr<Tree> right;
+    std::weak_ptr<Tree> parent;
+
     Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :
             left(p_left), right(p_right) {
     }
@@ -16,28 +21,25 @@ public:
     Tree() :
             left(nullptr), right(nullptr) {
     }
-    virtual ~Tree() {}
 
-    leaf_number id;
-    std::shared_ptr<Tree> left;
-    std::shared_ptr<Tree> right;
-    std::weak_ptr<Tree> parent;
+    virtual ~Tree() {}
 
     virtual inline bool is_leaf() const {
         return (left == nullptr && right == nullptr);
     }
 
-    std::string to_newick_string(const std::vector<std::string> &id_to_lable) const;
+    virtual std::string to_newick_string(const std::vector<std::string> &id_to_lable) const;
 
-    std::string to_newick_string(const std::vector<std::string> &id_to_lable,
-                                 const std::string &root_label) const;
+    virtual std::string to_newick_string(const std::vector<std::string> &id_to_lable,
+                                         const std::string &root_label) const;
 
-    std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> deep_copy();
+    virtual std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> deep_copy();
 
-    std::shared_ptr<Tree> root();
+    virtual std::shared_ptr<Tree> root();
 
     virtual void to_newick_string(std::stringstream &ss,
                                   const std::vector<std::string> &id_to_lable) const;
+
 protected:
     std::shared_ptr<Tree> deep_copy(std::map<std::shared_ptr<Tree>,
             std::shared_ptr<Tree>> &cover_map);
@@ -54,6 +56,8 @@ public:
         return false;
     }
 
+    std::string to_newick_string(const std::vector<std::string> &ids_to_lables,
+                                    const std::string &root_label) const;
     void to_newick_string(std::stringstream &ss,
                           const std::vector<std::string> &id_to_lable) const;
 };
@@ -61,7 +65,8 @@ public:
 class LeafSetNode : public Tree {
 public:
     LeafSetNode() {}
-    LeafSetNode(const std::set<leaf_number> &p_leaves) : leaves (p_leaves) {
+
+    LeafSetNode(const std::set<leaf_number> &p_leaves) : leaves(p_leaves) {
     }
 
     std::set<leaf_number> leaves;
@@ -70,6 +75,8 @@ public:
         return false;
     }
 
+    std::string to_newick_string(const std::vector<std::string> &ids_to_lables,
+                                 const std::string &root_label) const;
     void to_newick_string(std::stringstream &ss,
                           const std::vector<std::string> &id_to_lable) const;
 };
