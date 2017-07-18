@@ -1,7 +1,6 @@
 #include "input_parser.h"
 #include "terraces.h"
 
-//TODO: Not that intuitive
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         printf("Specify .data and .nwk as first and second argument");

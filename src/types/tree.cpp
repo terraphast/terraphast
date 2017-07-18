@@ -1,8 +1,6 @@
 #include "types/tree.h"
 
 #include <sstream>
-#include <map>
-#include "debug.h"
 
 void Tree::to_newick_string(std::stringstream &ss,
                                    const std::vector<std::string> &ids_to_lables) const {
@@ -18,11 +16,12 @@ void Tree::to_newick_string(std::stringstream &ss,
 }
 
 std::shared_ptr<Tree> Tree::root() {
-    if (this->parent.lock() == nullptr) {
+    auto parent = this->parent.lock();
+    if (parent == nullptr) {
         return shared_from_this();
     }
 
-    return this->parent.lock()->root();
+    return parent->root();
 }
 
 std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables) const {
@@ -76,40 +75,4 @@ std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> Tree::deep_copy() {
     std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> cover_map;
     auto result = this->deep_copy(cover_map);
     return std::make_tuple(result, result->root());
-}
-
-static void d_print_tree_rec(std::ostream &strm,
-                             const std::shared_ptr<Tree> tree,
-                             const int depth) {
-    assert(
-            depth == 1
-            || (tree->parent.lock() != nullptr
-                && (tree->parent.lock()->left == tree
-                    || tree->parent.lock()->right == tree)));
-
-    if (tree->is_leaf()) {
-        strm << "Label:" << tree->id << std::endl;
-    } else {
-        strm << "Node" << std::endl;
-    }
-    if (tree->left != nullptr) {
-        for (int j = 0; j < depth * 4; j++) {
-            strm << " ";
-        }
-        strm << "L:";
-        d_print_tree_rec(strm, tree->left, depth + 1);
-    }
-    if (tree->right != nullptr) {
-        for (int j = 0; j < depth * 4; j++) {
-            strm << " ";
-        }
-        strm << "R:";
-        d_print_tree_rec(strm, tree->right, depth + 1);
-    }
-}
-
-std::ostream &operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree) {
-    strm << "Dump Tree:" << std::endl;
-    d_print_tree_rec(strm, tree, 1);
-    return strm << std::endl;
 }

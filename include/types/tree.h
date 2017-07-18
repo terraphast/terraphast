@@ -39,7 +39,6 @@ protected:
             std::shared_ptr<Tree>> &cover_map);
 };
 
-std::ostream &operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree);
 
 
 
