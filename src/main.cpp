@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (read_tree != nullptr) {
-        free(read_tree);
+        delete[] read_tree;
     }
 
     fclose(empiricalTrees);
