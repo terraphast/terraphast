@@ -5,27 +5,8 @@
 
 class Tree {
 public:
-	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-			std::shared_ptr<Tree> p_parent, leaf_number p_id) :
-			id(p_id), left(p_left), right(p_right), parent(p_parent) {
-	}
-
-	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-            leaf_number p_id) :
-			id(p_id), left(p_left), right(p_right) {
-	}
-
 	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :
 			left(p_left), right(p_right) {
-	}
-
-	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-			std::shared_ptr<Tree> p_parent) :
-			left(p_left), right(p_right), parent(p_parent) {
-	}
-
-	Tree(leaf_number p_id, std::shared_ptr<Tree> p_parent) :
-			id(p_id), left(nullptr), right(nullptr), parent(p_parent) {
 	}
 
 	Tree(leaf_number p_id) :
