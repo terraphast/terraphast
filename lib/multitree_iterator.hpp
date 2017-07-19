@@ -25,13 +25,18 @@ struct multitree_iterator_choicepoint {
 
 	bool has_choices() const { return alternatives != nullptr; }
 
+	bool is_unconstrained() const {
+		return current->type == multitree_node_type::base_unconstrained;
+	}
+
 	bool is_valid() const {
 		return has_choices() && current != alternatives->alternative_array.end;
 	}
 
-	void next() {
+	bool next() {
 		assert(is_valid());
 		++current;
+		return is_valid();
 	}
 
 	void reset() { current = alternatives->alternative_array.begin; }
@@ -39,8 +44,8 @@ struct multitree_iterator_choicepoint {
 
 class multitree_iterator {
 private:
-	tree* m_tree;
-	permutation* m_leaves;
+	tree m_tree;
+	permutation m_leaves;
 	std::vector<index> m_choice_points;
 	std::vector<index> m_unconstrained_choice_points;
 	std::vector<multitree_iterator_choicepoint> m_choices;
@@ -53,10 +58,16 @@ private:
 	index init_subtree_unconstrained(index subtree_root, multitree_nodes::unconstrained data);
 	index init_subtree(index subtree_root);
 
+	bool next(index root);
+	bool next_unconstrained(index root, multitree_nodes::unconstrained unconstrained);
+	void reset(index root);
+	void reset_unconstrained(index root, multitree_nodes::unconstrained unconstrained);
+
 public:
-	multitree_iterator(const multitree_node* root, tree& tree, permutation& leaves);
-	void next();
-	bool is_valid() const;
+	multitree_iterator(const multitree_node* root);
+	bool next();
+	const tree& tree() const { return m_tree; }
+	const permutation& leaves() const { return m_leaves; }
 };
 
 } // namespace terraces

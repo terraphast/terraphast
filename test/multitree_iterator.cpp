@@ -1,6 +1,7 @@
 
 #include <catch.hpp>
 
+#include <algorithm>
 #include <fstream>
 
 #include <terraces/parser.hpp>
@@ -10,6 +11,7 @@
 #include "../lib/multitree_iterator.hpp"
 #include "../lib/supertree_enumerator.hpp"
 #include "../lib/supertree_variants_multitree.hpp"
+#include "../lib/validation.hpp"
 
 namespace terraces {
 namespace tests {
@@ -38,6 +40,22 @@ std::tuple<name_map, constraints, index> load(std::string tree_file_path,
 	return std::make_tuple(names, constraints, root_species);
 }
 
+void check_unique_trees(multitree_node* root, index num_trees) {
+	multitree_iterator it(root);
+
+	utils::free_list fl;
+	utils::stack_allocator<index> alloc(fl, bitvector::alloc_size(root->num_leaves));
+	std::vector<std::vector<bitvector>> bipartitions;
+	do {
+		bipartitions.push_back(tree_bipartitions(it.tree(), it.leaves(), alloc));
+	} while (it.next());
+	// check that all trees are unique
+	std::sort(bipartitions.begin(), bipartitions.end());
+	CHECK(std::adjacent_find(bipartitions.begin(), bipartitions.end()) == bipartitions.end());
+	// check that there is the right number of trees
+	CHECK(bipartitions.size() == num_trees);
+}
+
 TEST_CASE("multitree_iterator init simple", "[multitree]") {
 	auto data = load("Eucalyptus.nwk.3", "Eucalyptus.data.3");
 	auto names = std::get<0>(data);
@@ -47,26 +65,18 @@ TEST_CASE("multitree_iterator init simple", "[multitree]") {
 	        {}, names.size(), constraints.size()};
 	auto result = enumerator.run(names.size(), constraints, root_species);
 
-	tree t(2 * names.size() - 1);
-	permutation leaves(t.size(), none);
-	multitree_iterator(result, t, leaves);
-
-	std::cout << as_newick(t, names, leaves);
+	check_unique_trees(result, 9);
 }
 
 TEST_CASE("multitree_iterator init unconstrained", "[multitree]") {
-	name_map names{"1", "2", "3", "4", "5", "6"};
+	name_map names{"1", "2", "3", "4", "5", "6", "7"};
 	constraints constraints{{0, 1, 2}};
 	index root_species = 0;
 	tree_enumerator<variants::multitree_callback> enumerator{
 	        {}, names.size(), constraints.size()};
 	auto result = enumerator.run(names.size(), constraints, root_species);
 
-	tree t(2 * names.size() - 1);
-	permutation leaves(t.size(), none);
-	multitree_iterator(result, t, leaves);
-
-	std::cout << as_newick(t, names, leaves);
+	check_unique_trees(result, count_unrooted_trees<index>(6));
 }
 
 } // namespace tests

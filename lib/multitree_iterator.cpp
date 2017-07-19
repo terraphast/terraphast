@@ -6,35 +6,31 @@ index combine_choice_points(index left, index right, index parent) {
 	return left != none ? left : (right != none ? right : parent);
 }
 
-multitree_iterator::multitree_iterator(const multitree_node* root, tree& tree, permutation& leaves)
-        : m_tree{&tree}, m_leaves{&leaves}, m_choice_points(tree.size(), none),
-          m_unconstrained_choice_points(tree.size(), none), m_choices(tree.size()),
-          m_unconstrained_choices(tree.size()) {
+multitree_iterator::multitree_iterator(const multitree_node* root)
+        : m_tree(2 * root->num_leaves - 1), m_leaves(m_tree.size(), none),
+          m_choice_points(m_tree.size(), none), m_unconstrained_choice_points(m_tree.size(), none),
+          m_choices(m_tree.size()), m_unconstrained_choices(m_tree.size()) {
 	m_choices[0] = {root};
 	init_subtree(0);
 }
 
 index multitree_iterator::init_subtree(index i, index single_leaf) {
-	auto& tree = *m_tree;
-	auto& leaves = *m_leaves;
-	tree[i].lchild() = none;
-	tree[i].rchild() = none;
-	leaves[i] = single_leaf;
+	m_tree[i].lchild() = none;
+	m_tree[i].rchild() = none;
+	m_leaves[i] = single_leaf;
 	return none;
 }
 
 index multitree_iterator::init_subtree(index i, multitree_nodes::two_leaves two_leaves) {
-	auto& tree = *m_tree;
-	auto& leaves = *m_leaves;
 	const auto l = i + 1;
 	const auto r = i + 2;
-	tree[i].lchild() = l;
-	tree[i].rchild() = r;
-	tree[l] = {i, none, none};
-	tree[r] = {i, none, none};
-	leaves[i] = none;
-	leaves[l] = two_leaves.left_leaf;
-	leaves[r] = two_leaves.right_leaf;
+	m_tree[i].lchild() = l;
+	m_tree[i].rchild() = r;
+	m_tree[l] = {i, none, none};
+	m_tree[r] = {i, none, none};
+	m_leaves[i] = none;
+	m_leaves[l] = two_leaves.left_leaf;
+	m_leaves[r] = two_leaves.right_leaf;
 	return none;
 }
 
@@ -45,25 +41,23 @@ index multitree_iterator::init_subtree(index i, multitree_nodes::unconstrained u
 }
 
 index multitree_iterator::init_subtree_unconstrained(index i, multitree_nodes::unconstrained data) {
-	auto& tree = *m_tree;
-	auto& leaves = *m_leaves;
 	const auto& bip = m_unconstrained_choices[i];
 	auto& cp = m_unconstrained_choice_points[i];
-	auto& node = tree[i];
+	auto& node = m_tree[i];
 	if (bip.num_leaves() <= 2) {
 		if (bip.num_leaves() == 1) {
-			leaves[i] = data.begin[bip.leftmost_leaf()];
+			m_leaves[i] = data.begin[bip.leftmost_leaf()];
 			node.lchild() = none;
 			node.rchild() = none;
 			return (cp = none);
 		} else {
-			leaves[i] = none;
-			leaves[i + 1] = data.begin[bip.leftmost_leaf()];
-			leaves[i + 2] = data.begin[bip.rightmost_leaf()];
+			m_leaves[i] = none;
+			m_leaves[i + 1] = data.begin[bip.leftmost_leaf()];
+			m_leaves[i + 2] = data.begin[bip.rightmost_leaf()];
 			node.lchild() = i + 1;
 			node.rchild() = i + 2;
-			tree[i + 1] = {i, none, none};
-			tree[i + 2] = {i, none, none};
+			m_tree[i + 1] = {i, none, none};
+			m_tree[i + 2] = {i, none, none};
 			return (cp = none);
 		}
 	} else {
@@ -75,32 +69,30 @@ index multitree_iterator::init_subtree_unconstrained(index i, multitree_nodes::u
 		node.rchild() = right;
 		m_unconstrained_choices[left] = lbip;
 		m_unconstrained_choices[right] = rbip;
-		leaves[i] = none;
-		tree[node.lchild()].parent() = i;
-		tree[node.rchild()].parent() = i;
+		m_leaves[i] = none;
+		m_tree[node.lchild()].parent() = i;
+		m_tree[node.rchild()].parent() = i;
 
 		init_subtree_unconstrained(right, data);
 		auto lcp = init_subtree_unconstrained(left, data);
 		auto rcp = init_subtree_unconstrained(right, data);
-		auto pcp = bip.is_valid() ? i : none;
+		auto pcp = i;
 		return (cp = combine_choice_points(lcp, rcp, pcp));
 	}
 }
 
 index multitree_iterator::init_subtree(index i, multitree_nodes::inner_node inner) {
-	auto& tree = *m_tree;
-	auto& leaves = *m_leaves;
 	const auto left = inner.left;
 	const auto right = inner.right;
 	const auto lindex = i + 1;
 	const auto rindex = lindex + (2 * left->num_leaves - 1);
-	tree[i].lchild() = lindex;
-	tree[i].rchild() = rindex;
-	tree[lindex].parent() = i;
-	tree[rindex].parent() = i;
+	m_tree[i].lchild() = lindex;
+	m_tree[i].rchild() = rindex;
+	m_tree[lindex].parent() = i;
+	m_tree[rindex].parent() = i;
 	m_choices[lindex] = {left};
 	m_choices[rindex] = {right};
-	leaves[i] = none;
+	m_leaves[i] = none;
 	auto lcp = init_subtree(lindex);
 	auto rcp = init_subtree(rindex);
 	auto pcp = m_choices[i].is_valid() ? i : none;
@@ -142,8 +134,72 @@ index multitree_iterator::init_subtree(index i) {
 	return cp;
 }
 
-void multitree_iterator::next() { assert(is_valid()); }
+bool multitree_iterator::next(index root) {
+	auto node = m_tree[root];
+	auto left = node.lchild();
+	auto right = node.rchild();
+	auto& choice = m_choices[root];
+	switch (choice.current->type) {
+	case multitree_node_type::base_single_leaf:
+	case multitree_node_type::base_two_leaves:
+		return false;
+	case multitree_node_type::base_unconstrained:
+		return next_unconstrained(root, choice.current->unconstrained);
+	case multitree_node_type::inner_node:
+	case multitree_node_type::alternative_array:
+		return next(left) || (reset(left), next(right)) ||
+		       (choice.has_choices() && choice.next() && (init_subtree(root), true));
+	case multitree_node_type::unexplored: {
+		assert(false && "Must not use multitree_iterator with unexplored nodes");
+		return false;
+	}
+	}
+}
 
-bool multitree_iterator::is_valid() const { return m_choice_points[0] != none; }
+bool multitree_iterator::next_unconstrained(index root, multitree_nodes::unconstrained data) {
+	auto node = m_tree[root];
+	auto left = node.lchild();
+	auto right = node.rchild();
+	auto& choice = m_unconstrained_choices[root];
+	if (!choice.has_choices()) {
+		return false;
+	}
+	return next_unconstrained(left, data) ||
+	       (reset_unconstrained(left, data), next_unconstrained(right, data)) ||
+	       (choice.next() && (init_subtree_unconstrained(root, data), true));
+}
+
+void multitree_iterator::reset(index root) {
+	auto& choice = m_choices[root];
+	switch (choice.current->type) {
+	case multitree_node_type::base_single_leaf:
+	case multitree_node_type::base_two_leaves:
+		break;
+	case multitree_node_type::base_unconstrained:
+		reset_unconstrained(root, choice.current->unconstrained);
+		break;
+	case multitree_node_type::inner_node:
+	case multitree_node_type::alternative_array:
+		if (choice.has_choices()) {
+			choice.reset();
+		}
+		init_subtree(root);
+		break;
+	case multitree_node_type::unexplored: {
+		assert(false && "Must not use multitree_iterator with unexplored nodes");
+		break;
+	}
+	}
+}
+
+void multitree_iterator::reset_unconstrained(index root, multitree_nodes::unconstrained data) {
+	auto& choice = m_unconstrained_choices[root];
+	if (choice.has_choices()) {
+		choice.reset();
+		init_subtree_unconstrained(root, data);
+	}
+}
+
+bool multitree_iterator::next() { return next(0); }
 
 } // namespace terraces

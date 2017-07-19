@@ -25,11 +25,14 @@ struct small_bipartition {
 	// (see stackoverflow.com/questions/44767080/incrementing-masked-bitsets)
 	index masked_increment(index bip) const { return -(bip ^ m_mask) & m_mask; }
 
+	bool has_choices() const { return num_leaves() > 2; }
+
 	bool is_valid() const { return (m_cur_bip >> rbitscan(m_mask)) == 0; }
 
-	void next() {
+	bool next() {
 		assert(is_valid());
 		m_cur_bip = masked_increment(m_cur_bip);
+		return is_valid();
 	}
 	void reset() { m_cur_bip = 1ull << bitscan(m_mask); }
 
