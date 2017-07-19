@@ -12,7 +12,7 @@ std::shared_ptr<Tree> Tree::root() {
 }
 
 void Tree::to_newick_string(std::stringstream &ss,
-                            const std::vector<std::string> &ids_to_labels) const {
+                            const label_mapper &ids_to_labels) const {
     if (this->is_leaf()) {
         ss << ids_to_labels[this->id];
     } else {
@@ -25,7 +25,7 @@ void Tree::to_newick_string(std::stringstream &ss,
 }
 
 void PartitionNode::to_newick_string(std::stringstream &ss,
-                                     const std::vector<std::string> &ids_to_labels) const {
+                                     const label_mapper &ids_to_labels) const {
     this->partitions[0]->to_newick_string(ss, ids_to_labels);
     for (size_t i = 1; i < this->partitions.size(); i++) {
         ss << "|";
@@ -34,7 +34,7 @@ void PartitionNode::to_newick_string(std::stringstream &ss,
 }
 
 void LeafSetNode::to_newick_string(std::stringstream &ss,
-                                   const std::vector<std::string> &ids_to_labels) const {
+                                   const label_mapper &ids_to_labels) const {
 
     if(this->leaves.size() == 1) {
         ss << ids_to_labels[*this->leaves.begin()];
@@ -59,7 +59,7 @@ void LeafSetNode::to_newick_string(std::stringstream &ss,
     ss << end_symbol;
 }
 
-std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_labels) const {
+std::string Tree::to_newick_string(const label_mapper &ids_to_labels) const {
     std::stringstream ss;
     this->to_newick_string(ss, ids_to_labels);
     ss << ";";
@@ -89,11 +89,10 @@ std::shared_ptr<Tree> Tree::deep_copy(std::map<std::shared_ptr<Tree>, std::share
     return node;
 }
 
-std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_labels,
-                                   const std::string &root_label) const {
+std::string Tree::to_newick_string_root(const label_mapper &ids_to_labels) const {
     std::stringstream ss;
     ss << "(";
-    ss << root_label;
+    ss << ids_to_labels.root_label;
     ss << ",";
     if (this->is_leaf()) {
         ss << ids_to_labels[this->id];
@@ -106,22 +105,22 @@ std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_labels
     return ss.str();
 }
 
-std::string PartitionNode::to_newick_string(const std::vector<std::string> &ids_to_labels,
-                                   const std::string &root_label) const {
+std::string PartitionNode::to_newick_string_root(
+        const label_mapper &ids_to_labels) const {
     std::stringstream ss;
     ss << "(";
-    ss << root_label;
+    ss << ids_to_labels.root_label;
     ss << ",";
     this->to_newick_string(ss, ids_to_labels);
     ss << ");";
     return ss.str();
 }
 
-std::string LeafSetNode::to_newick_string(const std::vector<std::string> &ids_to_labels,
-                                          const std::string &root_label) const {
+std::string LeafSetNode::to_newick_string_root(
+        const label_mapper &ids_to_labels) const {
     std::stringstream ss;
     ss << "(";
-    ss << root_label;
+    ss << ids_to_labels.root_label;
     ss << ",";
     this->to_newick_string(ss, ids_to_labels);
     ss << ");";

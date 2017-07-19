@@ -28,17 +28,17 @@ public:
         return (left == nullptr && right == nullptr);
     }
 
-    virtual std::string to_newick_string(const std::vector<std::string> &id_to_label) const;
+    virtual std::string to_newick_string(const label_mapper &id_to_label) const;
 
-    virtual std::string to_newick_string(const std::vector<std::string> &id_to_label,
-                                         const std::string &root_label) const;
+    virtual std::string to_newick_string_root(
+            const label_mapper &id_to_label) const;
 
     virtual std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> deep_copy();
 
     virtual std::shared_ptr<Tree> root();
 
     virtual void to_newick_string(std::stringstream &ss,
-                                  const std::vector<std::string> &id_to_label) const;
+                                  const label_mapper &id_to_label) const;
 
 protected:
     std::shared_ptr<Tree> deep_copy(std::map<std::shared_ptr<Tree>,
@@ -56,10 +56,9 @@ public:
         return false;
     }
 
-    std::string to_newick_string(const std::vector<std::string> &ids_to_labels,
-                                    const std::string &root_label) const;
+    std::string to_newick_string_root(const label_mapper &ids_to_labels) const;
     void to_newick_string(std::stringstream &ss,
-                          const std::vector<std::string> &id_to_label) const;
+                          const label_mapper &id_to_label) const;
 };
 
 class LeafSetNode : public Tree {
@@ -75,8 +74,7 @@ public:
         return false;
     }
 
-    std::string to_newick_string(const std::vector<std::string> &ids_to_labels,
-                                 const std::string &root_label) const;
+    std::string to_newick_string_root(const label_mapper &ids_to_labels) const;
     void to_newick_string(std::stringstream &ss,
-                          const std::vector<std::string> &id_to_label) const;
+                          const label_mapper &id_to_label) const;
 };

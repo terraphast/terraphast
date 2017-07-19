@@ -69,9 +69,8 @@ TEST(Util, generate_induced_tree) {
     missingData *example1 = initializeMissingData(5, 2, speciesNames);
     copyDataMatrix(matrix1, example1);
 
-    std::string root_species_name;
-    std::vector<std::string> id_to_label;
-    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name, id_to_label);
+    label_mapper id_to_label;
+    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, id_to_label);
     std::map<std::string, leaf_number> species_map;
     for (leaf_number i = 0; i < example1->numberOfSpecies; i++) {
         species_map[std::string(example1->speciesNames[i])] = i;
@@ -105,9 +104,8 @@ TEST(ExtractConstraintsFromSuperTree, example_from_slides) {
     missingData *example1 = initializeMissingData(5, 2, speciesNames);
     copyDataMatrix(matrix1, example1);
 
-    std::string root_species_name;
-    std::vector<std::string> id_to_label;
-    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name, id_to_label);
+    label_mapper id_to_label;
+    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, id_to_label);
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
     ASSERT_EQ(constraints.size(), 0);
@@ -131,9 +129,8 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     missingData *example1 = initializeMissingData(5, 2, speciesNames);
     copyDataMatrix(matrix1, example1);
 
-    std::string root_species_name;
-    std::vector<std::string> id_to_label;
-    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name, id_to_label);
+    label_mapper id_to_label;
+    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, id_to_label);
     auto leaves = LeafSet(id_to_label.size());
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
@@ -142,21 +139,21 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     auto result = get_trees.scan_terrace(leaves, constraints);
     ASSERT_EQ(result.size(), 15);
 
-    ASSERT_EQ(result[0]->to_newick_string(id_to_label, root_species_name), "(s3,((s5,s1),s2),s4);");
-    ASSERT_EQ(result[1]->to_newick_string(id_to_label, root_species_name), "(s3,(s5,(s2,s1)),s4);");
-    ASSERT_EQ(result[2]->to_newick_string(id_to_label, root_species_name), "(s3,((s5,s2),s1),s4);");
-    ASSERT_EQ(result[3]->to_newick_string(id_to_label, root_species_name), "(s3,(s5,s2),(s4,s1));");
-    ASSERT_EQ(result[4]->to_newick_string(id_to_label, root_species_name), "(s3,((s5,s2),s4),s1);");
-    ASSERT_EQ(result[5]->to_newick_string(id_to_label, root_species_name), "(s3,(s5,s1),(s4,s2));");
-    ASSERT_EQ(result[6]->to_newick_string(id_to_label, root_species_name), "(s3,s5,((s4,s1),s2));");
-    ASSERT_EQ(result[7]->to_newick_string(id_to_label, root_species_name), "(s3,s5,(s4,(s2,s1)));");
-    ASSERT_EQ(result[8]->to_newick_string(id_to_label, root_species_name), "(s3,s5,((s4,s2),s1));");
-    ASSERT_EQ(result[9]->to_newick_string(id_to_label, root_species_name), "(s3,(s5,(s4,s2)),s1);");
-    ASSERT_EQ(result[10]->to_newick_string(id_to_label, root_species_name), "(s3,((s5,s1),s4),s2);");
-    ASSERT_EQ(result[11]->to_newick_string(id_to_label, root_species_name), "(s3,(s5,(s4,s1)),s2);");
-    ASSERT_EQ(result[12]->to_newick_string(id_to_label, root_species_name), "(s3,((s5,s4),s1),s2);");
-    ASSERT_EQ(result[13]->to_newick_string(id_to_label, root_species_name), "(s3,(s5,s4),(s2,s1));");
-    ASSERT_EQ(result[14]->to_newick_string(id_to_label, root_species_name), "(s3,((s5,s4),s2),s1);");
+    ASSERT_EQ(result[0]->to_newick_string_root(id_to_label), "(s3,((s5,s1),s2),s4);");
+    ASSERT_EQ(result[1]->to_newick_string_root(id_to_label), "(s3,(s5,(s2,s1)),s4);");
+    ASSERT_EQ(result[2]->to_newick_string_root(id_to_label), "(s3,((s5,s2),s1),s4);");
+    ASSERT_EQ(result[3]->to_newick_string_root(id_to_label), "(s3,(s5,s2),(s4,s1));");
+    ASSERT_EQ(result[4]->to_newick_string_root(id_to_label), "(s3,((s5,s2),s4),s1);");
+    ASSERT_EQ(result[5]->to_newick_string_root(id_to_label), "(s3,(s5,s1),(s4,s2));");
+    ASSERT_EQ(result[6]->to_newick_string_root(id_to_label), "(s3,s5,((s4,s1),s2));");
+    ASSERT_EQ(result[7]->to_newick_string_root(id_to_label), "(s3,s5,(s4,(s2,s1)));");
+    ASSERT_EQ(result[8]->to_newick_string_root(id_to_label), "(s3,s5,((s4,s2),s1));");
+    ASSERT_EQ(result[9]->to_newick_string_root(id_to_label), "(s3,(s5,(s4,s2)),s1);");
+    ASSERT_EQ(result[10]->to_newick_string_root(id_to_label), "(s3,((s5,s1),s4),s2);");
+    ASSERT_EQ(result[11]->to_newick_string_root(id_to_label), "(s3,(s5,(s4,s1)),s2);");
+    ASSERT_EQ(result[12]->to_newick_string_root(id_to_label), "(s3,((s5,s4),s1),s2);");
+    ASSERT_EQ(result[13]->to_newick_string_root(id_to_label), "(s3,(s5,s4),(s2,s1));");
+    ASSERT_EQ(result[14]->to_newick_string_root(id_to_label), "(s3,((s5,s4),s2),s1);");
 
     ntree_destroy(tree);
     freeMissingData(example1);
@@ -177,16 +174,15 @@ TEST(FindCompressedUnrootedTree, example_from_slides) {
     missingData *example1 = initializeMissingData(5, 2, speciesNames);
     copyDataMatrix(matrix1, example1);
 
-    std::string root_species_name;
-    std::vector<std::string> id_to_label;
-    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name, id_to_label);
+    label_mapper id_to_label;
+    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, id_to_label);
     auto leaves = LeafSet(id_to_label.size());
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
     FindCompressedTree get_trees;
     auto result = get_trees.scan_terrace(leaves, constraints);
 
-    ASSERT_EQ(result->to_newick_string(id_to_label, root_species_name), "(s3,{s1,s2,s4,s5});");
+    ASSERT_EQ(result->to_newick_string_root(id_to_label), "(s3,{s1,s2,s4,s5});");
 
     ntree_destroy(tree);
     freeMissingData(example1);

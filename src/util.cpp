@@ -4,7 +4,7 @@
 std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
                                             const missingData *missing_data,
                                             const std::map<std::string, leaf_number> &species_map,
-                                            const std::vector<std::string> &id_to_label,
+                                            const label_mapper &id_to_label,
                                             const size_t partition) {
     if (tree == nullptr) {
         return nullptr;
@@ -67,8 +67,7 @@ std::vector<std::string> get_root_species(const missingData *missing_data) {
 
 std::shared_ptr<Tree> root_tree(ntree_t *tree,
                                 const missingData *missing_data,
-                                std::string &root_species_name,
-                                std::vector<std::string> &id_to_label) {
+                                label_mapper &id_to_label) {
     assert(tree != nullptr);
     size_t root_species_number = 0;
     bool root_specied_found = false;
@@ -89,7 +88,7 @@ std::shared_ptr<Tree> root_tree(ntree_t *tree,
     if (root_specied_found) {
         ntree_t *future_root = get_leaf_by_name(tree,
                                                 missing_data->speciesNames[root_species_number]);
-        root_species_name = missing_data->speciesNames[root_species_number];
+        id_to_label.root_label = missing_data->speciesNames[root_species_number];
         if (future_root == nullptr) {
             dout("In root_tree(...): label "
                          << missing_data->speciesNames[root_species_number]
@@ -131,7 +130,7 @@ ntree_t *get_leaf_by_name(ntree_t *tree, const char *label) {
     return nullptr; //label not found
 }
 
-std::shared_ptr<Tree> root_at(ntree_t *leaf, std::vector<std::string> &id_to_label) {
+std::shared_ptr<Tree> root_at(ntree_t *leaf, label_mapper &id_to_label) {
     //if leaf->parent is null, leaf is the root => the tree is not binary, or the node is no leaf
     assert(leaf != nullptr);
     assert(leaf->parent != nullptr);
@@ -144,7 +143,7 @@ std::shared_ptr<Tree> root_at(ntree_t *leaf, std::vector<std::string> &id_to_lab
 }
 
 void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
-                    ntree_t *parent, std::vector<std::string> &id_to_label) {
+                    ntree_t *parent, label_mapper &id_to_label) {
 
     assert(current != nullptr);
     assert(current_ntree != nullptr);
@@ -157,7 +156,7 @@ void recursive_root(std::shared_ptr<Tree> current, ntree_t *current_ntree,
 
     if (current_ntree->label != nullptr) {
         current->id = id_to_label.size();
-        id_to_label.push_back(std::string(current_ntree->label));
+        id_to_label.labels.push_back(std::string(current_ntree->label));
     }
 
     if (current_ntree->children_count == 0) {   //is leaf

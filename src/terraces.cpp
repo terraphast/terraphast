@@ -110,9 +110,8 @@ int terraceAnalysis(missingData *m,
     }
     assert(binAndCons == 0);
 
-    std::string root_species_name;
-    std::vector<std::string> id_to_label;
-    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_label);
+    label_mapper id_to_label;
+    std::shared_ptr<Tree> rtree = root_tree(tree, m, id_to_label);
 
     assert(rtree != nullptr);
 
@@ -131,12 +130,12 @@ int terraceAnalysis(missingData *m,
         auto all_trees = algo.scan_terrace(leaves, constraints);
         count = all_trees.size();
         for (std::shared_ptr<Tree> t : all_trees) {
-            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_label, root_species_name).c_str());
+            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_label).c_str());
         }
     } else if (enumerateCompressedTrees) {
         FindCompressedTree algo;
         auto tree = algo.scan_terrace(leaves, constraints);
-        fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_label, root_species_name).c_str());
+        fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_label).c_str());
     }
 
     mpz_set(*terraceSize, count.get_mpz_t());
@@ -267,7 +266,7 @@ unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
 std::vector<constraint> extract_constraints_from_supertree(
         const std::shared_ptr<Tree> supertree,
         const missingData *missing_data,
-        const std::vector<std::string> &id_to_label) {
+        const label_mapper &id_to_label) {
 
     std::map<std::string, leaf_number> species_map;
     for (leaf_number i = 0; i < missing_data->numberOfSpecies; i++) {

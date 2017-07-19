@@ -29,7 +29,7 @@ static void test_rooted_trees(const char *newick_file, const char *data_file, lo
 
     for(auto &root_species_name : get_root_species(m)) {
 
-        std::vector<std::string> id_to_label;
+        label_mapper id_to_label;
 
         ntree_t *future_root = get_leaf_by_name(tree,
                                                 root_species_name.c_str());
@@ -138,10 +138,7 @@ TEST(ApplyConstraintsTest, no_merges) {
 TEST(GetAllBinaryTrees, with_tree_leafs) {
 
     LeafSet leafs = {0, 1, 2};
-    std::vector<std::string> id_to_label;
-    id_to_label.push_back("1");
-    id_to_label.push_back("2");
-    id_to_label.push_back("3");
+    label_mapper id_to_label({"1", "2", "3"});
 
     auto result = get_all_binary_trees(leafs);
 
@@ -161,7 +158,8 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
 TEST(GetAllBinaryTrees, with_four_leafs) {
 
     LeafSet leafs = {0, 1, 2, 3};
-    std::vector<std::string> id_to_label = { "1", "2", "3", "4" };
+    label_mapper id_to_label;
+    id_to_label.labels = { "1", "2", "3", "4" };
 
     auto result = get_all_binary_trees(leafs);
 
@@ -328,12 +326,8 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
 TEST(FindAllRootedTrees, example_from_slides) {
 
     LeafSet leaves = {0, 1, 2, 3, 4};
-    std::vector<std::string> id_to_label;
-    id_to_label.push_back("1");
-    id_to_label.push_back("2");
-    id_to_label.push_back("3");
-    id_to_label.push_back("4");
-    id_to_label.push_back("5");
+    label_mapper id_to_label;
+    id_to_label.labels = {"1", "2", "3", "4", "5"};
 
     std::vector<constraint> constraints;
 
@@ -361,7 +355,8 @@ TEST(FindAllRootedTrees, example_from_slides) {
 TEST(FindCompressedTree, example_from_slides) {
 
     LeafSet leaves = {0, 1, 2, 3, 4};
-    std::vector<std::string> id_to_label = { "1", "2", "3", "4", "5" };
+    label_mapper id_to_label;
+    id_to_label.labels = { "1", "2", "3", "4", "5" };
 
     std::vector<constraint> constraints;
 
@@ -380,7 +375,8 @@ TEST(FindCompressedTree, example_from_slides) {
 
 TEST(FindConstraintsTest, example_from_slides) {
     LeafSet leaves = {0, 1, 2};
-    std::vector<std::string> id_to_label = { "1", "2", "3" };
+    label_mapper id_to_label;
+    id_to_label.labels = { "1", "2", "3" };
     std::vector<constraint> constraints;
 
     constraint cons1 = {0, 2, 1, 1};

@@ -25,7 +25,7 @@
 std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
                                             const missingData *missing_data,
                                             const std::map<std::string, leaf_number> &first,
-                                            const std::vector<std::string> &id_to_label,
+                                            const label_mapper &id_to_label,
                                             const size_t partition);
 
 /**
@@ -44,8 +44,7 @@ std::vector<std::string> get_root_species(const missingData *missing_data);
  */
 std::shared_ptr<Tree> root_tree(ntree_t *tree,
                                 const missingData *missing_data,
-                                std::string &root_species_name,
-                                std::vector<std::string> &id_to_label);
+                                label_mapper &id_to_label);
 
 /**
  * Returns a pointer to the leaf that has the label <label>
@@ -60,7 +59,7 @@ ntree_t *get_leaf_by_name(ntree_t *tree, const char *label);
  * @param root the leaf-edge
  * @return pointer to the new root
  */
-std::shared_ptr<Tree> root_at(ntree_t *root, std::vector<std::string> &id_to_label);
+std::shared_ptr<Tree> root_at(ntree_t *root, label_mapper &id_to_label);
 
 /**
  * private function
@@ -71,7 +70,7 @@ std::shared_ptr<Tree> root_at(ntree_t *root, std::vector<std::string> &id_to_lab
 void recursive_root(std::shared_ptr<Tree> current,
                     ntree_t *current_ntree,
                     ntree_t *parent,
-                    std::vector<std::string> &id_to_label);
+                    label_mapper &id_to_label);
 
 /**
  * @brief check_tree do a dfs on the tree and check, if the childs parent is the current node.
