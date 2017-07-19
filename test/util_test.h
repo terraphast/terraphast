@@ -6,7 +6,7 @@
 #include <memory>
 
 // Test a simple tree file
-TEST(get_neighbours, simple) {
+/*TEST(get_neighbours, simple) {
     std::shared_ptr<Tree> t1 = std::make_shared<Tree>(1);
     std::shared_ptr<Tree> t2 = std::make_shared<Tree>(2);
     std::shared_ptr<Tree> t3 = std::make_shared<Tree>(3);
@@ -31,5 +31,5 @@ TEST(get_neighbours, simple) {
     ASSERT_EQ(result[2]->id, 4);
 
 }
-
+*/
 #endif // UTIL_TEST_H
