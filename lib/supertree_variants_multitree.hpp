@@ -1,9 +1,8 @@
 #ifndef SUPERTREE_VARIANTS_MULTITREE_HPP
 #define SUPERTREE_VARIANTS_MULTITREE_HPP
 
+#include "multitree_impl.hpp"
 #include "supertree_variants.hpp"
-
-#include <terraces/multitree.hpp>
 
 #include <memory>
 #include <stack>
@@ -11,76 +10,10 @@
 namespace terraces {
 namespace variants {
 
-template <typename T>
-class storage_block {
-private:
-	std::unique_ptr<T[]> begin;
-	index size;
-	index max_size;
-
-public:
-	storage_block(index max_size)
-	        : begin{std::make_unique<T[]>(max_size)}, size{0}, max_size{max_size} {}
-
-	bool has_space(index required = 1) { return size + required <= max_size; }
-
-	T* get() {
-		assert(has_space());
-		return begin.get() + (size++);
-	}
-
-	T* get_range(index required) {
-		assert(has_space(required));
-		auto result = begin.get() + size;
-		size += required;
-		return result;
-	}
-};
-
-template <typename T>
-class storage_blocks {
-private:
-	std::vector<storage_block<T>> m_blocks;
-	index m_block_size;
-
-public:
-	storage_blocks(index block_size = 1024) : m_blocks{}, m_block_size{block_size} {
-		m_blocks.emplace_back(m_block_size);
-	}
-	storage_blocks(const storage_blocks<T>& other) : storage_blocks{other.m_block_size} {}
-	storage_blocks(storage_blocks<T>&& other) = default;
-	storage_blocks<T>& operator=(const storage_blocks<T>& other) {
-		m_block_size = other.m_block_size;
-		return *this;
-	}
-	storage_blocks<T>& operator=(storage_blocks<T>&& other) = default;
-
-	T* get() {
-		if (!m_blocks.back().has_space()) {
-			m_blocks.emplace_back(m_block_size);
-		}
-		return m_blocks.back().get();
-	}
-
-	T* get_range(index required) {
-		if (!m_blocks.back().has_space(required)) {
-			m_blocks.emplace_back(required);
-			auto result = m_blocks.back().get_range(required);
-			auto last_it = --m_blocks.end();
-			auto prev_it = --(--m_blocks.end());
-			std::iter_swap(
-			        last_it,
-			        prev_it); // TODO this might lead to some bad worst-case behaviour
-			return result;
-		}
-		return m_blocks.back().get_range(required);
-	}
-};
-
 class multitree_callback : public abstract_callback<multitree_node*> {
 private:
-	storage_blocks<multitree_node> m_nodes;
-	storage_blocks<index> m_leaves;
+	multitree_impl::storage_blocks<multitree_node> m_nodes;
+	multitree_impl::storage_blocks<index> m_leaves;
 	std::stack<multitree_node*> m_accumulators;
 
 	multitree_node* alloc_node() { return m_nodes.get(); }
@@ -100,21 +33,25 @@ private:
 public:
 	using return_type = multitree_node*;
 
-	return_type base_one_leaf(index i) { return alloc_node()->as_single_leaf(i); }
-	return_type base_two_leaves(index i, index j) { return alloc_node()->as_two_leaves(i, j); }
+	return_type base_one_leaf(index i) {
+		return multitree_impl::make_single_leaf(alloc_node(), i);
+	}
+	return_type base_two_leaves(index i, index j) {
+		return multitree_impl::make_two_leaves(alloc_node(), i, j);
+	}
 	return_type base_unconstrained(const ranked_bitvector& leaves) {
-		return alloc_node()->as_unconstrained(alloc_leaves(leaves));
+		return multitree_impl::make_unconstrained(alloc_node(), alloc_leaves(leaves));
 	}
 	return_type null_result() { return nullptr; }
 
 	return_type fast_return_value(const bipartition_iterator& bip_it) {
-		return alloc_node()->as_unexplored(alloc_leaves(bip_it.leaves()));
+		return multitree_impl::make_unexplored(alloc_node(), alloc_leaves(bip_it.leaves()));
 	}
 
 	return_type begin_iteration(const bipartition_iterator& bip_it, const bitvector&,
 	                            const constraints&) {
-		auto acc = alloc_node()->as_alternative_array(alloc_nodes(bip_it.num_bip()),
-		                                              bip_it.leaves().count());
+		auto acc = multitree_impl::make_alternative_array(
+		        alloc_node(), alloc_nodes(bip_it.num_bip()), bip_it.leaves().count());
 		m_accumulators.push(acc);
 		return acc;
 	}
@@ -131,7 +68,7 @@ public:
 	return_type combine(multitree_node* left, multitree_node* right) {
 		auto acc = m_accumulators.top();
 		auto& aa = acc->alternative_array;
-		auto result = aa.end->as_inner_node(left, right);
+		auto result = multitree_impl::make_inner_node(aa.end, left, right);
 		++aa.end;
 		return result;
 	}
