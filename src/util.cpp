@@ -12,7 +12,8 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
 
     if (tree->is_leaf()) {
         if (species_map.count(id_to_label[tree->id]) == 1
-            && getDataMatrix(missing_data, species_map.at(id_to_label[tree->id]),
+            && getDataMatrix(missing_data,
+                             species_map.at(id_to_label[tree->id]),
                              partition)) {
             auto leave = std::make_shared<Tree>();
             leave->id = tree->id;

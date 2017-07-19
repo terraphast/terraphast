@@ -161,11 +161,7 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
 TEST(GetAllBinaryTrees, with_four_leafs) {
 
     LeafSet leafs = {0, 1, 2, 3};
-    std::vector<std::string> id_to_label;
-    id_to_label.push_back("1");
-    id_to_label.push_back("2");
-    id_to_label.push_back("3");
-    id_to_label.push_back("4");
+    std::vector<std::string> id_to_label = { "1", "2", "3", "4" };
 
     auto result = get_all_binary_trees(leafs);
 
@@ -365,12 +361,7 @@ TEST(FindAllRootedTrees, example_from_slides) {
 TEST(FindCompressedTree, example_from_slides) {
 
     LeafSet leaves = {0, 1, 2, 3, 4};
-    std::vector<std::string> id_to_label;
-    id_to_label.push_back("1");
-    id_to_label.push_back("2");
-    id_to_label.push_back("3");
-    id_to_label.push_back("4");
-    id_to_label.push_back("5");
+    std::vector<std::string> id_to_label = { "1", "2", "3", "4", "5" };
 
     std::vector<constraint> constraints;
 
@@ -389,10 +380,7 @@ TEST(FindCompressedTree, example_from_slides) {
 
 TEST(FindConstraintsTest, example_from_slides) {
     LeafSet leaves = {0, 1, 2};
-    std::vector<std::string> id_to_label;
-    id_to_label.push_back("1");
-    id_to_label.push_back("2");
-    id_to_label.push_back("3");
+    std::vector<std::string> id_to_label = { "1", "2", "3" };
     std::vector<constraint> constraints;
 
     constraint cons1 = {0, 2, 1, 1};

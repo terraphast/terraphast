@@ -24,7 +24,6 @@ struct constraint {
               bigger_right(bigger_right) {}
 };
 
-//#include "leaf_label_mapper.h" // no further includes needed
 #include "types/UnionFind.h"
 #include "types/tree.h"
 #include "types/leaf_set.h"          // includes all sub-LeafSet types itself

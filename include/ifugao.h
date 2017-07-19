@@ -74,15 +74,14 @@ public:
     virtual ~TerraceAlgorithm() = default;
 
     T scan_terrace(LeafSet &leaves, const std::vector<constraint> &constraints) {
-
         if (constraints.empty()) {
-            auto result = scan_unconstraint_leaves(leaves);
-            return result;
+            return scan_unconstraint_leaves(leaves);
+        } else {
+            leaves.apply_constraints(constraints);
+            return traverse_partitions(constraints, leaves);
         }
-
-        leaves.apply_constraints(constraints);
-        return traverse_partitions(constraints, leaves);
     }
+
 protected:
     inline
     virtual T traverse_partitions(const std::vector<constraint> &constraints,
@@ -128,6 +127,7 @@ protected:
 
     inline
     std::shared_ptr<Tree> scan_unconstraint_leaves(LeafSet &leaves) {
+        // formula to count all trees is ((2n-5)!)!
         return std::make_shared<LeafSetNode>(leaves.to_set());
     }
 
