@@ -13,7 +13,7 @@ std::ostream& operator<<(std::ostream& s, const constraint& c) {
 
 std::ostream& operator<<(std::ostream& stream, utils::named_output<constraints, name_map> output) {
 	auto c = output.entry;
-	auto& n = output.names;
+	auto& n = *output.names;
 	stream << "lca(" << n[c.left] << "," << n[c.shared] << ") < lca(" << n[c.shared] << ","
 	       << n[c.right] << ")";
 	return stream;
