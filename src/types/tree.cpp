@@ -1,134 +1,149 @@
 #include "types/tree.h"
 
-#include <sstream>
-
-std::shared_ptr<Tree> Tree::root() {
-    auto parent = this->parent.lock();
-    if (parent == nullptr) {
-        return shared_from_this();
-    }
-
-    return parent->root();
-}
-
-void Tree::to_newick_string(std::stringstream &ss,
-                            const label_mapper &ids_to_labels) const {
-    if (this->is_leaf()) {
-        ss << ids_to_labels[this->id];
-    } else {
-        ss << "(";
-        this->left->to_newick_string(ss, ids_to_labels);
-        ss << ",";
-        this->right->to_newick_string(ss, ids_to_labels);
-        ss << ")";
-    }
-}
-
-void PartitionNode::to_newick_string(std::stringstream &ss,
-                                     const label_mapper &ids_to_labels) const {
-    this->partitions[0]->to_newick_string(ss, ids_to_labels);
-    for (size_t i = 1; i < this->partitions.size(); i++) {
-        ss << "|";
-        this->partitions[i]->to_newick_string(ss, ids_to_labels);
-    }
-}
-
-void LeafSetNode::to_newick_string(std::stringstream &ss,
-                                   const label_mapper &ids_to_labels) const {
-
-    if(this->leaves.size() == 1) {
-        ss << ids_to_labels[*this->leaves.begin()];
-        return;
-    }
-    char start_symbol = '{';
-    char end_symbol = '}';
-    if (this->leaves.size() == 2) {
-        start_symbol = '(';
-        end_symbol = ')';
-    }
-    ss << start_symbol;
-    bool first = true;
-    for(const leaf_number &elem : this->leaves) {
-        if(first) {
-            first = false;
-        } else {
-            ss << ",";
-        }
-        ss << ids_to_labels[elem];
-    }
-    ss << end_symbol;
-}
-
-std::string Tree::to_newick_string(const label_mapper &ids_to_labels) const {
+/********************/
+/*** Node methods ***/
+/********************/
+std::string Node::to_newick_string(const label_mapper &id_to_label) const {
     std::stringstream ss;
-    this->to_newick_string(ss, ids_to_labels);
+    this->to_newick_string(ss, id_to_label);
     ss << ";";
     return ss.str();
 }
 
-std::shared_ptr<Tree> Tree::deep_copy(std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> &cover_map) {
-    if (cover_map.count(shared_from_this()) > 0) {
-        return cover_map[shared_from_this()];
-    }
-
-    auto node = std::make_shared<Tree>();
-    node->id = this->id;
-    cover_map[node] = node;
-    cover_map[shared_from_this()] = node;
-
-    if(this->left != nullptr) {
-        node->left = this->left->deep_copy(cover_map);
-    }
-    if(this->right != nullptr) {
-        node->right = this->right->deep_copy(cover_map);
-    }
-    auto parent  = this->parent.lock();
-    if(parent != nullptr) {
-        node->parent = parent->deep_copy(cover_map);
-    }
-    return node;
+std::vector<constraint> Node::extract_constraints() const {
+    std::vector<constraint> constraints;
+    
+    this->get_constraints(constraints);
+    
+    return constraints;
 }
 
-std::string Tree::to_newick_string_root(const label_mapper &ids_to_labels) const {
-    std::stringstream ss;
+/********************/
+/*** Leaf methods ***/
+/********************/
+void Leaf::to_newick_string(std::stringstream &ss,
+                            const label_mapper &id_to_label) const {
+    ss << id_to_label[this->leaf_id];
+}
+
+std::tuple<leaf_number, leaf_number> Leaf::get_constraints(
+        std::vector<constraint> &constraints) const {
+    // may not be called
+    assert(false);
+    return std::make_tuple(0, 0);
+}
+
+/*************************/
+/*** InnerNode methods ***/
+/*************************/
+void InnerNode::to_newick_string(std::stringstream &ss,
+                                 const label_mapper &id_to_label) const {
     ss << "(";
-    ss << ids_to_labels.root_label;
+    this->left->to_newick_string(ss, id_to_label);
     ss << ",";
-    if (this->is_leaf()) {
-        ss << ids_to_labels[this->id];
+    this->right->to_newick_string(ss, id_to_label);
+    ss << ")";
+}
+
+std::tuple<leaf_number, leaf_number> InnerNode::get_constraints(
+        std::vector<constraint> &constraints) const {
+    leaf_number left_most_leaf;
+    leaf_number right_most_leaf;
+    
+    bool left_leaf = this->left->is_leaf();
+    bool right_leaf = this->right->is_leaf(); 
+    
+    if (left_leaf && right_leaf) {
+        // no inner edge, just return values
+        left_most_leaf = this->left->get_leaf();
+        right_most_leaf = this->right->get_leaf();
+    } else if(left_leaf) {
+        // right edge is an inner edge
+        left_most_leaf = this->left->get_leaf();
+        // recurse
+        auto right_tuple = this->right->get_constraints(constraints);
+        right_most_leaf = std::get<1>(right_tuple);
+        
+        // constraint for right inner edge
+        constraints.emplace_back(left_most_leaf, left_most_leaf,
+                std::get<0>(right_tuple), std::get<1>(right_tuple));
+    } else if(right_leaf) {
+        // left edge is an inner edge
+        // recurse
+        auto left_tuple = this->left->get_constraints(constraints);
+        left_most_leaf = std::get<0>(left_tuple);
+        right_most_leaf = this->right->get_leaf();
+        
+        // constraint for left inner edge
+        constraints.emplace_back(std::get<0>(left_tuple),
+                std::get<1>(left_tuple), right_most_leaf, right_most_leaf);
     } else {
-        this->left->to_newick_string(ss, ids_to_labels);
-        ss << ",";
-        this->right->to_newick_string(ss, ids_to_labels);
+        // left and right edge are inner edges
+        auto left_tuple = this->left->get_constraints(constraints);
+        auto right_tuple = this->right->get_constraints(constraints);
+        left_most_leaf = std::get<0>(left_tuple);
+        right_most_leaf = std::get<1>(right_tuple);
+        // constraint for left inner edge
+        constraints.emplace_back(std::get<0>(left_tuple),
+                std::get<1>(left_tuple), right_most_leaf, right_most_leaf);
+        // constraint for right inner edge
+        constraints.emplace_back(left_most_leaf, left_most_leaf,
+                std::get<0>(right_tuple), std::get<1>(right_tuple));
     }
-    ss << ");";
-    return ss.str();
+    
+    return std::make_tuple(left_most_leaf, right_most_leaf);
 }
 
-std::string PartitionNode::to_newick_string_root(
-        const label_mapper &ids_to_labels) const {
-    std::stringstream ss;
+/****************************/
+/*** UnrootedNode methods ***/
+/****************************/
+void UnrootedNode::to_newick_string(std::stringstream &ss,
+                                    const label_mapper &id_to_label) const {
     ss << "(";
-    ss << ids_to_labels.root_label;
+    this->elem1->to_newick_string(ss, id_to_label);
     ss << ",";
-    this->to_newick_string(ss, ids_to_labels);
-    ss << ");";
-    return ss.str();
+    this->elem2->to_newick_string(ss, id_to_label);
+    ss << ",";
+    this->elem3->to_newick_string(ss, id_to_label);
+    ss << ")";
 }
 
-std::string LeafSetNode::to_newick_string_root(
-        const label_mapper &ids_to_labels) const {
-    std::stringstream ss;
-    ss << "(";
-    ss << ids_to_labels.root_label;
-    ss << ",";
-    this->to_newick_string(ss, ids_to_labels);
-    ss << ");";
-    return ss.str();
+std::tuple<leaf_number, leaf_number> UnrootedNode::get_constraints(
+        std::vector<constraint> &constraints) const {
+    // may not be called
+    assert(false);
+    return std::make_tuple(0, 0);
 }
 
-std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> Tree::deep_copy() {
-    std::map<std::shared_ptr<Tree>, std::shared_ptr<Tree>> cover_map;
-    auto result = this->deep_copy(cover_map);
-    return std::make_tuple(result, result->root());
+/*****************************************/
+/*** AllBinaryCombinationsNode methods ***/
+/*****************************************/
+void AllBinaryCombinationsNode::to_newick_string(
+        std::stringstream &ss, const label_mapper &id_to_label) const {
+    ss << "{";
+    ss << id_to_label[this->leaves[0]];// guaranteed to exist (see init assert)
+    for(size_t i = 1; i < this->leaves.size(); ++i) {
+        ss << "," << id_to_label[this->leaves[i]];
+    }
+    ss << "}";
 }
+
+std::tuple<leaf_number, leaf_number> AllBinaryCombinationsNode::get_constraints(
+        std::vector<constraint> &constraints) const {
+    // may not be called
+    assert(false);
+    return std::make_tuple(0, 0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
