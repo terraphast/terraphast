@@ -12,32 +12,32 @@ std::shared_ptr<Tree> Tree::root() {
 }
 
 void Tree::to_newick_string(std::stringstream &ss,
-                            const std::vector<std::string> &ids_to_lables) const {
+                            const std::vector<std::string> &ids_to_labels) const {
     if (this->is_leaf()) {
-        ss << ids_to_lables[this->id];
+        ss << ids_to_labels[this->id];
     } else {
         ss << "(";
-        this->left->to_newick_string(ss, ids_to_lables);
+        this->left->to_newick_string(ss, ids_to_labels);
         ss << ",";
-        this->right->to_newick_string(ss, ids_to_lables);
+        this->right->to_newick_string(ss, ids_to_labels);
         ss << ")";
     }
 }
 
 void PartitionNode::to_newick_string(std::stringstream &ss,
-                                     const std::vector<std::string> &ids_to_lables) const {
-    this->partitions[0]->to_newick_string(ss, ids_to_lables);
+                                     const std::vector<std::string> &ids_to_labels) const {
+    this->partitions[0]->to_newick_string(ss, ids_to_labels);
     for (size_t i = 1; i < this->partitions.size(); i++) {
         ss << "|";
-        this->partitions[i]->to_newick_string(ss, ids_to_lables);
+        this->partitions[i]->to_newick_string(ss, ids_to_labels);
     }
 }
 
 void LeafSetNode::to_newick_string(std::stringstream &ss,
-                                   const std::vector<std::string> &ids_to_lables) const {
+                                   const std::vector<std::string> &ids_to_labels) const {
 
     if(this->leaves.size() == 1) {
-        ss << ids_to_lables[*this->leaves.begin()];
+        ss << ids_to_labels[*this->leaves.begin()];
         return;
     }
     char start_symbol = '{';
@@ -54,14 +54,14 @@ void LeafSetNode::to_newick_string(std::stringstream &ss,
         } else {
             ss << ",";
         }
-        ss << ids_to_lables[elem];
+        ss << ids_to_labels[elem];
     }
     ss << end_symbol;
 }
 
-std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables) const {
+std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_labels) const {
     std::stringstream ss;
-    this->to_newick_string(ss, ids_to_lables);
+    this->to_newick_string(ss, ids_to_labels);
     ss << ";";
     return ss.str();
 }
@@ -89,41 +89,41 @@ std::shared_ptr<Tree> Tree::deep_copy(std::map<std::shared_ptr<Tree>, std::share
     return node;
 }
 
-std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_lables,
+std::string Tree::to_newick_string(const std::vector<std::string> &ids_to_labels,
                                    const std::string &root_label) const {
     std::stringstream ss;
     ss << "(";
     ss << root_label;
     ss << ",";
     if (this->is_leaf()) {
-        ss << ids_to_lables[this->id];
+        ss << ids_to_labels[this->id];
     } else {
-        this->left->to_newick_string(ss, ids_to_lables);
+        this->left->to_newick_string(ss, ids_to_labels);
         ss << ",";
-        this->right->to_newick_string(ss, ids_to_lables);
+        this->right->to_newick_string(ss, ids_to_labels);
     }
     ss << ");";
     return ss.str();
 }
 
-std::string PartitionNode::to_newick_string(const std::vector<std::string> &ids_to_lables,
+std::string PartitionNode::to_newick_string(const std::vector<std::string> &ids_to_labels,
                                    const std::string &root_label) const {
     std::stringstream ss;
     ss << "(";
     ss << root_label;
     ss << ",";
-    this->to_newick_string(ss, ids_to_lables);
+    this->to_newick_string(ss, ids_to_labels);
     ss << ");";
     return ss.str();
 }
 
-std::string LeafSetNode::to_newick_string(const std::vector<std::string> &ids_to_lables,
+std::string LeafSetNode::to_newick_string(const std::vector<std::string> &ids_to_labels,
                                           const std::string &root_label) const {
     std::stringstream ss;
     ss << "(";
     ss << root_label;
     ss << ",";
-    this->to_newick_string(ss, ids_to_lables);
+    this->to_newick_string(ss, ids_to_labels);
     ss << ");";
     return ss.str();
 }

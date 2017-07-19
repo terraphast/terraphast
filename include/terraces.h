@@ -71,11 +71,11 @@
 // data type containing data to be passed to the algorithm we want to implement
 
 typedef struct {
-	size_t numberOfSpecies;
-	size_t numberOfPartitions;
-	unsigned char *missingDataMatrix;
-	char **speciesNames;
-	bool allocatedNameArray;
+    size_t numberOfSpecies;
+    size_t numberOfPartitions;
+    unsigned char *missingDataMatrix;
+    char **speciesNames;
+    bool allocatedNameArray;
 } missingData;
 
 /**
@@ -91,7 +91,7 @@ typedef struct {
  */
 
 missingData * initializeMissingData(size_t numberOfSpecies,
-		size_t numberOfPartitions, const char **speciesNames);
+        size_t numberOfPartitions, const char **speciesNames);
 
 /**
  * Free missing data data structure
@@ -114,7 +114,7 @@ void freeMissingData(missingData *m);
  */
 
 void setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber,
-		unsigned char value);
+        unsigned char value);
 
 /**
  * get entry from missing data matrix
@@ -129,7 +129,7 @@ void setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber,
  */
 
 unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
-		size_t partitionNumber);
+        size_t partitionNumber);
 
 /**
  * copy one dimensional array containing the missing data matrix to the matrix in the missing data data type
@@ -150,9 +150,9 @@ void copyDataMatrix(const unsigned char *matrix, missingData *m);
  * @return All constraints of the given supertree.
  */
 std::vector<constraint> extract_constraints_from_supertree(
-		const std::shared_ptr<Tree> supertree,
-		const missingData* missing_data,
-		const std::vector<std::string> &id_to_label);
+        const std::shared_ptr<Tree> supertree,
+        const missingData* missing_data,
+        const std::vector<std::string> &id_to_label);
 
 /**
  * Function that tells us, given a tree, and a missing data matrix as well as its dimensions,
@@ -179,7 +179,7 @@ std::vector<constraint> extract_constraints_from_supertree(
  * @return TERRACE_SUCCESS on success, or an error code (see TERRACE_*) on failure
  */
 int terraceAnalysis(missingData *m, const char *newickTreeString,
-		const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
+        const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
 
 #ifdef __cplusplus
 std::string missing_data_to_nexus(const missingData* m);

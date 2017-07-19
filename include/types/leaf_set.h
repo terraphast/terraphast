@@ -67,7 +67,7 @@ public:
         sets.reserve(this->size());
 
         for (leaf_number l : *this) {
-            // create an empty set for each leave
+            // create an empty set for each leaf
             auto set = std::make_shared<SimpleLeafSet>();
             set->insert(l);
             sets.push_back(set);
@@ -230,7 +230,7 @@ private:
 
         leaf_number pos = this->find_first();
         while (pos != npos) {
-            // create an empty set for each leave
+            // create an empty set for each leaf
             auto set = std::make_shared<BitLeafSet>(boost::dynamic_bitset<>::size(), 0);
             set->insert(pos);
             sets.push_back(set);

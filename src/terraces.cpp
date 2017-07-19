@@ -111,13 +111,13 @@ int terraceAnalysis(missingData *m,
     assert(binAndCons == 0);
 
     std::string root_species_name;
-    std::vector<std::string> id_to_lable;
-    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_lable);
+    std::vector<std::string> id_to_label;
+    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_label);
 
     assert(rtree != nullptr);
 
-    auto constraints = extract_constraints_from_supertree(rtree, m, id_to_lable);
-    auto leaves = LeafSet(id_to_lable.size());
+    auto constraints = extract_constraints_from_supertree(rtree, m, id_to_label);
+    auto leaves = LeafSet(id_to_label.size());
 
     mpz_class count = 0;
     if(countTrees) {
@@ -131,12 +131,12 @@ int terraceAnalysis(missingData *m,
         auto all_trees = algo.scan_terrace(leaves, constraints);
         count = all_trees.size();
         for (std::shared_ptr<Tree> t : all_trees) {
-            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_lable, root_species_name).c_str());
+            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_label, root_species_name).c_str());
         }
     } else if (enumerateCompressedTrees) {
         FindCompressedTree algo;
         auto tree = algo.scan_terrace(leaves, constraints);
-        fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_lable, root_species_name).c_str());
+        fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_label, root_species_name).c_str());
     }
 
     mpz_set(*terraceSize, count.get_mpz_t());

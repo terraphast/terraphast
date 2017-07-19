@@ -15,10 +15,10 @@ std::shared_ptr<Tree> generate_induced_tree(const std::shared_ptr<Tree> tree,
             && getDataMatrix(missing_data,
                              species_map.at(id_to_label[tree->id]),
                              partition)) {
-            auto leave = std::make_shared<Tree>();
-            leave->id = tree->id;
-            leave->left = nullptr;
-            leave->right = nullptr;
+            auto leaf = std::make_shared<Tree>();
+            leaf->id = tree->id;
+            leaf->left = nullptr;
+            leaf->right = nullptr;
             return tree;
         }
     } else {
