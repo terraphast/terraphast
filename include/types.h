@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstddef>
-typedef size_t leaf_number;
 #include <assert.h>
 #include <map>
 #include <memory>
@@ -9,6 +8,24 @@ typedef size_t leaf_number;
 #include <string>
 #include <tuple>
 #include <vector>
+
+typedef size_t leaf_number;
+
+struct label_mapper {
+    std::vector<std::string> labels;
+    std::string root_label;
+    
+    label_mapper() {};
+    label_mapper(std::vector<std::string> labels) : labels(labels) {};
+    
+    inline const std::string& operator[](leaf_number leaf_id) const {
+        assert(leaf_id < labels.size());
+        return labels.at(leaf_id);
+    }
+    inline size_t size() const {
+        return labels.size();
+    }
+};
 
 //lca(smaller_left, smaller_right) < lca(bigger_left, bigger_right)
 struct constraint {
