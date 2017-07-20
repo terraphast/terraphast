@@ -43,6 +43,15 @@ int terraceAnalysis(missingData *m,
                                           != 0;
     /* some basic error checking, students, please extend this, see error codes at the end of this function */
 
+    if(treeIsOnTerrace && (countTrees || enumerateTrees || enumerateCompressedTrees)) {
+        // trees can't be counted or enumerated if only check on terrace should be performed
+        return TERRACE_FLAG_CONFLICT_ERROR;
+    }
+    if(enumerateTrees && enumerateCompressedTrees) {
+        // can't print the trees in two different output styles
+        return TERRACE_FLAG_CONFLICT_ERROR;
+    }
+
     assert(m->numberOfSpecies > 3 && m->numberOfPartitions > 1);
 
     if(m->numberOfSpecies <= 3) {

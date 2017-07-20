@@ -23,6 +23,10 @@
  -5: only one partition in data matrix
  -6: reserved for something you must think about anyway (tree can't be rooted)
  -7: no output file specified
+ -8: input tree is not a binary tree
+ -9: there is no root species in the data file (a species present in all partitions)
+ -10: there is a species with no partition in the data file
+ -11: conflict between the set flags; can't perform all actions simultaniously
  */
 
 #define TERRACE_SUCCESS                   0
@@ -37,6 +41,7 @@
 #define TERRACE_TREE_NOT_BINARY_ERROR    -8
 #define TERRACE_NO_ROOT_SPECIES_ERROR    -9
 #define TERRACE_SPECIES_WITHOUT_PARTITION_ERROR    -10
+#define TERRACE_FLAG_CONFLICT_ERROR -11
 /* to be extended */
 
 /* Argument to control output of terraceAnalysis function (ta_outspec) */
