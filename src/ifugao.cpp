@@ -12,17 +12,22 @@ TreeList FindAllRootedTrees::add_leaf_to_tree(const Tree &current_tree,
     if (!current_tree->is_leaf()) {
         auto inner = std::static_pointer_cast<InnerNode>(current_tree);
         
+        // add leaf left
         auto result_left = add_leaf_to_tree(inner->left, leaf);
         for(auto left : result_left) {
             // for each new combination left create tree with old right subtree
             result.push_back(std::make_shared<InnerNode>(left, inner->right));
         }
         
+        // add leaf right
         auto result_right = add_leaf_to_tree(inner->right, leaf);
         for(auto right : result_right) {
             // for each new combination left create tree with old right subtree
             result.push_back(std::make_shared<InnerNode>(inner->left, right));
         }
+        
+        // add leaf above
+        result.push_back(std::make_shared<InnerNode>(inner, leaf));
     } else {
         // current_tree is Leaf
         result.push_back(std::make_shared<InnerNode>(leaf, current_tree));
@@ -32,20 +37,18 @@ TreeList FindAllRootedTrees::add_leaf_to_tree(const Tree &current_tree,
 }
 
 TreeList FindAllRootedTrees::get_all_binary_trees(LeafSet &leaves) {
+    assert(leaves.size() > 0);
+    
     TreeList result;
     
+    leaf_number leaf_id = leaves.pop();
+    const auto leaf = std::make_shared<Leaf>(leaf_id);
     if (leaves.size() == 0) {
-        //TODO shouldn't this be asserted not to happen?
+        result.push_back(leaf);
     } else {
-        leaf_number leaf_id = leaves.pop();
-        const auto leaf = std::make_shared<Leaf>(leaf_id);
-        if (leaves.size() == 1) {
-            result.push_back(leaf);
-        } else {
-            for (const auto& t : get_all_binary_trees(leaves)) {
-                auto new_trees = add_leaf_to_tree(t, leaf);
-                result.insert(result.end(), new_trees.begin(), new_trees.end());
-            }
+        for (const auto& t : get_all_binary_trees(leaves)) {
+            auto new_trees = add_leaf_to_tree(t, leaf);
+            result.insert(result.end(), new_trees.begin(), new_trees.end());
         }
     }
     
