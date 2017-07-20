@@ -19,6 +19,12 @@ class TACountFixture : public ::testing::TestWithParam<TACountParameter> {
 class TACheckIfTerraceFixture : public ::testing::TestWithParam<TACountParameter> {
 };
 
+class TAEnumerateFixture : public ::testing::TestWithParam<TACountParameter> {
+};
+
+class TAEnumerateCompressedFixture : public ::testing::TestWithParam<TACountParameter> {
+};
+
 static void test_terrace_analysis(const char *newick_file,
                                   const char *data_file,
                                   const int ta_outspec,
@@ -51,6 +57,44 @@ static void test_terrace_analysis(const char *newick_file,
     free(terraceSizeString);
 
     freeMissingData(m);
+}
+
+static void test_terrace_analysis_with_file(const char *newick_file,
+                                  const char *data_file,
+                                  const int ta_outspec,
+                                  const char *trees_on_terrace) {
+    input_data *read_data = parse_input_data(data_file);
+    assert(read_data != nullptr);
+    char *read_tree = read_newk_tree(newick_file);
+    assert(read_tree != nullptr);
+
+    missingData *m = initializeMissingData(read_data->number_of_species,
+                                           read_data->number_of_partitions,
+                                           const_cast<const char **>(read_data->names));
+    copyDataMatrix(read_data->matrix, m);
+
+    mpz_t terraceSize;
+
+    mpz_init(terraceSize);
+    mpz_set_ui(terraceSize, 0);
+
+    FILE *file = fopen("test_output", "w");
+    assert(file != nullptr);
+
+    int errorCode = terraceAnalysis(m, read_tree, ta_outspec, file, &terraceSize);
+
+    ASSERT_EQ(errorCode, TERRACE_SUCCESS);
+
+    char *terraceSizeString = nullptr;
+
+    terraceSizeString = mpz_get_str(terraceSizeString, 10, terraceSize);
+
+    ASSERT_STREQ(terraceSizeString, trees_on_terrace);
+
+    free(terraceSizeString);
+
+    freeMissingData(m);
+    fclose(file);
 }
 
 // Test a simple tree file
@@ -384,6 +428,33 @@ TEST_P(TACheckIfTerraceFixture, ExamplesFromModifiedInput) {
                 != std::future_status::timeout);
 }
 
+TEST_P(TAEnumerateFixture, ExamplesFromModifiedInput) {
+    auto param = GetParam();
+
+    std::promise<bool> promisedFinished;
+    auto futureResult = promisedFinished.get_future();
+    std::thread([param](std::promise<bool> &finished) {
+        test_terrace_analysis_with_file(param.newick_file, param.data_file, TA_ENUMERATE, param.expected_value);
+        finished.set_value(true);
+    }, std::ref(promisedFinished)).detach();
+    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(TIME_FOR_TESTS))
+                != std::future_status::timeout);
+}
+
+TEST_P(TAEnumerateCompressedFixture, ExamplesFromModifiedInput) {
+    auto param = GetParam();
+
+    std::promise<bool> promisedFinished;
+    auto futureResult = promisedFinished.get_future();
+    std::thread([param](std::promise<bool> &finished) {
+        test_terrace_analysis_with_file(param.newick_file, param.data_file, TA_ENUMERATE_COMPRESS, param.expected_value);
+        finished.set_value(true);
+    }, std::ref(promisedFinished)).detach();
+    EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(TIME_FOR_TESTS))
+                != std::future_status::timeout);
+}
+
+
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACountFixture, ::testing::Values(
     TACountParameter("../input/modified/Allium.nwk",
                      "../input/modified/Allium.data",
@@ -430,6 +501,78 @@ INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACountFixture, ::testing::Values(
     TACountParameter("../input/modified/Ficus.nwk.3",
                      "../input/modified/Ficus.data.3",
                      "851445"),
+    TACountParameter("../input/modified/Iris.nwk",
+                     "../input/modified/Iris.data",
+                     "1"),
+    TACountParameter("../input/modified/Meusemann.nwk",
+                     "../input/modified/Meusemann.data",
+                     "1"),
+    TACountParameter("../input/modified/Pyron.nwk",
+                     "../input/modified/Pyron.data",
+                     "2205")
+));
+
+INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TAEnumerateFixture, ::testing::Values(
+    TACountParameter("../input/modified/Allium_Tiny.nwk",
+                     "../input/modified/Allium_Tiny.data",
+                     "35"),
+    TACountParameter("../input/modified/Asplenium.nwk.1",
+                     "../input/modified/Asplenium.data.1",
+                     "1"),
+    TACountParameter("../input/modified/Asplenium.nwk.2",
+                     "../input/modified/Asplenium.data.2",
+                     "95"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.1",
+                     "../input/modified/Eucalyptus.data.1",
+                     "229"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.1",
+                     "../input/modified/Eucalyptus.data.2",
+                     "267"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.3",
+                     "../input/modified/Eucalyptus.data.3",
+                     "9"),
+    TACountParameter("../input/modified/Euphorbia.nwk.1",
+                     "../input/modified/Euphorbia.data.1",
+                     "759"),
+    TACountParameter("../input/modified/Euphorbia.nwk.2",
+                     "../input/modified/Euphorbia.data.2",
+                     "759"),
+    TACountParameter("../input/modified/Iris.nwk",
+                     "../input/modified/Iris.data",
+                     "1"),
+    TACountParameter("../input/modified/Meusemann.nwk",
+                     "../input/modified/Meusemann.data",
+                     "1"),
+    TACountParameter("../input/modified/Pyron.nwk",
+                     "../input/modified/Pyron.data",
+                     "2205")
+));
+
+INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TAEnumerateCompressedFixture, ::testing::Values(
+    TACountParameter("../input/modified/Allium_Tiny.nwk",
+                     "../input/modified/Allium_Tiny.data",
+                     "35"),
+    TACountParameter("../input/modified/Asplenium.nwk.1",
+                     "../input/modified/Asplenium.data.1",
+                     "1"),
+    TACountParameter("../input/modified/Asplenium.nwk.2",
+                     "../input/modified/Asplenium.data.2",
+                     "95"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.1",
+                     "../input/modified/Eucalyptus.data.1",
+                     "229"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.1",
+                     "../input/modified/Eucalyptus.data.2",
+                     "267"),
+    TACountParameter("../input/modified/Eucalyptus.nwk.3",
+                     "../input/modified/Eucalyptus.data.3",
+                     "9"),
+    TACountParameter("../input/modified/Euphorbia.nwk.1",
+                     "../input/modified/Euphorbia.data.1",
+                     "759"),
+    TACountParameter("../input/modified/Euphorbia.nwk.2",
+                     "../input/modified/Euphorbia.data.2",
+                     "759"),
     TACountParameter("../input/modified/Iris.nwk",
                      "../input/modified/Iris.data",
                      "1"),
