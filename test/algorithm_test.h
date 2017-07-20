@@ -35,7 +35,7 @@ static void test_rooted_trees(const char *newick_file, const char *data_file, lo
                                                 root_species_name.c_str());
         assert (future_root != nullptr);
 
-        std::shared_ptr<Tree> rtree = root_at(future_root, id_to_label);
+        Tree rtree = root_at(future_root, id_to_label);
 
         std::set<std::string> m_labels;
         for (size_t k = 0; k < m->numberOfSpecies; k++) {
@@ -140,7 +140,7 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
     LeafSet leafs = {0, 1, 2};
     label_mapper id_to_label({"1", "2", "3"});
 
-    auto result = get_all_binary_trees(leafs);
+    auto result = FindAllRootedTrees::get_all_binary_trees(leafs);
 
     ASSERT_EQ(result.size(), 3);
 
@@ -161,7 +161,7 @@ TEST(GetAllBinaryTrees, with_four_leafs) {
     label_mapper id_to_label;
     id_to_label.labels = { "1", "2", "3", "4" };
 
-    auto result = get_all_binary_trees(leafs);
+    auto result = FindAllRootedTrees::get_all_binary_trees(leafs);
 
     ASSERT_EQ(result.size(), 15);
 
@@ -214,13 +214,13 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
 }
 
 TEST(ExtractConstraintsFromTree, example_from_slides) {
-    auto l_1 = std::make_shared<Tree>(1);
-    auto l_2 = std::make_shared<Tree>(2);
-    auto l_3 = std::make_shared<Tree>(3);
-    auto l_4 = std::make_shared<Tree>(4);
-    auto c_1 = std::make_shared<Tree>(l_1, l_2);
-    auto c_2 = std::make_shared<Tree>(l_3, l_4);
-    auto r = std::make_shared<Tree>(c_1, c_2);
+    auto l_1 = std::make_shared<Leaf>(1);
+    auto l_2 = std::make_shared<Leaf>(2);
+    auto l_3 = std::make_shared<Leaf>(3);
+    auto l_4 = std::make_shared<Leaf>(4);
+    auto c_1 = std::make_shared<InnerNode>(l_1, l_2);
+    auto c_2 = std::make_shared<InnerNode>(l_3, l_4);
+    auto r = std::make_shared<InnerNode>(c_1, c_2);
 
     auto constraints = extract_constraints_from_tree(r);
 
@@ -393,20 +393,20 @@ TEST(FindConstraintsTest, example_from_slides) {
 
 
 TEST(MergeSubtreesTest, simple_tree) {
-    auto leaf_1 = std::make_shared<Tree>(1);
-    auto leaf_2 = std::make_shared<Tree>(2);
+    auto leaf_1 = std::make_shared<Leaf>(1);
+    auto leaf_2 = std::make_shared<Leaf>(2);
 
-    std::vector<std::shared_ptr<Tree> > left, right;
+    std::vector<Tree> left, right = { leaf_1, leaf_2 };
 
-    left.push_back(leaf_1);
-    right.push_back(leaf_2);
-
-    std::vector<std::shared_ptr<Tree> > result = merge_subtrees(left, right);
+    std::vector<Tree> result = FindAllRootedTrees::merge_subtrees(left, right);
 
     ASSERT_EQ(result.size(), 1);
-    ASSERT_EQ(result[0]->is_leaf(), 0);
-    ASSERT_EQ(result[0]->left->id, 1);
-    ASSERT_EQ(result[0]->right->id, 2);
+    auto inner = std::static_pointer_cast<InnerNode>(result[0]);
+    ASSERT_FALSE(inner->is_leaf());
+    ASSERT_TRUE(inner->left->is_leaf());
+    ASSERT_TRUE(inner->right->is_leaf());
+    ASSERT_EQ(inner->left->get_leaf(), 1);
+    ASSERT_EQ(inner->right->get_leaf(), 2);
 }
 
 TEST_P(RootedTreesAnalysis, ExamplesFromModifiedInput) {

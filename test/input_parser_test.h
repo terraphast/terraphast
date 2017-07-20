@@ -57,10 +57,17 @@ TEST(Root_at_Test, simple_tree) {
     label_mapper id_to_label;
 
     ASSERT_TRUE(check_tree(tree));
-    std::shared_ptr<Tree> root = root_at(get_leaf_by_name(tree, label), id_to_label);
-    ASSERT_EQ("C", id_to_label[root->left->id]);
-    ASSERT_EQ("A", id_to_label[root->right->left->id]);
-    ASSERT_EQ("B", id_to_label[root->right->right->id]);
+    Tree node = root_at(get_leaf_by_name(tree, label), id_to_label);
+    ASSERT_FALSE(node->is_leaf());
+    auto root = std::static_pointer_cast<InnerNode>(node);
+    ASSERT_TRUE(root->left->is_leaf());
+    ASSERT_EQ("C", id_to_label[root->left->get_leaf()]);
+    ASSERT_FALSE(root->right->is_leaf());
+    auto right = std::static_pointer_cast<InnerNode>(root->right);
+    ASSERT_TRUE(right->left->is_leaf());
+    ASSERT_EQ("A", id_to_label[right->left->get_leaf()]);
+    ASSERT_TRUE(right->right->is_leaf());
+    ASSERT_EQ("B", id_to_label[right->right->get_leaf()]);
 
     ntree_destroy(tree);
 }
@@ -90,8 +97,8 @@ TEST(Tree_root_Test, simple_tree) {
 
     label_mapper id_to_label_1;
     label_mapper id_to_label_2;
-    std::shared_ptr<Tree> root1 = root_tree(tree, example1, id_to_label_1);
-    std::shared_ptr<Tree> root2 = root_tree(tree, example2, id_to_label_2);
+    Tree root1 = root_tree(tree, example1, id_to_label_1);
+    Tree root2 = root_tree(tree, example2, id_to_label_2);
 
     //TODO asserts
 
