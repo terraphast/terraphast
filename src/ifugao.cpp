@@ -5,9 +5,9 @@
 #include <sstream>
 #include <iomanip>
 
-std::vector<Tree> FindAllRootedTrees::add_leaf_to_tree(
-        const Tree &current_tree, const LeafPtr &leaf) const {
-    std::vector<Tree> result;
+TreeList FindAllRootedTrees::add_leaf_to_tree(const Tree &current_tree,
+                                              const LeafPtr &leaf) {
+    TreeList result;
     
     if (!current_tree->is_leaf()) {
         auto inner = std::static_pointer_cast<InnerNode>(current_tree);
@@ -31,9 +31,8 @@ std::vector<Tree> FindAllRootedTrees::add_leaf_to_tree(
     return result;
 }
 
-std::vector<Tree> FindAllRootedTrees::get_all_binary_trees(
-        LeafSet &leaves) const {
-    std::vector<Tree> result;
+TreeList FindAllRootedTrees::get_all_binary_trees(LeafSet &leaves) {
+    TreeList result;
     
     if (leaves.size() == 0) {
         //TODO shouldn't this be asserted not to happen?
@@ -44,7 +43,7 @@ std::vector<Tree> FindAllRootedTrees::get_all_binary_trees(
             result.push_back(leaf);
         } else {
             for (const auto& t : get_all_binary_trees(leaves)) {
-                auto new_trees = this->add_leaf_to_tree(t, leaf);
+                auto new_trees = add_leaf_to_tree(t, leaf);
                 result.insert(result.end(), new_trees.begin(), new_trees.end());
             }
         }
@@ -53,9 +52,9 @@ std::vector<Tree> FindAllRootedTrees::get_all_binary_trees(
     return result;
 }
 
-std::vector<Tree> FindAllRootedTrees::merge_subtrees(
-        const std::vector<Tree> &left, const std::vector<Tree> &right) const {
-    std::vector<Tree> merged_trees;
+TreeList FindAllRootedTrees::merge_subtrees(const TreeList &left,
+                                            const TreeList &right){
+    TreeList merged_trees;
 
     for (const auto& l : left) {
         for (const auto& r : right) {

@@ -167,18 +167,22 @@ protected:
                            new_results.end());
         return true;
     }
+public:
+    /**
+     * Returns all possible binary trees that can be combined by using the
+     * leaves in the LeafSet.
+     */
+    static TreeList get_all_binary_trees(LeafSet &leaves);
 
-    std::vector<Tree> get_all_binary_trees(LeafSet &leaves) const;
     /**
      * Adds a leaf to a tree at all possible positions, leading to a list of
      * resulting trees.
      */
-    std::vector<Tree> add_leaf_to_tree(const Tree &current_tree,
-                                       const LeafPtr &leaf) const;
+    static TreeList add_leaf_to_tree(const Tree &current_tree,
+                                     const LeafPtr &leaf);
 
     /** merges two sub-trees */
-    std::vector<Tree> merge_subtrees(const std::vector<Tree> &left,
-                                     const std::vector<Tree> &right) const;
+    static TreeList merge_subtrees(const TreeList &left, const TreeList &right);
 };
 
 class CountAllRootedTrees : public TerraceAlgorithm<mpz_class> {
