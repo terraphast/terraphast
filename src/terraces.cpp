@@ -114,38 +114,9 @@ int terraceAnalysis(missingData *m,
     std::vector<std::string> id_to_lable;
     std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_lable);
 
-    //dout(newickTreeString << "\n");
-
     assert(rtree != nullptr);
-    //dout("rooted_tree = " << rtree->to_newick_string(id_to_lable) << "\n");
-
-    // checking should be done by isBinaryAndConsistent now. commented code is probably unnecassary
-    /*std::map<std::string, bool> in_data_file;
-    for (size_t i = 0; i < id_to_lable.size(); i++) {
-        if (m_labels.count(std::string(id_to_lable[i])) == 0) {
-            dout("Species appears in newick file, but not in missing data file:" << id_to_lable[i] << "\n");
-            assert(0);
-        } else {
-            in_data_file[*m_labels.find(std::string(id_to_lable[i]))] = true;
-        }
-    }
-
-    in_data_file[root_species_name] = true;
-    for (auto &m_label : m_labels) {
-        if(!in_data_file[m_label]) {
-            dout("Species appears in missing data file, but not in newick file:" << m_label << "\n");
-            assert(0);
-        }
-    }*/
 
     auto constraints = extract_constraints_from_supertree(rtree, m, id_to_lable);
-    //dout(constraints << "\n");
-    //dout(extract_constraints_from_supertree(__convert(tree), m) << "\n");
-
-    //auto r = find_all_rooted_trees(leafs,
-    //                               extract_constraints_from_supertree(rtree, m));
-    //dout("===== TREES: " << r.size() << "\n");
-
     auto leaves = LeafSet(id_to_lable.size());
 
     mpz_class count = 0;
@@ -162,6 +133,10 @@ int terraceAnalysis(missingData *m,
         for (std::shared_ptr<Tree> t : all_trees) {
             fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_lable, root_species_name).c_str());
         }
+    } else if (enumerateCompressedTrees) {
+        FindCompressedTree algo;
+        auto tree = algo.scan_terrace(leaves, constraints);
+        fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_lable, root_species_name).c_str());
     }
 
     mpz_set(*terraceSize, count.get_mpz_t());

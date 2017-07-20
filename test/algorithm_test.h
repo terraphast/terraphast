@@ -356,6 +356,31 @@ TEST(FindAllRootedTrees, example_from_slides) {
     ASSERT_EQ(result[8]->to_newick_string(id_to_label), "(((2,1),3),(5,4));");
 }
 
+TEST(FindCompressedTree, example_from_slides) {
+
+    LeafSet leaves = {0, 1, 2, 3, 4};
+    std::vector<std::string> id_to_label;
+    id_to_label.push_back("1");
+    id_to_label.push_back("2");
+    id_to_label.push_back("3");
+    id_to_label.push_back("4");
+    id_to_label.push_back("5");
+
+    std::vector<constraint> constraints;
+
+    constraint cons1 = {0, 2, 1, 1};
+    constraint cons2 = {3, 3, 4, 1};
+
+    constraints.push_back(cons1);
+    constraints.push_back(cons2);
+
+    FindCompressedTree algo;
+    auto result = algo.scan_terrace(leaves, constraints);
+
+    ASSERT_EQ(result->to_newick_string(id_to_label),
+              "((1,2),{3,4,5})|(3,(1,(2,(4,5)))|(2,{1,4,5})|((1,2),(4,5)))|(((1,2),3),(4,5));");
+}
+
 TEST(FindConstraintsTest, example_from_slides) {
     LeafSet leaves = {1, 2, 3};
     std::vector<std::string> id_to_label;

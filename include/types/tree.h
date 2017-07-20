@@ -3,72 +3,80 @@
 #include "functional.h"
 #include "types.h"
 
-class Tree {
+class Tree : public std::enable_shared_from_this<Tree> {
 public:
-	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-			std::shared_ptr<Tree> p_parent, leaf_number p_id) :
-			id(p_id), left(p_left), right(p_right), parent(p_parent) {
-	}
+    leaf_number id;
+    std::shared_ptr<Tree> left;
+    std::shared_ptr<Tree> right;
+    std::weak_ptr<Tree> parent;
 
-	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-            leaf_number p_id) :
-			id(p_id), left(p_left), right(p_right) {
-	}
-
-	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :
-			left(p_left), right(p_right) {
-	}
-
-	Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right,
-			std::shared_ptr<Tree> p_parent) :
-			left(p_left), right(p_right), parent(p_parent) {
-	}
-
-	Tree(leaf_number p_id, std::shared_ptr<Tree> p_parent) :
-			id(p_id), left(nullptr), right(nullptr), parent(p_parent) {
-	}
-
-	Tree(leaf_number p_id) :
-			id(p_id), left(nullptr), right(nullptr) {
-	}
-
-	Tree() :
-			left(nullptr), right(nullptr) {
-	}
-
-	leaf_number id;
-	std::shared_ptr<Tree> left;
-	std::shared_ptr<Tree> right;
-	std::weak_ptr<Tree> parent;
-
-	inline bool is_leaf() const {
-		return (left == nullptr && right == nullptr);
-	}
-
-	std::string to_newick_string(const std::vector<std::string> &id_to_lable) const;
-	std::string to_newick_string(const std::vector<std::string> &id_to_lable, const std::string &root_label) const;
-
-    template<typename T>
-    using TreeNodeVisitor = T (*)(const Tree*);
-
-    template<typename T>
-    T fold (BinaryOperator<T> op, TreeNodeVisitor<T> v) const {
-        if(this->is_leaf()) {
-            return v(this);
-        }
-
-        assert(this->left != nullptr);
-        assert(this->right != nullptr);
-        return op(this->left->fold(op, v),
-                  this->right->fold(op, v));
+    Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :
+            left(p_left), right(p_right) {
     }
 
-    size_t count() const;
+    Tree(leaf_number p_id) :
+            id(p_id), left(nullptr), right(nullptr) {
+    }
+
+    Tree() :
+            left(nullptr), right(nullptr) {
+    }
+
+    virtual ~Tree() {}
+
+    virtual inline bool is_leaf() const {
+        return (left == nullptr && right == nullptr);
+    }
+
+    virtual std::string to_newick_string(const std::vector<std::string> &id_to_lable) const;
+
+    virtual std::string to_newick_string(const std::vector<std::string> &id_to_lable,
+                                         const std::string &root_label) const;
+
+    virtual std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> deep_copy();
+
+    virtual std::shared_ptr<Tree> root();
+
+    virtual void to_newick_string(std::stringstream &ss,
+                                  const std::vector<std::string> &id_to_lable) const;
+
+protected:
+    std::shared_ptr<Tree> deep_copy(std::map<std::shared_ptr<Tree>,
+            std::shared_ptr<Tree>> &cover_map);
 };
 
-std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<Tree> tree);
 
-std::shared_ptr<Tree> root(const std::shared_ptr<Tree> tree);
+class PartitionNode : public Tree {
+public:
+    PartitionNode() {}
 
-std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> deep_copy(std::shared_ptr<Tree> tree);
+    std::vector<std::shared_ptr<Tree>> partitions;
 
+    inline bool is_leaf() const {
+        return false;
+    }
+
+    std::string to_newick_string(const std::vector<std::string> &ids_to_lables,
+                                    const std::string &root_label) const;
+    void to_newick_string(std::stringstream &ss,
+                          const std::vector<std::string> &id_to_lable) const;
+};
+
+class LeafSetNode : public Tree {
+public:
+    LeafSetNode() {}
+
+    LeafSetNode(const std::set<leaf_number> &p_leaves) : leaves(p_leaves) {
+    }
+
+    std::set<leaf_number> leaves;
+
+    inline bool is_leaf() const {
+        return false;
+    }
+
+    std::string to_newick_string(const std::vector<std::string> &ids_to_lables,
+                                 const std::string &root_label) const;
+    void to_newick_string(std::stringstream &ss,
+                          const std::vector<std::string> &id_to_lable) const;
+};

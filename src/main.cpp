@@ -1,7 +1,6 @@
 #include "input_parser.h"
 #include "terraces.h"
 
-//TODO: Not that intuitive
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         printf("Specify .data and .nwk as first and second argument");
@@ -51,7 +50,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (read_tree != nullptr) {
-        free(read_tree);
+        delete[] read_tree;
     }
 
     fclose(empiricalTrees);

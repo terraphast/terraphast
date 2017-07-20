@@ -162,6 +162,36 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     freeMissingData(example1);
 }
 
+TEST(FindCompressedUnrootedTree, example_from_slides) {
+    ntree_t *tree = get_newk_tree_from_string("((s1,s2),s3,(s4,s5));");
+
+    const char *speciesNames[] = {"s1", "s2", "s3", "s4", "s5"};
+
+    const unsigned char matrix1[] = {1, 0,
+                                     1, 0,
+                                     1, 1,
+                                     0, 1,
+                                     0, 1};
+
+    //let's initialize some missing data data structures now
+    missingData *example1 = initializeMissingData(5, 2, speciesNames);
+    copyDataMatrix(matrix1, example1);
+
+    std::string root_species_name;
+    std::vector<std::string> id_to_label;
+    std::shared_ptr<Tree> r_tree = root_tree(tree, example1, root_species_name, id_to_label);
+    auto leaves = LeafSet(id_to_label.size());
+    auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
+
+    FindCompressedTree get_trees;
+    auto result = get_trees.scan_terrace(leaves, constraints);
+
+    ASSERT_EQ(result->to_newick_string(id_to_label, root_species_name), "(s3,{s1,s2,s4,s5});");
+
+    ntree_destroy(tree);
+    freeMissingData(example1);
+}
+
 TEST(TerracesAnalysis, example1_from_old_main) {
     //open some output files for enumerating all trees on a terrace
     FILE *f0 = fopen("tree1", "w");
