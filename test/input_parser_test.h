@@ -55,19 +55,19 @@ TEST(Root_at_Test, simple_tree) {
     ntree_t *tree = get_newk_tree_from_string("(A,B,(C,D));");
     char label[] = {'D',0};
     label_mapper id_to_label;
-
     ASSERT_TRUE(check_tree(tree));
     Tree node = root_at(get_leaf_by_name(tree, label), id_to_label);
     ASSERT_FALSE(node->is_leaf());
     auto root = std::static_pointer_cast<InnerNode>(node);
-    ASSERT_TRUE(root->left->is_leaf());
-    ASSERT_EQ("C", id_to_label[root->left->get_leaf()]);
-    ASSERT_FALSE(root->right->is_leaf());
-    auto right = std::static_pointer_cast<InnerNode>(root->right);
-    ASSERT_TRUE(right->left->is_leaf());
-    ASSERT_EQ("A", id_to_label[right->left->get_leaf()]);
-    ASSERT_TRUE(right->right->is_leaf());
-    ASSERT_EQ("B", id_to_label[right->right->get_leaf()]);
+    ASSERT_FALSE(root->left->is_leaf());
+    auto left = std::static_pointer_cast<InnerNode>(root->left);
+    ASSERT_TRUE(left->left->is_leaf());
+    ASSERT_EQ("A", id_to_label[left->left->get_leaf()]);
+    ASSERT_TRUE(left->right->is_leaf());
+    ASSERT_EQ("B", id_to_label[left->right->get_leaf()]);
+    ASSERT_TRUE(root->right->is_leaf());
+    ASSERT_EQ("C", id_to_label[root->right->get_leaf()]);
+    
 
     ntree_destroy(tree);
 }
