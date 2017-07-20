@@ -99,9 +99,7 @@ int main(int argc, char** argv) try {
 		const auto rchild = t.size();
 		t.emplace_back(parent);
 		leafs.emplace_back(rchild);
-
-		t[parent].left = lchild;
-		t[parent].right = rchild;
+		t[parent].set_children(lchild, rchild);
 	}
 	auto names = std::vector<std::string>(t.size());
 	for (auto i = index{}; i < leafs.size(); ++i) {
