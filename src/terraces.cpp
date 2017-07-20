@@ -128,13 +128,8 @@ int terraceAnalysis(missingData *m,
     auto leaves = LeafSet(id_to_label.size());
 
     mpz_class count = 0;
-    if(countTrees) {
-        CountAllRootedTrees algo;
-        count = algo.scan_terrace(leaves, constraints);
-    } else if(treeIsOnTerrace) {
-        CheckIfTerrace algo;
-        count = algo.scan_terrace(leaves, constraints) ? 2 : 0;
-    } else if (enumerateTrees) {
+    if (enumerateTrees) {
+        assert(!enumerateCompressedTrees);
         FindAllRootedTrees algo;
         auto all_trees = algo.scan_terrace(leaves, constraints);
         count = all_trees.size();
@@ -145,6 +140,12 @@ int terraceAnalysis(missingData *m,
         FindCompressedTree algo;
         auto tree = algo.scan_terrace(leaves, constraints);
         fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_label).c_str());
+    } else if(countTrees) {
+        CountAllRootedTrees algo;
+        count = algo.scan_terrace(leaves, constraints);
+    } else if(treeIsOnTerrace) {
+        CheckIfTerrace algo;
+        count = algo.scan_terrace(leaves, constraints) ? 2 : 0;
     }
 
     mpz_set(*terraceSize, count.get_mpz_t());
