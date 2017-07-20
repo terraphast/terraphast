@@ -129,7 +129,6 @@ int terraceAnalysis(missingData *m,
 
     mpz_class count = 0;
     if (enumerateTrees) {
-        assert(!enumerateCompressedTrees);
         FindAllRootedTrees algo;
         auto all_trees = algo.scan_terrace(leaves, constraints);
         count = all_trees.size();
@@ -149,27 +148,6 @@ int terraceAnalysis(missingData *m,
     }
 
     mpz_set(*terraceSize, count.get_mpz_t());
-
-    /* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
-
-    /*
-     the function shall write to variable terraceSize
-     1. the number of UNROOTED trees on the terrace
-     2. or just some value > 1 in terraceSize, if we only wanted to know if the tree is on a terrace
-     */
-
-    /*
-     the return value is an error code
-     we will define these together as the project proceeds, e.g.
-     0:  succesfull completion
-     -1: problem parsing Newick file
-     -2: #species in Newick file does not correspond to number of species in data matrix
-     -3: entries in data matrix not either 0 or 1
-     -4: less than 4 spcies in input tree
-     -5: only one partition in data matrix
-     -6: reserved for something you must think about anyway (tree can't be rooted)
-     -7: no output file specified
-     */
 
     ntree_destroy(tree);
     return TERRACE_SUCCESS;
