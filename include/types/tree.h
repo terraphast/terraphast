@@ -5,23 +5,41 @@
 
 #include "functional.h"
 #include "types.h"
-
+/**
+ * Abstract representative of any Tree object used internally.
+ * Can not be instantiated, use correct sub-class for using trees.
+ */
 class Node {
 // make classes that inherit be able to use the protected methods
 friend class Leaf;
 friend class InnerNode;
 friend class UnrootedNode;
-friend class AllBinaryCombinationsNode;
+friend class AllLeafCombinationsNode;
+friend class AllTreeCombinationsNode;
 
 public: 
+    /**
+     * Whether this node is used a leaf. Iff this returns true then get_leaf()
+     * can safely be called.
+     * @return Whether this node is used a leaf.
+     */
     virtual bool is_leaf() const = 0;
+    /**
+     * The leaf ID of this node. ONLY WORKS iff is_leaf() returns true.
+     * @return The leaf ID of this node.
+     */
     virtual leaf_number get_leaf() const = 0;
 
+    /**
+     * Get a string representation of this node/tree. Recurses of all children,
+     * if there are any.
+     * @param id_to_label Mapper of leaf IDs to their label.
+     * @return A string representation of this node/tree.
+     */
     std::string to_newick_string(const label_mapper &id_to_label) const;
 
     /**
      * Returns a vector containing all constraints infered from this tree.
-     *
      * @return All constraints of this tree.
      */
     std::vector<constraint> extract_constraints() const;
@@ -35,6 +53,10 @@ protected:
                                   const label_mapper &id_to_label) const = 0;
 };
 
+/**
+ * Simple representative of a leaf. Can only be instantiated given the
+ * represented leaf ID.
+ */
 class Leaf : public Node {
 private:
     leaf_number leaf_id;
@@ -51,6 +73,10 @@ protected:
                           const label_mapper &id_to_label) const;
 };
 
+/**
+ * Represents an inner node of a binary tree, therefore has exactly two
+ * children. These need to be known upon creation.
+ */
 class InnerNode : public Node {
 friend class Node;
 private:
@@ -77,6 +103,10 @@ protected:
                           const label_mapper &id_to_label) const;
 };
 
+/**
+ * Represents the "root" of an unrooted binary tree, meaning a node without a
+ * parent, which has 3 children.
+ */
 class UnrootedNode : public Node {
 private:
     std::shared_ptr<Node> elem1;
@@ -101,14 +131,49 @@ protected:
                           const label_mapper &id_to_label) const;
 };
 
-class AllBinaryCombinationsNode : public Node {
+/**
+ * Abstract representation of all possible binary trees that could be created
+ * by using any combination of a set of leaves.
+ * This can not be treated like a leaf, so is_leaf() returns false.
+ */
+class AllLeafCombinationsNode : public Node {
 private:
     std::vector<leaf_number> leaves;
 public:
-    AllBinaryCombinationsNode(std::vector<leaf_number> leaves) : leaves(leaves)
-    {
+    AllLeafCombinationsNode(std::vector<leaf_number> leaves) : 
+            leaves(leaves) {
         assert(leaves.size() > 0);
     };
+
+    bool is_leaf() const { return false; }
+    leaf_number get_leaf() const {
+        // may not be called, use is_leaf() to prevent calling it
+        assert(false);
+        return 0;
+    }
+
+protected:
+    std::tuple<leaf_number, leaf_number> get_constraints(
+            std::vector<constraint> &constraints) const;
+    void to_newick_string(std::stringstream &ss,
+                          const label_mapper &id_to_label) const;
+};
+
+/**
+ * Abstract representation of all possible binary trees that could be created
+ * by using any combination of a set of .
+ * This can not be treated like a leaf, so is_leaf() returns false.
+ */
+class AllTreeCombinationsNode : public Node {
+private:
+    std::vector<std::shared_ptr<Node>> trees;
+public:
+    AllTreeCombinationsNode(std::vector<std::shared_ptr<Node>> trees) :
+            trees(trees) {
+        for(auto tree:trees) {
+            assert(tree != nullptr);
+        }
+    }
 
     bool is_leaf() const { return false; }
     leaf_number get_leaf() const {
@@ -128,85 +193,8 @@ typedef std::shared_ptr<Node> NodePtr;
 typedef std::shared_ptr<Leaf> LeafPtr;
 typedef std::shared_ptr<InnerNode> InnerNodePtr;
 typedef std::shared_ptr<UnrootedNode> UnrootedNodePtr;
-typedef std::shared_ptr<AllBinaryCombinationsNode> AllBinaryCombinationsNodePtr;
+typedef std::shared_ptr<AllLeafCombinationsNode> AllLeafCombinationsNodePtr;
+typedef std::shared_ptr<AllTreeCombinationsNode> AllTreeCombinationsNodePtr;
 // for legacy purposes
 typedef std::shared_ptr<Node> Tree;
 
-
-/*
-class Tree : public std::enable_shared_from_this<Tree> {
-public:
-    leaf_number id;
-    std::shared_ptr<Tree> left;
-    std::shared_ptr<Tree> right;
-    std::weak_ptr<Tree> parent;
-
-    Tree(std::shared_ptr<Tree> p_left, std::shared_ptr<Tree> p_right) :
-            left(p_left), right(p_right) {
-    }
-
-    Tree(leaf_number p_id) :
-            id(p_id), left(nullptr), right(nullptr) {
-    }
-
-    Tree() :
-            left(nullptr), right(nullptr) {
-    }
-
-    virtual ~Tree() {}
-
-    virtual inline bool is_leaf() const {
-        return (left == nullptr && right == nullptr);
-    }
-
-    virtual std::string to_newick_string(const label_mapper &id_to_label) const;
-
-    virtual std::string to_newick_string_root(
-            const label_mapper &id_to_label) const;
-
-    virtual std::tuple<std::shared_ptr<Tree>, std::shared_ptr<Tree>> deep_copy();
-
-    virtual std::shared_ptr<Tree> root();
-
-    virtual void to_newick_string(std::stringstream &ss,
-                                  const label_mapper &id_to_label) const;
-
-protected:
-    std::shared_ptr<Tree> deep_copy(std::map<std::shared_ptr<Tree>,
-            std::shared_ptr<Tree>> &cover_map);
-};
-
-
-class PartitionNode : public Tree {
-public:
-    PartitionNode() {}
-
-    std::vector<std::shared_ptr<Tree>> partitions;
-
-    inline bool is_leaf() const {
-        return false;
-    }
-
-    std::string to_newick_string_root(const label_mapper &ids_to_labels) const;
-    void to_newick_string(std::stringstream &ss,
-                          const label_mapper &id_to_label) const;
-};
-
-class LeafSetNode : public Tree {
-public:
-    LeafSetNode() {}
-
-    LeafSetNode(const std::set<leaf_number> &p_leaves) : leaves(p_leaves) {
-    }
-
-    std::set<leaf_number> leaves;
-
-    inline bool is_leaf() const {
-        return false;
-    }
-
-    std::string to_newick_string_root(const label_mapper &ids_to_labels) const;
-    void to_newick_string(std::stringstream &ss,
-                          const label_mapper &id_to_label) const;
-};
- */
