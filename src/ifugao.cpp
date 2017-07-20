@@ -5,86 +5,70 @@
 #include <sstream>
 #include <iomanip>
 
-static std::vector<std::shared_ptr<Tree> > add_leaf_to_tree(
-        std::shared_ptr<Tree> current_tree, const leaf_number leaf) {
-
-    std::vector<std::shared_ptr<Tree> > result;
-
+std::vector<Tree> FindAllRootedTrees::add_leaf_to_tree(
+        const Tree &current_tree, const LeafPtr &leaf) const {
+    std::vector<Tree> result;
+    
     if (!current_tree->is_leaf()) {
-        auto result_left = add_leaf_to_tree(current_tree->left, leaf);
-        result.insert(result.end(), result_left.begin(), result_left.end());
-        auto result_right = add_leaf_to_tree(current_tree->right, leaf);
-        result.insert(result.end(), result_right.begin(), result_right.end());
+        auto inner = std::static_pointer_cast<InnerNode>(current_tree);
+        
+        auto result_left = add_leaf_to_tree(inner->left, leaf);
+        for(auto left : result_left) {
+            // for each new combination left create tree with old right subtree
+            result.push_back(std::make_shared<InnerNode>(left, inner->right));
+        }
+        
+        auto result_right = add_leaf_to_tree(inner->right, leaf);
+        for(auto right : result_right) {
+            // for each new combination left create tree with old right subtree
+            result.push_back(std::make_shared<InnerNode>(inner->left, right));
+        }
+    } else {
+        // current_tree is Leaf
+        result.push_back(std::make_shared<InnerNode>(leaf, current_tree));
     }
+    
+    return result;
+}
 
-    std::shared_ptr<Tree> tree_copy;
-    std::shared_ptr<Tree> root_of_tree_copy;
-    std::tie(tree_copy, root_of_tree_copy) = current_tree->deep_copy();
-
-    auto to_insert = std::make_shared<Tree>(leaf);
-    auto new_tree = std::make_shared<Tree>(tree_copy, to_insert);
-    new_tree->parent = tree_copy->parent;
-    auto p = tree_copy->parent.lock();
-    if (p != nullptr) {
-        if (p->left == tree_copy) {
-            p->left = new_tree;
+std::vector<Tree> FindAllRootedTrees::get_all_binary_trees(
+        LeafSet &leaves) const {
+    std::vector<Tree> result;
+    
+    if (leaves.size() == 0) {
+        //TODO shouldn't this be asserted not to happen?
+    } else {
+        leaf_number leaf_id = leaves.pop();
+        const auto leaf = std::make_shared<Leaf>(leaf_id);
+        if (leaves.size() == 1) {
+            result.push_back(leaf);
         } else {
-            p->right = new_tree;
+            for (const auto& t : get_all_binary_trees(leaves)) {
+                auto new_trees = this->add_leaf_to_tree(t, leaf);
+                result.insert(result.end(), new_trees.begin(), new_trees.end());
+            }
         }
     }
-    tree_copy->parent = new_tree;
-    to_insert->parent = new_tree;
-
-    result.push_back(tree_copy->root());
-
+    
     return result;
 }
 
-std::vector<std::shared_ptr<Tree> > get_all_binary_trees(
-        LeafSet &leaves) {
+std::vector<Tree> FindAllRootedTrees::merge_subtrees(
+        const std::vector<Tree> &left, const std::vector<Tree> &right) const {
+    std::vector<Tree> merged_trees;
 
-    std::vector<std::shared_ptr<Tree> > result;
-    if (leaves.size() == 0) {
-        return result;
-    }
-
-    auto next_leaf = leaves.pop();
-
-    if (leaves.size() == 0) {
-        auto t = std::make_shared<Tree>(next_leaf);
-        result.push_back(t);
-        return result;
-    }
-
-    for (auto t : get_all_binary_trees(leaves)) {
-        auto new_trees = add_leaf_to_tree(t, next_leaf);
-        result.insert(result.end(), new_trees.begin(), new_trees.end());
-    }
-
-    return result;
-}
-
-std::vector<std::shared_ptr<Tree> > merge_subtrees(
-        const std::vector<std::shared_ptr<Tree> > &left,
-        const std::vector<std::shared_ptr<Tree> > &right) {
-
-    std::vector<std::shared_ptr<Tree> > merged_trees;
-
-    for (auto l : left) {
-        for (auto r : right) {
-            auto new_tree = std::make_shared<Tree>(l, r);
-            l->parent = new_tree;
-            r->parent = new_tree;
-            merged_trees.push_back(new_tree);
+    for (const auto& l : left) {
+        for (const auto& r : right) {
+            merged_trees.push_back(std::make_shared<InnerNode>(l, r));
         }
     }
 
     assert(merged_trees.size() == left.size() * right.size());
     return merged_trees;
 }
-
+/*
 static std::tuple<leaf_number, leaf_number> extract_constraints_from_tree_rec(
-        const std::shared_ptr<Tree> node,
+        const Tree node,
         std::vector<constraint> &constraints) {
 
     assert(node != nullptr);
@@ -125,16 +109,9 @@ static std::tuple<leaf_number, leaf_number> extract_constraints_from_tree_rec(
 
     return std::make_tuple(l_left_most, r_right_most);
 }
-
-std::vector<constraint> extract_constraints_from_tree(
-        const std::shared_ptr<Tree> supertree) {
-    std::vector<constraint> constraints;
-
-    if(supertree != nullptr) {
-        extract_constraints_from_tree_rec(supertree, constraints);
-    }
-
-    return constraints;
+*/
+std::vector<constraint> extract_constraints_from_tree(const Tree supertree) {
+    return supertree->extract_constraints();
 }
 
 std::vector<constraint> find_constraints(const LeafSet &leaves,
