@@ -65,8 +65,8 @@ std::tuple<leaf_number, leaf_number> InnerNode::get_constraints(
         right_most_leaf = std::get<1>(right_tuple);
         
         // constraint for right inner edge
-        constraints.emplace_back(left_most_leaf, left_most_leaf,
-                std::get<0>(right_tuple), std::get<1>(right_tuple));
+        constraints.emplace_back(std::get<0>(right_tuple), right_most_leaf,
+                                 left_most_leaf, right_most_leaf);
     } else if(right_leaf) {
         // left edge is an inner edge
         // recurse
@@ -75,8 +75,8 @@ std::tuple<leaf_number, leaf_number> InnerNode::get_constraints(
         right_most_leaf = this->right->get_leaf();
         
         // constraint for left inner edge
-        constraints.emplace_back(std::get<0>(left_tuple),
-                std::get<1>(left_tuple), right_most_leaf, right_most_leaf);
+        constraints.emplace_back(left_most_leaf, std::get<1>(left_tuple),
+                                 left_most_leaf, right_most_leaf);
     } else {
         // left and right edge are inner edges
         auto left_tuple = this->left->get_constraints(constraints);
@@ -84,11 +84,11 @@ std::tuple<leaf_number, leaf_number> InnerNode::get_constraints(
         left_most_leaf = std::get<0>(left_tuple);
         right_most_leaf = std::get<1>(right_tuple);
         // constraint for left inner edge
-        constraints.emplace_back(std::get<0>(left_tuple),
-                std::get<1>(left_tuple), right_most_leaf, right_most_leaf);
+        constraints.emplace_back(left_most_leaf, std::get<1>(left_tuple),
+                                 left_most_leaf, right_most_leaf);
         // constraint for right inner edge
-        constraints.emplace_back(left_most_leaf, left_most_leaf,
-                std::get<0>(right_tuple), std::get<1>(right_tuple));
+        constraints.emplace_back(std::get<0>(right_tuple), right_most_leaf,
+                                 left_most_leaf, right_most_leaf);
     }
     
     return std::make_tuple(left_most_leaf, right_most_leaf);
@@ -153,16 +153,4 @@ std::tuple<leaf_number, leaf_number> AllTreeCombinationsNode::get_constraints(
     assert(false);
     return std::make_tuple(0, 0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
