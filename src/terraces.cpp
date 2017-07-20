@@ -135,7 +135,7 @@ int terraceAnalysis(missingData *m,
         }
     } else if (enumerateCompressedTrees) {
         FindCompressedTree algo;
-        auto tree = algo.scan_terrace(leaves, constraints);
+        auto tree = algo.perform(leaves, constraints);
         fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_lable, root_species_name).c_str());
     }
 

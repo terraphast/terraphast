@@ -184,7 +184,7 @@ TEST(FindCompressedUnrootedTree, example_from_slides) {
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
     FindCompressedTree get_trees;
-    auto result = get_trees.scan_terrace(leaves, constraints);
+    auto result = get_trees.perform(leaves, constraints);
 
     ASSERT_EQ(result->to_newick_string(id_to_label, root_species_name), "(s3,{s1,s2,s4,s5});");
 

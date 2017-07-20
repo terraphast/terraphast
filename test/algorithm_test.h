@@ -375,7 +375,7 @@ TEST(FindCompressedTree, example_from_slides) {
     constraints.push_back(cons2);
 
     FindCompressedTree algo;
-    auto result = algo.scan_terrace(leaves, constraints);
+    auto result = algo.perform(leaves, constraints);
 
     ASSERT_EQ(result->to_newick_string(id_to_label),
               "((1,2),{3,4,5})|(3,(1,(2,(4,5)))|(2,{1,4,5})|((1,2),(4,5)))|(((1,2),3),(4,5));");

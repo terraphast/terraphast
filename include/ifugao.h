@@ -73,6 +73,14 @@ class TerraceAlgorithm {
 public:
     virtual ~TerraceAlgorithm() = default;
 
+    T perform(LeafSet &leaves, const std::vector<constraint> &constraints) {
+        T result;
+        //#pragma omp parallel
+        //#pragma omp single nowait
+        result = scan_terrace(leaves, constraints);
+        return result;
+    }
+protected:
     T scan_terrace(LeafSet &leaves, const std::vector<constraint> &constraints) {
 
         if (constraints.empty()) {
@@ -87,8 +95,6 @@ public:
     inline
     virtual T traverse_partitions(const std::vector<constraint> &constraints,
                                   LeafSet &leaves) {
-        leaves.apply_constraints(constraints);
-
         auto partition_count = leaves.number_partition_tuples();
         std::vector<T> partitions;
         partitions.resize(partition_count);
