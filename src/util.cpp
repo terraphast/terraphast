@@ -12,7 +12,7 @@ Tree generate_induced_tree(const NodePtr node,
     }
 
     if (node->is_leaf()) {
-        const LeafPtr leaf = (std::static_pointer_cast<Leaf>(node))->leaf_id;
+        const LeafPtr leaf = std::static_pointer_cast<Leaf>(node);
         size_t leaf_id = leaf->leaf_id;
         
         // TODO ifs into asserts?
@@ -100,7 +100,7 @@ Tree root_tree(ntree_t *nwk_tree,
     }
     if (root_specied_found) {
         ntree_t *future_root = get_leaf_by_name(nwk_tree,
-                missing_data->speciesNames[root_species_number]);
+                missing_data->speciesNames[root_species_id]);
         id_to_label.root_label = missing_data->speciesNames[root_species_id];
         if (future_root == nullptr) {
             dout("In root_tree(...): label "
@@ -150,7 +150,6 @@ Tree root_at(ntree_t *leaf, label_mapper &id_to_label) {
     assert(leaf != nullptr);
     assert(leaf->parent != nullptr);
     assert(leaf->children_count == 0);  //should be a leaf
-    ntree_t *neighbour = leaf->parent;
 
     return root_recursive(leaf->parent, leaf, id_to_label);
 }
@@ -226,17 +225,17 @@ Tree root_recursive(ntree_t *current_ntree, ntree_t *parent,
         ntree_t *left; 
         ntree_t *right; 
         if (current_ntree->children[0] == parent) {
-            left_ntree = current_ntree->children[1];
-            right_ntree = current_ntree->children[2];
+            left = current_ntree->children[1];
+            right = current_ntree->children[2];
         } else if (current_ntree->children[1] == parent) {
-            left_ntree = current_ntree->children[0];
-            right_ntree = current_ntree->children[2];
+            left = current_ntree->children[0];
+            right = current_ntree->children[2];
         } else if (current_ntree->children[2] == parent) {
-            left_ntree = current_ntree->children[0];
-            right_ntree = current_ntree->children[1];
+            left = current_ntree->children[0];
+            right = current_ntree->children[1];
         } else {
             assert(0);
-            return;
+            return nullptr;
         }
         auto left_tree = root_recursive(left, current_ntree, id_to_label);
         auto right_tree = root_recursive(right, current_ntree, id_to_label);

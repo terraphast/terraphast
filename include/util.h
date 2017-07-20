@@ -42,9 +42,9 @@ std::vector<std::string> get_root_species(const missingData *missing_data);
  * @return the new root of the tree, or NULL if the tree cannot be rooted
  * (e.g. if there is no species that has data for every partition)
  */
-std::shared_ptr<Tree> root_tree(ntree_t *tree,
-                                const missingData *missing_data,
-                                label_mapper &id_to_label);
+Tree root_tree(ntree_t *tree,
+               const missingData *missing_data,
+               label_mapper &id_to_label);
 
 /**
  * Returns a pointer to the leaf that has the label <label>
@@ -67,8 +67,7 @@ Tree root_at(ntree_t *root, label_mapper &id_to_label);
  * @param current_ntree the ntree_t coresponding to the current parameter. Here we get the children from
  * @param parent the ntree_t represention of the parent. this is needed to avoid calling the recursion on the parent
  */
-void root_recursive(Tree current,
-                    ntree_t *current_ntree,
+Tree root_recursive(ntree_t *current_ntree,
                     ntree_t *parent,
                     label_mapper &id_to_label);
 
