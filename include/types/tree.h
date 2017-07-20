@@ -58,10 +58,10 @@ protected:
  * represented leaf ID.
  */
 class Leaf : public Node {
-private:
-    leaf_number leaf_id;
 public:
     Leaf(leaf_number leaf_id) : leaf_id(leaf_id) {};
+
+    const leaf_number leaf_id;
 
     bool is_leaf() const { return true; }
     leaf_number get_leaf() const { return leaf_id; }
@@ -79,15 +79,15 @@ protected:
  */
 class InnerNode : public Node {
 friend class Node;
-private:
-    std::shared_ptr<Node> left;
-    std::shared_ptr<Node> right;
 public:
     InnerNode(std::shared_ptr<Node> left, std::shared_ptr<Node> right) :
             left(left), right(right) {
-                assert(left != nullptr);
-                assert(right != nullptr);
-            };
+        assert(left != nullptr);
+        assert(right != nullptr);
+    };
+
+    const std::shared_ptr<Node> left;
+    const std::shared_ptr<Node> right;
 
     bool is_leaf() const { return false; }
     leaf_number get_leaf() const {
@@ -108,14 +108,14 @@ protected:
  * parent, which has 3 children.
  */
 class UnrootedNode : public Node {
-private:
-    std::shared_ptr<Node> elem1;
-    std::shared_ptr<Node> elem2;
-    std::shared_ptr<Node> elem3;
 public:
     UnrootedNode(std::shared_ptr<Node> elem1, std::shared_ptr<Node> elem2,
                  std::shared_ptr<Node> elem3) :
             elem1(elem1), elem2(elem2), elem3(elem3) {};
+
+    const std::shared_ptr<Node> elem1;
+    const std::shared_ptr<Node> elem2;
+    const std::shared_ptr<Node> elem3;
 
     bool is_leaf() const { return false; }
     leaf_number get_leaf() const {
@@ -137,13 +137,13 @@ protected:
  * This can not be treated like a leaf, so is_leaf() returns false.
  */
 class AllLeafCombinationsNode : public Node {
-private:
-    std::vector<leaf_number> leaves;
 public:
     AllLeafCombinationsNode(std::vector<leaf_number> leaves) : 
             leaves(leaves) {
         assert(leaves.size() > 0);
     };
+
+    const std::vector<leaf_number> leaves;
 
     bool is_leaf() const { return false; }
     leaf_number get_leaf() const {
@@ -161,12 +161,11 @@ protected:
 
 /**
  * Abstract representation of all possible binary trees that could be created
- * by using any combination of a set of .
- * This can not be treated like a leaf, so is_leaf() returns false.
+ * by using any combination of a se of trees.
+ * Trees can be added ad-hoc with add_tree(), so the object can be created
+ * before all trees are known.
  */
 class AllTreeCombinationsNode : public Node {
-private:
-    std::vector<std::shared_ptr<Node>> trees;
 public:
     AllTreeCombinationsNode(std::vector<std::shared_ptr<Node>> trees) :
             trees(trees) {
@@ -175,11 +174,18 @@ public:
         }
     }
 
+    std::vector<std::shared_ptr<Node>> trees;
+
     bool is_leaf() const { return false; }
     leaf_number get_leaf() const {
         // may not be called, use is_leaf() to prevent calling it
         assert(false);
         return 0;
+    }
+
+    void add_tree(std::shared_ptr<Node> tree) {
+        assert(tree != nullptr);
+        trees.push_back(tree);
     }
 
 protected:
@@ -197,4 +203,5 @@ typedef std::shared_ptr<AllLeafCombinationsNode> AllLeafCombinationsNodePtr;
 typedef std::shared_ptr<AllTreeCombinationsNode> AllTreeCombinationsNodePtr;
 // for legacy purposes
 typedef std::shared_ptr<Node> Tree;
+
 
