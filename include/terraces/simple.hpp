@@ -21,6 +21,8 @@ namespace terraces {
  * @returns true if there is at least one other tree on the terrace.
  */
 bool is_on_terrace(std::istream& nwk_stream, std::istream& matrix_stream);
+bool is_on_terrace(std::istream& nwk_stream, const std::string& matrix_string);
+bool is_on_terrace(const std::string& nwk_string, std::istream& matrix_stream);
 bool is_on_terrace(const std::string& nwk_string, const std::string& matrix_string);
 bool is_on_terrace_from_file(const std::string& nwk_filename, const std::string& matrix_filename);
 
@@ -29,11 +31,15 @@ bool is_on_terrace_from_file(const std::string& nwk_filename, const std::string&
  * @returns the number of trees on the terrace
  */
 std::uint64_t get_terrace_size(std::istream& nwk_stream, std::istream& matrix_stream);
+std::uint64_t get_terrace_size(std::istream& nwk_stream, const std::string& matrix_string);
+std::uint64_t get_terrace_size(const std::string& nwk_string, std::istream& matrix_stream);
 std::uint64_t get_terrace_size(const std::string& nwk_string, const std::string& matrix_string);
 std::uint64_t get_terrace_size_from_file(const std::string& nwk_filename,
                                          const std::string& matrix_filename);
 
 mpz_class get_terrace_size_as_bigint(std::istream& nwk_stream, std::istream& matrix_stream);
+mpz_class get_terrace_size_as_bigint(std::istream& nwk_stream, const std::string& matrix_string);
+mpz_class get_terrace_size_as_bigint(const std::string& nwk_string, std::istream& matrix_stream);
 mpz_class get_terrace_size_as_bigint(const std::string& nwk_string,
                                      const std::string& matrix_string);
 mpz_class get_terrace_size_as_bigint_from_file(const std::string& nwk_filename,
@@ -44,9 +50,11 @@ mpz_class get_terrace_size_as_bigint_from_file(const std::string& nwk_filename,
  *
  * This function may run longer if the number of such trees is very big!
  */
-void print_terrace(std::istream& nwk_stream, std::istream& matrix_stream, std::ostream& output);
+void print_terrace(std::istream& nwk_stream, std::istream& matrix_stream, std::ostream& out);
+void print_terrace(std::istream& nwk_stream, const std::string& matrix_string, std::ostream& out);
+void print_terrace(const std::string& nwk_string, std::istream& matrix_stream, std::ostream& out);
 void print_terrace(const std::string& nwk_string, const std::string& matrix_string,
-                   std::ostream& output);
+                   std::ostream& out);
 void print_terrace_from_file(const std::string& nwk_filename, const std::string& matrix_filename,
                              std::ostream& output);
 
