@@ -120,12 +120,20 @@ std::tuple<leaf_number, leaf_number> UnrootedNode::get_constraints(
 /***************************************/
 void AllLeafCombinationsNode::to_newick_string(
         std::stringstream &ss, const label_mapper &id_to_label) const {
-    ss << "{";
-    ss << id_to_label[this->leaves[0]];// guaranteed to exist (see init assert)
-    for(size_t i = 1; i < this->leaves.size(); ++i) {
-        ss << "," << id_to_label[this->leaves[i]];
+    if (this->leaves.size() > 2) {
+        ss << "{";
+        ss << id_to_label[this->leaves[0]];
+        for(size_t i = 1; i < this->leaves.size(); ++i) {
+            ss << "," << id_to_label[this->leaves[i]];
+        }
+        ss << "}";
+    } else if (this->leaves.size() == 2) {
+        ss << "(" << id_to_label[leaves[0]] << ","
+           << id_to_label[leaves[1]] << ")";
+    } else {
+        assert(this->leaves.size() == 1);
+        ss << id_to_label[leaves[0]];
     }
-    ss << "}";
 }
 
 std::tuple<leaf_number, leaf_number> AllLeafCombinationsNode::get_constraints(
@@ -140,6 +148,9 @@ std::tuple<leaf_number, leaf_number> AllLeafCombinationsNode::get_constraints(
 /***************************************/
 void AllTreeCombinationsNode::to_newick_string(
         std::stringstream &ss, const label_mapper &id_to_label) const {
+    if (this->trees.size() == 0) {
+        return; // this can happen if initialized empty
+    }
     this->trees[0]->to_newick_string(ss, id_to_label);
     for (size_t i = 1; i < this->trees.size(); ++i) {
         ss << "|";
