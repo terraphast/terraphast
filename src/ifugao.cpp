@@ -202,8 +202,3 @@ std::ostream& operator<<(std::ostream &strm,
     }
     return strm << "]";
 }
-
-std::ostream& operator<<(std::ostream &strm, const constraint& c) {
-    return strm << "lca(" << c.smaller_left << "," << c.smaller_right
-                << ") < lca(" << c.bigger_left << "," << c.bigger_right << ")";
-}
