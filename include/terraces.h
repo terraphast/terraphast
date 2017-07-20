@@ -150,7 +150,7 @@ void copyDataMatrix(const unsigned char *matrix, missingData *m);
  * @return All constraints of the given supertree.
  */
 std::vector<constraint> extract_constraints_from_supertree(
-        const std::shared_ptr<Tree> supertree,
+        const Tree supertree,
         const missingData* missing_data,
         const label_mapper &id_to_label);
 
@@ -182,6 +182,7 @@ int terraceAnalysis(missingData *m, const char *newickTreeString,
         const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
 
 #ifdef __cplusplus
+//TODO move to debug.h or something
 std::string missing_data_to_nexus(const missingData* m);
 std::ostream& operator<<(std::ostream &strm, const missingData& m);
 #endif // __cplusplus
