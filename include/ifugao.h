@@ -47,8 +47,15 @@ std::ostream& operator<<(std::ostream &strm,
  * @param supertree All supertree from which the constraints will be extracted
  * @return All constraints of the given super tree.
  */
-std::vector<constraint> extract_constraints_from_tree(
-        const Tree supertree);
+inline std::vector<constraint> extract_constraints_from_tree(
+        const Tree supertree) {
+    if (supertree != nullptr && !supertree->is_leaf()) {
+        return supertree->extract_constraints();
+    } else {
+        std::vector<constraint> empty;
+        return empty;
+    }
+};
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
