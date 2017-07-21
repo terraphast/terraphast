@@ -120,24 +120,23 @@ int terraceAnalysis(missingData *m,
     assert(binAndCons == 0);
 
     label_mapper id_to_label;
-    std::shared_ptr<Tree> rtree = root_tree(tree, m, id_to_label);
+    Tree rtree = root_tree(tree, m, id_to_label);
 
     assert(rtree != nullptr);
 
     auto constraints = extract_constraints_from_supertree(rtree, m, id_to_label);
     auto leaves = LeafSet(id_to_label.size());
-
     mpz_class count = 0;
     if (enumerateTrees) {
         FindAllRootedTrees algo;
-        auto all_trees = algo.scan_terrace(leaves, constraints);
+        auto all_trees = algo.scan_terrace(leaves, constraints, true);
         count = all_trees.size();
-        for (std::shared_ptr<Tree> t : all_trees) {
+        for (Tree t : all_trees) {
             fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_label).c_str());
         }
     } else if (enumerateCompressedTrees) {
         FindCompressedTree algo;
-        auto tree = algo.scan_terrace(leaves, constraints);
+        auto tree = algo.scan_terrace(leaves, constraints, true);
         fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_label).c_str());
     } else if(countTrees) {
         CountAllRootedTrees algo;
@@ -252,7 +251,7 @@ unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
 }
 
 std::vector<constraint> extract_constraints_from_supertree(
-        const std::shared_ptr<Tree> supertree,
+        const Tree supertree,
         const missingData *missing_data,
         const label_mapper &id_to_label) {
 
@@ -274,7 +273,7 @@ std::vector<constraint> extract_constraints_from_supertree(
         for (auto &c : constraints) {
             //avoid duplications
             std::string key = std::to_string(c.smaller_left) + std::to_string(c.smaller_right) + "__" +
-                              std::to_string(c.bigger_left) + std::to_string(c.bigger_right);
+                              std::to_string(c.bigger);
             if (constraint_map.count(key) == 0) {
                 constraint_map[key] = c;
             }

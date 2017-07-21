@@ -28,14 +28,13 @@ static void test_rooted_trees(const char *newick_file, const char *data_file, lo
     copyDataMatrix(read_data->matrix, m);
 
     for(auto &root_species_name : get_root_species(m)) {
-
         label_mapper id_to_label;
 
         ntree_t *future_root = get_leaf_by_name(tree,
                                                 root_species_name.c_str());
         assert (future_root != nullptr);
 
-        std::shared_ptr<Tree> rtree = root_at(future_root, id_to_label);
+        Tree rtree = root_at(future_root, id_to_label);
 
         std::set<std::string> m_labels;
         for (size_t k = 0; k < m->numberOfSpecies; k++) {
@@ -74,13 +73,12 @@ static void test_rooted_trees(const char *newick_file, const char *data_file, lo
 }
 
 TEST(ApplyConstraintsTest, example_from_slides) {
-
     LeafSet leaves = {0, 1, 2, 3, 4, 5};
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 3, 2, 2};
-    constraint cons2 = {4, 4, 5, 2};
+    constraint cons1 = {1, 2, 3};
+    constraint cons2 = {4, 5, 2};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -102,10 +100,10 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 3, 2, 2};
-    constraint cons2 = {4, 4, 5, 2};
-    constraint cons3 = {3, 3, 4, 2};
-    constraint cons4 = {1, 1, 3, 5};
+    constraint cons1 = {1, 2, 3};
+    constraint cons2 = {4, 5, 2};
+    constraint cons3 = {3, 4, 2};
+    constraint cons4 = {1, 3, 5};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -127,7 +125,7 @@ TEST(ApplyConstraintsTest, no_merges) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 3, 6, 6};
+    constraint cons1 = {1, 6, 3};
 
     constraints.push_back(cons1);
 
@@ -137,11 +135,11 @@ TEST(ApplyConstraintsTest, no_merges) {
 
 TEST(GetAllBinaryTrees, with_tree_leafs) {
 
-    LeafSet leafs = {0, 1, 2};
+    LeafSet leaves = {0, 1, 2};
     label_mapper id_to_label({"1", "2", "3"});
 
-    auto result = get_all_binary_trees(leafs);
-
+    auto result = FindAllRootedTrees::get_all_binary_trees(leaves);
+    
     ASSERT_EQ(result.size(), 3);
 
     std::vector<std::string> result_strings;
@@ -150,36 +148,36 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
         result_strings.push_back(temp->to_newick_string(id_to_label));
     }
 
-    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "((3,1),2);") != result_strings.end());
-    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "(3,(2,1));") != result_strings.end());
-    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "((3,2),1);") != result_strings.end());
+    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "((1,2),3);") != result_strings.end());
+    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "(2,(1,3));") != result_strings.end());
+    ASSERT_TRUE(std::find(result_strings.begin(), result_strings.end(), "((2,3),1);") != result_strings.end());
 }
 
-TEST(GetAllBinaryTrees, with_four_leafs) {
+TEST(GetAllBinaryTrees, with_four_leaves) {
 
-    LeafSet leafs = {0, 1, 2, 3};
+    LeafSet leaves = {0, 1, 2, 3};
     label_mapper id_to_label;
     id_to_label.labels = { "1", "2", "3", "4" };
 
-    auto result = get_all_binary_trees(leafs);
+    auto result = FindAllRootedTrees::get_all_binary_trees(leaves);
 
     ASSERT_EQ(result.size(), 15);
 
-    ASSERT_EQ(result[0]->to_newick_string(id_to_label), "(((4,1),2),3);");
-    ASSERT_EQ(result[1]->to_newick_string(id_to_label), "((4,(2,1)),3);");
-    ASSERT_EQ(result[2]->to_newick_string(id_to_label), "(((4,2),1),3);");
-    ASSERT_EQ(result[3]->to_newick_string(id_to_label), "((4,2),(3,1));");
-    ASSERT_EQ(result[4]->to_newick_string(id_to_label), "(((4,2),3),1);");
-    ASSERT_EQ(result[5]->to_newick_string(id_to_label), "((4,1),(3,2));");
-    ASSERT_EQ(result[6]->to_newick_string(id_to_label), "(4,((3,1),2));");
-    ASSERT_EQ(result[7]->to_newick_string(id_to_label), "(4,(3,(2,1)));");
-    ASSERT_EQ(result[8]->to_newick_string(id_to_label), "(4,((3,2),1));");
-    ASSERT_EQ(result[9]->to_newick_string(id_to_label), "((4,(3,2)),1);");
-    ASSERT_EQ(result[10]->to_newick_string(id_to_label), "(((4,1),3),2);");
-    ASSERT_EQ(result[11]->to_newick_string(id_to_label), "((4,(3,1)),2);");
-    ASSERT_EQ(result[12]->to_newick_string(id_to_label), "(((4,3),1),2);");
-    ASSERT_EQ(result[13]->to_newick_string(id_to_label), "((4,3),(2,1));");
-    ASSERT_EQ(result[14]->to_newick_string(id_to_label), "(((4,3),2),1);");
+    ASSERT_EQ(result[0]->to_newick_string(id_to_label), "(((1,2),3),4);");
+    ASSERT_EQ(result[1]->to_newick_string(id_to_label), "((2,(1,3)),4);");
+    ASSERT_EQ(result[2]->to_newick_string(id_to_label), "(((2,3),1),4);");
+    ASSERT_EQ(result[3]->to_newick_string(id_to_label), "((2,3),(1,4));");
+    ASSERT_EQ(result[4]->to_newick_string(id_to_label), "(((2,3),4),1);");
+    ASSERT_EQ(result[5]->to_newick_string(id_to_label), "((1,3),(2,4));");
+    ASSERT_EQ(result[6]->to_newick_string(id_to_label), "(3,((1,2),4));");
+    ASSERT_EQ(result[7]->to_newick_string(id_to_label), "(3,(2,(1,4)));");
+    ASSERT_EQ(result[8]->to_newick_string(id_to_label), "(3,((2,4),1));");
+    ASSERT_EQ(result[9]->to_newick_string(id_to_label), "((3,(2,4)),1);");
+    ASSERT_EQ(result[10]->to_newick_string(id_to_label), "(((1,3),4),2);");
+    ASSERT_EQ(result[11]->to_newick_string(id_to_label), "((3,(1,4)),2);");
+    ASSERT_EQ(result[12]->to_newick_string(id_to_label), "(((3,4),1),2);");
+    ASSERT_EQ(result[13]->to_newick_string(id_to_label), "((3,4),(1,2));");
+    ASSERT_EQ(result[14]->to_newick_string(id_to_label), "(((3,4),2),1);");
 }
 
 TEST(ApplyConstraintsTest, merges_to_two_parts) {
@@ -188,8 +186,8 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 1, 2, 3};
-    constraint cons2 = {1, 1, 3, 4};
+    constraint cons1 = {1, 2, 3};
+    constraint cons2 = {1, 3, 4};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -214,13 +212,13 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
 }
 
 TEST(ExtractConstraintsFromTree, example_from_slides) {
-    auto l_1 = std::make_shared<Tree>(1);
-    auto l_2 = std::make_shared<Tree>(2);
-    auto l_3 = std::make_shared<Tree>(3);
-    auto l_4 = std::make_shared<Tree>(4);
-    auto c_1 = std::make_shared<Tree>(l_1, l_2);
-    auto c_2 = std::make_shared<Tree>(l_3, l_4);
-    auto r = std::make_shared<Tree>(c_1, c_2);
+    auto l_1 = std::make_shared<Leaf>(1);
+    auto l_2 = std::make_shared<Leaf>(2);
+    auto l_3 = std::make_shared<Leaf>(3);
+    auto l_4 = std::make_shared<Leaf>(4);
+    auto c_1 = std::make_shared<InnerNode>(l_1, l_2);
+    auto c_2 = std::make_shared<InnerNode>(l_3, l_4);
+    auto r = std::make_shared<InnerNode>(c_1, c_2);
 
     auto constraints = extract_constraints_from_tree(r);
 
@@ -228,21 +226,19 @@ TEST(ExtractConstraintsFromTree, example_from_slides) {
     //lca(l1, l2) < lca(l1, l4)
     ASSERT_EQ(constraints[0].smaller_left, 1);
     ASSERT_EQ(constraints[0].smaller_right, 2);
-    ASSERT_EQ(constraints[0].bigger_left, 1);
-    ASSERT_EQ(constraints[0].bigger_right, 4);
+    ASSERT_EQ(constraints[0].bigger, 4);
 
     //lca(l3, l4) < lca(l1, l4)
     ASSERT_EQ(constraints[1].smaller_left, 3);
     ASSERT_EQ(constraints[1].smaller_right, 4);
-    ASSERT_EQ(constraints[1].bigger_left, 1);
-    ASSERT_EQ(constraints[1].bigger_right, 4);
+    ASSERT_EQ(constraints[1].bigger, 1);
 }
 
 TEST(GetNthPartitionTuple, example_with_two_parts) {
 
     LeafSet leaves = {0, 1, 2};
     std::vector<constraint> constraints;
-    constraint cons1 = {0, 0, 1, 2};
+    constraint cons1 = {0, 1, 2};
     constraints.push_back(cons1);
 
     leaves.apply_constraints(constraints);
@@ -261,8 +257,8 @@ TEST(GetNthPartitionTuple, example_from_slides) {
 
     LeafSet leaves = {0, 1, 2, 3, 4};
     std::vector<constraint> constraints;
-    constraints.push_back({0, 0, 1, 2});
-    constraints.push_back({3, 0, 4, 2});
+    constraints.push_back({0, 1, 2});
+    constraints.push_back({3, 4, 2}); //TODO
 
     leaves.apply_constraints(constraints);
     auto result = leaves.get_list_of_partitions();
@@ -287,10 +283,10 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
 
     LeafSet leaves = {0, 1, 2, 3, 4, 5, 6, 7};
     std::vector<constraint> constraints;
-    constraints.push_back({0, 0, 1, 2});
-    constraints.push_back({3, 0, 4, 2});
-    constraints.push_back({5, 0, 6, 2});
-    constraints.push_back({6, 0, 7, 2});
+    constraints.push_back({0, 1, 2});
+    constraints.push_back({3, 4, 2}); //TODO
+    constraints.push_back({5, 6, 2}); //TODO
+    constraints.push_back({6, 7, 2}); //TODO
 
     leaves.apply_constraints(constraints);
     auto result = leaves.get_list_of_partitions();
@@ -331,25 +327,24 @@ TEST(FindAllRootedTrees, example_from_slides) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {0, 2, 1, 1};
-    constraint cons2 = {3, 3, 4, 1};
+    constraint cons1 = {0, 1, 2};
+    constraint cons2 = {3, 4, 1};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
 
     FindAllRootedTrees algo;
     auto result = algo.scan_terrace(leaves, constraints);
-
     ASSERT_EQ(result.size(), 9);
-    ASSERT_EQ(result[0]->to_newick_string(id_to_label), "((2,1),((5,3),4));");
-    ASSERT_EQ(result[1]->to_newick_string(id_to_label), "((2,1),(5,(4,3)));");
-    ASSERT_EQ(result[2]->to_newick_string(id_to_label), "((2,1),((5,4),3));");
-    ASSERT_EQ(result[3]->to_newick_string(id_to_label), "(3,(1,(2,(5,4))));");
-    ASSERT_EQ(result[4]->to_newick_string(id_to_label), "(3,(2,((5,1),4)));");
-    ASSERT_EQ(result[5]->to_newick_string(id_to_label), "(3,(2,(5,(4,1))));");
-    ASSERT_EQ(result[6]->to_newick_string(id_to_label), "(3,(2,((5,4),1)));");
-    ASSERT_EQ(result[7]->to_newick_string(id_to_label), "(3,((2,1),(5,4)));");
-    ASSERT_EQ(result[8]->to_newick_string(id_to_label), "(((2,1),3),(5,4));");
+    ASSERT_EQ(result[0]->to_newick_string(id_to_label), "((1,2),((3,4),5));");
+    ASSERT_EQ(result[1]->to_newick_string(id_to_label), "((1,2),(4,(3,5)));");
+    ASSERT_EQ(result[2]->to_newick_string(id_to_label), "((1,2),((4,5),3));");
+    ASSERT_EQ(result[3]->to_newick_string(id_to_label), "(3,(1,(2,(4,5))));");
+    ASSERT_EQ(result[4]->to_newick_string(id_to_label), "(3,(2,((1,4),5)));");
+    ASSERT_EQ(result[5]->to_newick_string(id_to_label), "(3,(2,(4,(1,5))));");
+    ASSERT_EQ(result[6]->to_newick_string(id_to_label), "(3,(2,((4,5),1)));");
+    ASSERT_EQ(result[7]->to_newick_string(id_to_label), "(3,((1,2),(4,5)));");
+    ASSERT_EQ(result[8]->to_newick_string(id_to_label), "(((1,2),3),(4,5));");
 }
 
 TEST(FindCompressedTree, example_from_slides) {
@@ -360,8 +355,8 @@ TEST(FindCompressedTree, example_from_slides) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {0, 2, 1, 1};
-    constraint cons2 = {3, 3, 4, 1};
+    constraint cons1 = {0, 1, 2};
+    constraint cons2 = {3, 4, 1};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -379,34 +374,33 @@ TEST(FindConstraintsTest, example_from_slides) {
     id_to_label.labels = { "1", "2", "3" };
     std::vector<constraint> constraints;
 
-    constraint cons1 = {0, 2, 1, 1};
-    constraint cons2 = {3, 3, 4, 1};
+    constraint cons1 = {0, 1, 2};
+    constraint cons2 = {3, 4, 1};
     constraints.push_back(cons1);
     constraints.push_back(cons2);
     std::vector<constraint> result = find_constraints(leaves, constraints);
     ASSERT_EQ(result.size(), 1);
     ASSERT_EQ(result[0].smaller_left, 0);
-    ASSERT_EQ(result[0].bigger_left, 2);
     ASSERT_EQ(result[0].smaller_right, 1);
-    ASSERT_EQ(result[0].bigger_right, 1);
+    ASSERT_EQ(result[0].bigger, 2);
 }
 
 
 TEST(MergeSubtreesTest, simple_tree) {
-    auto leaf_1 = std::make_shared<Tree>(1);
-    auto leaf_2 = std::make_shared<Tree>(2);
+    auto leaf_1 = std::make_shared<Leaf>(1);
+    auto leaf_2 = std::make_shared<Leaf>(2);
 
-    std::vector<std::shared_ptr<Tree> > left, right;
+    std::vector<Tree> left = { leaf_1 }, right = { leaf_2 };
 
-    left.push_back(leaf_1);
-    right.push_back(leaf_2);
-
-    std::vector<std::shared_ptr<Tree> > result = merge_subtrees(left, right);
+    std::vector<Tree> result = FindAllRootedTrees::merge_subtrees(left, right);
 
     ASSERT_EQ(result.size(), 1);
-    ASSERT_EQ(result[0]->is_leaf(), 0);
-    ASSERT_EQ(result[0]->left->id, 1);
-    ASSERT_EQ(result[0]->right->id, 2);
+    auto inner = std::static_pointer_cast<InnerNode>(result[0]);
+    ASSERT_FALSE(inner->is_leaf());
+    ASSERT_TRUE(inner->left->is_leaf());
+    ASSERT_TRUE(inner->right->is_leaf());
+    ASSERT_EQ(inner->left->get_leaf(), 1);
+    ASSERT_EQ(inner->right->get_leaf(), 2);
 }
 
 TEST_P(RootedTreesAnalysis, ExamplesFromModifiedInput) {

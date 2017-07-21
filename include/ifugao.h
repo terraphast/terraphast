@@ -1,12 +1,11 @@
-#ifndef IFUGAO_H
-#define IFUGAO_H
-
+#pragma once
 #include "types.h"
 
 #include <iostream>
 #include <iterator>
 #include <gmpxx.h>
 
+/* TODO UNUSED
 template<typename T>
 std::ostream& operator<<(std::ostream &strm, const std::set<T>& set) {
     strm << "{";
@@ -41,17 +40,22 @@ std::ostream& operator<<(std::ostream &strm, const constraint& tree);
 
 std::ostream& operator<<(std::ostream &strm,
                          const std::vector<std::shared_ptr<std::set<leaf_number>> >& set);
-
+*/
 /**
  * Returns a vector containing all constraints infered from the given supertree.
  *
  * @param supertree All supertree from which the constraints will be extracted
  * @return All constraints of the given super tree.
  */
-std::vector<constraint> extract_constraints_from_tree(
-        const std::shared_ptr<Tree> supertree);
-
-std::vector<std::shared_ptr<Tree> > get_all_binary_trees(LeafSet &leaves);
+inline std::vector<constraint> extract_constraints_from_tree(
+        const Tree supertree) {
+    if (supertree != nullptr && !supertree->is_leaf()) {
+        return supertree->extract_constraints();
+    } else {
+        std::vector<constraint> empty;
+        return empty;
+    }
+};
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
@@ -63,31 +67,31 @@ std::vector<std::shared_ptr<Tree> > get_all_binary_trees(LeafSet &leaves);
 std::vector<constraint> find_constraints(const LeafSet &leaves,
                                          const std::vector<constraint> &constraints);
 
-/** merges two sub-trees */
-std::vector<std::shared_ptr<Tree> > merge_subtrees(
-        const std::vector<std::shared_ptr<Tree> > &left,
-        const std::vector<std::shared_ptr<Tree> > &right);
 
 template <typename T>
 class TerraceAlgorithm {
 public:
     virtual ~TerraceAlgorithm() = default;
 
-    T scan_terrace(LeafSet &leaves, const std::vector<constraint> &constraints) {
+    T scan_terrace(LeafSet &leaves,
+                            const std::vector<constraint> &constraints,
+                            bool unrooted = false) {
         if (constraints.empty()) {
-            return scan_unconstraint_leaves(leaves);
+            return scan_unconstraint_leaves(leaves, unrooted);
         } else {
             leaves.apply_constraints(constraints);
-            return traverse_partitions(constraints, leaves);
+            return traverse_partitions(constraints, leaves, unrooted);
         }
     }
 
 protected:
     inline
     virtual T traverse_partitions(const std::vector<constraint> &constraints,
-                                  LeafSet &leaves) {
+                                  LeafSet &leaves,
+                                  bool unrooted = false) {
         T result = initialize_result_type();
-        for (size_t i = 1; i <= leaves.number_partition_tuples(); i++) {
+        bool cont = true;
+        for (size_t i = 1; cont && i <= leaves.number_partition_tuples(); i++) {
             std::shared_ptr<LeafSet> part_left;
             std::shared_ptr<LeafSet> part_right;
             std::tie(part_left, part_right) = leaves.get_nth_partition_tuple(i);
@@ -95,11 +99,13 @@ protected:
             auto constraints_left = find_constraints(*part_left, constraints);
             auto constraints_right = find_constraints(*part_right, constraints);
 
-            auto subtrees_left = scan_terrace(*part_left, constraints_left);
-            auto subtrees_right = scan_terrace(*part_right, constraints_right);
+            auto subtrees_left = scan_terrace(*part_left,
+                                                       constraints_left);
+            auto subtrees_right = scan_terrace(*part_right,
+                                                        constraints_right);
             auto trees = combine_part_results(subtrees_left, subtrees_right);
 
-            combine_bipartition_results(result, trees);
+            cont = combine_bipartition_results(result, trees, unrooted);
         }
 
         return result;
@@ -107,67 +113,133 @@ protected:
 
     virtual T initialize_result_type() = 0;
 
-    virtual T scan_unconstraint_leaves(LeafSet &leaves) = 0;
+    virtual T scan_unconstraint_leaves(LeafSet &leaves,
+                                       bool unrooted = false) = 0;
 
     virtual T combine_part_results(const T &left_part,
                                    const T &right_part) = 0;
 
-    virtual void combine_bipartition_results(T &aggregation,
-                                             const T &new_results) = 0;
+    virtual bool combine_bipartition_results(T &aggregation,
+                                             const T &new_results,
+                                             bool unrooted = false) = 0;
 };
 
-typedef std::vector<std::shared_ptr<Tree>> tree_result_list;
 
-class FindCompressedTree : public TerraceAlgorithm<std::shared_ptr<Tree>> {
+class FindCompressedTree : public TerraceAlgorithm<Tree> {
 protected:
     inline
-    std::shared_ptr<Tree> initialize_result_type() {
-        return std::make_shared<PartitionNode>();
+    Tree initialize_result_type() {
+        std::vector<std::shared_ptr<Node>> trees;
+        return std::make_shared<AllTreeCombinationsNode>(trees);
     }
 
     inline
-    std::shared_ptr<Tree> scan_unconstraint_leaves(LeafSet &leaves) {
-        // formula to count all trees is ((2n-5)!)!
-        return std::make_shared<LeafSetNode>(leaves.to_set());
+    Tree scan_unconstraint_leaves(LeafSet &leaves, bool unrooted = false) {
+        // TODO reconsider the whole std::set usage vs std::vector
+        auto set = leaves.to_set();
+        std::vector<leaf_number> leaves_vec(set.begin(), set.end());
+        const auto result =
+                std::make_shared<AllLeafCombinationsNode>(leaves_vec);
+        if(unrooted) {
+            return std::make_shared<UnrootedCombinationsNode>(result);
+        } else {
+            return result;
+        }
     }
 
     inline
-    std::shared_ptr<Tree> combine_part_results(const std::shared_ptr<Tree> &left_part,
-                                          const std::shared_ptr<Tree> &right_part) {
-        return std::make_shared<Tree>(left_part, right_part);
+    Tree combine_part_results(const Tree &left_part, const Tree &right_part) {
+        return std::make_shared<InnerNode>(left_part, right_part);
     }
 
     inline
-    void combine_bipartition_results(std::shared_ptr<Tree> &aggregation,
-                                     const std::shared_ptr<Tree> &new_results) {
-        auto p = std::static_pointer_cast<PartitionNode>(aggregation);
-        p->partitions.push_back(new_results);
+    bool combine_bipartition_results(Tree &aggregation,
+                                     const Tree &new_results,
+                                     bool unrooted = false) {
+        if (unrooted) {
+            //TODO simply overwrite new_results
+            auto all_trees =
+                std::static_pointer_cast<AllTreeCombinationsNode>(aggregation);
+            // Guaranteed to work, otherwise no constraints would exist and this
+            // method would never get called.
+            const auto inner = std::static_pointer_cast<InnerNode>(new_results);
+            const auto unrooted = std::make_shared<UnrootedNode>(inner);
+            all_trees->add_tree(unrooted);
+        } else {
+            auto all_trees =
+                std::static_pointer_cast<AllTreeCombinationsNode>(aggregation);
+            all_trees->add_tree(new_results);
+        }
+        return true;
     }
 };
 
-class FindAllRootedTrees : public TerraceAlgorithm<tree_result_list> {
+typedef std::vector<Tree> TreeList;
+class FindAllRootedTrees : public TerraceAlgorithm<TreeList> {
 protected:
     inline
-    tree_result_list initialize_result_type() {
-        return tree_result_list();
+    TreeList initialize_result_type() {
+        return TreeList();
     }
 
     inline
-    tree_result_list scan_unconstraint_leaves(LeafSet &leaves) {
-        return get_all_binary_trees(leaves);
+    TreeList scan_unconstraint_leaves(LeafSet &leaves, bool unrooted = false) {
+        TreeList binary_trees = get_all_binary_trees(leaves);
+        
+        if(unrooted) {
+            for (size_t i = 0; i < binary_trees.size() ; ++i) {
+                const auto inner =
+                    std::static_pointer_cast<InnerNode>(binary_trees[i]);
+                binary_trees[i] = std::make_shared<UnrootedNode>(inner);
+            }
+        }
+        
+        return binary_trees;
     }
 
     inline
-    tree_result_list combine_part_results(const tree_result_list &left_part,
-                                            const tree_result_list &right_part) {
+    TreeList combine_part_results(const TreeList &left_part,
+                                  const TreeList &right_part) {
         return merge_subtrees(left_part, right_part);
     }
 
     inline
-    void combine_bipartition_results(tree_result_list &aggregation,
-                                     const tree_result_list &new_results) {
-        aggregation.insert(aggregation.end(), new_results.begin(), new_results.end());
+    bool combine_bipartition_results(TreeList &aggregation,
+                                     const TreeList &new_results,
+                                     bool unrooted = false) {
+        if(unrooted) {
+            TreeList unrooted(new_results.size());
+            // Guaranteed to work, otherwise no constraints would exist and this
+            // method would never get called.
+            for(size_t i = 0; i < new_results.size(); ++i) {
+                auto inner =
+                    std::static_pointer_cast<InnerNode>(new_results[i]);
+                unrooted[i] = std::make_shared<UnrootedNode>(inner);
+            }
+            aggregation.insert(aggregation.end(), unrooted.begin(),
+                               unrooted.end());
+        } else {
+            aggregation.insert(aggregation.end(), new_results.begin(),
+                               new_results.end());
+        }
+        return true;
     }
+public:
+    /**
+     * Returns all possible binary trees that can be combined by using the
+     * leaves in the LeafSet.
+     */
+    static TreeList get_all_binary_trees(LeafSet &leaves);
+
+    /**
+     * Adds a leaf to a tree at all possible positions, leading to a list of
+     * resulting trees.
+     */
+    static TreeList add_leaf_to_tree(const Tree &current_tree,
+                                     const LeafPtr &leaf);
+
+    /** merges two sub-trees */
+    static TreeList merge_subtrees(const TreeList &left, const TreeList &right);
 };
 
 class CountAllRootedTrees : public TerraceAlgorithm<mpz_class> {
@@ -177,7 +249,9 @@ protected:
         return mpz_class(0);
     }
     inline
-    mpz_class scan_unconstraint_leaves(LeafSet &leaves) {
+    mpz_class scan_unconstraint_leaves(LeafSet &leaves,
+                                       bool unrooted = false) {
+        // formula to count all trees is ((2n-5)!)!
         mpz_class result = 1;
         for(size_t i = 4; i <= (leaves.size() + 1); i++) {
             result *= (2*i-5);
@@ -186,13 +260,17 @@ protected:
     }
 
     inline
-    mpz_class combine_part_results(const mpz_class &left_part, const mpz_class &right_part) {
+    mpz_class combine_part_results(const mpz_class &left_part,
+                                   const mpz_class &right_part) {
         return left_part * right_part;
     }
 
     inline
-    void combine_bipartition_results(mpz_class &aggregation, const mpz_class &new_results) {
+    bool combine_bipartition_results(mpz_class &aggregation,
+                                     const mpz_class &new_results,
+                                     bool unrooted = false) {
         aggregation += new_results;
+        return true;
     }
 };
 
@@ -213,7 +291,7 @@ protected:
     }
 
     inline
-    bool scan_unconstraint_leaves(LeafSet &leaves) {
+    bool scan_unconstraint_leaves(LeafSet &leaves, bool unrooted = false) {
         return leaves.size() >= 3;
     }
 
@@ -223,9 +301,10 @@ protected:
     }
 
     inline
-    void combine_bipartition_results(bool &aggregation, const bool &new_results) {
-        aggregation = (aggregation || new_results);
+    bool combine_bipartition_results(bool &aggregation,
+                                     const bool &new_results,
+                                     bool unrooted = false) {
+        aggregation |= new_results;
+        return aggregation;
     }
 };
-
-#endif /* IFUGAO_H */

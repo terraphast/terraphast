@@ -32,15 +32,10 @@ TEST(DISABLED_get_nth_partition_tuple, no_constraints) {
 
 TEST(DISABLED_get_nth_partition_tuple, only_one_set) {
     UnionFindLeafSet leafset(10);
-    std::vector<constraint> constraints;
-    constraints.emplace_back(1,2,3,4);
-    constraints.emplace_back(2,3,3,4);
-    constraints.emplace_back(3,4,3,4);
-    constraints.emplace_back(4,5,3,4);
-    constraints.emplace_back(5,6,3,4);
-    constraints.emplace_back(6,7,3,4);
-    constraints.emplace_back(7,8,3,4);
-    constraints.emplace_back(8,9,3,4);
+    std::vector<constraint> constraints =
+            { constraint(1,2,4), constraint(2,3,4), constraint(3,4,3),
+              constraint(4,5,4), constraint(5,6,4), constraint(6,7,4),
+              constraint(7,8,3), constraint(8,9,3) };
 
     leafset.apply_constraints(constraints);
 
