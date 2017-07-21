@@ -80,7 +80,8 @@ protected:
 class InnerNode : public Node {
 friend class Node;
 public:
-    InnerNode(std::shared_ptr<Node> left, std::shared_ptr<Node> right) :
+    InnerNode(const std::shared_ptr<Node> left,
+              const std::shared_ptr<Node> right) :
             left(left), right(right) {
         assert(left != nullptr);
         assert(right != nullptr);
@@ -105,17 +106,14 @@ protected:
 
 /**
  * Represents the "root" of an unrooted binary tree, meaning a node without a
- * parent, which has 3 children.
+ * parent, which has 3 children. It is created with minimal overhead by
+ * "absorbing" a normal InnerNode and reusing it's children.
  */
 class UnrootedNode : public Node {
+private:
+    const std::shared_ptr<InnerNode> inner;
 public:
-    UnrootedNode(std::shared_ptr<Node> elem1, std::shared_ptr<Node> elem2,
-                 std::shared_ptr<Node> elem3) :
-            elem1(elem1), elem2(elem2), elem3(elem3) {};
-
-    const std::shared_ptr<Node> elem1;
-    const std::shared_ptr<Node> elem2;
-    const std::shared_ptr<Node> elem3;
+    UnrootedNode(const std::shared_ptr<InnerNode> inner) : inner(inner) {};
 
     bool is_leaf() const { return false; }
     leaf_number get_leaf() const {
@@ -201,7 +199,6 @@ typedef std::shared_ptr<InnerNode> InnerNodePtr;
 typedef std::shared_ptr<UnrootedNode> UnrootedNodePtr;
 typedef std::shared_ptr<AllLeafCombinationsNode> AllLeafCombinationsNodePtr;
 typedef std::shared_ptr<AllTreeCombinationsNode> AllTreeCombinationsNodePtr;
-// for legacy purposes
+// for prettier code
 typedef std::shared_ptr<Node> Tree;
-
 

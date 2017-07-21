@@ -99,12 +99,10 @@ std::tuple<leaf_number, leaf_number> InnerNode::get_constraints(
 /****************************/
 void UnrootedNode::to_newick_string(std::stringstream &ss,
                                     const label_mapper &id_to_label) const {
-    ss << "(";
-    this->elem1->to_newick_string(ss, id_to_label);
+    ss << "(" << id_to_label.root_label << ",";
+    this->inner->left->to_newick_string(ss, id_to_label);
     ss << ",";
-    this->elem2->to_newick_string(ss, id_to_label);
-    ss << ",";
-    this->elem3->to_newick_string(ss, id_to_label);
+    this->inner->right->to_newick_string(ss, id_to_label);
     ss << ")";
 }
 
