@@ -47,7 +47,7 @@ int main(int argc, char** argv) try {
 	terraces::deduplicate_constraints(constraints);
 	num_species = terraces::remap_to_leaves(tree, constraints, names, root_species);
 
-	tree_enumerator<stack_state_decorator<count_callback>> enumerator{
+	tree_enumerator<stack_state_decorator<count_callback<mpz_class>>> enumerator{
 	        {}, num_species, constraints.size()};
 	std::thread status_thread([&]() {
 		using namespace std::chrono_literals;

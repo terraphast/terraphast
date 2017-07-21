@@ -12,7 +12,7 @@ TEST_CASE("app", "[app][.]") {
 	for (auto set : data_sets) {
 		auto data = load(std::get<0>(set), std::get<1>(set));
 
-		tree_enumerator<count_callback> enumerator{
+		tree_enumerator<count_callback<mpz_class>> enumerator{
 		        {}, data.num_species, data.constraints.size()};
 		auto count = enumerator.run(data.num_species, data.constraints, data.root_species);
 		SECTION(std::get<0>(set)) { CHECK(count == std::get<2>(set)); }

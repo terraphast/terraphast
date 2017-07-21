@@ -54,9 +54,10 @@ public:
 	Result combine(Result, Result);
 };
 
-class count_callback : public abstract_callback<mpz_class> {
+template <typename Number>
+class count_callback : public abstract_callback<Number> {
 public:
-	using return_type = abstract_callback::result_type;
+	using return_type = typename abstract_callback<Number>::result_type;
 	return_type base_one_leaf(index) { return 1; }
 	return_type base_two_leaves(index, index) { return 1; }
 	return_type base_unconstrained(const ranked_bitvector& leaves) {
