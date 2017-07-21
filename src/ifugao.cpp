@@ -58,7 +58,10 @@ TreeList FindAllRootedTrees::get_all_binary_trees(LeafSet &leaves) {
 TreeList FindAllRootedTrees::merge_subtrees(const TreeList &left,
                                             const TreeList &right){
     TreeList merged_trees;
-
+    
+    assert(left.size() != 0);
+    assert(right.size() != 0);
+    
     for (const auto& l : left) {
         for (const auto& r : right) {
             merged_trees.push_back(std::make_shared<InnerNode>(l, r));

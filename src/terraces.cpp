@@ -126,14 +126,14 @@ int terraceAnalysis(missingData *m,
         count = algo.scan_terrace(leaves, constraints) ? 2 : 0;
     } else if (enumerateTrees) {
         FindAllRootedTrees algo;
-        auto all_trees = algo.scan_terrace(leaves, constraints);
+        auto all_trees = algo.scan_terrace(leaves, constraints, true);
         count = all_trees.size();
         for (Tree t : all_trees) {
             fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_label).c_str());
         }
     } else if (enumerateCompressedTrees) {
         FindCompressedTree algo;
-        auto tree = algo.scan_terrace(leaves, constraints);
+        auto tree = algo.scan_terrace(leaves, constraints, true);
         fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_label).c_str());
     }
 
