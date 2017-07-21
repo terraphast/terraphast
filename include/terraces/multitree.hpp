@@ -3,6 +3,8 @@
 
 #include "trees.hpp"
 
+#include <gmpxx.h>
+
 namespace terraces {
 
 enum class multitree_node_type {
@@ -45,7 +47,7 @@ struct unexplored {
 struct multitree_node {
 	multitree_node_type type;
 	index num_leaves;
-	index num_trees; // TODO use mpz_class? Maybe double?
+	mpz_class num_trees;
 	union {
 		index single_leaf;
 		multitree_nodes::two_leaves two_leaves;
