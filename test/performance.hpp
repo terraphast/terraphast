@@ -45,7 +45,8 @@ inline void report_performance_results(const std::string& desc,
                                        std::vector<std::uint32_t> messures) {
 	std::sort(messures.begin(), messures.end());
 	assert(messures.size() > 1u);
-	const auto sum = std::accumulate(messures.begin(), messures.end(), std::uint64_t{});
+	const auto sum = static_cast<double>(
+	        std::accumulate(messures.begin(), messures.end(), std::uint64_t{}));
 	const auto avg = sum / static_cast<double>(messures.size());
 	const auto median =
 	        (messures[messures.size() / 2u] + messures[(messures.size() - 1u) / 2u]) / 2.0;
