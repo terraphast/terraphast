@@ -50,13 +50,15 @@ mpz_class get_terrace_size_as_bigint_from_file(const std::string& nwk_filename,
  *
  * This function may run longer if the number of such trees is very big!
  */
-void print_terrace(std::istream& nwk_stream, std::istream& matrix_stream, std::ostream& out);
-void print_terrace(std::istream& nwk_stream, const std::string& matrix_string, std::ostream& out);
-void print_terrace(const std::string& nwk_string, std::istream& matrix_stream, std::ostream& out);
-void print_terrace(const std::string& nwk_string, const std::string& matrix_string,
-                   std::ostream& out);
-void print_terrace_from_file(const std::string& nwk_filename, const std::string& matrix_filename,
-                             std::ostream& output);
+mpz_class print_terrace(std::istream& nwk_stream, std::istream& matrix_stream, std::ostream& out);
+mpz_class print_terrace(std::istream& nwk_stream, const std::string& matrix_string,
+                        std::ostream& out);
+mpz_class print_terrace(const std::string& nwk_string, std::istream& matrix_stream,
+                        std::ostream& out);
+mpz_class print_terrace(const std::string& nwk_string, const std::string& matrix_string,
+                        std::ostream& out);
+mpz_class print_terrace_from_file(const std::string& nwk_filename,
+                                  const std::string& matrix_filename, std::ostream& output);
 
 } // namespace terraces
 

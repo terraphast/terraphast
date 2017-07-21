@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <thread>
 
 #include <terraces/simple.hpp>
@@ -22,14 +23,13 @@ int main(int argc, char** argv) try {
 		          << argv[0] << " <common-basename>\n";
 		return 1;
 	}
-	const auto on_terrace = terraces::is_on_terrace_from_file(tree_file_name, data_file_name);
-	std::cout << "Tree is on terrace: " << on_terrace << '\n';
+	auto trees = std::ostringstream{};
 	const auto terraces_count =
-	        terraces::get_terrace_size_as_bigint_from_file(tree_file_name, data_file_name);
-	std::cout << "There are " << terraces_count << " trees on the terrace.\n\n\n";
+	        terraces::print_terrace_from_file(tree_file_name, data_file_name, trees);
 
-	terraces::print_terrace_from_file(tree_file_name, data_file_name, std::cout);
-	std::cout << '\n';
+	std::cout << "There are " << terraces_count
+	          << " trees on the terrace.\n\nThe trees in question are:\n"
+	          << trees.str() << '\n';
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << "\n";
 }

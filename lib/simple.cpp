@@ -108,8 +108,8 @@ mpz_class get_terrace_size_as_bigint_from_file(const std::string& nwk_filename,
 	return get_terrace_size_as_bigint(nwk_string, matrix_stream);
 }
 
-void print_terrace(const std::string& nwk_string, std::istream& matrix_stream,
-                   std::ostream& output) {
+mpz_class print_terrace(const std::string& nwk_string, std::istream& matrix_stream,
+                        std::ostream& output) {
 	auto t = parse_nwk(nwk_string);
 	auto site_pair = parse_bitmatrix(matrix_stream, t.indices, t.tree.size());
 	utils::ensure<no_usable_root_error>(site_pair.second != none, "no usable root found");
@@ -120,26 +120,29 @@ void print_terrace(const std::string& nwk_string, std::istream& matrix_stream,
 	const auto num_species = remap_to_leaves(t.tree, constraints, t.names, site_pair.second);
 	tree_enumerator<variants::multitree_callback> enumerator{
 	        {}, num_species, constraints.size()};
-	output << as_newick(enumerator.run(num_species, constraints, site_pair.second), t.names);
+	const auto enumeration = enumerator.run(num_species, constraints, site_pair.second);
+	output << as_newick(enumeration, t.names);
+	return enumeration->num_trees;
 }
 
-void print_terrace(std::istream& nwk_stream, const std::string& matrix_string, std::ostream& out) {
+mpz_class print_terrace(std::istream& nwk_stream, const std::string& matrix_string,
+                        std::ostream& out) {
 	auto matrix_stream = std::istringstream{matrix_string};
 	return print_terrace(read_all(nwk_stream), matrix_stream, out);
 }
 
-void print_terrace(std::istream& nwk_stream, std::istream& matrix_stream, std::ostream& out) {
+mpz_class print_terrace(std::istream& nwk_stream, std::istream& matrix_stream, std::ostream& out) {
 	return print_terrace(read_all(nwk_stream), matrix_stream, out);
 }
 
-void print_terrace(const std::string& nwk_string, const std::string& matrix_string,
-                   std::ostream& output) {
+mpz_class print_terrace(const std::string& nwk_string, const std::string& matrix_string,
+                        std::ostream& output) {
 	auto matrix_stream = std::istringstream{matrix_string};
 	return print_terrace(nwk_string, matrix_stream, output);
 }
 
-void print_terrace_from_file(const std::string& nwk_filename, const std::string& matrix_filename,
-                             std::ostream& output) {
+mpz_class print_terrace_from_file(const std::string& nwk_filename,
+                                  const std::string& matrix_filename, std::ostream& output) {
 	auto nwk_string = read_file(nwk_filename);
 	auto matrix_stream = open_ifstream(matrix_filename);
 	return print_terrace(nwk_string, matrix_stream, output);
