@@ -43,6 +43,15 @@ int terraceAnalysis(missingData *m,
                                           != 0;
     /* some basic error checking, students, please extend this, see error codes at the end of this function */
 
+    if(treeIsOnTerrace && (countTrees || enumerateTrees || enumerateCompressedTrees)) {
+        // trees can't be counted or enumerated if only check on terrace should be performed
+        return TERRACE_FLAG_CONFLICT_ERROR;
+    }
+    if(enumerateTrees && enumerateCompressedTrees) {
+        // can't print the trees in two different output styles
+        return TERRACE_FLAG_CONFLICT_ERROR;
+    }
+
     assert(m->numberOfSpecies > 3 && m->numberOfPartitions > 1);
 
     if(m->numberOfSpecies <= 3) {
@@ -118,13 +127,8 @@ int terraceAnalysis(missingData *m,
     auto constraints = extract_constraints_from_supertree(rtree, m, id_to_label);
     auto leaves = LeafSet(id_to_label.size());
     mpz_class count = 0;
-    if(countTrees) {
-        CountAllRootedTrees algo;
-        count = algo.scan_terrace(leaves, constraints);
-    } else if(treeIsOnTerrace) {
-        CheckIfTerrace algo;
-        count = algo.scan_terrace(leaves, constraints) ? 2 : 0;
-    } else if (enumerateTrees) {
+    if (enumerateTrees) {
+        assert(!enumerateCompressedTrees);
         FindAllRootedTrees algo;
         auto all_trees = algo.scan_terrace(leaves, constraints, true);
         count = all_trees.size();
@@ -135,6 +139,12 @@ int terraceAnalysis(missingData *m,
         FindCompressedTree algo;
         auto tree = algo.scan_terrace(leaves, constraints, true);
         fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_label).c_str());
+    } else if(countTrees) {
+        CountAllRootedTrees algo;
+        count = algo.scan_terrace(leaves, constraints);
+    } else if(treeIsOnTerrace) {
+        CheckIfTerrace algo;
+        count = algo.scan_terrace(leaves, constraints) ? 2 : 0;
     }
 
     mpz_set(*terraceSize, count.get_mpz_t());
