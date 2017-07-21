@@ -24,12 +24,12 @@ extern const std::vector<std::tuple<std::string, std::string, index>> small_data
 extern const std::vector<std::tuple<std::string, std::string, index>> medium_data_sets;
 
 struct loaded_dataset {
-	tree_set tree_set;
+	terraces::tree_set tree_set;
 	bitmatrix site_occ;
 	index num_species;
 	index root_species;
 	std::vector<tree> subtrees;
-	constraints constraints;
+	terraces::constraints constraints;
 };
 
 loaded_dataset load(std::string tree_file_path, std::string data_file_path);

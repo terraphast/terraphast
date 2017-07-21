@@ -44,7 +44,7 @@ struct multitree_iterator_choicepoint {
 
 class multitree_iterator {
 private:
-	tree m_tree;
+	terraces::tree m_tree;
 	permutation m_leaves;
 	std::vector<index> m_choice_points;
 	std::vector<index> m_unconstrained_choice_points;
@@ -66,7 +66,7 @@ private:
 public:
 	multitree_iterator(const multitree_node* root);
 	bool next();
-	const tree& tree() const { return m_tree; }
+	const terraces::tree& tree() const { return m_tree; }
 	const permutation& leaves() const { return m_leaves; }
 };
 
