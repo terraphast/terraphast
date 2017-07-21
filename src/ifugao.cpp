@@ -78,21 +78,11 @@ std::vector<constraint> find_constraints(const LeafSet &leaves,
     std::vector<constraint> valid_constraints;
 
     for (constraint cons : constraints) {
-        if (cons.smaller_left == cons.bigger_left) {
-            if (leaves.contains(cons.smaller_left)
+        if (leaves.contains(cons.smaller_left)
                 && leaves.contains(cons.smaller_right)
-                && leaves.contains(cons.bigger_right)) {
+                && leaves.contains(cons.bigger)) {
                 // constraint is valid on leaf set
                 valid_constraints.push_back(cons);
-            }
-        } else {
-            // smaller_right == bigger_right
-            if (leaves.contains(cons.smaller_left)
-                && leaves.contains(cons.smaller_right)
-                && leaves.contains(cons.bigger_left)) {
-                // constraint is valid on leaf set
-                valid_constraints.push_back(cons);
-            }
         }
     }
     return valid_constraints;

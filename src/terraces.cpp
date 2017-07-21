@@ -295,7 +295,7 @@ std::vector<constraint> extract_constraints_from_supertree(
         for (auto &c : constraints) {
             //avoid duplications
             std::string key = std::to_string(c.smaller_left) + std::to_string(c.smaller_right) + "__" +
-                              std::to_string(c.bigger_left) + std::to_string(c.bigger_right);
+                              std::to_string(c.bigger);
             if (constraint_map.count(key) == 0) {
                 constraint_map[key] = c;
             }

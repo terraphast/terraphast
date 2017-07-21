@@ -32,19 +32,17 @@ struct label_mapper {
 struct constraint {
     leaf_number smaller_left;
     leaf_number smaller_right;
-    leaf_number bigger_left;
-    leaf_number bigger_right;
+    leaf_number bigger;
 
     constraint() = default;
 
     constraint(leaf_number smaller_left, leaf_number smaller_right,
-               leaf_number bigger_left, leaf_number bigger_right)
+               leaf_number bigger)
             : smaller_left(smaller_left), smaller_right(smaller_right),
-              bigger_left(bigger_left), bigger_right(bigger_right) {}
+              bigger(bigger) {}
     friend std::ostream& operator<<(std::ostream &strm, const constraint& c) {
         return strm << "lca(" << c.smaller_left << "," << c.smaller_right
-                    << ") < lca(" << c.bigger_left << "," << c.bigger_right
-                    << ")";
+                    << ") < lca(" << c.bigger << ")";
     }
 };
 

@@ -77,8 +77,8 @@ TEST(ApplyConstraintsTest, example_from_slides) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 2, 3, 2};
-    constraint cons2 = {4, 5, 4, 2};
+    constraint cons1 = {1, 2, 3};
+    constraint cons2 = {4, 5, 2};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -100,10 +100,10 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 2, 3, 2};
-    constraint cons2 = {4, 5, 4, 2};
-    constraint cons3 = {3, 4, 3, 2};
-    constraint cons4 = {1, 3, 1, 5};
+    constraint cons1 = {1, 2, 3};
+    constraint cons2 = {4, 5, 2};
+    constraint cons3 = {3, 4, 2};
+    constraint cons4 = {1, 3, 5};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -125,7 +125,7 @@ TEST(ApplyConstraintsTest, no_merges) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 6, 3, 6};
+    constraint cons1 = {1, 6, 3};
 
     constraints.push_back(cons1);
 
@@ -186,8 +186,8 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {1, 2, 1, 3};
-    constraint cons2 = {1, 3, 1, 4};
+    constraint cons1 = {1, 2, 3};
+    constraint cons2 = {1, 3, 4};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -226,21 +226,19 @@ TEST(ExtractConstraintsFromTree, example_from_slides) {
     //lca(l1, l2) < lca(l1, l4)
     ASSERT_EQ(constraints[0].smaller_left, 1);
     ASSERT_EQ(constraints[0].smaller_right, 2);
-    ASSERT_EQ(constraints[0].bigger_left, 1);
-    ASSERT_EQ(constraints[0].bigger_right, 4);
+    ASSERT_EQ(constraints[0].bigger, 4);
 
     //lca(l3, l4) < lca(l1, l4)
     ASSERT_EQ(constraints[1].smaller_left, 3);
     ASSERT_EQ(constraints[1].smaller_right, 4);
-    ASSERT_EQ(constraints[1].bigger_left, 1);
-    ASSERT_EQ(constraints[1].bigger_right, 4);
+    ASSERT_EQ(constraints[1].bigger, 1);
 }
 
 TEST(GetNthPartitionTuple, example_with_two_parts) {
 
     LeafSet leaves = {0, 1, 2};
     std::vector<constraint> constraints;
-    constraint cons1 = {0, 1, 0, 2};
+    constraint cons1 = {0, 1, 2};
     constraints.push_back(cons1);
 
     leaves.apply_constraints(constraints);
@@ -259,8 +257,8 @@ TEST(GetNthPartitionTuple, example_from_slides) {
 
     LeafSet leaves = {0, 1, 2, 3, 4};
     std::vector<constraint> constraints;
-    constraints.push_back({0, 1, 0, 2});
-    constraints.push_back({3, 4, 0, 2});
+    constraints.push_back({0, 1, 2});
+    constraints.push_back({3, 4, 2}); //TODO
 
     leaves.apply_constraints(constraints);
     auto result = leaves.get_list_of_partitions();
@@ -285,10 +283,10 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
 
     LeafSet leaves = {0, 1, 2, 3, 4, 5, 6, 7};
     std::vector<constraint> constraints;
-    constraints.push_back({0, 1, 0, 2});
-    constraints.push_back({3, 4, 0, 2});
-    constraints.push_back({5, 6, 0, 2});
-    constraints.push_back({6, 7, 0, 2});
+    constraints.push_back({0, 1, 2});
+    constraints.push_back({3, 4, 2}); //TODO
+    constraints.push_back({5, 6, 2}); //TODO
+    constraints.push_back({6, 7, 2}); //TODO
 
     leaves.apply_constraints(constraints);
     auto result = leaves.get_list_of_partitions();
@@ -329,8 +327,8 @@ TEST(FindAllRootedTrees, example_from_slides) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {0, 1, 2, 1};
-    constraint cons2 = {3, 4, 3, 1};
+    constraint cons1 = {0, 1, 2};
+    constraint cons2 = {3, 4, 1};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -357,8 +355,8 @@ TEST(FindCompressedTree, example_from_slides) {
 
     std::vector<constraint> constraints;
 
-    constraint cons1 = {0, 1, 2, 1};
-    constraint cons2 = {3, 4, 3, 1};
+    constraint cons1 = {0, 1, 2};
+    constraint cons2 = {3, 4, 1};
 
     constraints.push_back(cons1);
     constraints.push_back(cons2);
@@ -376,16 +374,15 @@ TEST(FindConstraintsTest, example_from_slides) {
     id_to_label.labels = { "1", "2", "3" };
     std::vector<constraint> constraints;
 
-    constraint cons1 = {0, 1, 2, 1};
-    constraint cons2 = {3, 4, 3, 1};
+    constraint cons1 = {0, 1, 2};
+    constraint cons2 = {3, 4, 1};
     constraints.push_back(cons1);
     constraints.push_back(cons2);
     std::vector<constraint> result = find_constraints(leaves, constraints);
     ASSERT_EQ(result.size(), 1);
     ASSERT_EQ(result[0].smaller_left, 0);
-    ASSERT_EQ(result[0].bigger_left, 2);
     ASSERT_EQ(result[0].smaller_right, 1);
-    ASSERT_EQ(result[0].bigger_right, 1);
+    ASSERT_EQ(result[0].bigger, 2);
 }
 
 
