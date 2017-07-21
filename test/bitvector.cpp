@@ -141,6 +141,13 @@ TEST_CASE("efficient bitvector large", "[bitvector]") {
 	CHECK(b.next_set(200) == 204);
 	CHECK(b.next_set(204) == 400);
 	CHECK(b.next_set(400) == 519);
+	CHECK(b.select(0) == 1);
+	CHECK(b.select(1) == 63);
+	CHECK(b.select(2) == 128);
+	CHECK(b.select(3) == 191);
+	CHECK(b.select(4) == 200);
+	CHECK(b.select(5) == 204);
+	CHECK(b.select(6) == 400);
 	b.blank();
 	b.update_ranks();
 	CHECK(b.count() == 0);

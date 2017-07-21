@@ -1,7 +1,8 @@
 
 #include <catch.hpp>
 
-#include "../lib/unconstrained_enumerator.hpp"
+#include "../lib/small_bipartition.hpp"
+#include "../lib/validation.hpp"
 
 namespace terraces {
 namespace tests {
@@ -13,8 +14,10 @@ TEST_CASE("small_bipartition", "[unconstrained]") {
 		CHECK(bip.left_mask() == i);
 		bip.next();
 	};
+	CHECK(bip.leftmost_leaf() == 2);
+	CHECK(bip.rightmost_leaf() == 11);
+	CHECK(bip.num_leaves() == 6);
 
-	CHECK(bip.is_valid());
 	step(0b00000000000100);
 	step(0b00000000001000);
 	step(0b00000000001100);

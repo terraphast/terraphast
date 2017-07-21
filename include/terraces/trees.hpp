@@ -93,20 +93,27 @@ private:
 // to look up the name associated with an index, simply
 // reuse the index to check in a std::vector:
 using name_map = std::vector<std::string>;
+using permutation = std::vector<index>;
 
 struct newick_t {
 	const tree* t;
 	const name_map* names;
 };
 
-typedef struct {
-	const index count;
-	const std::string supertree;
-} counted_supertree;
+struct newick_permuted_t {
+	const tree* t;
+	const name_map* names;
+	const permutation* leaf_perm;
+};
 
 inline newick_t as_newick(const tree& t, const name_map& names) { return {&t, &names}; }
+inline newick_permuted_t as_newick(const tree& t, const name_map& names,
+                                   const permutation& leaf_perm) {
+	return {&t, &names, &leaf_perm};
+}
 
 std::ostream& operator<<(std::ostream& s, newick_t tree_pair);
+std::ostream& operator<<(std::ostream& s, newick_permuted_t tree_set);
 
 // maps the name of a species to it's index in the tree:
 using index_map = std::unordered_map<std::string, index>;
@@ -145,11 +152,8 @@ Result count_unrooted_trees(index num_leaves) {
 	return result;
 }
 
-/**
- * Traverses a tree in post-order while calling a given callback on every node.
- */
-template <typename F>
-void foreach_postorder(const tree& t, F cb) {
+template <typename F1, typename F2, typename F3, typename F4>
+void tree_traversal(const tree& t, F1 pre_cb, F2 post_cb, F3 sibling_cb, F4 leaf_cb) {
 	index root_idx = 0;
 	assert(is_root(t[root_idx]));
 
@@ -163,45 +167,43 @@ void foreach_postorder(const tree& t, F cb) {
 		stack.pop();
 		auto cur_node = t[cur_idx];
 		if (is_leaf(cur_node)) {
-			cb(current.first);
+			leaf_cb(current.first);
 		} else {
 			switch (current.second) {
 			// descend into left tree
 			case visited::none:
+				pre_cb(cur_idx);
 				stack.push(std::make_pair(cur_idx, visited::left));
 				stack.push(std::make_pair(cur_node.lchild(), visited::none));
 				break;
 			// descend into right tree
 			case visited::left:
+				sibling_cb(cur_idx);
 				stack.push(std::make_pair(cur_idx, visited::both));
 				stack.push(std::make_pair(cur_node.rchild(), visited::none));
 				break;
 			// move up again
 			case visited::both:
-				cb(cur_idx);
+				post_cb(cur_idx);
 				break;
 			}
 		}
 	}
 }
 
+/**
+ * Traverses a tree in post-order while calling a given callback on every node.
+ */
+template <typename F>
+void foreach_postorder(const tree& t, F cb) {
+	auto nop = [](index) {};
+	tree_traversal(t, nop, cb, nop, cb);
+}
+
 template <typename F>
 void foreach_preorder(const tree& t, F cb) {
-	index root_idx = 0;
-	assert(is_root(t[root_idx]));
-
-	std::stack<index> stack;
-	stack.push(root_idx);
-	while (!stack.empty()) {
-		auto node = t[stack.top()];
-		cb(stack.top());
-		stack.pop();
-		// recursive descent
-		if (!is_leaf(node)) {
-			stack.push(node.rchild());
-			stack.push(node.lchild());
-		}
-	}
+	auto nop = [](index) {};
+	tree_traversal(t, cb, nop, nop, cb);
 }
 
 // For testing purposes
