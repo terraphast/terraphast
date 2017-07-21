@@ -136,25 +136,25 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
 
     FindAllRootedTrees get_trees;
     ASSERT_EQ(CountAllRootedTrees().scan_terrace(leaves, constraints), 15);
-    auto result = get_trees.scan_terrace(leaves, constraints);
+    auto result = get_trees.scan_terrace(leaves, constraints, true);
     ASSERT_EQ(result.size(), 15);
-
-    ASSERT_EQ(result[0]->to_newick_string(id_to_label), "(s3,((s5,s1),s2),s4);");
-    ASSERT_EQ(result[1]->to_newick_string(id_to_label), "(s3,(s5,(s2,s1)),s4);");
-    ASSERT_EQ(result[2]->to_newick_string(id_to_label), "(s3,((s5,s2),s1),s4);");
-    ASSERT_EQ(result[3]->to_newick_string(id_to_label), "(s3,(s5,s2),(s4,s1));");
-    ASSERT_EQ(result[4]->to_newick_string(id_to_label), "(s3,((s5,s2),s4),s1);");
-    ASSERT_EQ(result[5]->to_newick_string(id_to_label), "(s3,(s5,s1),(s4,s2));");
-    ASSERT_EQ(result[6]->to_newick_string(id_to_label), "(s3,s5,((s4,s1),s2));");
-    ASSERT_EQ(result[7]->to_newick_string(id_to_label), "(s3,s5,(s4,(s2,s1)));");
-    ASSERT_EQ(result[8]->to_newick_string(id_to_label), "(s3,s5,((s4,s2),s1));");
-    ASSERT_EQ(result[9]->to_newick_string(id_to_label), "(s3,(s5,(s4,s2)),s1);");
-    ASSERT_EQ(result[10]->to_newick_string(id_to_label), "(s3,((s5,s1),s4),s2);");
-    ASSERT_EQ(result[11]->to_newick_string(id_to_label), "(s3,(s5,(s4,s1)),s2);");
-    ASSERT_EQ(result[12]->to_newick_string(id_to_label), "(s3,((s5,s4),s1),s2);");
-    ASSERT_EQ(result[13]->to_newick_string(id_to_label), "(s3,(s5,s4),(s2,s1));");
-    ASSERT_EQ(result[14]->to_newick_string(id_to_label), "(s3,((s5,s4),s2),s1);");
-
+    
+    ASSERT_EQ(result[0]->to_newick_string(id_to_label), "(s3,((s1,s2),s4),s5);");
+    ASSERT_EQ(result[1]->to_newick_string(id_to_label), "(s3,(s2,(s1,s4)),s5);");
+    ASSERT_EQ(result[2]->to_newick_string(id_to_label), "(s3,((s2,s4),s1),s5);");
+    ASSERT_EQ(result[3]->to_newick_string(id_to_label), "(s3,(s2,s4),(s1,s5));");
+    ASSERT_EQ(result[4]->to_newick_string(id_to_label), "(s3,((s2,s4),s5),s1);");
+    ASSERT_EQ(result[5]->to_newick_string(id_to_label), "(s3,(s1,s4),(s2,s5));");
+    ASSERT_EQ(result[6]->to_newick_string(id_to_label), "(s3,s4,((s1,s2),s5));");
+    ASSERT_EQ(result[7]->to_newick_string(id_to_label), "(s3,s4,(s2,(s1,s5)));");
+    ASSERT_EQ(result[8]->to_newick_string(id_to_label), "(s3,s4,((s2,s5),s1));");
+    ASSERT_EQ(result[9]->to_newick_string(id_to_label), "(s3,(s4,(s2,s5)),s1);");
+    ASSERT_EQ(result[10]->to_newick_string(id_to_label), "(s3,((s1,s4),s5),s2);");
+    ASSERT_EQ(result[11]->to_newick_string(id_to_label), "(s3,(s4,(s1,s5)),s2);");
+    ASSERT_EQ(result[12]->to_newick_string(id_to_label), "(s3,((s4,s5),s1),s2);");
+    ASSERT_EQ(result[13]->to_newick_string(id_to_label), "(s3,(s4,s5),(s1,s2));");
+    ASSERT_EQ(result[14]->to_newick_string(id_to_label), "(s3,((s4,s5),s2),s1);");
+    
     ntree_destroy(tree);
     freeMissingData(example1);
 }
@@ -180,7 +180,7 @@ TEST(FindCompressedUnrootedTree, example_from_slides) {
     auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
 
     FindCompressedTree get_trees;
-    auto result = get_trees.scan_terrace(leaves, constraints);
+    auto result = get_trees.scan_terrace(leaves, constraints, true);
 
     ASSERT_EQ(result->to_newick_string(id_to_label), "(s3,{s1,s2,s4,s5});");
 
@@ -337,8 +337,8 @@ TEST(TerracesAnalysis, example2_from_old_main) {
 
     //initialize missing data data structure
     missingData *weirdExample = initializeMissingData(6, 6, weirdSpeciesNames);
-
     copyDataMatrix(weirdDataMatrix, weirdExample);
+
     int errorCode = terraceAnalysis(weirdExample, weirdTree,
                                     TA_COUNT + TA_ENUMERATE, f0, &weirdTerraceSize);
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
