@@ -2,6 +2,8 @@
 #ifndef TERRACES_ERRORS_HPP
 #define TERRACES_ERRORS_HPP
 
+#include <stdexcept>
+
 namespace terraces {
 
 class bad_input_error : public std::runtime_error {

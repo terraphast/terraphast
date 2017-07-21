@@ -37,13 +37,12 @@ std::uint64_t get_terrace_size(const std::string& nwk_string, const std::string&
 std::uint64_t get_terrace_size_from_file(const std::string& nwk_filename,
                                          const std::string& matrix_filename);
 
-mpz_class get_terrace_size_as_bigint(std::istream& nwk_stream, std::istream& matrix_stream);
-mpz_class get_terrace_size_as_bigint(std::istream& nwk_stream, const std::string& matrix_string);
-mpz_class get_terrace_size_as_bigint(const std::string& nwk_string, std::istream& matrix_stream);
-mpz_class get_terrace_size_as_bigint(const std::string& nwk_string,
-                                     const std::string& matrix_string);
-mpz_class get_terrace_size_as_bigint_from_file(const std::string& nwk_filename,
-                                               const std::string& matrix_filename);
+mpz_class get_terrace_size_bigint(std::istream& nwk_stream, std::istream& matrix_stream);
+mpz_class get_terrace_size_bigint(std::istream& nwk_stream, const std::string& matrix_string);
+mpz_class get_terrace_size_bigint(const std::string& nwk_string, std::istream& matrix_stream);
+mpz_class get_terrace_size_bigint(const std::string& nwk_string, const std::string& matrix_string);
+mpz_class get_terrace_size_bigint_from_file(const std::string& nwk_filename,
+                                            const std::string& matrix_filename);
 
 /**
  * Print the extended-nwk-representation of all trees to the provided output.
