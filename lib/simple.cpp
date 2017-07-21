@@ -14,6 +14,7 @@
 #include "supertree_enumerator.hpp"
 #include "supertree_variants_multitree.hpp"
 #include "utils.hpp"
+#include <terraces/supertree.hpp>
 
 namespace terraces {
 namespace {
@@ -26,11 +27,14 @@ std::ifstream open_ifstream(const std::string& filename) {
 std::pair<constraints, index> get_constraints(const std::string& nwk_string,
                                               std::istream& matrix_stream) {
 	auto t = parse_nwk(nwk_string);
-	auto site_pair = parse_bitmatrix(matrix_stream, t.indices, t.indices.size());
+	auto site_pair = parse_bitmatrix(matrix_stream, t.indices, t.tree.size());
 	utils::ensure<no_usable_root_error>(site_pair.second != none, "no usable root found");
 	reroot_inplace(t.tree, site_pair.second);
 	const auto sts = subtrees(t.tree, site_pair.first);
-	return {terraces::compute_constraints(sts), t.indices.size()};
+	auto constraints = compute_constraints(sts);
+	deduplicate_constraints(constraints);
+	const auto num_species = remap_to_leaves(t.tree, constraints, t.names, site_pair.second);
+	return {constraints, num_species};
 }
 
 std::string read_all(std::istream& stream) {
@@ -107,16 +111,16 @@ mpz_class get_terrace_size_as_bigint_from_file(const std::string& nwk_filename,
 void print_terrace(const std::string& nwk_string, std::istream& matrix_stream,
                    std::ostream& output) {
 	auto t = parse_nwk(nwk_string);
-	auto site_pair = parse_bitmatrix(matrix_stream, t.indices, t.indices.size());
+	auto site_pair = parse_bitmatrix(matrix_stream, t.indices, t.tree.size());
 	utils::ensure<no_usable_root_error>(site_pair.second != none, "no usable root found");
 	reroot_inplace(t.tree, site_pair.second);
-	const auto num_species = t.indices.size();
-	const auto root_species = site_pair.second;
 	const auto sts = subtrees(t.tree, site_pair.first);
 	auto constraints = compute_constraints(sts);
+	deduplicate_constraints(constraints);
+	const auto num_species = remap_to_leaves(t.tree, constraints, t.names, site_pair.second);
 	tree_enumerator<variants::multitree_callback> enumerator{
 	        {}, num_species, constraints.size()};
-	output << as_newick(enumerator.run(num_species, constraints, root_species), t.names);
+	output << as_newick(enumerator.run(num_species, constraints, site_pair.second), t.names);
 }
 
 void print_terrace(std::istream& nwk_stream, const std::string& matrix_string, std::ostream& out) {

@@ -5,22 +5,7 @@
 #include <iostream>
 #include <thread>
 
-#include <terraces/constraints.hpp>
-#include <terraces/parser.hpp>
-#include <terraces/rooting.hpp>
-#include <terraces/subtree_extraction.hpp>
-#include <terraces/trees.hpp>
-
-#include "../lib/supertree_enumerator.hpp"
-#include "../lib/supertree_variants.hpp"
-#include "../lib/supertree_variants_debug.hpp"
-#include "../lib/supertree_variants_multitree.hpp"
-
-using terraces::tree_enumerator;
-using terraces::variants::multitree_callback;
-using terraces::debug::variants::logging_decorator;
-using terraces::utils::as_comma_separated_output;
-using terraces::full_set;
+#include <terraces/simple.hpp>
 
 int main(int argc, char** argv) try {
 	auto tree_file_name = std::string{};
@@ -37,69 +22,14 @@ int main(int argc, char** argv) try {
 		          << argv[0] << " <common-basename>\n";
 		return 1;
 	}
-	auto tree_file = std::ifstream{tree_file_name};
-	auto tree_string = std::string{};
-	std::getline(tree_file, tree_string);
-	auto data = terraces::parse_nwk(tree_string);
+	const auto on_terrace = terraces::is_on_terrace_from_file(tree_file_name, data_file_name);
+	std::cout << "Tree is on terrace: " << on_terrace << '\n';
+	const auto terraces_count =
+	        terraces::get_terrace_size_as_bigint_from_file(tree_file_name, data_file_name);
+	std::cout << "There are " << terraces_count << " trees on the terrace.\n\n\n";
 
-	auto data_file = std::ifstream{data_file_name};
-	const auto data_res = terraces::parse_bitmatrix(data_file, data.indices, data.tree.size());
-	const auto num_nodes = data_res.first.rows();
-	auto num_species = data.indices.size();
-	const auto num_sites = data_res.first.cols();
-	auto& tree = data.tree;
-	auto& names = data.names;
-	auto& site_occ = data_res.first;
-	auto root_species = data_res.second;
-	std::cout << "Input data: " << num_species << " species with " << num_sites << " sites ("
-	          << num_nodes << " nodes)\n";
-
-	if (root_species == terraces::none) {
-		std::cout << "Cannot find a suitable root for the tree\n";
-		return 1;
-	}
-	std::cout << "New root: " << root_species << std::endl;
-
-	terraces::reroot_inplace(tree, root_species);
-
-	std::cout << "In Newick-Format:\n" << as_newick(tree, names) << "\n";
-
-	const auto subtrees = terraces::subtrees(tree, site_occ);
-	std::cout << "Subtrees in Newick format:\n";
-	for (auto& subtree : subtrees) {
-		std::cout << as_newick(subtree, names) << "\n";
-	}
-	auto constraints = terraces::compute_constraints(subtrees);
-	{
-		const auto num_constraints = constraints.size();
-		auto fl = terraces::utils::free_list{};
-		auto alloc = terraces::utils::stack_allocator<terraces::index>{fl, num_constraints};
-
-		std::cout << "Constraints:\n"
-		          << as_comma_separated_output(full_set(num_constraints, alloc),
-		                                       constraints, names)
-		          << "\n";
-	}
-	auto duplicate = terraces::deduplicate_constraints(constraints);
-	{
-		const auto num_constraints = constraints.size();
-		auto fl = terraces::utils::free_list{};
-		auto alloc = terraces::utils::stack_allocator<terraces::index>{fl, num_constraints};
-
-		std::cout << "Deleted " << duplicate << " unnecessary constraints, "
-		          << num_constraints << " remaining\n";
-
-		std::cout << "Remaining constraints:\n"
-		          << as_comma_separated_output(full_set(num_constraints, alloc),
-		                                       constraints, names)
-		          << "\n";
-	}
-	num_species = terraces::remap_to_leaves(tree, constraints, names, root_species);
-
-	std::cout << "Supertree:\n";
-	tree_enumerator<multitree_callback> enumerator{{}, num_species, constraints.size()};
-	std::cout << as_newick(enumerator.run(num_species, constraints, root_species), names);
-
+	terraces::print_terrace_from_file(tree_file_name, data_file_name, std::cout);
+	std::cout << '\n';
 } catch (std::exception& e) {
 	std::cerr << "Error: " << e.what() << "\n";
 }
