@@ -153,6 +153,9 @@ bool multitree_iterator::next(index root) {
 		assert(false && "Must not use multitree_iterator with unexplored nodes");
 		return false;
 	}
+	default:
+		assert(false && "Unknown node type in multitree");
+		return false;
 	}
 }
 
@@ -189,6 +192,9 @@ void multitree_iterator::reset(index root) {
 		assert(false && "Must not use multitree_iterator with unexplored nodes");
 		break;
 	}
+	default:
+		assert(false && "Unknown node type in multitree");
+		break;
 	}
 }
 
