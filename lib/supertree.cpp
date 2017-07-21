@@ -50,14 +50,27 @@ index remap_to_leaves(const tree& t, constraints& c, name_map& names, index& roo
 	return leaves.count();
 }
 
-mpz_class count_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
+mpz_class count_supertree_bigint(index num_leaves, const constraints& constraints,
+                                 index root_leaf) {
 	tree_enumerator<variants::count_callback<mpz_class>> counter{
 	        {}, num_leaves, constraints.size()};
 	return counter.run(num_leaves, constraints, root_leaf);
 }
 
-mpz_class count_supertree(index num_leaves, const constraints& constraints) {
+mpz_class count_supertree_bigint(index num_leaves, const constraints& constraints) {
 	tree_enumerator<variants::count_callback<mpz_class>> counter{
+	        {}, num_leaves, constraints.size()};
+	return counter.run(num_leaves, constraints);
+}
+
+std::uint64_t count_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
+	tree_enumerator<variants::count_callback<std::uint64_t>> counter{
+	        {}, num_leaves, constraints.size()};
+	return counter.run(num_leaves, constraints, root_leaf);
+}
+
+std::uint64_t count_supertree(index num_leaves, const constraints& constraints) {
+	tree_enumerator<variants::count_callback<std::uint64_t>> counter{
 	        {}, num_leaves, constraints.size()};
 	return counter.run(num_leaves, constraints);
 }

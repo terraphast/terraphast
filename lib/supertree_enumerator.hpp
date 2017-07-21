@@ -55,9 +55,8 @@ template <typename Callback, bool Parallel>
 tree_enumerator<Callback, Parallel>::tree_enumerator(Callback cb, index leaf_count,
                                                      index constraint_count)
         : m_cb{std::move(cb)}, m_leaf_allocator{fl1, bitvector::alloc_size(leaf_count)},
-          m_c_occ_allocator{fl2, bitvector::alloc_size(constraint_count)}, m_union_find_allocator{
-                                                                                   fl3,
-                                                                                   leaf_count} {
+          m_c_occ_allocator{fl2, bitvector::alloc_size(constraint_count)},
+          m_union_find_allocator{fl3, leaf_count} {
 	if (Parallel) {
 		auto num_threads = std::thread::hardware_concurrency();
 		m_thread_pool.reserve(num_threads);
