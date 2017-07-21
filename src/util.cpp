@@ -6,10 +6,7 @@ Tree generate_induced_tree(const NodePtr node,
                            const std::map<std::string, leaf_number> &species_map,
                            const label_mapper &id_to_label,
                            const size_t partition) {
-    //TODO assert(node != nullptr);
-    if (node == nullptr) {
-        return nullptr;
-    }
+    assert(node != nullptr);
 
     if (node->is_leaf()) {
         const LeafPtr leaf = std::static_pointer_cast<Leaf>(node);
@@ -41,20 +38,6 @@ Tree generate_induced_tree(const NodePtr node,
         } else {
             return right; // might be nullptr, but that's ok
         }
-        /*
-        auto left = generate_induced_tree(node->left, missing_data, species_map,
-                                          id_to_label, partition);
-        auto right = generate_induced_tree(node->right, missing_data, species_map,
-                                           id_to_label, partition);
-        //Left and right subtrees are included -> common ancestor is included
-        if (left != nullptr && right != nullptr) {
-            auto inner_node = std::make_shared<Tree>();
-            left->parent = inner_node;
-            right->parent = inner_node;
-            inner_node->left = left;
-            inner_node->right = right;
-            return inner_node;
-            */
     }
 }
 
@@ -154,13 +137,13 @@ Tree root_at(ntree_t *leaf, label_mapper &id_to_label) {
     return root_recursive(leaf->parent, leaf, id_to_label);
 }
 
-Tree root_recursive(ntree_t *current_ntree, ntree_t *parent,
+Tree root_recursive(ntree_t *current_ntree, ntree_t *previous,
                     label_mapper &id_to_label) {
     assert(current_ntree != nullptr);
-    assert(parent != nullptr);
+    assert(previous != nullptr);
 
-    //when the children_count is 3, we are at the pseudoroot of the unrooted
-    // binary tree, so there is no parent node
+    // When the children_count is 3, we are at the pseudoroot of the unrooted
+    // binary tree, so there is no parent node.
     assert(current_ntree->children_count == 0
            || current_ntree->children_count == 2
            || (current_ntree->children_count == 3
@@ -183,12 +166,12 @@ Tree root_recursive(ntree_t *current_ntree, ntree_t *parent,
         
         if(current_ntree->parent == nullptr) {
             // root of a rooted tree, simply ignore this node further on
-            if(parent == current_ntree->children[0]) {
-                return root_recursive (current_ntree->children[1], parent,
-                                       id_to_label);
-            } else if(parent == current_ntree->children[1]) {
-                return root_recursive (current_ntree->children[0], parent, 
-                                       id_to_label);
+            if(previous == current_ntree->children[0]) {
+                return root_recursive (current_ntree->children[1],
+                                       current_ntree, id_to_label);
+            } else if(previous == current_ntree->children[1]) {
+                return root_recursive (current_ntree->children[0],
+                                       current_ntree, id_to_label);
             } else {
                 assert(false);
             }
@@ -196,13 +179,13 @@ Tree root_recursive(ntree_t *current_ntree, ntree_t *parent,
             // normal inner node
             ntree_t *left; 
             ntree_t *right; 
-            if(parent == current_ntree->parent) {
+            if(previous == current_ntree->parent) {
                 left = current_ntree->children[0];
                 right = current_ntree->children[1];
-            } else if(parent == current_ntree->children[0]) {
+            } else if(previous == current_ntree->children[0]) {
                 left = current_ntree->children[1];
                 right = current_ntree->parent;
-            } else if(parent == current_ntree->children[1]) {
+            } else if(previous == current_ntree->children[1]) {
                 left = current_ntree->parent;
                 right = current_ntree->children[0];
             } else {
@@ -224,13 +207,13 @@ Tree root_recursive(ntree_t *current_ntree, ntree_t *parent,
         //set the children, leave out the parent
         ntree_t *left; 
         ntree_t *right; 
-        if (current_ntree->children[0] == parent) {
+        if (current_ntree->children[0] == previous) {
             left = current_ntree->children[1];
             right = current_ntree->children[2];
-        } else if (current_ntree->children[1] == parent) {
+        } else if (current_ntree->children[1] == previous) {
             left = current_ntree->children[0];
             right = current_ntree->children[2];
-        } else if (current_ntree->children[2] == parent) {
+        } else if (current_ntree->children[2] == previous) {
             left = current_ntree->children[0];
             right = current_ntree->children[1];
         } else {

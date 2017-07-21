@@ -63,12 +63,14 @@ Tree root_at(ntree_t *root, label_mapper &id_to_label);
 
 /**
  * private function
- * @param current instance of the Rtree class that needs to get its child pointers
- * @param current_ntree the ntree_t coresponding to the current parameter. Here we get the children from
- * @param parent the ntree_t represention of the parent. this is needed to avoid calling the recursion on the parent
+ * @param current_ntree The current ntree_t node. From this we get the children.
+ * @param previous The ntree_t represention of the previous node. This is needed
+ *                 to avoid calling the recursion in the wrong direction.
+ * @param id_to_label The label mapper.
+ * @return A rooted tree.
  */
 Tree root_recursive(ntree_t *current_ntree,
-                    ntree_t *parent,
+                    ntree_t *previous,
                     label_mapper &id_to_label);
 
 /**
