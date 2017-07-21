@@ -24,13 +24,18 @@ public:
      * can safely be called.
      * @return Whether this node is used a leaf.
      */
-    virtual bool is_leaf() const = 0;
+    inline virtual bool is_leaf() const {
+        return false;
+    }
     /**
      * The leaf ID of this node. ONLY WORKS iff is_leaf() returns true.
      * @return The leaf ID of this node.
      */
-    virtual leaf_number get_leaf() const = 0;
-
+    inline virtual leaf_number get_leaf() const {
+        // may not be called for general node, use is_leaf() to check the call
+        assert(false);
+        return 0;
+    }
     /**
      * Get a string representation of this node/tree. Recurses of all children,
      * if there are any.
@@ -48,7 +53,12 @@ public:
 protected:
     /** Used for recursion by extract_constraints */
     virtual std::tuple<leaf_number, leaf_number> get_constraints(
-            std::vector<constraint> &constraints) const = 0;
+            std::vector<constraint> &constraints) const {
+        // may not be called for general nodes
+        assert(false);
+        return std::make_tuple(0, 0);
+    }
+
     /** Used for memory efficiency by to_newick_string */
     virtual void to_newick_string(std::stringstream &ss,
                                   const label_mapper &id_to_label) const = 0;
@@ -64,12 +74,10 @@ public:
 
     const leaf_number leaf_id;
 
-    bool is_leaf() const { return true; }
+    bool is_leaf() const { return true; };
     leaf_number get_leaf() const { return leaf_id; }
 
 protected:
-    std::tuple<leaf_number, leaf_number> get_constraints(
-            std::vector<constraint> &constraints) const;
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
 };
@@ -91,13 +99,6 @@ public:
     const std::shared_ptr<Node> left;
     const std::shared_ptr<Node> right;
 
-    bool is_leaf() const { return false; }
-    leaf_number get_leaf() const {
-        // may not be called, use is_leaf() to prevent calling it
-        assert(false);
-        return 0;
-    }
-
 protected:
     std::tuple<leaf_number, leaf_number> get_constraints(
             std::vector<constraint> &constraints) const;
@@ -116,16 +117,7 @@ private:
 public:
     UnrootedNode(const std::shared_ptr<InnerNode> inner) : inner(inner) {};
 
-    bool is_leaf() const { return false; }
-    leaf_number get_leaf() const {
-        // may not be called, use is_leaf() to prevent calling it
-        assert(false);
-        return 0;
-    }
-
 protected:
-    std::tuple<leaf_number, leaf_number> get_constraints(
-            std::vector<constraint> &constraints) const;
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
 };
@@ -145,16 +137,7 @@ public:
 
     const std::vector<leaf_number> leaves;
 
-    bool is_leaf() const { return false; }
-    leaf_number get_leaf() const {
-        // may not be called, use is_leaf() to prevent calling it
-        assert(false);
-        return 0;
-    }
-
 protected:
-    std::tuple<leaf_number, leaf_number> get_constraints(
-            std::vector<constraint> &constraints) const;
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
 };
@@ -176,21 +159,12 @@ public:
 
     std::vector<std::shared_ptr<Node>> trees;
 
-    bool is_leaf() const { return false; }
-    leaf_number get_leaf() const {
-        // may not be called, use is_leaf() to prevent calling it
-        assert(false);
-        return 0;
-    }
-
-    void add_tree(std::shared_ptr<Node> tree) {
+    inline void add_tree(std::shared_ptr<Node> tree) {
         assert(tree != nullptr);
         trees.push_back(tree);
     }
 
 protected:
-    std::tuple<leaf_number, leaf_number> get_constraints(
-            std::vector<constraint> &constraints) const;
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
 };
@@ -208,16 +182,7 @@ public:
             const std::shared_ptr<AllLeafCombinationsNode> combinations) :
             combinations(combinations) {};
 
-    bool is_leaf() const { return false; }
-    leaf_number get_leaf() const {
-        // may not be called, use is_leaf() to prevent calling it
-        assert(false);
-        return 0;
-    }
-
 protected:
-    std::tuple<leaf_number, leaf_number> get_constraints(
-            std::vector<constraint> &constraints) const;
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
 };

@@ -26,13 +26,6 @@ void Leaf::to_newick_string(std::stringstream &ss,
     ss << id_to_label[this->leaf_id];
 }
 
-std::tuple<leaf_number, leaf_number> Leaf::get_constraints(
-        std::vector<constraint> &constraints) const {
-    // may not be called
-    assert(false);
-    return std::make_tuple(0, 0);
-}
-
 /*************************/
 /*** InnerNode methods ***/
 /*************************/
@@ -106,13 +99,6 @@ void UnrootedNode::to_newick_string(std::stringstream &ss,
     ss << ")";
 }
 
-std::tuple<leaf_number, leaf_number> UnrootedNode::get_constraints(
-        std::vector<constraint> &constraints) const {
-    // may not be called
-    assert(false);
-    return std::make_tuple(0, 0);
-}
-
 /***************************************/
 /*** AllLeafCombinationsNode methods ***/
 /***************************************/
@@ -134,13 +120,6 @@ void AllLeafCombinationsNode::to_newick_string(
     }
 }
 
-std::tuple<leaf_number, leaf_number> AllLeafCombinationsNode::get_constraints(
-        std::vector<constraint> &constraints) const {
-    // may not be called
-    assert(false);
-    return std::make_tuple(0, 0);
-}
-
 /***************************************/
 /*** AllTreeCombinationsNode methods ***/
 /***************************************/
@@ -156,13 +135,6 @@ void AllTreeCombinationsNode::to_newick_string(
     }
 }
 
-std::tuple<leaf_number, leaf_number> AllTreeCombinationsNode::get_constraints(
-        std::vector<constraint> &constraints) const {
-    // may not be called
-    assert(false);
-    return std::make_tuple(0, 0);
-}
-
 /****************************************/
 /*** UnrootedCombinationsNode methods ***/
 /****************************************/
@@ -173,9 +145,3 @@ void UnrootedCombinationsNode::to_newick_string(
     ss << ")";
 }
 
-std::tuple<leaf_number, leaf_number> UnrootedCombinationsNode::get_constraints(
-        std::vector<constraint> &constraints) const {
-    // may not be called
-    assert(false);
-    return std::make_tuple(0, 0);
-}
