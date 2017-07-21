@@ -65,6 +65,13 @@ target_link_libraries(reroot terraces ${THREAD_LIBS})
 add_executable(subtree "app/subtree.cpp")
 target_link_libraries(subtree terraces ${THREAD_LIBS})
 
+add_executable(tree_gen "app/tree_gen.cpp")
+target_link_libraries(tree_gen terraces ${THREAD_LIBS})
+
+add_executable(site_gen "app/site_gen.cpp")
+target_link_libraries(site_gen terraces ${THREAD_LIBS})
+
+
 # Most of our files only compile with disabled language extensions for VC++
 # Unfortunately, Catch uses some windows-specific features, so we have to
 # enable these extensions for the Catch main method (more specific: not disable them)

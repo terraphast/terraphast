@@ -125,7 +125,7 @@ void check_unique_trees(multitree_node* root, index num_trees) {
 	CHECK(bipartitions.size() == num_trees);
 }
 
-void check_subtrees(multitree_node* root, const loaded_dataset& dataset) {
+void check_subtrees(multitree_node* root, const loaded_dataset& /* dataset */) {
 	multitree_iterator it(root);
 
 	utils::free_list fl;

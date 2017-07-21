@@ -30,7 +30,6 @@ struct tree_set {
  * performance improvements.
  */
 tree_set parse_nwk(const std::string& input);
-tree_set parse_nwk(std::istream& input);
 
 /**
  * Parses a data-file and returns the associated bit-matrix as well

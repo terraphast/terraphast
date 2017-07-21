@@ -21,7 +21,6 @@ bool bipartition_iterator::in_left_partition(index i) const {
 }
 
 ranked_bitvector bipartition_iterator::find_set_reps() const {
-	// TODO ugly style :)
 	ranked_bitvector set_rep(m_leaves.count(), m_alloc);
 	for (index i = 0; i < m_leaves.count(); ++i) {
 		set_rep.set(m_sets.simple_find(i));
