@@ -71,53 +71,6 @@ TreeList FindAllRootedTrees::merge_subtrees(const TreeList &left,
     assert(merged_trees.size() == left.size() * right.size());
     return merged_trees;
 }
-/*
-static std::tuple<leaf_number, leaf_number> extract_constraints_from_tree_rec(
-        const Tree node,
-        std::vector<constraint> &constraints) {
-
-    assert(node != nullptr);
-
-    if (node->is_leaf()) {
-        return std::make_tuple(node->id, node->id);
-    }
-
-    // (l,r) of the left child node
-    leaf_number l_left_most;
-    leaf_number l_right_most;
-    std::tie(l_left_most, l_right_most) = extract_constraints_from_tree_rec(
-            node->left, constraints);
-
-    // (l,r) of the right child node
-    leaf_number r_left_most;
-    leaf_number r_right_most;
-    std::tie(r_left_most, r_right_most) = extract_constraints_from_tree_rec(
-            node->right, constraints);
-
-    if (l_left_most != l_right_most) {
-        constraint c;
-        c.smaller_left = l_left_most;
-        c.smaller_right = l_right_most;
-        c.bigger_left = l_left_most;
-        c.bigger_right = r_right_most;
-        constraints.push_back(c);
-    }
-
-    if (r_left_most != r_right_most) {
-        constraint c;
-        c.smaller_left = r_left_most;
-        c.smaller_right = r_right_most;
-        c.bigger_left = l_left_most;
-        c.bigger_right = r_right_most;
-        constraints.push_back(c);
-    }
-
-    return std::make_tuple(l_left_most, r_right_most);
-}
-*/
-std::vector<constraint> extract_constraints_from_tree(const Tree supertree) {
-    return supertree->extract_constraints();
-}
 
 std::vector<constraint> find_constraints(const LeafSet &leaves,
                                          const std::vector<constraint> &constraints) {
