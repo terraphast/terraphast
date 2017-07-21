@@ -163,3 +163,19 @@ std::tuple<leaf_number, leaf_number> AllTreeCombinationsNode::get_constraints(
     return std::make_tuple(0, 0);
 }
 
+/****************************************/
+/*** UnrootedCombinationsNode methods ***/
+/****************************************/
+void UnrootedCombinationsNode::to_newick_string(
+        std::stringstream &ss, const label_mapper &id_to_label) const {
+    ss << "(" << id_to_label.root_label << ",";
+    this->combinations->to_newick_string(ss, id_to_label);
+    ss << ")";
+}
+
+std::tuple<leaf_number, leaf_number> UnrootedCombinationsNode::get_constraints(
+        std::vector<constraint> &constraints) const {
+    // may not be called
+    assert(false);
+    return std::make_tuple(0, 0);
+}

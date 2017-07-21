@@ -16,6 +16,7 @@ friend class InnerNode;
 friend class UnrootedNode;
 friend class AllLeafCombinationsNode;
 friend class AllTreeCombinationsNode;
+friend class UnrootedCombinationsNode;
 
 public: 
     /**
@@ -135,8 +136,9 @@ protected:
  * This can not be treated like a leaf, so is_leaf() returns false.
  */
 class AllLeafCombinationsNode : public Node {
+friend class UnrootedCombinationsNode;
 public:
-    AllLeafCombinationsNode(std::vector<leaf_number> leaves) : 
+    AllLeafCombinationsNode(std::vector<leaf_number> leaves) :
             leaves(leaves) {
         assert(leaves.size() > 0);
     };
@@ -193,12 +195,40 @@ protected:
                           const label_mapper &id_to_label) const;
 };
 
+/**
+ * Represents the "root" of an unrooted binary tree, meaning a node without a
+ * parent, which has 3 children. It is created with minimal overhead by
+ * "absorbing" a normal InnerNode and reusing it's children.
+ */
+class UnrootedCombinationsNode : public Node {
+private:
+    const std::shared_ptr<AllLeafCombinationsNode> combinations;
+public:
+    UnrootedCombinationsNode(
+            const std::shared_ptr<AllLeafCombinationsNode> combinations) :
+            combinations(combinations) {};
+
+    bool is_leaf() const { return false; }
+    leaf_number get_leaf() const {
+        // may not be called, use is_leaf() to prevent calling it
+        assert(false);
+        return 0;
+    }
+
+protected:
+    std::tuple<leaf_number, leaf_number> get_constraints(
+            std::vector<constraint> &constraints) const;
+    void to_newick_string(std::stringstream &ss,
+                          const label_mapper &id_to_label) const;
+};
+
 typedef std::shared_ptr<Node> NodePtr;
 typedef std::shared_ptr<Leaf> LeafPtr;
 typedef std::shared_ptr<InnerNode> InnerNodePtr;
 typedef std::shared_ptr<UnrootedNode> UnrootedNodePtr;
 typedef std::shared_ptr<AllLeafCombinationsNode> AllLeafCombinationsNodePtr;
 typedef std::shared_ptr<AllTreeCombinationsNode> AllTreeCombinationsNodePtr;
+typedef std::shared_ptr<UnrootedCombinationsNode> UnrootedCombinationsNodePtr;
 // for prettier code
 typedef std::shared_ptr<Node> Tree;
 
