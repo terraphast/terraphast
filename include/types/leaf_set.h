@@ -1,3 +1,4 @@
+/*** DO NOT INCLUDE DIRECTLY, INCLUDE types.h INSTEAD ***/
 #pragma once
 
 #include <boost/dynamic_bitset.hpp>
