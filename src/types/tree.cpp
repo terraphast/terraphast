@@ -12,8 +12,9 @@ std::string Node::to_newick_string(const label_mapper &id_to_label) const {
 
 std::vector<constraint> Node::extract_constraints() const {
     std::vector<constraint> constraints;
-    
-    this->get_constraints(constraints);
+    if (!this->is_leaf()) {
+        this->get_constraints(constraints);
+    }
     
     return constraints;
 }

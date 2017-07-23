@@ -41,21 +41,6 @@ std::ostream& operator<<(std::ostream &strm, const constraint& tree);
 std::ostream& operator<<(std::ostream &strm,
                          const std::vector<std::shared_ptr<std::set<leaf_number>> >& set);
 */
-/**
- * Returns a vector containing all constraints infered from the given supertree.
- *
- * @param supertree All supertree from which the constraints will be extracted
- * @return All constraints of the given super tree.
- */
-inline std::vector<constraint> extract_constraints_from_tree(
-        const Tree supertree) {
-    if (supertree != nullptr && !supertree->is_leaf()) {
-        return supertree->extract_constraints();
-    } else {
-        std::vector<constraint> empty;
-        return empty;
-    }
-};
 
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.

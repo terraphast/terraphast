@@ -220,7 +220,7 @@ TEST(ExtractConstraintsFromTree, example_from_slides) {
     auto c_2 = std::make_shared<InnerNode>(l_3, l_4);
     auto r = std::make_shared<InnerNode>(c_1, c_2);
 
-    auto constraints = extract_constraints_from_tree(r);
+    auto constraints = r->extract_constraints();
 
     ASSERT_EQ(constraints.size(), 2);
     //lca(l1, l2) < lca(l1, l4)

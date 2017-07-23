@@ -147,8 +147,6 @@ int terraceAnalysis(missingData *m,
         count = algo.scan_terrace(leaves, constraints) ? 2 : 0;
     }
 
-    mpz_set(*terraceSize, count.get_mpz_t());
-
     /* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
 
     /*
@@ -156,6 +154,7 @@ int terraceAnalysis(missingData *m,
      1. the number of UNROOTED trees on the terrace
      2. or just some value > 1 in terraceSize, if we only wanted to know if the tree is on a terrace
      */
+    mpz_set(*terraceSize, count.get_mpz_t());
 
     /*
      the return value is an error code
@@ -287,8 +286,10 @@ std::vector<constraint> extract_constraints_from_supertree(
     for (size_t i = 0; i < missing_data->numberOfPartitions; i++) {
         auto partition = generate_induced_tree(supertree, missing_data,
                                                species_map, id_to_label, i);
-
-        auto constraints = extract_constraints_from_tree(partition);
+        if (partition == nullptr) {
+            continue;
+        }
+        auto constraints = partition->extract_constraints();
         //dout(partition << "\n");
         //dout(constraints << "\n");
 
