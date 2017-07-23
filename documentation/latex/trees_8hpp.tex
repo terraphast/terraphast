@@ -1,0 +1,71 @@
+\hypertarget{trees_8hpp}{}\section{include/terraces/trees.hpp File Reference}
+\label{trees_8hpp}\index{include/terraces/trees.\+hpp@{include/terraces/trees.\+hpp}}
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$iosfwd$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$stack$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structterraces_1_1node}{terraces\+::node}
+\item 
+class \hyperlink{classterraces_1_1tree__cursor}{terraces\+::tree\+\_\+cursor}
+\item 
+struct \hyperlink{structterraces_1_1newick__t}{terraces\+::newick\+\_\+t}
+\item 
+struct \hyperlink{structterraces_1_1counted__supertree}{terraces\+::counted\+\_\+supertree}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceterraces}{terraces}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{terraces\+::index} = std\+::size\+\_\+t
+\begin{DoxyCompactList}\small\item\em Our index-\/type. \end{DoxyCompactList}\item 
+using \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{terraces\+::tree} = std\+::vector$<$ node $>$
+\item 
+using \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{terraces\+::name\+\_\+map} = std\+::vector$<$ std\+::string $>$
+\item 
+using \hyperlink{namespaceterraces_a148f3e895119c2a72d995caae669e40d}{terraces\+::index\+\_\+map} = std\+::unordered\+\_\+map$<$ std\+::string, \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} $>$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_a734f29a465c2d80d4ee38d00ba2f7460}{terraces\+::operator$<$$<$} (std\+::ostream \&s, const node \&n)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_a9699b2c445ed0b3ca46836c7d0500817}{terraces\+::operator$<$$<$} (std\+::ostream \&ss, const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t)
+\item 
+newick\+\_\+t \hyperlink{namespaceterraces_acad20ba1f31addcf2c533824cda625a3}{terraces\+::as\+\_\+newick} (const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t, const name\+\_\+map \&names)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_ad3526c917cfcc4424c9a1cac266e6f9f}{terraces\+::operator$<$$<$} (std\+::ostream \&s, newick\+\_\+t tree\+\_\+pair)
+\item 
+bool \hyperlink{namespaceterraces_a501de84c86e5d84c979cf4ec3151708e}{terraces\+::is\+\_\+root} (const node \&n)
+\item 
+bool \hyperlink{namespaceterraces_a05257bc42db3c5cbed6ef082df709555}{terraces\+::is\+\_\+leaf} (const node \&n)
+\item 
+bool \hyperlink{namespaceterraces_a4f378ba2800025b5b70a8647d70c751f}{terraces\+::is\+\_\+rooted\+\_\+tree} (const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t)
+\item 
+bool \hyperlink{namespaceterraces_adec8cca335bd6030520d919ee9d6aa8b}{terraces\+::is\+\_\+valid\+\_\+tree} (const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t)
+\item 
+{\footnotesize template$<$typename Result $>$ }\\Result \hyperlink{namespaceterraces_a3e839fe10a095b681cf4e7ef3ef687b9}{terraces\+::count\+\_\+unrooted\+\_\+trees} (\hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} num\+\_\+leaves)
+\item 
+{\footnotesize template$<$typename F $>$ }\\void \hyperlink{namespaceterraces_a479ffe90c01af88c1683e743d417fe1a}{terraces\+::foreach\+\_\+postorder} (const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t, F cb)
+\item 
+{\footnotesize template$<$typename F $>$ }\\void \hyperlink{namespaceterraces_a38d599d41ed134678e30b9cf7b454759}{terraces\+::foreach\+\_\+preorder} (const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t, F cb)
+\item 
+std\+::vector$<$ \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} $>$ \hyperlink{namespaceterraces_a24dbd28eb2657b6dd98233b26b20b93f}{terraces\+::preorder} (const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t)
+\item 
+std\+::vector$<$ \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} $>$ \hyperlink{namespaceterraces_ac51a269450af323210628bd90b96c694}{terraces\+::postorder} (const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t)
+\item 
+void \hyperlink{namespaceterraces_a07490ad6d9b91f5d4cd609450676516c}{terraces\+::print\+\_\+tree\+\_\+dot\+\_\+unrooted} (const \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t, const name\+\_\+map \&names, std\+::ostream \&output, std\+::string name\+\_\+prefix=\char`\"{}\char`\"{})
+\end{DoxyCompactItemize}

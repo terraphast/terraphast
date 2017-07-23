@@ -1,0 +1,724 @@
+\hypertarget{namespaceterraces}{}\section{terraces Namespace Reference}
+\label{namespaceterraces}\index{terraces@{terraces}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceterraces_1_1bits}{bits}
+\item 
+ \hyperlink{namespaceterraces_1_1debug}{debug}
+\item 
+ \hyperlink{namespaceterraces_1_1multitree__impl}{multitree\+\_\+impl}
+\item 
+ \hyperlink{namespaceterraces_1_1multitree__nodes}{multitree\+\_\+nodes}
+\item 
+ \hyperlink{namespaceterraces_1_1parsing}{parsing}
+\item 
+ \hyperlink{namespaceterraces_1_1tests}{tests}
+\item 
+ \hyperlink{namespaceterraces_1_1utils}{utils}
+\item 
+ \hyperlink{namespaceterraces_1_1variants}{variants}
+\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classterraces_1_1bad__input__error}{bad\+\_\+input\+\_\+error}
+\item 
+class \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}
+\item 
+class \hyperlink{classterraces_1_1basic__ranked__bitvector}{basic\+\_\+ranked\+\_\+bitvector}
+\item 
+class \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator}
+\item 
+class \hyperlink{classterraces_1_1bitmatrix}{bitmatrix}
+\item 
+class \hyperlink{classterraces_1_1bitvector__iterator}{bitvector\+\_\+iterator}
+\item 
+struct \hyperlink{structterraces_1_1constraint}{constraint}
+\item 
+struct \hyperlink{structterraces_1_1counted__supertree}{counted\+\_\+supertree}
+\item 
+class \hyperlink{classterraces_1_1file__open__error}{file\+\_\+open\+\_\+error}
+\item 
+struct \hyperlink{structterraces_1_1index__array__view}{index\+\_\+array\+\_\+view}
+\item 
+struct \hyperlink{structterraces_1_1multitree__node}{multitree\+\_\+node}
+\item 
+struct \hyperlink{structterraces_1_1newick__multitree__t}{newick\+\_\+multitree\+\_\+t}
+\item 
+struct \hyperlink{structterraces_1_1newick__t}{newick\+\_\+t}
+\item 
+class \hyperlink{classterraces_1_1no__usable__root__error}{no\+\_\+usable\+\_\+root\+\_\+error}
+\item 
+struct \hyperlink{structterraces_1_1node}{node}
+\item 
+struct \hyperlink{structterraces_1_1small__bipartition}{small\+\_\+bipartition}
+\item 
+class \hyperlink{classterraces_1_1tree__count__overflow__error}{tree\+\_\+count\+\_\+overflow\+\_\+error}
+\item 
+class \hyperlink{classterraces_1_1tree__cursor}{tree\+\_\+cursor}
+\item 
+class \hyperlink{classterraces_1_1tree__enumerator}{tree\+\_\+enumerator}
+\item 
+struct \hyperlink{structterraces_1_1tree__set}{tree\+\_\+set}
+\item 
+class \hyperlink{classterraces_1_1union__find}{union\+\_\+find}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} = std\+::vector$<$ \hyperlink{structterraces_1_1constraint}{constraint} $>$
+\item 
+using \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} = std\+::size\+\_\+t
+\begin{DoxyCompactList}\small\item\em Our index-\/type. \end{DoxyCompactList}\item 
+using \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} = std\+::vector$<$ \hyperlink{structterraces_1_1node}{node} $>$
+\item 
+using \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} = std\+::vector$<$ std\+::string $>$
+\item 
+using \hyperlink{namespaceterraces_a148f3e895119c2a72d995caae669e40d}{index\+\_\+map} = std\+::unordered\+\_\+map$<$ std\+::string, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$
+\item 
+using \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} = \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ $>$
+\item 
+using \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} = \hyperlink{classterraces_1_1basic__ranked__bitvector}{basic\+\_\+ranked\+\_\+bitvector}$<$ \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ $>$
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1}{multitree\+\_\+node\+\_\+type} \{ \newline
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a70e35885c895c187b609f94b096e29f1}{multitree\+\_\+node\+\_\+type\+::base\+\_\+single\+\_\+leaf}, 
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1adfa457b833292690acca0e88b7b6f5c9}{multitree\+\_\+node\+\_\+type\+::base\+\_\+two\+\_\+leaves}, 
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a9c3d991ae32ae0f5981317c6cc6df349}{multitree\+\_\+node\+\_\+type\+::base\+\_\+unconstrained}, 
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1adccfcf9079db20b56ceaa83c0117b85b}{multitree\+\_\+node\+\_\+type\+::inner\+\_\+node}, 
+\newline
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a3efbbe65015e1cffe03f16adbb19f7db}{multitree\+\_\+node\+\_\+type\+::alternative\+\_\+array}, 
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a842481836d8f0854f1e1e50788f5b4be}{multitree\+\_\+node\+\_\+type\+::unexplored}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_afe895c6224b473a8ac42ee20a43b60dc}{operator$<$$<$} (std\+::ostream \&s, const \hyperlink{structterraces_1_1constraint}{constraint} \&c)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_afda20576b9d2f9c56f3f6d06efc030fd}{operator$<$$<$} (std\+::ostream \&stream, \hyperlink{structterraces_1_1utils_1_1named__output}{utils\+::named\+\_\+output}$<$ \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints}, \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} $>$)
+\item 
+\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \hyperlink{namespaceterraces_adbc8509d9ed99e4e0ef57af54c89e905}{compute\+\_\+constraints} (const std\+::vector$<$ \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} $>$ \&trees)
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{namespaceterraces_a13888c94deeee29c8f5157c9071e3946}{deduplicate\+\_\+constraints} (\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&in\+\_\+c)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_ad5d0342efed28b0bd79f604eb73f9b61}{operator$<$$<$} (std\+::ostream \&stream, \hyperlink{structterraces_1_1newick__multitree__t}{newick\+\_\+multitree\+\_\+t} \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree})
+\item 
+\hyperlink{structterraces_1_1newick__multitree__t}{newick\+\_\+multitree\+\_\+t} \hyperlink{namespaceterraces_ac1f8e7b342ecb4934d77c309c3ac8692}{as\+\_\+newick} (const \hyperlink{structterraces_1_1multitree__node}{multitree\+\_\+node} $\ast$root, const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&names)
+\item 
+\hyperlink{structterraces_1_1tree__set}{tree\+\_\+set} \hyperlink{namespaceterraces_add61915a31828774ee0371d443031c29}{parse\+\_\+nwk} (const std\+::string \&input)
+\item 
+std\+::pair$<$ \hyperlink{classterraces_1_1bitmatrix}{bitmatrix}, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ \hyperlink{namespaceterraces_af52559863b67502f00d68853f50c69af}{parse\+\_\+bitmatrix} (std\+::istream \&input, const \hyperlink{namespaceterraces_a148f3e895119c2a72d995caae669e40d}{index\+\_\+map} \&indices, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} tree\+\_\+size)
+\item 
+void \hyperlink{namespaceterraces_ae8abab19d1c4a35eb187cd2cf005fe59}{reroot\+\_\+inplace} (\hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} root\+\_\+leaf)
+\item 
+bool \hyperlink{namespaceterraces_a924744ce1ce711e40d0cf722d551e375}{is\+\_\+on\+\_\+terrace} (std\+::istream \&nwk\+\_\+stream, std\+::istream \&matrix\+\_\+stream)
+\item 
+bool \hyperlink{namespaceterraces_a4e75afae24e5c7fef4f9b22ea3ee9486}{is\+\_\+on\+\_\+terrace} (std\+::istream \&nwk\+\_\+stream, const std\+::string \&matrix\+\_\+string)
+\item 
+bool \hyperlink{namespaceterraces_aaa1cfc0f0adeee6408adaf1049c24227}{is\+\_\+on\+\_\+terrace} (const std\+::string \&nwk\+\_\+string, std\+::istream \&matrix\+\_\+stream)
+\item 
+bool \hyperlink{namespaceterraces_a2dd57bda3af31246492ad52438015b42}{is\+\_\+on\+\_\+terrace} (const std\+::string \&nwk\+\_\+string, const std\+::string \&matrix\+\_\+string)
+\item 
+bool \hyperlink{namespaceterraces_afadd08934abd0d298e2b36c7025e4565}{is\+\_\+on\+\_\+terrace\+\_\+from\+\_\+file} (const std\+::string \&nwk\+\_\+filename, const std\+::string \&matrix\+\_\+filename)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a7ef22320b680e0859629f36e6366095b}{get\+\_\+terrace\+\_\+size} (std\+::istream \&nwk\+\_\+stream, std\+::istream \&matrix\+\_\+stream)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a3d63d1aacb79fba0eec3047276257247}{get\+\_\+terrace\+\_\+size} (std\+::istream \&nwk\+\_\+stream, const std\+::string \&matrix\+\_\+string)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a134fb35cc9c3ade97715eaef710ee458}{get\+\_\+terrace\+\_\+size} (const std\+::string \&nwk\+\_\+string, std\+::istream \&matrix\+\_\+stream)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a42c8925377cdc643dffb08a08cb76c6b}{get\+\_\+terrace\+\_\+size} (const std\+::string \&nwk\+\_\+string, const std\+::string \&matrix\+\_\+string)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a56e02226b324a2c6c7620ed31be10971}{get\+\_\+terrace\+\_\+size\+\_\+from\+\_\+file} (const std\+::string \&nwk\+\_\+filename, const std\+::string \&matrix\+\_\+filename)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_aa5f247849fef83931db798d94f3d3208}{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint} (std\+::istream \&nwk\+\_\+stream, std\+::istream \&matrix\+\_\+stream)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_a52729af5c44841c718693508654a4852}{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint} (std\+::istream \&nwk\+\_\+stream, const std\+::string \&matrix\+\_\+string)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_acb1e910e11d185376512e68fa777c02c}{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint} (const std\+::string \&nwk\+\_\+string, std\+::istream \&matrix\+\_\+stream)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_a77a2041cec698021d4513fe8582295d2}{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint} (const std\+::string \&nwk\+\_\+string, const std\+::string \&matrix\+\_\+string)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_a2fd8367ac496d3302518b44ad2804e0a}{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint\+\_\+from\+\_\+file} (const std\+::string \&nwk\+\_\+filename, const std\+::string \&matrix\+\_\+filename)
+\item 
+void \hyperlink{namespaceterraces_a8945b2604514ca878a2ba568029f1062}{print\+\_\+terrace} (std\+::istream \&nwk\+\_\+stream, std\+::istream \&matrix\+\_\+stream, std\+::ostream \&out)
+\item 
+void \hyperlink{namespaceterraces_ae35eb2f7d41b44f45b8bb1623f188fe3}{print\+\_\+terrace} (std\+::istream \&nwk\+\_\+stream, const std\+::string \&matrix\+\_\+string, std\+::ostream \&out)
+\item 
+void \hyperlink{namespaceterraces_a6b70762dab550c4b63c1fb12a976c79b}{print\+\_\+terrace} (const std\+::string \&nwk\+\_\+string, std\+::istream \&matrix\+\_\+stream, std\+::ostream \&out)
+\item 
+void \hyperlink{namespaceterraces_abc9fdae9cfcc6334ed6e3a965e0dbd41}{print\+\_\+terrace} (const std\+::string \&nwk\+\_\+string, const std\+::string \&matrix\+\_\+string, std\+::ostream \&out)
+\item 
+void \hyperlink{namespaceterraces_a8a1db74ca77db1dd2a23a92e8ff05e34}{print\+\_\+terrace\+\_\+from\+\_\+file} (const std\+::string \&nwk\+\_\+filename, const std\+::string \&matrix\+\_\+filename, std\+::ostream \&output)
+\item 
+std\+::vector$<$ \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} $>$ \hyperlink{namespaceterraces_a6878b4ce33b96891a13f1336ee330746}{subtrees} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, const \hyperlink{classterraces_1_1bitmatrix}{bitmatrix} \&occ)
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{namespaceterraces_aa6cd6a7a07d6af5190482a739c575ece}{remap\+\_\+to\+\_\+leaves} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&c, \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&names, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \&root)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_a8451b492b27c157a54e8c8b797896c0a}{count\+\_\+supertree} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} num\+\_\+leaves, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints}, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} root\+\_\+leaf)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_af4db64ea1af8673f87af37b1155f2682}{count\+\_\+supertree} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} num\+\_\+leaves, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints})
+\item 
+bool \hyperlink{namespaceterraces_aa6c37d0703e1d1f0fec828f851585e0e}{check\+\_\+supertree} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} num\+\_\+leaves, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints}, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} root\+\_\+leaf)
+\item 
+bool \hyperlink{namespaceterraces_a1e7ffb28144d80863f1141aa15c58af3}{check\+\_\+supertree} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} num\+\_\+leaves, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints})
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_a734f29a465c2d80d4ee38d00ba2f7460}{operator$<$$<$} (std\+::ostream \&s, const \hyperlink{structterraces_1_1node}{node} \&n)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_a9699b2c445ed0b3ca46836c7d0500817}{operator$<$$<$} (std\+::ostream \&ss, const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t)
+\item 
+\hyperlink{structterraces_1_1newick__t}{newick\+\_\+t} \hyperlink{namespaceterraces_acad20ba1f31addcf2c533824cda625a3}{as\+\_\+newick} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&names)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_ad3526c917cfcc4424c9a1cac266e6f9f}{operator$<$$<$} (std\+::ostream \&s, \hyperlink{structterraces_1_1newick__t}{newick\+\_\+t} tree\+\_\+pair)
+\item 
+bool \hyperlink{namespaceterraces_a501de84c86e5d84c979cf4ec3151708e}{is\+\_\+root} (const \hyperlink{structterraces_1_1node}{node} \&n)
+\item 
+bool \hyperlink{namespaceterraces_a05257bc42db3c5cbed6ef082df709555}{is\+\_\+leaf} (const \hyperlink{structterraces_1_1node}{node} \&n)
+\item 
+bool \hyperlink{namespaceterraces_a4f378ba2800025b5b70a8647d70c751f}{is\+\_\+rooted\+\_\+tree} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t)
+\item 
+bool \hyperlink{namespaceterraces_adec8cca335bd6030520d919ee9d6aa8b}{is\+\_\+valid\+\_\+tree} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t)
+\item 
+{\footnotesize template$<$typename Result $>$ }\\Result \hyperlink{namespaceterraces_a3e839fe10a095b681cf4e7ef3ef687b9}{count\+\_\+unrooted\+\_\+trees} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} num\+\_\+leaves)
+\item 
+{\footnotesize template$<$typename F $>$ }\\void \hyperlink{namespaceterraces_a479ffe90c01af88c1683e743d417fe1a}{foreach\+\_\+postorder} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, F cb)
+\item 
+{\footnotesize template$<$typename F $>$ }\\void \hyperlink{namespaceterraces_a38d599d41ed134678e30b9cf7b454759}{foreach\+\_\+preorder} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, F cb)
+\item 
+std\+::vector$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ \hyperlink{namespaceterraces_a24dbd28eb2657b6dd98233b26b20b93f}{preorder} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t)
+\item 
+std\+::vector$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ \hyperlink{namespaceterraces_ac51a269450af323210628bd90b96c694}{postorder} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t)
+\item 
+void \hyperlink{namespaceterraces_a07490ad6d9b91f5d4cd609450676516c}{print\+\_\+tree\+\_\+dot\+\_\+unrooted} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&names, std\+::ostream \&output, std\+::string name\+\_\+prefix=\char`\"{}\char`\"{})
+\item 
+bool \hyperlink{namespaceterraces_a58682ec06711d5ae85a58aec6d811d31}{is\+\_\+isomorphic} (const \hyperlink{structterraces_1_1tree__set}{tree\+\_\+set} \&fst, const \hyperlink{structterraces_1_1tree__set}{tree\+\_\+set} \&snd)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_a746aa89cd7b3de5dc7dcc7bc90b08e74}{operator$<$$<$} (std\+::ostream \&stream, const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&it)
+\item 
+{\footnotesize template$<$typename Alloc $>$ }\\\hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \hyperlink{namespaceterraces_a89a9c3d18566c475960fa9bbe5954049}{full\+\_\+set} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} size, Alloc a)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_ab0b3ce0b155ae5858d90f33dd51bf489}{print\+\_\+multitree\+\_\+node} (std\+::ostream \&stream, const \hyperlink{structterraces_1_1multitree__node}{multitree\+\_\+node} $\ast$\hyperlink{structterraces_1_1node}{node}, const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&names)
+\item 
+{\footnotesize template$<$typename Alloc $>$ }\\\hyperlink{classterraces_1_1basic__ranked__bitvector}{basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$ \hyperlink{namespaceterraces_a75e78e4205ecb8d8dbd3485c464741fe}{full\+\_\+ranked\+\_\+set} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} size, Alloc a)
+\item 
+\hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \hyperlink{namespaceterraces_acece17bacc62c99a66bcc2a69e04f4d1}{filter\+\_\+constraints} (const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&leaves, const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&c\+\_\+occ, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&c, \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ a)
+\item 
+\hyperlink{classterraces_1_1union__find}{union\+\_\+find} \hyperlink{namespaceterraces_a81a42a8b470521357cd73e5b30c2ad7c}{apply\+\_\+constraints} (const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&leaves, const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&c\+\_\+occ, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&c, \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ a)
+\item 
+\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \hyperlink{namespaceterraces_a13ef284e706bc528df3f04d49e7be607}{map\+\_\+constraints} (const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&leaves, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&cs)
+\item 
+\hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \hyperlink{namespaceterraces_af8d2516221093e7c6f54648e7b2d01bd}{leaf\+\_\+occ} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&\hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree}, \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ a)
+\item 
+std\+::vector$<$ \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} $>$ \hyperlink{namespaceterraces_a34db8e988e2845af99b6b228924a5f56}{tree\+\_\+bipartitions} (const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, const std\+::vector$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ \&mapping, const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&leaves, \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ alloc)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}\label{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}} 
+\index{terraces@{terraces}!bitvector@{bitvector}}
+\index{bitvector@{bitvector}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{bitvector}{bitvector}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{terraces\+::bitvector} = typedef \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$\hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}$>$ $>$}
+
+\mbox{\Hypertarget{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}\label{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}} 
+\index{terraces@{terraces}!constraints@{constraints}}
+\index{constraints@{constraints}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{constraints}{constraints}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{terraces\+::constraints} = typedef std\+::vector$<$\hyperlink{structterraces_1_1constraint}{constraint}$>$}
+
+\mbox{\Hypertarget{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}\label{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}} 
+\index{terraces@{terraces}!index@{index}}
+\index{index@{index}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{index}{index}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{terraces\+::index} = typedef std\+::size\+\_\+t}
+
+
+
+Our index-\/type. 
+
+\mbox{\Hypertarget{namespaceterraces_a148f3e895119c2a72d995caae669e40d}\label{namespaceterraces_a148f3e895119c2a72d995caae669e40d}} 
+\index{terraces@{terraces}!index\+\_\+map@{index\+\_\+map}}
+\index{index\+\_\+map@{index\+\_\+map}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{index\+\_\+map}{index\_map}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_a148f3e895119c2a72d995caae669e40d}{terraces\+::index\+\_\+map} = typedef std\+::unordered\+\_\+map$<$std\+::string, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}$>$}
+
+\mbox{\Hypertarget{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}\label{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}} 
+\index{terraces@{terraces}!name\+\_\+map@{name\+\_\+map}}
+\index{name\+\_\+map@{name\+\_\+map}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{name\+\_\+map}{name\_map}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{terraces\+::name\+\_\+map} = typedef std\+::vector$<$std\+::string$>$}
+
+\mbox{\Hypertarget{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}\label{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}} 
+\index{terraces@{terraces}!ranked\+\_\+bitvector@{ranked\+\_\+bitvector}}
+\index{ranked\+\_\+bitvector@{ranked\+\_\+bitvector}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{ranked\+\_\+bitvector}{ranked\_bitvector}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{terraces\+::ranked\+\_\+bitvector} = typedef \hyperlink{classterraces_1_1basic__ranked__bitvector}{basic\+\_\+ranked\+\_\+bitvector}$<$\hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}$>$ $>$}
+
+\mbox{\Hypertarget{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}\label{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}} 
+\index{terraces@{terraces}!tree@{tree}}
+\index{tree@{tree}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{tree}{tree}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{terraces\+::tree} = typedef std\+::vector$<$\hyperlink{structterraces_1_1node}{node}$>$}
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1}\label{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1}} 
+\index{terraces@{terraces}!multitree\+\_\+node\+\_\+type@{multitree\+\_\+node\+\_\+type}}
+\index{multitree\+\_\+node\+\_\+type@{multitree\+\_\+node\+\_\+type}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{multitree\+\_\+node\+\_\+type}{multitree\_node\_type}}
+{\footnotesize\ttfamily enum \hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1}{terraces\+::multitree\+\_\+node\+\_\+type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{base\+\_\+single\+\_\+leaf@{base\+\_\+single\+\_\+leaf}!terraces@{terraces}}\index{terraces@{terraces}!base\+\_\+single\+\_\+leaf@{base\+\_\+single\+\_\+leaf}}}\mbox{\Hypertarget{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a70e35885c895c187b609f94b096e29f1}\label{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a70e35885c895c187b609f94b096e29f1}} 
+base\+\_\+single\+\_\+leaf&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{base\+\_\+two\+\_\+leaves@{base\+\_\+two\+\_\+leaves}!terraces@{terraces}}\index{terraces@{terraces}!base\+\_\+two\+\_\+leaves@{base\+\_\+two\+\_\+leaves}}}\mbox{\Hypertarget{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1adfa457b833292690acca0e88b7b6f5c9}\label{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1adfa457b833292690acca0e88b7b6f5c9}} 
+base\+\_\+two\+\_\+leaves&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{base\+\_\+unconstrained@{base\+\_\+unconstrained}!terraces@{terraces}}\index{terraces@{terraces}!base\+\_\+unconstrained@{base\+\_\+unconstrained}}}\mbox{\Hypertarget{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a9c3d991ae32ae0f5981317c6cc6df349}\label{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a9c3d991ae32ae0f5981317c6cc6df349}} 
+base\+\_\+unconstrained&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{inner\+\_\+node@{inner\+\_\+node}!terraces@{terraces}}\index{terraces@{terraces}!inner\+\_\+node@{inner\+\_\+node}}}\mbox{\Hypertarget{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1adccfcf9079db20b56ceaa83c0117b85b}\label{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1adccfcf9079db20b56ceaa83c0117b85b}} 
+inner\+\_\+node&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{alternative\+\_\+array@{alternative\+\_\+array}!terraces@{terraces}}\index{terraces@{terraces}!alternative\+\_\+array@{alternative\+\_\+array}}}\mbox{\Hypertarget{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a3efbbe65015e1cffe03f16adbb19f7db}\label{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a3efbbe65015e1cffe03f16adbb19f7db}} 
+alternative\+\_\+array&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{unexplored@{unexplored}!terraces@{terraces}}\index{terraces@{terraces}!unexplored@{unexplored}}}\mbox{\Hypertarget{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a842481836d8f0854f1e1e50788f5b4be}\label{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a842481836d8f0854f1e1e50788f5b4be}} 
+unexplored&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceterraces_a81a42a8b470521357cd73e5b30c2ad7c}\label{namespaceterraces_a81a42a8b470521357cd73e5b30c2ad7c}} 
+\index{terraces@{terraces}!apply\+\_\+constraints@{apply\+\_\+constraints}}
+\index{apply\+\_\+constraints@{apply\+\_\+constraints}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{apply\+\_\+constraints()}{apply\_constraints()}}
+{\footnotesize\ttfamily \hyperlink{classterraces_1_1union__find}{union\+\_\+find} terraces\+::apply\+\_\+constraints (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{leaves,  }\item[{const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&}]{c\+\_\+occ,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{c,  }\item[{\hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$}]{a }\end{DoxyParamCaption})}
+
+Returns a union-\/find representation of the sets retrieved after applying all constraints from c\+\_\+occ. \mbox{\Hypertarget{namespaceterraces_ac1f8e7b342ecb4934d77c309c3ac8692}\label{namespaceterraces_ac1f8e7b342ecb4934d77c309c3ac8692}} 
+\index{terraces@{terraces}!as\+\_\+newick@{as\+\_\+newick}}
+\index{as\+\_\+newick@{as\+\_\+newick}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{as\+\_\+newick()}{as\_newick()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{structterraces_1_1newick__multitree__t}{newick\+\_\+multitree\+\_\+t} terraces\+::as\+\_\+newick (\begin{DoxyParamCaption}\item[{const \hyperlink{structterraces_1_1multitree__node}{multitree\+\_\+node} $\ast$}]{root,  }\item[{const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&}]{names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespaceterraces_acad20ba1f31addcf2c533824cda625a3}\label{namespaceterraces_acad20ba1f31addcf2c533824cda625a3}} 
+\index{terraces@{terraces}!as\+\_\+newick@{as\+\_\+newick}}
+\index{as\+\_\+newick@{as\+\_\+newick}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{as\+\_\+newick()}{as\_newick()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{structterraces_1_1newick__t}{newick\+\_\+t} terraces\+::as\+\_\+newick (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&}]{names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespaceterraces_aa6c37d0703e1d1f0fec828f851585e0e}\label{namespaceterraces_aa6c37d0703e1d1f0fec828f851585e0e}} 
+\index{terraces@{terraces}!check\+\_\+supertree@{check\+\_\+supertree}}
+\index{check\+\_\+supertree@{check\+\_\+supertree}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{check\+\_\+supertree()}{check\_supertree()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool terraces\+::check\+\_\+supertree (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{num\+\_\+leaves,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{constraints,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{root\+\_\+leaf }\end{DoxyParamCaption})}
+
+Checks if there are at least two trees compatible with the given constraints, while keeping the root fixed. 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+leaves} & The number of leaves of the tree \\
+\hline
+{\em constraints} & The constraints on the leaves. The constraints must only contain valid leaf indices. \\
+\hline
+{\em root\+\_\+leaf} & The fixed \textquotesingle{}root leaf\textquotesingle{} which will be placed to the right of the root to avoid isomorphic, differently rooted trees. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true iff there are at least two trees compatible with the constraints. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceterraces_a1e7ffb28144d80863f1141aa15c58af3}\label{namespaceterraces_a1e7ffb28144d80863f1141aa15c58af3}} 
+\index{terraces@{terraces}!check\+\_\+supertree@{check\+\_\+supertree}}
+\index{check\+\_\+supertree@{check\+\_\+supertree}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{check\+\_\+supertree()}{check\_supertree()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool terraces\+::check\+\_\+supertree (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{num\+\_\+leaves,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{constraints }\end{DoxyParamCaption})}
+
+Checks if there are at least two trees compatible with the given constraints. This method might count a tree multiple times if it has a valid isomorphic representation with a different root. 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+leaves} & The number of leaves of the tree \\
+\hline
+{\em constraints} & The constraints on the leaves. The constraints must only contain valid leaf indices. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true iff there are at least two trees compatible with the constraints. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceterraces_adbc8509d9ed99e4e0ef57af54c89e905}\label{namespaceterraces_adbc8509d9ed99e4e0ef57af54c89e905}} 
+\index{terraces@{terraces}!compute\+\_\+constraints@{compute\+\_\+constraints}}
+\index{compute\+\_\+constraints@{compute\+\_\+constraints}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{compute\+\_\+constraints()}{compute\_constraints()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} terraces\+::compute\+\_\+constraints (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} $>$ \&}]{trees }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a8451b492b27c157a54e8c8b797896c0a}\label{namespaceterraces_a8451b492b27c157a54e8c8b797896c0a}} 
+\index{terraces@{terraces}!count\+\_\+supertree@{count\+\_\+supertree}}
+\index{count\+\_\+supertree@{count\+\_\+supertree}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{count\+\_\+supertree()}{count\_supertree()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} terraces\+::count\+\_\+supertree (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{num\+\_\+leaves,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{constraints,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{root\+\_\+leaf }\end{DoxyParamCaption})}
+
+Counts the number of trees compatible with the given constraints, while keeping the root fixed. 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+leaves} & The number of leaves of the tree \\
+\hline
+{\em constraints} & The constraints on the leaves. The constraints must only contain valid leaf indices. \\
+\hline
+{\em root\+\_\+leaf} & The fixed \textquotesingle{}root leaf\textquotesingle{} which will be placed to the right of the root to avoid isomorphic, differently rooted trees. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of trees. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceterraces_af4db64ea1af8673f87af37b1155f2682}\label{namespaceterraces_af4db64ea1af8673f87af37b1155f2682}} 
+\index{terraces@{terraces}!count\+\_\+supertree@{count\+\_\+supertree}}
+\index{count\+\_\+supertree@{count\+\_\+supertree}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{count\+\_\+supertree()}{count\_supertree()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} terraces\+::count\+\_\+supertree (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{num\+\_\+leaves,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{constraints }\end{DoxyParamCaption})}
+
+Counts the number of trees compatible with the given constraints. This method might count a tree multiple times if it has a valid isomorphic representation with a different root. 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+leaves} & The number of leaves of the tree \\
+\hline
+{\em constraints} & The constraints on the leaves. The constraints must only contain valid leaf indices. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of trees. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceterraces_a3e839fe10a095b681cf4e7ef3ef687b9}\label{namespaceterraces_a3e839fe10a095b681cf4e7ef3ef687b9}} 
+\index{terraces@{terraces}!count\+\_\+unrooted\+\_\+trees@{count\+\_\+unrooted\+\_\+trees}}
+\index{count\+\_\+unrooted\+\_\+trees@{count\+\_\+unrooted\+\_\+trees}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{count\+\_\+unrooted\+\_\+trees()}{count\_unrooted\_trees()}}
+{\footnotesize\ttfamily template$<$typename Result $>$ \\
+Result terraces\+::count\+\_\+unrooted\+\_\+trees (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{num\+\_\+leaves }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a13888c94deeee29c8f5157c9071e3946}\label{namespaceterraces_a13888c94deeee29c8f5157c9071e3946}} 
+\index{terraces@{terraces}!deduplicate\+\_\+constraints@{deduplicate\+\_\+constraints}}
+\index{deduplicate\+\_\+constraints@{deduplicate\+\_\+constraints}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{deduplicate\+\_\+constraints()}{deduplicate\_constraints()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} terraces\+::deduplicate\+\_\+constraints (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{in\+\_\+c }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_acece17bacc62c99a66bcc2a69e04f4d1}\label{namespaceterraces_acece17bacc62c99a66bcc2a69e04f4d1}} 
+\index{terraces@{terraces}!filter\+\_\+constraints@{filter\+\_\+constraints}}
+\index{filter\+\_\+constraints@{filter\+\_\+constraints}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{filter\+\_\+constraints()}{filter\_constraints()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} terraces\+::filter\+\_\+constraints (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{leaves,  }\item[{const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&}]{c\+\_\+occ,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{c,  }\item[{\hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$}]{a }\end{DoxyParamCaption})}
+
+Removes all constraints from c\+\_\+occ that don\textquotesingle{}t lie fully within the leave set. \mbox{\Hypertarget{namespaceterraces_a479ffe90c01af88c1683e743d417fe1a}\label{namespaceterraces_a479ffe90c01af88c1683e743d417fe1a}} 
+\index{terraces@{terraces}!foreach\+\_\+postorder@{foreach\+\_\+postorder}}
+\index{foreach\+\_\+postorder@{foreach\+\_\+postorder}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{foreach\+\_\+postorder()}{foreach\_postorder()}}
+{\footnotesize\ttfamily template$<$typename F $>$ \\
+void terraces\+::foreach\+\_\+postorder (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{F}]{cb }\end{DoxyParamCaption})}
+
+Traverses a tree in post-\/order while calling a given callback on every node. \mbox{\Hypertarget{namespaceterraces_a38d599d41ed134678e30b9cf7b454759}\label{namespaceterraces_a38d599d41ed134678e30b9cf7b454759}} 
+\index{terraces@{terraces}!foreach\+\_\+preorder@{foreach\+\_\+preorder}}
+\index{foreach\+\_\+preorder@{foreach\+\_\+preorder}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{foreach\+\_\+preorder()}{foreach\_preorder()}}
+{\footnotesize\ttfamily template$<$typename F $>$ \\
+void terraces\+::foreach\+\_\+preorder (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{F}]{cb }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a75e78e4205ecb8d8dbd3485c464741fe}\label{namespaceterraces_a75e78e4205ecb8d8dbd3485c464741fe}} 
+\index{terraces@{terraces}!full\+\_\+ranked\+\_\+set@{full\+\_\+ranked\+\_\+set}}
+\index{full\+\_\+ranked\+\_\+set@{full\+\_\+ranked\+\_\+set}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{full\+\_\+ranked\+\_\+set()}{full\_ranked\_set()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+\hyperlink{classterraces_1_1basic__ranked__bitvector}{basic\+\_\+ranked\+\_\+bitvector}$<$Alloc$>$ terraces\+::full\+\_\+ranked\+\_\+set (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{size,  }\item[{Alloc}]{a }\end{DoxyParamCaption})}
+
+Returns a basic\+\_\+ranked\+\_\+bitvector$<$\+Alloc$>$ containing size elements. \mbox{\Hypertarget{namespaceterraces_a89a9c3d18566c475960fa9bbe5954049}\label{namespaceterraces_a89a9c3d18566c475960fa9bbe5954049}} 
+\index{terraces@{terraces}!full\+\_\+set@{full\+\_\+set}}
+\index{full\+\_\+set@{full\+\_\+set}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{full\+\_\+set()}{full\_set()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+\hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$Alloc$>$ terraces\+::full\+\_\+set (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{size,  }\item[{Alloc}]{a }\end{DoxyParamCaption})}
+
+Returns a bitvector containing size elements. \mbox{\Hypertarget{namespaceterraces_a7ef22320b680e0859629f36e6366095b}\label{namespaceterraces_a7ef22320b680e0859629f36e6366095b}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size@{get\+\_\+terrace\+\_\+size}}
+\index{get\+\_\+terrace\+\_\+size@{get\+\_\+terrace\+\_\+size}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size()}{get\_terrace\_size()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily std\+::uint64\+\_\+t terraces\+::get\+\_\+terrace\+\_\+size (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{nwk\+\_\+stream,  }\item[{std\+::istream \&}]{matrix\+\_\+stream }\end{DoxyParamCaption})}
+
+Count the number of trees on the terrace. \begin{DoxyReturn}{Returns}
+the number of trees on the terrace 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceterraces_a3d63d1aacb79fba0eec3047276257247}\label{namespaceterraces_a3d63d1aacb79fba0eec3047276257247}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size@{get\+\_\+terrace\+\_\+size}}
+\index{get\+\_\+terrace\+\_\+size@{get\+\_\+terrace\+\_\+size}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size()}{get\_terrace\_size()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily std\+::uint64\+\_\+t terraces\+::get\+\_\+terrace\+\_\+size (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{nwk\+\_\+stream,  }\item[{const std\+::string \&}]{matrix\+\_\+string }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a134fb35cc9c3ade97715eaef710ee458}\label{namespaceterraces_a134fb35cc9c3ade97715eaef710ee458}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size@{get\+\_\+terrace\+\_\+size}}
+\index{get\+\_\+terrace\+\_\+size@{get\+\_\+terrace\+\_\+size}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size()}{get\_terrace\_size()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily std\+::uint64\+\_\+t terraces\+::get\+\_\+terrace\+\_\+size (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+string,  }\item[{std\+::istream \&}]{matrix\+\_\+stream }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a42c8925377cdc643dffb08a08cb76c6b}\label{namespaceterraces_a42c8925377cdc643dffb08a08cb76c6b}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size@{get\+\_\+terrace\+\_\+size}}
+\index{get\+\_\+terrace\+\_\+size@{get\+\_\+terrace\+\_\+size}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size()}{get\_terrace\_size()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily std\+::uint64\+\_\+t terraces\+::get\+\_\+terrace\+\_\+size (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+string,  }\item[{const std\+::string \&}]{matrix\+\_\+string }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_aa5f247849fef83931db798d94f3d3208}\label{namespaceterraces_aa5f247849fef83931db798d94f3d3208}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint}}
+\index{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint()}{get\_terrace\_size\_as\_bigint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{nwk\+\_\+stream,  }\item[{std\+::istream \&}]{matrix\+\_\+stream }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a52729af5c44841c718693508654a4852}\label{namespaceterraces_a52729af5c44841c718693508654a4852}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint}}
+\index{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint()}{get\_terrace\_size\_as\_bigint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{nwk\+\_\+stream,  }\item[{const std\+::string \&}]{matrix\+\_\+string }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_acb1e910e11d185376512e68fa777c02c}\label{namespaceterraces_acb1e910e11d185376512e68fa777c02c}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint}}
+\index{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint()}{get\_terrace\_size\_as\_bigint()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+string,  }\item[{std\+::istream \&}]{matrix\+\_\+stream }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a77a2041cec698021d4513fe8582295d2}\label{namespaceterraces_a77a2041cec698021d4513fe8582295d2}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint}}
+\index{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint()}{get\_terrace\_size\_as\_bigint()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+string,  }\item[{const std\+::string \&}]{matrix\+\_\+string }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a2fd8367ac496d3302518b44ad2804e0a}\label{namespaceterraces_a2fd8367ac496d3302518b44ad2804e0a}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint\+\_\+from\+\_\+file@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint\+\_\+from\+\_\+file}}
+\index{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint\+\_\+from\+\_\+file@{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint\+\_\+from\+\_\+file}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint\+\_\+from\+\_\+file()}{get\_terrace\_size\_as\_bigint\_from\_file()}}
+{\footnotesize\ttfamily \hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+filename,  }\item[{const std\+::string \&}]{matrix\+\_\+filename }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a56e02226b324a2c6c7620ed31be10971}\label{namespaceterraces_a56e02226b324a2c6c7620ed31be10971}} 
+\index{terraces@{terraces}!get\+\_\+terrace\+\_\+size\+\_\+from\+\_\+file@{get\+\_\+terrace\+\_\+size\+\_\+from\+\_\+file}}
+\index{get\+\_\+terrace\+\_\+size\+\_\+from\+\_\+file@{get\+\_\+terrace\+\_\+size\+\_\+from\+\_\+file}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{get\+\_\+terrace\+\_\+size\+\_\+from\+\_\+file()}{get\_terrace\_size\_from\_file()}}
+{\footnotesize\ttfamily std\+::uint64\+\_\+t terraces\+::get\+\_\+terrace\+\_\+size\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+filename,  }\item[{const std\+::string \&}]{matrix\+\_\+filename }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a58682ec06711d5ae85a58aec6d811d31}\label{namespaceterraces_a58682ec06711d5ae85a58aec6d811d31}} 
+\index{terraces@{terraces}!is\+\_\+isomorphic@{is\+\_\+isomorphic}}
+\index{is\+\_\+isomorphic@{is\+\_\+isomorphic}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+isomorphic()}{is\_isomorphic()}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+isomorphic (\begin{DoxyParamCaption}\item[{const \hyperlink{structterraces_1_1tree__set}{tree\+\_\+set} \&}]{fst,  }\item[{const \hyperlink{structterraces_1_1tree__set}{tree\+\_\+set} \&}]{snd }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a05257bc42db3c5cbed6ef082df709555}\label{namespaceterraces_a05257bc42db3c5cbed6ef082df709555}} 
+\index{terraces@{terraces}!is\+\_\+leaf@{is\+\_\+leaf}}
+\index{is\+\_\+leaf@{is\+\_\+leaf}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+leaf()}{is\_leaf()}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+leaf (\begin{DoxyParamCaption}\item[{const \hyperlink{structterraces_1_1node}{node} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns whether a node is a leaf. \mbox{\Hypertarget{namespaceterraces_a924744ce1ce711e40d0cf722d551e375}\label{namespaceterraces_a924744ce1ce711e40d0cf722d551e375}} 
+\index{terraces@{terraces}!is\+\_\+on\+\_\+terrace@{is\+\_\+on\+\_\+terrace}}
+\index{is\+\_\+on\+\_\+terrace@{is\+\_\+on\+\_\+terrace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+on\+\_\+terrace()}{is\_on\_terrace()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+on\+\_\+terrace (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{nwk\+\_\+stream,  }\item[{std\+::istream \&}]{matrix\+\_\+stream }\end{DoxyParamCaption})}
+
+Check whether the given tree is on a terrace. \begin{DoxyReturn}{Returns}
+true if there is at least one other tree on the terrace. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceterraces_a4e75afae24e5c7fef4f9b22ea3ee9486}\label{namespaceterraces_a4e75afae24e5c7fef4f9b22ea3ee9486}} 
+\index{terraces@{terraces}!is\+\_\+on\+\_\+terrace@{is\+\_\+on\+\_\+terrace}}
+\index{is\+\_\+on\+\_\+terrace@{is\+\_\+on\+\_\+terrace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+on\+\_\+terrace()}{is\_on\_terrace()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+on\+\_\+terrace (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{nwk\+\_\+stream,  }\item[{const std\+::string \&}]{matrix\+\_\+string }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_aaa1cfc0f0adeee6408adaf1049c24227}\label{namespaceterraces_aaa1cfc0f0adeee6408adaf1049c24227}} 
+\index{terraces@{terraces}!is\+\_\+on\+\_\+terrace@{is\+\_\+on\+\_\+terrace}}
+\index{is\+\_\+on\+\_\+terrace@{is\+\_\+on\+\_\+terrace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+on\+\_\+terrace()}{is\_on\_terrace()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+on\+\_\+terrace (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+string,  }\item[{std\+::istream \&}]{matrix\+\_\+stream }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a2dd57bda3af31246492ad52438015b42}\label{namespaceterraces_a2dd57bda3af31246492ad52438015b42}} 
+\index{terraces@{terraces}!is\+\_\+on\+\_\+terrace@{is\+\_\+on\+\_\+terrace}}
+\index{is\+\_\+on\+\_\+terrace@{is\+\_\+on\+\_\+terrace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+on\+\_\+terrace()}{is\_on\_terrace()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+on\+\_\+terrace (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+string,  }\item[{const std\+::string \&}]{matrix\+\_\+string }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_afadd08934abd0d298e2b36c7025e4565}\label{namespaceterraces_afadd08934abd0d298e2b36c7025e4565}} 
+\index{terraces@{terraces}!is\+\_\+on\+\_\+terrace\+\_\+from\+\_\+file@{is\+\_\+on\+\_\+terrace\+\_\+from\+\_\+file}}
+\index{is\+\_\+on\+\_\+terrace\+\_\+from\+\_\+file@{is\+\_\+on\+\_\+terrace\+\_\+from\+\_\+file}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+on\+\_\+terrace\+\_\+from\+\_\+file()}{is\_on\_terrace\_from\_file()}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+on\+\_\+terrace\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+filename,  }\item[{const std\+::string \&}]{matrix\+\_\+filename }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a501de84c86e5d84c979cf4ec3151708e}\label{namespaceterraces_a501de84c86e5d84c979cf4ec3151708e}} 
+\index{terraces@{terraces}!is\+\_\+root@{is\+\_\+root}}
+\index{is\+\_\+root@{is\+\_\+root}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+root()}{is\_root()}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+root (\begin{DoxyParamCaption}\item[{const \hyperlink{structterraces_1_1node}{node} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns whether a node is the root-\/node \mbox{\Hypertarget{namespaceterraces_a4f378ba2800025b5b70a8647d70c751f}\label{namespaceterraces_a4f378ba2800025b5b70a8647d70c751f}} 
+\index{terraces@{terraces}!is\+\_\+rooted\+\_\+tree@{is\+\_\+rooted\+\_\+tree}}
+\index{is\+\_\+rooted\+\_\+tree@{is\+\_\+rooted\+\_\+tree}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+rooted\+\_\+tree()}{is\_rooted\_tree()}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+rooted\+\_\+tree (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t }\end{DoxyParamCaption})}
+
+Returns whether a tree is a valid rooted tree. This means it is valid and the last node is its root. \mbox{\Hypertarget{namespaceterraces_adec8cca335bd6030520d919ee9d6aa8b}\label{namespaceterraces_adec8cca335bd6030520d919ee9d6aa8b}} 
+\index{terraces@{terraces}!is\+\_\+valid\+\_\+tree@{is\+\_\+valid\+\_\+tree}}
+\index{is\+\_\+valid\+\_\+tree@{is\+\_\+valid\+\_\+tree}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{is\+\_\+valid\+\_\+tree()}{is\_valid\_tree()}}
+{\footnotesize\ttfamily bool terraces\+::is\+\_\+valid\+\_\+tree (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t }\end{DoxyParamCaption})}
+
+Returns whether a tree is valid. This means it has no cycles and only nodes of degree 1 and 3 (and the root) \mbox{\Hypertarget{namespaceterraces_af8d2516221093e7c6f54648e7b2d01bd}\label{namespaceterraces_af8d2516221093e7c6f54648e7b2d01bd}} 
+\index{terraces@{terraces}!leaf\+\_\+occ@{leaf\+\_\+occ}}
+\index{leaf\+\_\+occ@{leaf\+\_\+occ}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{leaf\+\_\+occ()}{leaf\_occ()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} terraces\+::leaf\+\_\+occ (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{tree,  }\item[{\hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$}]{a }\end{DoxyParamCaption})}
+
+Returns a set containing all leaves of the given tree. \mbox{\Hypertarget{namespaceterraces_a13ef284e706bc528df3f04d49e7be607}\label{namespaceterraces_a13ef284e706bc528df3f04d49e7be607}} 
+\index{terraces@{terraces}!map\+\_\+constraints@{map\+\_\+constraints}}
+\index{map\+\_\+constraints@{map\+\_\+constraints}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{map\+\_\+constraints()}{map\_constraints()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} terraces\+::map\+\_\+constraints (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{leaves,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{cs }\end{DoxyParamCaption})}
+
+Maps the given constraints to leaf indices. \mbox{\Hypertarget{namespaceterraces_afe895c6224b473a8ac42ee20a43b60dc}\label{namespaceterraces_afe895c6224b473a8ac42ee20a43b60dc}} 
+\index{terraces@{terraces}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [1/7]}}
+{\footnotesize\ttfamily std\+::ostream \& terraces\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{s,  }\item[{const \hyperlink{structterraces_1_1constraint}{constraint} \&}]{c }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_afda20576b9d2f9c56f3f6d06efc030fd}\label{namespaceterraces_afda20576b9d2f9c56f3f6d06efc030fd}} 
+\index{terraces@{terraces}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [2/7]}}
+{\footnotesize\ttfamily std\+::ostream \& terraces\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{\hyperlink{structterraces_1_1utils_1_1named__output}{utils\+::named\+\_\+output}$<$ \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints}, \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} $>$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a746aa89cd7b3de5dc7dcc7bc90b08e74}\label{namespaceterraces_a746aa89cd7b3de5dc7dcc7bc90b08e74}} 
+\index{terraces@{terraces}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [3/7]}}
+{\footnotesize\ttfamily std\+::ostream \& terraces\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&}]{it }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_ad5d0342efed28b0bd79f604eb73f9b61}\label{namespaceterraces_ad5d0342efed28b0bd79f604eb73f9b61}} 
+\index{terraces@{terraces}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [4/7]}}
+{\footnotesize\ttfamily std\+::ostream \& terraces\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{\hyperlink{structterraces_1_1newick__multitree__t}{newick\+\_\+multitree\+\_\+t}}]{tree }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a734f29a465c2d80d4ee38d00ba2f7460}\label{namespaceterraces_a734f29a465c2d80d4ee38d00ba2f7460}} 
+\index{terraces@{terraces}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [5/7]}}
+{\footnotesize\ttfamily std\+::ostream \& terraces\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{s,  }\item[{const \hyperlink{structterraces_1_1node}{node} \&}]{n }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a9699b2c445ed0b3ca46836c7d0500817}\label{namespaceterraces_a9699b2c445ed0b3ca46836c7d0500817}} 
+\index{terraces@{terraces}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [6/7]}}
+{\footnotesize\ttfamily std\+::ostream \& terraces\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{ss,  }\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_ad3526c917cfcc4424c9a1cac266e6f9f}\label{namespaceterraces_ad3526c917cfcc4424c9a1cac266e6f9f}} 
+\index{terraces@{terraces}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [7/7]}}
+{\footnotesize\ttfamily std\+::ostream \& terraces\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{s,  }\item[{\hyperlink{structterraces_1_1newick__t}{newick\+\_\+t}}]{tree\+\_\+pair }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_af52559863b67502f00d68853f50c69af}\label{namespaceterraces_af52559863b67502f00d68853f50c69af}} 
+\index{terraces@{terraces}!parse\+\_\+bitmatrix@{parse\+\_\+bitmatrix}}
+\index{parse\+\_\+bitmatrix@{parse\+\_\+bitmatrix}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{parse\+\_\+bitmatrix()}{parse\_bitmatrix()}}
+{\footnotesize\ttfamily std\+::pair$<$ \hyperlink{classterraces_1_1bitmatrix}{bitmatrix}, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ terraces\+::parse\+\_\+bitmatrix (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{input,  }\item[{const \hyperlink{namespaceterraces_a148f3e895119c2a72d995caae669e40d}{index\+\_\+map} \&}]{indices,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{tree\+\_\+size }\end{DoxyParamCaption})}
+
+Parses a data-\/file and returns the associated bit-\/matrix as well as a suitable index for rooting (or {\ttfamily none} if none exists). \mbox{\Hypertarget{namespaceterraces_add61915a31828774ee0371d443031c29}\label{namespaceterraces_add61915a31828774ee0371d443031c29}} 
+\index{terraces@{terraces}!parse\+\_\+nwk@{parse\+\_\+nwk}}
+\index{parse\+\_\+nwk@{parse\+\_\+nwk}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{parse\+\_\+nwk()}{parse\_nwk()}}
+{\footnotesize\ttfamily \hyperlink{structterraces_1_1tree__set}{tree\+\_\+set} terraces\+::parse\+\_\+nwk (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{input }\end{DoxyParamCaption})}
+
+Parses a string in Newick-\/format and returns an unrooted tree and name-\/table
+
+Will throw \hyperlink{classterraces_1_1bad__input__error}{bad\+\_\+input\+\_\+error} if the format is not obeyed.
+
+Warning/\+T\+O\+DO\+: The exact type of the input will likely be changed to something along the lines of std\+::string\+\_\+view, which should however not impact normal users in ways other than performance improvements. \mbox{\Hypertarget{namespaceterraces_ac51a269450af323210628bd90b96c694}\label{namespaceterraces_ac51a269450af323210628bd90b96c694}} 
+\index{terraces@{terraces}!postorder@{postorder}}
+\index{postorder@{postorder}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{postorder()}{postorder()}}
+{\footnotesize\ttfamily std\+::vector$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ terraces\+::postorder (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a24dbd28eb2657b6dd98233b26b20b93f}\label{namespaceterraces_a24dbd28eb2657b6dd98233b26b20b93f}} 
+\index{terraces@{terraces}!preorder@{preorder}}
+\index{preorder@{preorder}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{preorder()}{preorder()}}
+{\footnotesize\ttfamily std\+::vector$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ terraces\+::preorder (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_ab0b3ce0b155ae5858d90f33dd51bf489}\label{namespaceterraces_ab0b3ce0b155ae5858d90f33dd51bf489}} 
+\index{terraces@{terraces}!print\+\_\+multitree\+\_\+node@{print\+\_\+multitree\+\_\+node}}
+\index{print\+\_\+multitree\+\_\+node@{print\+\_\+multitree\+\_\+node}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{print\+\_\+multitree\+\_\+node()}{print\_multitree\_node()}}
+{\footnotesize\ttfamily std\+::ostream\& terraces\+::print\+\_\+multitree\+\_\+node (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{const \hyperlink{structterraces_1_1multitree__node}{multitree\+\_\+node} $\ast$}]{node,  }\item[{const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&}]{names }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a8945b2604514ca878a2ba568029f1062}\label{namespaceterraces_a8945b2604514ca878a2ba568029f1062}} 
+\index{terraces@{terraces}!print\+\_\+terrace@{print\+\_\+terrace}}
+\index{print\+\_\+terrace@{print\+\_\+terrace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{print\+\_\+terrace()}{print\_terrace()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily void terraces\+::print\+\_\+terrace (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{nwk\+\_\+stream,  }\item[{std\+::istream \&}]{matrix\+\_\+stream,  }\item[{std\+::ostream \&}]{out }\end{DoxyParamCaption})}
+
+Print the extended-\/nwk-\/representation of all trees to the provided output.
+
+This function may run longer if the number of such trees is very big! \mbox{\Hypertarget{namespaceterraces_ae35eb2f7d41b44f45b8bb1623f188fe3}\label{namespaceterraces_ae35eb2f7d41b44f45b8bb1623f188fe3}} 
+\index{terraces@{terraces}!print\+\_\+terrace@{print\+\_\+terrace}}
+\index{print\+\_\+terrace@{print\+\_\+terrace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{print\+\_\+terrace()}{print\_terrace()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily void terraces\+::print\+\_\+terrace (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{nwk\+\_\+stream,  }\item[{const std\+::string \&}]{matrix\+\_\+string,  }\item[{std\+::ostream \&}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a6b70762dab550c4b63c1fb12a976c79b}\label{namespaceterraces_a6b70762dab550c4b63c1fb12a976c79b}} 
+\index{terraces@{terraces}!print\+\_\+terrace@{print\+\_\+terrace}}
+\index{print\+\_\+terrace@{print\+\_\+terrace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{print\+\_\+terrace()}{print\_terrace()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily void terraces\+::print\+\_\+terrace (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+string,  }\item[{std\+::istream \&}]{matrix\+\_\+stream,  }\item[{std\+::ostream \&}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_abc9fdae9cfcc6334ed6e3a965e0dbd41}\label{namespaceterraces_abc9fdae9cfcc6334ed6e3a965e0dbd41}} 
+\index{terraces@{terraces}!print\+\_\+terrace@{print\+\_\+terrace}}
+\index{print\+\_\+terrace@{print\+\_\+terrace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{print\+\_\+terrace()}{print\_terrace()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily void terraces\+::print\+\_\+terrace (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+string,  }\item[{const std\+::string \&}]{matrix\+\_\+string,  }\item[{std\+::ostream \&}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a8a1db74ca77db1dd2a23a92e8ff05e34}\label{namespaceterraces_a8a1db74ca77db1dd2a23a92e8ff05e34}} 
+\index{terraces@{terraces}!print\+\_\+terrace\+\_\+from\+\_\+file@{print\+\_\+terrace\+\_\+from\+\_\+file}}
+\index{print\+\_\+terrace\+\_\+from\+\_\+file@{print\+\_\+terrace\+\_\+from\+\_\+file}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{print\+\_\+terrace\+\_\+from\+\_\+file()}{print\_terrace\_from\_file()}}
+{\footnotesize\ttfamily void terraces\+::print\+\_\+terrace\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nwk\+\_\+filename,  }\item[{const std\+::string \&}]{matrix\+\_\+filename,  }\item[{std\+::ostream \&}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a07490ad6d9b91f5d4cd609450676516c}\label{namespaceterraces_a07490ad6d9b91f5d4cd609450676516c}} 
+\index{terraces@{terraces}!print\+\_\+tree\+\_\+dot\+\_\+unrooted@{print\+\_\+tree\+\_\+dot\+\_\+unrooted}}
+\index{print\+\_\+tree\+\_\+dot\+\_\+unrooted@{print\+\_\+tree\+\_\+dot\+\_\+unrooted}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{print\+\_\+tree\+\_\+dot\+\_\+unrooted()}{print\_tree\_dot\_unrooted()}}
+{\footnotesize\ttfamily void terraces\+::print\+\_\+tree\+\_\+dot\+\_\+unrooted (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&}]{names,  }\item[{std\+::ostream \&}]{output,  }\item[{std\+::string}]{name\+\_\+prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_aa6cd6a7a07d6af5190482a739c575ece}\label{namespaceterraces_aa6cd6a7a07d6af5190482a739c575ece}} 
+\index{terraces@{terraces}!remap\+\_\+to\+\_\+leaves@{remap\+\_\+to\+\_\+leaves}}
+\index{remap\+\_\+to\+\_\+leaves@{remap\+\_\+to\+\_\+leaves}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{remap\+\_\+to\+\_\+leaves()}{remap\_to\_leaves()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} terraces\+::remap\+\_\+to\+\_\+leaves (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{c,  }\item[{\hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&}]{names,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \&}]{root }\end{DoxyParamCaption})}
+
+Remaps contstraints, names and root to leaf-\/based indexing (remove inner nodes). \begin{DoxyReturn}{Returns}
+the number of leaves. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceterraces_ae8abab19d1c4a35eb187cd2cf005fe59}\label{namespaceterraces_ae8abab19d1c4a35eb187cd2cf005fe59}} 
+\index{terraces@{terraces}!reroot\+\_\+inplace@{reroot\+\_\+inplace}}
+\index{reroot\+\_\+inplace@{reroot\+\_\+inplace}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{reroot\+\_\+inplace()}{reroot\_inplace()}}
+{\footnotesize\ttfamily void terraces\+::reroot\+\_\+inplace (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{root\+\_\+leaf }\end{DoxyParamCaption})}
+
+Re-\/roots the given tree in-\/place.
+
+The given root\+\_\+leaf will be the right child of our new root, with the res tof the tree being the left subtree. N\+O\+TE that after re-\/rooting, the tree will no longer possess min-\/heap structure! \mbox{\Hypertarget{namespaceterraces_a6878b4ce33b96891a13f1336ee330746}\label{namespaceterraces_a6878b4ce33b96891a13f1336ee330746}} 
+\index{terraces@{terraces}!subtrees@{subtrees}}
+\index{subtrees@{subtrees}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{subtrees()}{subtrees()}}
+{\footnotesize\ttfamily std\+::vector$<$ \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} $>$ terraces\+::subtrees (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{const \hyperlink{classterraces_1_1bitmatrix}{bitmatrix} \&}]{occ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_a34db8e988e2845af99b6b228924a5f56}\label{namespaceterraces_a34db8e988e2845af99b6b228924a5f56}} 
+\index{terraces@{terraces}!tree\+\_\+bipartitions@{tree\+\_\+bipartitions}}
+\index{tree\+\_\+bipartitions@{tree\+\_\+bipartitions}!terraces@{terraces}}
+\subsubsection{\texorpdfstring{tree\+\_\+bipartitions()}{tree\_bipartitions()}}
+{\footnotesize\ttfamily std\+::vector$<$\hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector}$>$ terraces\+::tree\+\_\+bipartitions (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{const std\+::vector$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ \&}]{mapping,  }\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{leaves,  }\item[{\hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$}]{alloc }\end{DoxyParamCaption})}
+

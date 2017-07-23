@@ -1,0 +1,259 @@
+\hypertarget{terraces_8h}{}\section{alexis\+\_\+samples/terraces.h File Reference}
+\label{terraces_8h}\index{alexis\+\_\+samples/terraces.\+h@{alexis\+\_\+samples/terraces.\+h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$gmp.\+h$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structmissingData}{missing\+Data}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{terraces_8h_ad7d2a1de5eec469f2badf35fe9d70429}{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+U\+C\+C\+E\+SS}~0
+\item 
+\#define \hyperlink{terraces_8h_ac71141576957ecc749767f16e4d7fda3}{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+E\+W\+I\+C\+K\+\_\+\+E\+R\+R\+OR}~-\/1
+\item 
+\#define \hyperlink{terraces_8h_a17efd9de8facb19d33230f0aacc8e251}{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR}~-\/2
+\item 
+\#define \hyperlink{terraces_8h_a2d392fcca4afcf67dbb7bae06ca36023}{T\+E\+R\+R\+A\+C\+E\+\_\+\+M\+A\+T\+R\+I\+X\+\_\+\+E\+R\+R\+OR}~-\/3
+\item 
+\#define \hyperlink{terraces_8h_a4c9433205bc1459210e00201f13be473}{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR}~-\/4
+\item 
+\#define \hyperlink{terraces_8h_a02a25cd9747ab44da3333ee6037df1db}{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+P\+A\+R\+T\+I\+T\+I\+O\+N\+S\+\_\+\+E\+R\+R\+OR}~-\/5
+\item 
+\#define \hyperlink{terraces_8h_aff83433c96b484946ef267ae1d6ba5d2}{T\+E\+R\+R\+A\+C\+E\+\_\+\+T\+H\+I\+N\+K\+\_\+\+O\+N\+\_\+\+Y\+O\+U\+R\+\_\+\+O\+W\+N\+\_\+\+E\+R\+R\+OR}~-\/6
+\item 
+\#define \hyperlink{terraces_8h_af79bd40729540a4423c42796e3ec16a5}{T\+E\+R\+R\+A\+C\+E\+\_\+\+O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+E\+R\+R\+OR}~-\/7
+\item 
+\#define \hyperlink{terraces_8h_a6be44a3cee64542db1cd64b4a7acc98a}{T\+A\+\_\+\+C\+O\+U\+NT}~1
+\item 
+\#define \hyperlink{terraces_8h_a8c2304fe23b55e28ac7ea7e9788000e9}{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE}~2
+\item 
+\#define \hyperlink{terraces_8h_aefc139ccbdfddbdcc3e35fbd9900bf7a}{T\+A\+\_\+\+D\+E\+T\+E\+CT}~4
+\item 
+\#define \hyperlink{terraces_8h_af2eefab9803d950a9955cc495ab27e65}{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+T\+E\+\_\+\+C\+O\+M\+P\+R\+E\+SS}~8
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structmissingData}{missing\+Data} $\ast$ \hyperlink{terraces_8h_a25cd78aba487f5df20dd1a3c63a79680}{initialize\+Missing\+Data} (size\+\_\+t number\+Of\+Species, size\+\_\+t number\+Of\+Partitions, const char $\ast$$\ast$species\+Names)
+\item 
+void \hyperlink{terraces_8h_a5072c1492d0cf7d0a0c3a48c4cb71264}{free\+Missing\+Data} (\hyperlink{structmissingData}{missing\+Data} $\ast$m)
+\item 
+void \hyperlink{terraces_8h_aaa73d721910667797f9df0fc55988632}{set\+Data\+Matrix} (\hyperlink{structmissingData}{missing\+Data} $\ast$m, size\+\_\+t species\+Number, size\+\_\+t partition\+Number, unsigned char value)
+\item 
+unsigned char \hyperlink{terraces_8h_a79de0dbb28dc16e905aea7ef2360b5e1}{get\+Data\+Matrix} (\hyperlink{structmissingData}{missing\+Data} $\ast$m, size\+\_\+t species\+Number, size\+\_\+t partition\+Number)
+\item 
+void \hyperlink{terraces_8h_a3691c03c136b6f12b0468f3c5e336935}{copy\+Data\+Matrix} (const unsigned char $\ast$matrix, \hyperlink{structmissingData}{missing\+Data} $\ast$m)
+\item 
+int \hyperlink{terraces_8h_a56c61bb3e2839c33067e5686b157099a}{terrace\+Analysis} (\hyperlink{structmissingData}{missing\+Data} $\ast$m, const char $\ast$newick\+Tree\+String, const int ta\+\_\+outspec, F\+I\+LE $\ast$all\+Trees\+On\+Terrace, mpz\+\_\+t $\ast$terrace\+Size)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{terraces_8h_a6be44a3cee64542db1cd64b4a7acc98a}\label{terraces_8h_a6be44a3cee64542db1cd64b4a7acc98a}} 
+\index{terraces.\+h@{terraces.\+h}!T\+A\+\_\+\+C\+O\+U\+NT@{T\+A\+\_\+\+C\+O\+U\+NT}}
+\index{T\+A\+\_\+\+C\+O\+U\+NT@{T\+A\+\_\+\+C\+O\+U\+NT}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+A\+\_\+\+C\+O\+U\+NT}{TA\_COUNT}}
+{\footnotesize\ttfamily \#define T\+A\+\_\+\+C\+O\+U\+NT~1}
+
+count unrooted trees on terrace \mbox{\Hypertarget{terraces_8h_aefc139ccbdfddbdcc3e35fbd9900bf7a}\label{terraces_8h_aefc139ccbdfddbdcc3e35fbd9900bf7a}} 
+\index{terraces.\+h@{terraces.\+h}!T\+A\+\_\+\+D\+E\+T\+E\+CT@{T\+A\+\_\+\+D\+E\+T\+E\+CT}}
+\index{T\+A\+\_\+\+D\+E\+T\+E\+CT@{T\+A\+\_\+\+D\+E\+T\+E\+CT}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+A\+\_\+\+D\+E\+T\+E\+CT}{TA\_DETECT}}
+{\footnotesize\ttfamily \#define T\+A\+\_\+\+D\+E\+T\+E\+CT~4}
+
+just detect if the tree is on a terrace. this should run much quicker than T\+A\+\_\+\+C\+O\+U\+NT or T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE, because we can brake off, as soon as we have found that thera are at least two trees on the terrace. \+: how the output should look like in this case? \+: return any integer in terrace\+Size large than 1 if the tree is on a terrace \mbox{\Hypertarget{terraces_8h_a8c2304fe23b55e28ac7ea7e9788000e9}\label{terraces_8h_a8c2304fe23b55e28ac7ea7e9788000e9}} 
+\index{terraces.\+h@{terraces.\+h}!T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE@{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE}}
+\index{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE@{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE}{TA\_ENUMERATE}}
+{\footnotesize\ttfamily \#define T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE~2}
+
+print unrooted trees on terrace to file \+: should T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+TE automatically imply T\+A\+\_\+\+C\+O\+U\+NT? \+: Yes it should! \mbox{\Hypertarget{terraces_8h_af2eefab9803d950a9955cc495ab27e65}\label{terraces_8h_af2eefab9803d950a9955cc495ab27e65}} 
+\index{terraces.\+h@{terraces.\+h}!T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+T\+E\+\_\+\+C\+O\+M\+P\+R\+E\+SS@{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+T\+E\+\_\+\+C\+O\+M\+P\+R\+E\+SS}}
+\index{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+T\+E\+\_\+\+C\+O\+M\+P\+R\+E\+SS@{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+T\+E\+\_\+\+C\+O\+M\+P\+R\+E\+SS}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+T\+E\+\_\+\+C\+O\+M\+P\+R\+E\+SS}{TA\_ENUMERATE\_COMPRESS}}
+{\footnotesize\ttfamily \#define T\+A\+\_\+\+E\+N\+U\+M\+E\+R\+A\+T\+E\+\_\+\+C\+O\+M\+P\+R\+E\+SS~8}
+
+print trees on a terrace in compressed form using some external binary tree compression tool. optional, does not need to be implemented, only if you want to. \mbox{\Hypertarget{terraces_8h_a2d392fcca4afcf67dbb7bae06ca36023}\label{terraces_8h_a2d392fcca4afcf67dbb7bae06ca36023}} 
+\index{terraces.\+h@{terraces.\+h}!T\+E\+R\+R\+A\+C\+E\+\_\+\+M\+A\+T\+R\+I\+X\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+M\+A\+T\+R\+I\+X\+\_\+\+E\+R\+R\+OR}}
+\index{T\+E\+R\+R\+A\+C\+E\+\_\+\+M\+A\+T\+R\+I\+X\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+M\+A\+T\+R\+I\+X\+\_\+\+E\+R\+R\+OR}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+R\+R\+A\+C\+E\+\_\+\+M\+A\+T\+R\+I\+X\+\_\+\+E\+R\+R\+OR}{TERRACE\_MATRIX\_ERROR}}
+{\footnotesize\ttfamily \#define T\+E\+R\+R\+A\+C\+E\+\_\+\+M\+A\+T\+R\+I\+X\+\_\+\+E\+R\+R\+OR~-\/3}
+
+\mbox{\Hypertarget{terraces_8h_ac71141576957ecc749767f16e4d7fda3}\label{terraces_8h_ac71141576957ecc749767f16e4d7fda3}} 
+\index{terraces.\+h@{terraces.\+h}!T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+E\+W\+I\+C\+K\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+E\+W\+I\+C\+K\+\_\+\+E\+R\+R\+OR}}
+\index{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+E\+W\+I\+C\+K\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+E\+W\+I\+C\+K\+\_\+\+E\+R\+R\+OR}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+E\+W\+I\+C\+K\+\_\+\+E\+R\+R\+OR}{TERRACE\_NEWICK\_ERROR}}
+{\footnotesize\ttfamily \#define T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+E\+W\+I\+C\+K\+\_\+\+E\+R\+R\+OR~-\/1}
+
+\mbox{\Hypertarget{terraces_8h_a02a25cd9747ab44da3333ee6037df1db}\label{terraces_8h_a02a25cd9747ab44da3333ee6037df1db}} 
+\index{terraces.\+h@{terraces.\+h}!T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+P\+A\+R\+T\+I\+T\+I\+O\+N\+S\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+P\+A\+R\+T\+I\+T\+I\+O\+N\+S\+\_\+\+E\+R\+R\+OR}}
+\index{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+P\+A\+R\+T\+I\+T\+I\+O\+N\+S\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+P\+A\+R\+T\+I\+T\+I\+O\+N\+S\+\_\+\+E\+R\+R\+OR}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+P\+A\+R\+T\+I\+T\+I\+O\+N\+S\+\_\+\+E\+R\+R\+OR}{TERRACE\_NUM\_PARTITIONS\_ERROR}}
+{\footnotesize\ttfamily \#define T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+P\+A\+R\+T\+I\+T\+I\+O\+N\+S\+\_\+\+E\+R\+R\+OR~-\/5}
+
+\mbox{\Hypertarget{terraces_8h_a4c9433205bc1459210e00201f13be473}\label{terraces_8h_a4c9433205bc1459210e00201f13be473}} 
+\index{terraces.\+h@{terraces.\+h}!T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR}}
+\index{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR}{TERRACE\_NUM\_SPECIES\_ERROR}}
+{\footnotesize\ttfamily \#define T\+E\+R\+R\+A\+C\+E\+\_\+\+N\+U\+M\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR~-\/4}
+
+\mbox{\Hypertarget{terraces_8h_af79bd40729540a4423c42796e3ec16a5}\label{terraces_8h_af79bd40729540a4423c42796e3ec16a5}} 
+\index{terraces.\+h@{terraces.\+h}!T\+E\+R\+R\+A\+C\+E\+\_\+\+O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+E\+R\+R\+OR}}
+\index{T\+E\+R\+R\+A\+C\+E\+\_\+\+O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+E\+R\+R\+OR}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+R\+R\+A\+C\+E\+\_\+\+O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+E\+R\+R\+OR}{TERRACE\_OUTPUT\_FILE\_ERROR}}
+{\footnotesize\ttfamily \#define T\+E\+R\+R\+A\+C\+E\+\_\+\+O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+E\+R\+R\+OR~-\/7}
+
+\mbox{\Hypertarget{terraces_8h_a17efd9de8facb19d33230f0aacc8e251}\label{terraces_8h_a17efd9de8facb19d33230f0aacc8e251}} 
+\index{terraces.\+h@{terraces.\+h}!T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR}}
+\index{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR}{TERRACE\_SPECIES\_ERROR}}
+{\footnotesize\ttfamily \#define T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+P\+E\+C\+I\+E\+S\+\_\+\+E\+R\+R\+OR~-\/2}
+
+\mbox{\Hypertarget{terraces_8h_ad7d2a1de5eec469f2badf35fe9d70429}\label{terraces_8h_ad7d2a1de5eec469f2badf35fe9d70429}} 
+\index{terraces.\+h@{terraces.\+h}!T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+U\+C\+C\+E\+SS@{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+U\+C\+C\+E\+SS}}
+\index{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+U\+C\+C\+E\+SS@{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+U\+C\+C\+E\+SS}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+U\+C\+C\+E\+SS}{TERRACE\_SUCCESS}}
+{\footnotesize\ttfamily \#define T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+U\+C\+C\+E\+SS~0}
+
+\mbox{\Hypertarget{terraces_8h_aff83433c96b484946ef267ae1d6ba5d2}\label{terraces_8h_aff83433c96b484946ef267ae1d6ba5d2}} 
+\index{terraces.\+h@{terraces.\+h}!T\+E\+R\+R\+A\+C\+E\+\_\+\+T\+H\+I\+N\+K\+\_\+\+O\+N\+\_\+\+Y\+O\+U\+R\+\_\+\+O\+W\+N\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+T\+H\+I\+N\+K\+\_\+\+O\+N\+\_\+\+Y\+O\+U\+R\+\_\+\+O\+W\+N\+\_\+\+E\+R\+R\+OR}}
+\index{T\+E\+R\+R\+A\+C\+E\+\_\+\+T\+H\+I\+N\+K\+\_\+\+O\+N\+\_\+\+Y\+O\+U\+R\+\_\+\+O\+W\+N\+\_\+\+E\+R\+R\+OR@{T\+E\+R\+R\+A\+C\+E\+\_\+\+T\+H\+I\+N\+K\+\_\+\+O\+N\+\_\+\+Y\+O\+U\+R\+\_\+\+O\+W\+N\+\_\+\+E\+R\+R\+OR}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+R\+R\+A\+C\+E\+\_\+\+T\+H\+I\+N\+K\+\_\+\+O\+N\+\_\+\+Y\+O\+U\+R\+\_\+\+O\+W\+N\+\_\+\+E\+R\+R\+OR}{TERRACE\_THINK\_ON\_YOUR\_OWN\_ERROR}}
+{\footnotesize\ttfamily \#define T\+E\+R\+R\+A\+C\+E\+\_\+\+T\+H\+I\+N\+K\+\_\+\+O\+N\+\_\+\+Y\+O\+U\+R\+\_\+\+O\+W\+N\+\_\+\+E\+R\+R\+OR~-\/6}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{terraces_8h_a3691c03c136b6f12b0468f3c5e336935}\label{terraces_8h_a3691c03c136b6f12b0468f3c5e336935}} 
+\index{terraces.\+h@{terraces.\+h}!copy\+Data\+Matrix@{copy\+Data\+Matrix}}
+\index{copy\+Data\+Matrix@{copy\+Data\+Matrix}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{copy\+Data\+Matrix()}{copyDataMatrix()}}
+{\footnotesize\ttfamily void copy\+Data\+Matrix (\begin{DoxyParamCaption}\item[{const unsigned char $\ast$}]{matrix,  }\item[{\hyperlink{structmissingData}{missing\+Data} $\ast$}]{m }\end{DoxyParamCaption})}
+
+copy one dimensional array containing the missing data matrix to the matrix in the missing data data type
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & one-\/dimensional\\
+\hline
+{\em m} & pointer to missing data data structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{terraces_8h_a5072c1492d0cf7d0a0c3a48c4cb71264}\label{terraces_8h_a5072c1492d0cf7d0a0c3a48c4cb71264}} 
+\index{terraces.\+h@{terraces.\+h}!free\+Missing\+Data@{free\+Missing\+Data}}
+\index{free\+Missing\+Data@{free\+Missing\+Data}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{free\+Missing\+Data()}{freeMissingData()}}
+{\footnotesize\ttfamily void free\+Missing\+Data (\begin{DoxyParamCaption}\item[{\hyperlink{structmissingData}{missing\+Data} $\ast$}]{m }\end{DoxyParamCaption})}
+
+Free missing data data structure
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & pointer to missing data data structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{terraces_8h_a79de0dbb28dc16e905aea7ef2360b5e1}\label{terraces_8h_a79de0dbb28dc16e905aea7ef2360b5e1}} 
+\index{terraces.\+h@{terraces.\+h}!get\+Data\+Matrix@{get\+Data\+Matrix}}
+\index{get\+Data\+Matrix@{get\+Data\+Matrix}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{get\+Data\+Matrix()}{getDataMatrix()}}
+{\footnotesize\ttfamily unsigned char get\+Data\+Matrix (\begin{DoxyParamCaption}\item[{\hyperlink{structmissingData}{missing\+Data} $\ast$}]{m,  }\item[{size\+\_\+t}]{species\+Number,  }\item[{size\+\_\+t}]{partition\+Number }\end{DoxyParamCaption})}
+
+get entry from missing data matrix
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & pointer to missing data data structure\\
+\hline
+{\em species\+Number} & species index\\
+\hline
+{\em partition\+Number} & partition index\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the value at the specified matrix position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{terraces_8h_a25cd78aba487f5df20dd1a3c63a79680}\label{terraces_8h_a25cd78aba487f5df20dd1a3c63a79680}} 
+\index{terraces.\+h@{terraces.\+h}!initialize\+Missing\+Data@{initialize\+Missing\+Data}}
+\index{initialize\+Missing\+Data@{initialize\+Missing\+Data}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{initialize\+Missing\+Data()}{initializeMissingData()}}
+{\footnotesize\ttfamily \hyperlink{structmissingData}{missing\+Data}$\ast$ initialize\+Missing\+Data (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{number\+Of\+Species,  }\item[{size\+\_\+t}]{number\+Of\+Partitions,  }\item[{const char $\ast$$\ast$}]{species\+Names }\end{DoxyParamCaption})}
+
+Initialize missing data data type
+
+
+\begin{DoxyParams}{Parameters}
+{\em number\+Of\+Species} & number of species in dataset\\
+\hline
+{\em number\+Of\+Partitions} & number of partitions in dataset\\
+\hline
+{\em species\+Names} & list of species names in dataset, first entry correpsonds to first row in missing\+Data\+Matrix etc.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+poitner to missing data data structure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{terraces_8h_aaa73d721910667797f9df0fc55988632}\label{terraces_8h_aaa73d721910667797f9df0fc55988632}} 
+\index{terraces.\+h@{terraces.\+h}!set\+Data\+Matrix@{set\+Data\+Matrix}}
+\index{set\+Data\+Matrix@{set\+Data\+Matrix}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{set\+Data\+Matrix()}{setDataMatrix()}}
+{\footnotesize\ttfamily void set\+Data\+Matrix (\begin{DoxyParamCaption}\item[{\hyperlink{structmissingData}{missing\+Data} $\ast$}]{m,  }\item[{size\+\_\+t}]{species\+Number,  }\item[{size\+\_\+t}]{partition\+Number,  }\item[{unsigned char}]{value }\end{DoxyParamCaption})}
+
+set entry in missing data matrix
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & pointer to missing data data structure\\
+\hline
+{\em species\+Number} & species index\\
+\hline
+{\em partition\+Number} & partition index\\
+\hline
+{\em value} & value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{terraces_8h_a56c61bb3e2839c33067e5686b157099a}\label{terraces_8h_a56c61bb3e2839c33067e5686b157099a}} 
+\index{terraces.\+h@{terraces.\+h}!terrace\+Analysis@{terrace\+Analysis}}
+\index{terrace\+Analysis@{terrace\+Analysis}!terraces.\+h@{terraces.\+h}}
+\subsubsection{\texorpdfstring{terrace\+Analysis()}{terraceAnalysis()}}
+{\footnotesize\ttfamily int terrace\+Analysis (\begin{DoxyParamCaption}\item[{\hyperlink{structmissingData}{missing\+Data} $\ast$}]{m,  }\item[{const char $\ast$}]{newick\+Tree\+String,  }\item[{const int}]{ta\+\_\+outspec,  }\item[{F\+I\+LE $\ast$}]{all\+Trees\+On\+Terrace,  }\item[{mpz\+\_\+t $\ast$}]{terrace\+Size }\end{DoxyParamCaption})}
+
+terrace analysis algorithm
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & missing data data structure\\
+\hline
+{\em newick\+Tree\+String} & tree in Newick format\\
+\hline
+{\em ta\+\_\+outspec} & bit mask for specifying what the algorithm shall calculate\\
+\hline
+{\em all\+Trees\+On\+Terrace} & file for eventually printing all trees residing on the terrace, if there is a terrace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+error code
+\end{DoxyReturn}
+Function that tells us, given a tree, and a missing data matrix as well as its dimensions, if the tree is on a terrace, how many trees there are on the terrace, it also prints trees on the terrace to file, if specified and might compress them as well.
+
+We might need to change the data type of variable terrace\+Size that is being written in this function. Why?
+
+\begin{DoxyReturn}{Returns}
+T\+E\+R\+R\+A\+C\+E\+\_\+\+S\+U\+C\+C\+E\+SS on success, or an error code (see T\+E\+R\+R\+A\+C\+E\+\_\+$\ast$) on failure 
+\end{DoxyReturn}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em m} & struct containing missing data matrix, number of partitions, number of species, and list of species names \\
+\hline
+\mbox{\tt in}  & {\em newick\+Tree\+String} & Unrooted strictly binary phylogenetic tree, in Newick format for which we want to find out if it is on a terrace. Denoted by T in the task specification \\
+\hline
+\mbox{\tt in}  & {\em ta\+\_\+outspec} & bit-\/masked integer as combination of T\+A\+\_\+$\ast$ constants to control the outputs \\
+\hline
+\mbox{\tt out}  & {\em all\+Trees\+On\+Terrace} & output file for unrooted tree enumeration. Trees should be displayed in standard unrooted Newick format, and you should print one tree per line. \\
+\hline
+\mbox{\tt out}  & {\em terrace\+Size} & number of unrooted trees on the terrace \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,81 @@
+\hypertarget{namespaceterraces_1_1parsing}{}\section{terraces\+:\+:parsing Namespace Reference}
+\label{namespaceterraces_1_1parsing}\index{terraces\+::parsing@{terraces\+::parsing}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structterraces_1_1parsing_1_1parser__state}{parser\+\_\+state}
+\item 
+struct \hyperlink{structterraces_1_1parsing_1_1token}{token}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{namespaceterraces_1_1parsing_a0e70b6a3cbf9868f7c92bbe10a6c4995}{parser\+\_\+stack} = std\+::stack$<$ \hyperlink{structterraces_1_1parsing_1_1parser__state}{parser\+\_\+state}, std\+::vector$<$ \hyperlink{structterraces_1_1parsing_1_1parser__state}{parser\+\_\+state} $>$ $>$
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1}{token\+\_\+type} \{ \newline
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1a152370721853af95444f2f05ab29d4cc}{token\+\_\+type\+::lparen}, 
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1aec9962f64dbbc61b566d4d3478a4902a}{token\+\_\+type\+::rparen}, 
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1ab068931cc450442b63f5b3d276ea4297}{token\+\_\+type\+::name}, 
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1ae72814aaa963a3fa498930dcf0ed40fb}{token\+\_\+type\+::seperator}, 
+\newline
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1a2e51b1ab42e8a4a67f3445174be5191b}{token\+\_\+type\+::eof}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Iterator $>$ }\\\hyperlink{structterraces_1_1parsing_1_1token}{token} \hyperlink{namespaceterraces_1_1parsing_a4c942dddd8fa5f94ae9f069154b3131e}{next\+\_\+token} (Iterator \&it, Iterator end)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{namespaceterraces_1_1parsing_a0e70b6a3cbf9868f7c92bbe10a6c4995}\label{namespaceterraces_1_1parsing_a0e70b6a3cbf9868f7c92bbe10a6c4995}} 
+\index{terraces\+::parsing@{terraces\+::parsing}!parser\+\_\+stack@{parser\+\_\+stack}}
+\index{parser\+\_\+stack@{parser\+\_\+stack}!terraces\+::parsing@{terraces\+::parsing}}
+\subsubsection{\texorpdfstring{parser\+\_\+stack}{parser\_stack}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_1_1parsing_a0e70b6a3cbf9868f7c92bbe10a6c4995}{terraces\+::parsing\+::parser\+\_\+stack} = typedef std\+::stack$<$\hyperlink{structterraces_1_1parsing_1_1parser__state}{parser\+\_\+state}, std\+::vector$<$\hyperlink{structterraces_1_1parsing_1_1parser__state}{parser\+\_\+state}$>$ $>$}
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1}\label{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1}} 
+\index{terraces\+::parsing@{terraces\+::parsing}!token\+\_\+type@{token\+\_\+type}}
+\index{token\+\_\+type@{token\+\_\+type}!terraces\+::parsing@{terraces\+::parsing}}
+\subsubsection{\texorpdfstring{token\+\_\+type}{token\_type}}
+{\footnotesize\ttfamily enum \hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1}{terraces\+::parsing\+::token\+\_\+type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lparen@{lparen}!terraces\+::parsing@{terraces\+::parsing}}\index{terraces\+::parsing@{terraces\+::parsing}!lparen@{lparen}}}\mbox{\Hypertarget{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1a152370721853af95444f2f05ab29d4cc}\label{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1a152370721853af95444f2f05ab29d4cc}} 
+lparen&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{rparen@{rparen}!terraces\+::parsing@{terraces\+::parsing}}\index{terraces\+::parsing@{terraces\+::parsing}!rparen@{rparen}}}\mbox{\Hypertarget{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1aec9962f64dbbc61b566d4d3478a4902a}\label{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1aec9962f64dbbc61b566d4d3478a4902a}} 
+rparen&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{name@{name}!terraces\+::parsing@{terraces\+::parsing}}\index{terraces\+::parsing@{terraces\+::parsing}!name@{name}}}\mbox{\Hypertarget{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1ab068931cc450442b63f5b3d276ea4297}\label{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1ab068931cc450442b63f5b3d276ea4297}} 
+name&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{seperator@{seperator}!terraces\+::parsing@{terraces\+::parsing}}\index{terraces\+::parsing@{terraces\+::parsing}!seperator@{seperator}}}\mbox{\Hypertarget{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1ae72814aaa963a3fa498930dcf0ed40fb}\label{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1ae72814aaa963a3fa498930dcf0ed40fb}} 
+seperator&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{eof@{eof}!terraces\+::parsing@{terraces\+::parsing}}\index{terraces\+::parsing@{terraces\+::parsing}!eof@{eof}}}\mbox{\Hypertarget{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1a2e51b1ab42e8a4a67f3445174be5191b}\label{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1a2e51b1ab42e8a4a67f3445174be5191b}} 
+eof&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceterraces_1_1parsing_a4c942dddd8fa5f94ae9f069154b3131e}\label{namespaceterraces_1_1parsing_a4c942dddd8fa5f94ae9f069154b3131e}} 
+\index{terraces\+::parsing@{terraces\+::parsing}!next\+\_\+token@{next\+\_\+token}}
+\index{next\+\_\+token@{next\+\_\+token}!terraces\+::parsing@{terraces\+::parsing}}
+\subsubsection{\texorpdfstring{next\+\_\+token()}{next\_token()}}
+{\footnotesize\ttfamily template$<$typename Iterator $>$ \\
+\hyperlink{structterraces_1_1parsing_1_1token}{token} terraces\+::parsing\+::next\+\_\+token (\begin{DoxyParamCaption}\item[{Iterator \&}]{it,  }\item[{Iterator}]{end }\end{DoxyParamCaption})}
+

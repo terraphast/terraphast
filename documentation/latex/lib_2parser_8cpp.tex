@@ -1,0 +1,51 @@
+\hypertarget{lib_2parser_8cpp}{}\section{lib/parser.cpp File Reference}
+\label{lib_2parser_8cpp}\index{lib/parser.\+cpp@{lib/parser.\+cpp}}
+{\ttfamily \#include $<$terraces/parser.\+hpp$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$stack$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$terraces/errors.\+hpp$>$}\newline
+{\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structterraces_1_1parsing_1_1token}{terraces\+::parsing\+::token}
+\item 
+struct \hyperlink{structterraces_1_1parsing_1_1parser__state}{terraces\+::parsing\+::parser\+\_\+state}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceterraces}{terraces}
+\item 
+ \hyperlink{namespaceterraces_1_1parsing}{terraces\+::parsing}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{namespaceterraces_1_1parsing_a0e70b6a3cbf9868f7c92bbe10a6c4995}{terraces\+::parsing\+::parser\+\_\+stack} = std\+::stack$<$ parser\+\_\+state, std\+::vector$<$ parser\+\_\+state $>$ $>$
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1}{terraces\+::parsing\+::token\+\_\+type} \{ \newline
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1a152370721853af95444f2f05ab29d4cc}{terraces\+::parsing\+::token\+\_\+type\+::lparen}, 
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1aec9962f64dbbc61b566d4d3478a4902a}{terraces\+::parsing\+::token\+\_\+type\+::rparen}, 
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1ab068931cc450442b63f5b3d276ea4297}{terraces\+::parsing\+::token\+\_\+type\+::name}, 
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1ae72814aaa963a3fa498930dcf0ed40fb}{terraces\+::parsing\+::token\+\_\+type\+::seperator}, 
+\newline
+\hyperlink{namespaceterraces_1_1parsing_a2d265240dc54342f9462104d7a8392a1a2e51b1ab42e8a4a67f3445174be5191b}{terraces\+::parsing\+::token\+\_\+type\+::eof}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Iterator $>$ }\\token \hyperlink{namespaceterraces_1_1parsing_a4c942dddd8fa5f94ae9f069154b3131e}{terraces\+::parsing\+::next\+\_\+token} (Iterator \&it, Iterator end)
+\item 
+tree\+\_\+set \hyperlink{namespaceterraces_add61915a31828774ee0371d443031c29}{terraces\+::parse\+\_\+nwk} (const std\+::string \&input)
+\item 
+std\+::pair$<$ bitmatrix, \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} $>$ \hyperlink{namespaceterraces_af52559863b67502f00d68853f50c69af}{terraces\+::parse\+\_\+bitmatrix} (std\+::istream \&input, const index\+\_\+map \&indices, \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} tree\+\_\+size)
+\end{DoxyCompactItemize}

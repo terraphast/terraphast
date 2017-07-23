@@ -1,0 +1,63 @@
+\hypertarget{simple_8cpp}{}\section{lib/simple.cpp File Reference}
+\label{simple_8cpp}\index{lib/simple.\+cpp@{lib/simple.\+cpp}}
+{\ttfamily \#include $<$terraces/constraints.\+hpp$>$}\newline
+{\ttfamily \#include $<$terraces/errors.\+hpp$>$}\newline
+{\ttfamily \#include $<$terraces/parser.\+hpp$>$}\newline
+{\ttfamily \#include $<$terraces/rooting.\+hpp$>$}\newline
+{\ttfamily \#include $<$terraces/simple.\+hpp$>$}\newline
+{\ttfamily \#include $<$terraces/subtree\+\_\+extraction.\+hpp$>$}\newline
+{\ttfamily \#include $<$terraces/supertree.\+hpp$>$}\newline
+{\ttfamily \#include $<$terraces/trees.\+hpp$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include \char`\"{}supertree\+\_\+enumerator.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}supertree\+\_\+variants\+\_\+multitree.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceterraces}{terraces}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{namespaceterraces_aaa1cfc0f0adeee6408adaf1049c24227}{terraces\+::is\+\_\+on\+\_\+terrace} (const std\+::string \&nwk\+\_\+string, std\+::istream \&matrix\+\_\+stream)
+\item 
+bool \hyperlink{namespaceterraces_a924744ce1ce711e40d0cf722d551e375}{terraces\+::is\+\_\+on\+\_\+terrace} (std\+::istream \&nwk\+\_\+stream, std\+::istream \&matrix\+\_\+stream)
+\item 
+bool \hyperlink{namespaceterraces_a4e75afae24e5c7fef4f9b22ea3ee9486}{terraces\+::is\+\_\+on\+\_\+terrace} (std\+::istream \&nwk\+\_\+stream, const std\+::string \&matrix\+\_\+string)
+\item 
+bool \hyperlink{namespaceterraces_a2dd57bda3af31246492ad52438015b42}{terraces\+::is\+\_\+on\+\_\+terrace} (const std\+::string \&nwk\+\_\+string, const std\+::string \&matrix\+\_\+string)
+\item 
+bool \hyperlink{namespaceterraces_afadd08934abd0d298e2b36c7025e4565}{terraces\+::is\+\_\+on\+\_\+terrace\+\_\+from\+\_\+file} (const std\+::string \&nwk\+\_\+filename, const std\+::string \&matrix\+\_\+filename)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a7ef22320b680e0859629f36e6366095b}{terraces\+::get\+\_\+terrace\+\_\+size} (std\+::istream \&nwk\+\_\+stream, std\+::istream \&matrix\+\_\+stream)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a3d63d1aacb79fba0eec3047276257247}{terraces\+::get\+\_\+terrace\+\_\+size} (std\+::istream \&nwk\+\_\+stream, const std\+::string \&matrix\+\_\+string)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a134fb35cc9c3ade97715eaef710ee458}{terraces\+::get\+\_\+terrace\+\_\+size} (const std\+::string \&nwk\+\_\+string, std\+::istream \&matrix\+\_\+stream)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a42c8925377cdc643dffb08a08cb76c6b}{terraces\+::get\+\_\+terrace\+\_\+size} (const std\+::string \&nwk\+\_\+string, const std\+::string \&matrix\+\_\+string)
+\item 
+std\+::uint64\+\_\+t \hyperlink{namespaceterraces_a56e02226b324a2c6c7620ed31be10971}{terraces\+::get\+\_\+terrace\+\_\+size\+\_\+from\+\_\+file} (const std\+::string \&nwk\+\_\+filename, const std\+::string \&matrix\+\_\+filename)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_acb1e910e11d185376512e68fa777c02c}{terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint} (const std\+::string \&nwk\+\_\+string, std\+::istream \&matrix\+\_\+stream)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_aa5f247849fef83931db798d94f3d3208}{terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint} (std\+::istream \&nwk\+\_\+stream, std\+::istream \&matrix\+\_\+stream)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_a52729af5c44841c718693508654a4852}{terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint} (std\+::istream \&nwk\+\_\+stream, const std\+::string \&matrix\+\_\+string)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_a77a2041cec698021d4513fe8582295d2}{terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint} (const std\+::string \&nwk\+\_\+string, const std\+::string \&matrix\+\_\+string)
+\item 
+\hyperlink{gmpxx_8h_a4194ba637e08ba88fb6b56747cc0ee6c}{mpz\+\_\+class} \hyperlink{namespaceterraces_a2fd8367ac496d3302518b44ad2804e0a}{terraces\+::get\+\_\+terrace\+\_\+size\+\_\+as\+\_\+bigint\+\_\+from\+\_\+file} (const std\+::string \&nwk\+\_\+filename, const std\+::string \&matrix\+\_\+filename)
+\item 
+void \hyperlink{namespaceterraces_a6b70762dab550c4b63c1fb12a976c79b}{terraces\+::print\+\_\+terrace} (const std\+::string \&nwk\+\_\+string, std\+::istream \&matrix\+\_\+stream, std\+::ostream \&out)
+\item 
+void \hyperlink{namespaceterraces_ae35eb2f7d41b44f45b8bb1623f188fe3}{terraces\+::print\+\_\+terrace} (std\+::istream \&nwk\+\_\+stream, const std\+::string \&matrix\+\_\+string, std\+::ostream \&out)
+\item 
+void \hyperlink{namespaceterraces_a8945b2604514ca878a2ba568029f1062}{terraces\+::print\+\_\+terrace} (std\+::istream \&nwk\+\_\+stream, std\+::istream \&matrix\+\_\+stream, std\+::ostream \&out)
+\item 
+void \hyperlink{namespaceterraces_abc9fdae9cfcc6334ed6e3a965e0dbd41}{terraces\+::print\+\_\+terrace} (const std\+::string \&nwk\+\_\+string, const std\+::string \&matrix\+\_\+string, std\+::ostream \&out)
+\item 
+void \hyperlink{namespaceterraces_a8a1db74ca77db1dd2a23a92e8ff05e34}{terraces\+::print\+\_\+terrace\+\_\+from\+\_\+file} (const std\+::string \&nwk\+\_\+filename, const std\+::string \&matrix\+\_\+filename, std\+::ostream \&output)
+\end{DoxyCompactItemize}

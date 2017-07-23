@@ -1,0 +1,93 @@
+\hypertarget{tree__gen_8cpp}{}\section{app/tree\+\_\+gen.cpp File Reference}
+\label{tree__gen_8cpp}\index{app/tree\+\_\+gen.\+cpp@{app/tree\+\_\+gen.\+cpp}}
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include $<$random$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtree__node}{tree\+\_\+node}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} = std\+::size\+\_\+t
+\item 
+using \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} = std\+::vector$<$ \hyperlink{structtree__node}{tree\+\_\+node} $>$
+\item 
+using \hyperlink{tree__gen_8cpp_a38d89ab688c8552378fa126f33b48c70}{index\+\_\+list} = std\+::vector$<$ \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} $>$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::default\+\_\+random\+\_\+engine \& \hyperlink{tree__gen_8cpp_a1c48176241037a2d114e8c61ded36b3a}{get\+\_\+rng} ()
+\item 
+\hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} \hyperlink{tree__gen_8cpp_a2668e116bc4da5c536df809fa761949c}{rand\+\_\+index} (\hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} max)
+\item 
+\hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} \hyperlink{tree__gen_8cpp_a404fddd397cc2f719f36aa3ced9f6e5e}{extract\+\_\+random} (\hyperlink{tree__gen_8cpp_a38d89ab688c8552378fa126f33b48c70}{index\+\_\+list} \&list)
+\item 
+void \hyperlink{tree__gen_8cpp_a71c0f875800c4f1fe1d3a00f4cf9758c}{print} (std\+::ostream \&out, \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&t, const std\+::vector$<$ std\+::string $>$ \&names)
+\item 
+int \hyperlink{tree__gen_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}\label{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}} 
+\index{tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}!index@{index}}
+\index{index@{index}!tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}}
+\subsubsection{\texorpdfstring{index}{index}}
+{\footnotesize\ttfamily using \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} =  std\+::size\+\_\+t}
+
+\mbox{\Hypertarget{tree__gen_8cpp_a38d89ab688c8552378fa126f33b48c70}\label{tree__gen_8cpp_a38d89ab688c8552378fa126f33b48c70}} 
+\index{tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}!index\+\_\+list@{index\+\_\+list}}
+\index{index\+\_\+list@{index\+\_\+list}!tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}}
+\subsubsection{\texorpdfstring{index\+\_\+list}{index\_list}}
+{\footnotesize\ttfamily using \hyperlink{tree__gen_8cpp_a38d89ab688c8552378fa126f33b48c70}{index\+\_\+list} =  std\+::vector$<$\hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index}$>$}
+
+\mbox{\Hypertarget{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}\label{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}} 
+\index{tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}!tree@{tree}}
+\index{tree@{tree}!tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}}
+\subsubsection{\texorpdfstring{tree}{tree}}
+{\footnotesize\ttfamily using \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} =  std\+::vector$<$\hyperlink{structtree__node}{tree\+\_\+node}$>$}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{tree__gen_8cpp_a404fddd397cc2f719f36aa3ced9f6e5e}\label{tree__gen_8cpp_a404fddd397cc2f719f36aa3ced9f6e5e}} 
+\index{tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}!extract\+\_\+random@{extract\+\_\+random}}
+\index{extract\+\_\+random@{extract\+\_\+random}!tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}}
+\subsubsection{\texorpdfstring{extract\+\_\+random()}{extract\_random()}}
+{\footnotesize\ttfamily \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} extract\+\_\+random (\begin{DoxyParamCaption}\item[{\hyperlink{tree__gen_8cpp_a38d89ab688c8552378fa126f33b48c70}{index\+\_\+list} \&}]{list }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{tree__gen_8cpp_a1c48176241037a2d114e8c61ded36b3a}\label{tree__gen_8cpp_a1c48176241037a2d114e8c61ded36b3a}} 
+\index{tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}!get\+\_\+rng@{get\+\_\+rng}}
+\index{get\+\_\+rng@{get\+\_\+rng}!tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}}
+\subsubsection{\texorpdfstring{get\+\_\+rng()}{get\_rng()}}
+{\footnotesize\ttfamily std\+::default\+\_\+random\+\_\+engine\& get\+\_\+rng (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{tree__gen_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{tree__gen_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}!main@{main}}
+\index{main@{main}!tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tree__gen_8cpp_a71c0f875800c4f1fe1d3a00f4cf9758c}\label{tree__gen_8cpp_a71c0f875800c4f1fe1d3a00f4cf9758c}} 
+\index{tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}!print@{print}}
+\index{print@{print}!tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}}
+\subsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily void print (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{out,  }\item[{\hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} \&}]{t,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{tree__gen_8cpp_a2668e116bc4da5c536df809fa761949c}\label{tree__gen_8cpp_a2668e116bc4da5c536df809fa761949c}} 
+\index{tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}!rand\+\_\+index@{rand\+\_\+index}}
+\index{rand\+\_\+index@{rand\+\_\+index}!tree\+\_\+gen.\+cpp@{tree\+\_\+gen.\+cpp}}
+\subsubsection{\texorpdfstring{rand\+\_\+index()}{rand\_index()}}
+{\footnotesize\ttfamily \hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} rand\+\_\+index (\begin{DoxyParamCaption}\item[{\hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index}}]{max }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+

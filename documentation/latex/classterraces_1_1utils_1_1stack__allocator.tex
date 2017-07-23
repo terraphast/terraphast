@@ -1,0 +1,97 @@
+\hypertarget{classterraces_1_1utils_1_1stack__allocator}{}\section{terraces\+:\+:utils\+:\+:stack\+\_\+allocator$<$ T $>$ Class Template Reference}
+\label{classterraces_1_1utils_1_1stack__allocator}\index{terraces\+::utils\+::stack\+\_\+allocator$<$ T $>$@{terraces\+::utils\+::stack\+\_\+allocator$<$ T $>$}}
+
+
+{\ttfamily \#include $<$stack\+\_\+allocator.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{classterraces_1_1utils_1_1stack__allocator_a1c3fa04869c7fe9730a18b046461cbbb}{value\+\_\+type} = T
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classterraces_1_1utils_1_1stack__allocator_a557138c2f8f21847dbbfbdc588909f68}{stack\+\_\+allocator} (\hyperlink{classterraces_1_1utils_1_1free__list}{free\+\_\+list} \&fl, std\+::size\+\_\+t n)
+\item 
+{\footnotesize template$<$typename U $>$ }\\\hyperlink{classterraces_1_1utils_1_1stack__allocator_a786655b3258a2c776901389ca5c1c762}{stack\+\_\+allocator} (const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}$<$ U $>$ \&other)
+\item 
+T $\ast$ \hyperlink{classterraces_1_1utils_1_1stack__allocator_afcc195b71e290468330bf444ab27a237}{allocate} (std\+::size\+\_\+t n)
+\item 
+void \hyperlink{classterraces_1_1utils_1_1stack__allocator_a804f63d9b9f82e5462dae9a43144ec82}{deallocate} (T $\ast$ptr, std\+::size\+\_\+t)
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename U $>$ }\\class \hyperlink{classterraces_1_1utils_1_1stack__allocator_a63e83703d59c04427b11c879b4f4a637}{stack\+\_\+allocator}
+\item 
+bool \hyperlink{classterraces_1_1utils_1_1stack__allocator_a4f03647bb7adb25d049daf9e4e741301}{operator==} (const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator} \&lhs, const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator} \&rhs)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classterraces_1_1utils_1_1stack__allocator_a1c3fa04869c7fe9730a18b046461cbbb}\label{classterraces_1_1utils_1_1stack__allocator_a1c3fa04869c7fe9730a18b046461cbbb}} 
+\index{terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}!value\+\_\+type@{value\+\_\+type}}
+\index{value\+\_\+type@{value\+\_\+type}!terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}}
+\subsubsection{\texorpdfstring{value\+\_\+type}{value\_type}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{classterraces_1_1utils_1_1stack__allocator}{terraces\+::utils\+::stack\+\_\+allocator}$<$ T $>$\+::\hyperlink{classterraces_1_1utils_1_1stack__allocator_a1c3fa04869c7fe9730a18b046461cbbb}{value\+\_\+type} =  T}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classterraces_1_1utils_1_1stack__allocator_a557138c2f8f21847dbbfbdc588909f68}\label{classterraces_1_1utils_1_1stack__allocator_a557138c2f8f21847dbbfbdc588909f68}} 
+\index{terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}!stack\+\_\+allocator@{stack\+\_\+allocator}}
+\index{stack\+\_\+allocator@{stack\+\_\+allocator}!terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}}
+\subsubsection{\texorpdfstring{stack\+\_\+allocator()}{stack\_allocator()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{classterraces_1_1utils_1_1stack__allocator}{terraces\+::utils\+::stack\+\_\+allocator}$<$ T $>$\+::\hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator} (\begin{DoxyParamCaption}\item[{\hyperlink{classterraces_1_1utils_1_1free__list}{free\+\_\+list} \&}]{fl,  }\item[{std\+::size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1utils_1_1stack__allocator_a786655b3258a2c776901389ca5c1c762}\label{classterraces_1_1utils_1_1stack__allocator_a786655b3258a2c776901389ca5c1c762}} 
+\index{terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}!stack\+\_\+allocator@{stack\+\_\+allocator}}
+\index{stack\+\_\+allocator@{stack\+\_\+allocator}!terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}}
+\subsubsection{\texorpdfstring{stack\+\_\+allocator()}{stack\_allocator()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+template$<$typename U $>$ \\
+\hyperlink{classterraces_1_1utils_1_1stack__allocator}{terraces\+::utils\+::stack\+\_\+allocator}$<$ T $>$\+::\hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator} (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}$<$ U $>$ \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1utils_1_1stack__allocator_afcc195b71e290468330bf444ab27a237}\label{classterraces_1_1utils_1_1stack__allocator_afcc195b71e290468330bf444ab27a237}} 
+\index{terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}!allocate@{allocate}}
+\index{allocate@{allocate}!terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}}
+\subsubsection{\texorpdfstring{allocate()}{allocate()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T$\ast$ \hyperlink{classterraces_1_1utils_1_1stack__allocator}{terraces\+::utils\+::stack\+\_\+allocator}$<$ T $>$\+::allocate (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1utils_1_1stack__allocator_a804f63d9b9f82e5462dae9a43144ec82}\label{classterraces_1_1utils_1_1stack__allocator_a804f63d9b9f82e5462dae9a43144ec82}} 
+\index{terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}!deallocate@{deallocate}}
+\index{deallocate@{deallocate}!terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}}
+\subsubsection{\texorpdfstring{deallocate()}{deallocate()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{classterraces_1_1utils_1_1stack__allocator}{terraces\+::utils\+::stack\+\_\+allocator}$<$ T $>$\+::deallocate (\begin{DoxyParamCaption}\item[{T $\ast$}]{ptr,  }\item[{std\+::size\+\_\+t}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1utils_1_1stack__allocator_a4f03647bb7adb25d049daf9e4e741301}\label{classterraces_1_1utils_1_1stack__allocator_a4f03647bb7adb25d049daf9e4e741301}} 
+\index{terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}!operator==@{operator==}}
+\index{operator==@{operator==}!terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}}
+\subsubsection{\texorpdfstring{operator==}{operator==}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+bool operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}$<$ T $>$ \&}]{lhs,  }\item[{const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}$<$ T $>$ \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classterraces_1_1utils_1_1stack__allocator_a63e83703d59c04427b11c879b4f4a637}\label{classterraces_1_1utils_1_1stack__allocator_a63e83703d59c04427b11c879b4f4a637}} 
+\index{terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}!stack\+\_\+allocator@{stack\+\_\+allocator}}
+\index{stack\+\_\+allocator@{stack\+\_\+allocator}!terraces\+::utils\+::stack\+\_\+allocator@{terraces\+::utils\+::stack\+\_\+allocator}}
+\subsubsection{\texorpdfstring{stack\+\_\+allocator}{stack\_allocator}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+template$<$typename U $>$ \\
+friend class \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\hyperlink{stack__allocator_8hpp}{stack\+\_\+allocator.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,129 @@
+\hypertarget{namespaceterraces_1_1utils}{}\section{terraces\+:\+:utils Namespace Reference}
+\label{namespaceterraces_1_1utils}\index{terraces\+::utils@{terraces\+::utils}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classterraces_1_1utils_1_1array__deleter}{array\+\_\+deleter}
+\item 
+struct \hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__output}{comma\+\_\+separated\+\_\+mapped\+\_\+output}
+\item 
+struct \hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__subset__output}{comma\+\_\+separated\+\_\+mapped\+\_\+subset\+\_\+output}
+\item 
+struct \hyperlink{structterraces_1_1utils_1_1comma__separated__output}{comma\+\_\+separated\+\_\+output}
+\item 
+class \hyperlink{classterraces_1_1utils_1_1free__list}{free\+\_\+list}
+\item 
+struct \hyperlink{structterraces_1_1utils_1_1named__output}{named\+\_\+output}
+\item 
+class \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{namespaceterraces_1_1utils_a899529841c01a7e7152ac5ef8496c024}{char\+\_\+buffer} = std\+::unique\+\_\+ptr$<$ char\mbox{[}$\,$\mbox{]}, \hyperlink{classterraces_1_1utils_1_1array__deleter}{array\+\_\+deleter} $>$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::ostream \& \hyperlink{namespaceterraces_1_1utils_a5e3d378a88978234fe3a4adc9bea47b9}{operator$<$$<$} (std\+::ostream \&stream, \hyperlink{structterraces_1_1utils_1_1comma__separated__output}{comma\+\_\+separated\+\_\+output}$<$ T $>$ output)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 $>$ }\\std\+::ostream \& \hyperlink{namespaceterraces_1_1utils_a00158c640c24f8fc9ceeaf63a1660d99}{operator$<$$<$} (std\+::ostream \&stream, \hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__output}{comma\+\_\+separated\+\_\+mapped\+\_\+output}$<$ T1, T2 $>$ output)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 , typename T3 $>$ }\\std\+::ostream \& \hyperlink{namespaceterraces_1_1utils_a4f2c8fedb5f9c911ac107e32c4bdb7e1}{operator$<$$<$} (std\+::ostream \&stream, \hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__subset__output}{comma\+\_\+separated\+\_\+mapped\+\_\+subset\+\_\+output}$<$ T1, T2, T3 $>$ output)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\hyperlink{structterraces_1_1utils_1_1comma__separated__output}{comma\+\_\+separated\+\_\+output}$<$ T $>$ \hyperlink{namespaceterraces_1_1utils_a0179dbbfb1f4aa737076b3f47fdccdb4}{as\+\_\+comma\+\_\+separated\+\_\+output} (const T \&data)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 $>$ }\\\hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__output}{comma\+\_\+separated\+\_\+mapped\+\_\+output}$<$ T1, T2 $>$ \hyperlink{namespaceterraces_1_1utils_ac87c5dc23381a9d53a4ceb4f41070e40}{as\+\_\+comma\+\_\+separated\+\_\+output} (const T1 \&data, const T2 \&names)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 , typename T3 $>$ }\\\hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__subset__output}{comma\+\_\+separated\+\_\+mapped\+\_\+subset\+\_\+output}$<$ T1, T2, T3 $>$ \hyperlink{namespaceterraces_1_1utils_a1b6a6d4d742c0466921e62d127c51df9}{as\+\_\+comma\+\_\+separated\+\_\+output} (const T1 \&subset, const T2 \&data, const T3 \&names)
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{namespaceterraces_1_1utils_a7588b460cbed23936a666ce2c411e30b}{operator==} (const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}$<$ T $>$ \&lhs, const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}$<$ T $>$ \&rhs)
+\item 
+{\footnotesize template$<$typename Iterator $>$ }\\Iterator \hyperlink{namespaceterraces_1_1utils_a72c9d3a03a496794590f5c9d7a01aa58}{skip\+\_\+ws} (Iterator it, Iterator last)
+\item 
+{\footnotesize template$<$typename Iterator $>$ }\\Iterator \hyperlink{namespaceterraces_1_1utils_a8f537b0f3154a2a1c21650098e16797e}{reverse\+\_\+skip\+\_\+ws} (Iterator first, Iterator last)
+\item 
+{\footnotesize template$<$typename Exception , typename... Args$>$ }\\void \hyperlink{namespaceterraces_1_1utils_aae29deaf7ae1e950beddb248d2591ce2}{ensure} (bool b, Args \&\&... args)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a899529841c01a7e7152ac5ef8496c024}\label{namespaceterraces_1_1utils_a899529841c01a7e7152ac5ef8496c024}} 
+\index{terraces\+::utils@{terraces\+::utils}!char\+\_\+buffer@{char\+\_\+buffer}}
+\index{char\+\_\+buffer@{char\+\_\+buffer}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{char\+\_\+buffer}{char\_buffer}}
+{\footnotesize\ttfamily using \hyperlink{namespaceterraces_1_1utils_a899529841c01a7e7152ac5ef8496c024}{terraces\+::utils\+::char\+\_\+buffer} = typedef std\+::unique\+\_\+ptr$<$char\mbox{[}$\,$\mbox{]}, \hyperlink{classterraces_1_1utils_1_1array__deleter}{array\+\_\+deleter}$>$}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a0179dbbfb1f4aa737076b3f47fdccdb4}\label{namespaceterraces_1_1utils_a0179dbbfb1f4aa737076b3f47fdccdb4}} 
+\index{terraces\+::utils@{terraces\+::utils}!as\+\_\+comma\+\_\+separated\+\_\+output@{as\+\_\+comma\+\_\+separated\+\_\+output}}
+\index{as\+\_\+comma\+\_\+separated\+\_\+output@{as\+\_\+comma\+\_\+separated\+\_\+output}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{as\+\_\+comma\+\_\+separated\+\_\+output()}{as\_comma\_separated\_output()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{structterraces_1_1utils_1_1comma__separated__output}{comma\+\_\+separated\+\_\+output}$<$T$>$ terraces\+::utils\+::as\+\_\+comma\+\_\+separated\+\_\+output (\begin{DoxyParamCaption}\item[{const T \&}]{data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_ac87c5dc23381a9d53a4ceb4f41070e40}\label{namespaceterraces_1_1utils_ac87c5dc23381a9d53a4ceb4f41070e40}} 
+\index{terraces\+::utils@{terraces\+::utils}!as\+\_\+comma\+\_\+separated\+\_\+output@{as\+\_\+comma\+\_\+separated\+\_\+output}}
+\index{as\+\_\+comma\+\_\+separated\+\_\+output@{as\+\_\+comma\+\_\+separated\+\_\+output}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{as\+\_\+comma\+\_\+separated\+\_\+output()}{as\_comma\_separated\_output()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename T1 , typename T2 $>$ \\
+\hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__output}{comma\+\_\+separated\+\_\+mapped\+\_\+output}$<$T1, T2$>$ terraces\+::utils\+::as\+\_\+comma\+\_\+separated\+\_\+output (\begin{DoxyParamCaption}\item[{const T1 \&}]{data,  }\item[{const T2 \&}]{names }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a1b6a6d4d742c0466921e62d127c51df9}\label{namespaceterraces_1_1utils_a1b6a6d4d742c0466921e62d127c51df9}} 
+\index{terraces\+::utils@{terraces\+::utils}!as\+\_\+comma\+\_\+separated\+\_\+output@{as\+\_\+comma\+\_\+separated\+\_\+output}}
+\index{as\+\_\+comma\+\_\+separated\+\_\+output@{as\+\_\+comma\+\_\+separated\+\_\+output}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{as\+\_\+comma\+\_\+separated\+\_\+output()}{as\_comma\_separated\_output()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename T1 , typename T2 , typename T3 $>$ \\
+\hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__subset__output}{comma\+\_\+separated\+\_\+mapped\+\_\+subset\+\_\+output}$<$T1, T2, T3$>$ terraces\+::utils\+::as\+\_\+comma\+\_\+separated\+\_\+output (\begin{DoxyParamCaption}\item[{const T1 \&}]{subset,  }\item[{const T2 \&}]{data,  }\item[{const T3 \&}]{names }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_aae29deaf7ae1e950beddb248d2591ce2}\label{namespaceterraces_1_1utils_aae29deaf7ae1e950beddb248d2591ce2}} 
+\index{terraces\+::utils@{terraces\+::utils}!ensure@{ensure}}
+\index{ensure@{ensure}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{ensure()}{ensure()}}
+{\footnotesize\ttfamily template$<$typename Exception , typename... Args$>$ \\
+void terraces\+::utils\+::ensure (\begin{DoxyParamCaption}\item[{bool}]{b,  }\item[{Args \&\&...}]{args }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a5e3d378a88978234fe3a4adc9bea47b9}\label{namespaceterraces_1_1utils_a5e3d378a88978234fe3a4adc9bea47b9}} 
+\index{terraces\+::utils@{terraces\+::utils}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::ostream\& terraces\+::utils\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{\hyperlink{structterraces_1_1utils_1_1comma__separated__output}{comma\+\_\+separated\+\_\+output}$<$ T $>$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a00158c640c24f8fc9ceeaf63a1660d99}\label{namespaceterraces_1_1utils_a00158c640c24f8fc9ceeaf63a1660d99}} 
+\index{terraces\+::utils@{terraces\+::utils}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename T1 , typename T2 $>$ \\
+std\+::ostream\& terraces\+::utils\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{\hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__output}{comma\+\_\+separated\+\_\+mapped\+\_\+output}$<$ T1, T2 $>$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a4f2c8fedb5f9c911ac107e32c4bdb7e1}\label{namespaceterraces_1_1utils_a4f2c8fedb5f9c911ac107e32c4bdb7e1}} 
+\index{terraces\+::utils@{terraces\+::utils}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename T1 , typename T2 , typename T3 $>$ \\
+std\+::ostream\& terraces\+::utils\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{\hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__subset__output}{comma\+\_\+separated\+\_\+mapped\+\_\+subset\+\_\+output}$<$ T1, T2, T3 $>$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a7588b460cbed23936a666ce2c411e30b}\label{namespaceterraces_1_1utils_a7588b460cbed23936a666ce2c411e30b}} 
+\index{terraces\+::utils@{terraces\+::utils}!operator==@{operator==}}
+\index{operator==@{operator==}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool terraces\+::utils\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}$<$ T $>$ \&}]{lhs,  }\item[{const \hyperlink{classterraces_1_1utils_1_1stack__allocator}{stack\+\_\+allocator}$<$ T $>$ \&}]{rhs }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a8f537b0f3154a2a1c21650098e16797e}\label{namespaceterraces_1_1utils_a8f537b0f3154a2a1c21650098e16797e}} 
+\index{terraces\+::utils@{terraces\+::utils}!reverse\+\_\+skip\+\_\+ws@{reverse\+\_\+skip\+\_\+ws}}
+\index{reverse\+\_\+skip\+\_\+ws@{reverse\+\_\+skip\+\_\+ws}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{reverse\+\_\+skip\+\_\+ws()}{reverse\_skip\_ws()}}
+{\footnotesize\ttfamily template$<$typename Iterator $>$ \\
+Iterator terraces\+::utils\+::reverse\+\_\+skip\+\_\+ws (\begin{DoxyParamCaption}\item[{Iterator}]{first,  }\item[{Iterator}]{last }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceterraces_1_1utils_a72c9d3a03a496794590f5c9d7a01aa58}\label{namespaceterraces_1_1utils_a72c9d3a03a496794590f5c9d7a01aa58}} 
+\index{terraces\+::utils@{terraces\+::utils}!skip\+\_\+ws@{skip\+\_\+ws}}
+\index{skip\+\_\+ws@{skip\+\_\+ws}!terraces\+::utils@{terraces\+::utils}}
+\subsubsection{\texorpdfstring{skip\+\_\+ws()}{skip\_ws()}}
+{\footnotesize\ttfamily template$<$typename Iterator $>$ \\
+Iterator terraces\+::utils\+::skip\+\_\+ws (\begin{DoxyParamCaption}\item[{Iterator}]{it,  }\item[{Iterator}]{last }\end{DoxyParamCaption})}
+

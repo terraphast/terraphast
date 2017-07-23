@@ -1,0 +1,101 @@
+\hypertarget{classterraces_1_1bipartition__iterator}{}\section{terraces\+:\+:bipartition\+\_\+iterator Class Reference}
+\label{classterraces_1_1bipartition__iterator}\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+
+
+{\ttfamily \#include $<$bipartitions.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classterraces_1_1bipartition__iterator_a5276cb73a4ee31aace8cc8424eda534f}{bipartition\+\_\+iterator} (const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&\hyperlink{classterraces_1_1bipartition__iterator_ae3aa95923d3d8004050240f37aea6e65}{leaves}, const \hyperlink{classterraces_1_1union__find}{union\+\_\+find} \&\hyperlink{classterraces_1_1bipartition__iterator_adf63f745fee83552648553ddb0530a3b}{sets}, \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$)
+\item 
+void \hyperlink{classterraces_1_1bipartition__iterator_ac072beaef1deb4144217036e5595f4cb}{increase} ()
+\item 
+bool \hyperlink{classterraces_1_1bipartition__iterator_a6daf5b56669a4df0f1ed2878512c343b}{is\+\_\+valid} () const
+\item 
+const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \& \hyperlink{classterraces_1_1bipartition__iterator_abc68c2054681504c6e99e261b47cd22f}{get\+\_\+current\+\_\+set} () const
+\item 
+void \hyperlink{classterraces_1_1bipartition__iterator_aa8f7242cbf825373196f3fc16b28cfcd}{flip\+\_\+sets} ()
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1bipartition__iterator_afc11c289f64dd48723ff88e70d67af37}{cur\+\_\+bip} () const
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1bipartition__iterator_ad73b80dd148b3d236877f812e7ff6fec}{end\+\_\+bip} () const
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1bipartition__iterator_a6faec2db72f4a8faee4d977a18e97540}{num\+\_\+bip} () const
+\item 
+const \hyperlink{classterraces_1_1union__find}{union\+\_\+find} \& \hyperlink{classterraces_1_1bipartition__iterator_adf63f745fee83552648553ddb0530a3b}{sets} () const
+\item 
+const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \& \hyperlink{classterraces_1_1bipartition__iterator_ae3aa95923d3d8004050240f37aea6e65}{leaves} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classterraces_1_1bipartition__iterator_a5276cb73a4ee31aace8cc8424eda534f}\label{classterraces_1_1bipartition__iterator_a5276cb73a4ee31aace8cc8424eda534f}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!bipartition\+\_\+iterator@{bipartition\+\_\+iterator}}
+\index{bipartition\+\_\+iterator@{bipartition\+\_\+iterator}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{bipartition\+\_\+iterator()}{bipartition\_iterator()}}
+{\footnotesize\ttfamily terraces\+::bipartition\+\_\+iterator\+::bipartition\+\_\+iterator (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{leaves,  }\item[{const \hyperlink{classterraces_1_1union__find}{union\+\_\+find} \&}]{sets,  }\item[{\hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$}]{a }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1bipartition__iterator_afc11c289f64dd48723ff88e70d67af37}\label{classterraces_1_1bipartition__iterator_afc11c289f64dd48723ff88e70d67af37}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!cur\+\_\+bip@{cur\+\_\+bip}}
+\index{cur\+\_\+bip@{cur\+\_\+bip}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{cur\+\_\+bip()}{cur\_bip()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} terraces\+::bipartition\+\_\+iterator\+::cur\+\_\+bip (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1bipartition__iterator_ad73b80dd148b3d236877f812e7ff6fec}\label{classterraces_1_1bipartition__iterator_ad73b80dd148b3d236877f812e7ff6fec}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!end\+\_\+bip@{end\+\_\+bip}}
+\index{end\+\_\+bip@{end\+\_\+bip}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{end\+\_\+bip()}{end\_bip()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} terraces\+::bipartition\+\_\+iterator\+::end\+\_\+bip (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1bipartition__iterator_aa8f7242cbf825373196f3fc16b28cfcd}\label{classterraces_1_1bipartition__iterator_aa8f7242cbf825373196f3fc16b28cfcd}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!flip\+\_\+sets@{flip\+\_\+sets}}
+\index{flip\+\_\+sets@{flip\+\_\+sets}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{flip\+\_\+sets()}{flip\_sets()}}
+{\footnotesize\ttfamily void terraces\+::bipartition\+\_\+iterator\+::flip\+\_\+sets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Switches the current partition with the other partition. \mbox{\Hypertarget{classterraces_1_1bipartition__iterator_abc68c2054681504c6e99e261b47cd22f}\label{classterraces_1_1bipartition__iterator_abc68c2054681504c6e99e261b47cd22f}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!get\+\_\+current\+\_\+set@{get\+\_\+current\+\_\+set}}
+\index{get\+\_\+current\+\_\+set@{get\+\_\+current\+\_\+set}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+current\+\_\+set()}{get\_current\_set()}}
+{\footnotesize\ttfamily const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \& terraces\+::bipartition\+\_\+iterator\+::get\+\_\+current\+\_\+set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the current partition. Switching to the other partition can be done via flip(). \mbox{\Hypertarget{classterraces_1_1bipartition__iterator_ac072beaef1deb4144217036e5595f4cb}\label{classterraces_1_1bipartition__iterator_ac072beaef1deb4144217036e5595f4cb}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!increase@{increase}}
+\index{increase@{increase}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{increase()}{increase()}}
+{\footnotesize\ttfamily void terraces\+::bipartition\+\_\+iterator\+::increase (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Moves to the next bipartition. \mbox{\Hypertarget{classterraces_1_1bipartition__iterator_a6daf5b56669a4df0f1ed2878512c343b}\label{classterraces_1_1bipartition__iterator_a6daf5b56669a4df0f1ed2878512c343b}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!is\+\_\+valid@{is\+\_\+valid}}
+\index{is\+\_\+valid@{is\+\_\+valid}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{is\+\_\+valid()}{is\_valid()}}
+{\footnotesize\ttfamily bool terraces\+::bipartition\+\_\+iterator\+::is\+\_\+valid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns true if this bipartition is valid. \mbox{\Hypertarget{classterraces_1_1bipartition__iterator_ae3aa95923d3d8004050240f37aea6e65}\label{classterraces_1_1bipartition__iterator_ae3aa95923d3d8004050240f37aea6e65}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!leaves@{leaves}}
+\index{leaves@{leaves}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{leaves()}{leaves()}}
+{\footnotesize\ttfamily const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector}\& terraces\+::bipartition\+\_\+iterator\+::leaves (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1bipartition__iterator_a6faec2db72f4a8faee4d977a18e97540}\label{classterraces_1_1bipartition__iterator_a6faec2db72f4a8faee4d977a18e97540}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!num\+\_\+bip@{num\+\_\+bip}}
+\index{num\+\_\+bip@{num\+\_\+bip}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{num\+\_\+bip()}{num\_bip()}}
+{\footnotesize\ttfamily \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} terraces\+::bipartition\+\_\+iterator\+::num\+\_\+bip (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1bipartition__iterator_adf63f745fee83552648553ddb0530a3b}\label{classterraces_1_1bipartition__iterator_adf63f745fee83552648553ddb0530a3b}} 
+\index{terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}!sets@{sets}}
+\index{sets@{sets}!terraces\+::bipartition\+\_\+iterator@{terraces\+::bipartition\+\_\+iterator}}
+\subsubsection{\texorpdfstring{sets()}{sets()}}
+{\footnotesize\ttfamily const \hyperlink{classterraces_1_1union__find}{union\+\_\+find}\& terraces\+::bipartition\+\_\+iterator\+::sets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/\hyperlink{bipartitions_8hpp}{bipartitions.\+hpp}\item 
+lib/\hyperlink{lib_2bipartitions_8cpp}{bipartitions.\+cpp}\end{DoxyCompactItemize}

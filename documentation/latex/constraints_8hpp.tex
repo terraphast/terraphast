@@ -1,0 +1,33 @@
+\hypertarget{constraints_8hpp}{}\section{include/terraces/constraints.hpp File Reference}
+\label{constraints_8hpp}\index{include/terraces/constraints.\+hpp@{include/terraces/constraints.\+hpp}}
+{\ttfamily \#include $<$iosfwd$>$}\newline
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}io\+\_\+utils.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}trees.\+hpp\char`\"{}}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structterraces_1_1constraint}{terraces\+::constraint}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceterraces}{terraces}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{terraces\+::constraints} = std\+::vector$<$ constraint $>$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_afe895c6224b473a8ac42ee20a43b60dc}{terraces\+::operator$<$$<$} (std\+::ostream \&s, const constraint \&c)
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_afda20576b9d2f9c56f3f6d06efc030fd}{terraces\+::operator$<$$<$} (std\+::ostream \&stream, utils\+::named\+\_\+output$<$ constraints, name\+\_\+map $>$)
+\item 
+constraints \hyperlink{namespaceterraces_adbc8509d9ed99e4e0ef57af54c89e905}{terraces\+::compute\+\_\+constraints} (const std\+::vector$<$ \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree} $>$ \&trees)
+\item 
+\hyperlink{tree__gen_8cpp_a7376ecf9f645bcbaa2f0459e17d7588f}{index} \hyperlink{namespaceterraces_a13888c94deeee29c8f5157c9071e3946}{terraces\+::deduplicate\+\_\+constraints} (constraints \&in\+\_\+c)
+\end{DoxyCompactItemize}

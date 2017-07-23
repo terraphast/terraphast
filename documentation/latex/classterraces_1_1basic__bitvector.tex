@@ -1,0 +1,272 @@
+\hypertarget{classterraces_1_1basic__bitvector}{}\section{terraces\+:\+:basic\+\_\+bitvector$<$ Allocator $>$ Class Template Reference}
+\label{classterraces_1_1basic__bitvector}\index{terraces\+::basic\+\_\+bitvector$<$ Allocator $>$@{terraces\+::basic\+\_\+bitvector$<$ Allocator $>$}}
+
+
+{\ttfamily \#include $<$bitvector.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{classterraces_1_1basic__bitvector_ad076eceb68c15a18925cd409e6eaac11}{value\+\_\+type} = \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}
+\item 
+using \hyperlink{classterraces_1_1basic__bitvector_aff8b2ad5a1518f6d8b157df0d2f77bdd}{iterator} = \hyperlink{classterraces_1_1bitvector__iterator}{bitvector\+\_\+iterator}$<$ Allocator $>$
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classterraces_1_1basic__bitvector_aeb3cce162b70f7bcbbf51eefad7acce2}{basic\+\_\+bitvector} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_a7a846347ea4c1c1f542ff3331307fdb9}{size}, Allocator alloc)
+\item 
+void \hyperlink{classterraces_1_1basic__bitvector_a08123518674191423e1f8872ef665650}{set} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i)
+\item 
+void \hyperlink{classterraces_1_1basic__bitvector_a9701e586ebb927deaec8bbff3461c22a}{clr} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i)
+\item 
+void \hyperlink{classterraces_1_1basic__bitvector_ad8f5d3222a2294e462f235ecd9dcb884}{flip} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i)
+\item 
+bool \hyperlink{classterraces_1_1basic__bitvector_a13da8f2c63010742d71c351cababc2d3}{get} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i) const
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_a7a846347ea4c1c1f542ff3331307fdb9}{size} () const
+\item 
+bool \hyperlink{classterraces_1_1basic__bitvector_afe730070283b54ea7013300950488eea}{empty} () const
+\item 
+void \hyperlink{classterraces_1_1basic__bitvector_aa52688df4fe89e58f1e45b41faf7e068}{blank} ()
+\item 
+void \hyperlink{classterraces_1_1basic__bitvector_a8a1d7d4cd0916068c73e3412347c7b18}{invert} ()
+\item 
+void \hyperlink{classterraces_1_1basic__bitvector_ac21b3d7ece4c87cfc4967d7fefb55c54}{bitwise\+\_\+xor} (const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&other)
+\item 
+void \hyperlink{classterraces_1_1basic__bitvector_a3e071c2698f1e19765b3c968a80ea65e}{set\+\_\+bitwise\+\_\+or} (const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&fst, const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&snd)
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_a43d7e193d6ce2d937039af566f480a74}{first\+\_\+set} () const
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_a21edd3eed32e2c09950d137987457078}{next\+\_\+set} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i) const
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_aac46a6f2e72007dc5508f4f3855e236e}{last\+\_\+set} () const
+\item 
+\hyperlink{classterraces_1_1basic__bitvector_aff8b2ad5a1518f6d8b157df0d2f77bdd}{iterator} \hyperlink{classterraces_1_1basic__bitvector_a205a9008238b8ed80f126230d80a08f3}{begin} () const
+\item 
+\hyperlink{classterraces_1_1basic__bitvector_aff8b2ad5a1518f6d8b157df0d2f77bdd}{iterator} \hyperlink{classterraces_1_1basic__bitvector_aab7b24b23810e5eda52a99145057d75d}{end} () const
+\item 
+Allocator \hyperlink{classterraces_1_1basic__bitvector_a50cd443a48618a59a130b0325e75eac4}{get\+\_\+allocator} () const
+\item 
+bool \hyperlink{classterraces_1_1basic__bitvector_ac09540b4ecb00339e8a9b6a44e1711e3}{operator$<$} (const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&other) const
+\item 
+bool \hyperlink{classterraces_1_1basic__bitvector_ad4299081f5f8a3d3d16b662941801400}{operator==} (const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&other) const
+\item 
+bool \hyperlink{classterraces_1_1basic__bitvector_a6821bf429f6a9b60065c6e61faadb333}{operator!=} (const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&other) const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_a2256081065bc6537e467f437cfdbef5c}{alloc\+\_\+size} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_a7a846347ea4c1c1f542ff3331307fdb9}{size})
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classterraces_1_1basic__bitvector_ad5a0a0f50c0f41c8f0f10ea74cd272fa}{add\+\_\+sentinel} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_ac78f807a89b0bfca92d855ebf1b61206}{m\+\_\+size}
+\item 
+std\+::vector$<$ \hyperlink{classterraces_1_1basic__bitvector_ad076eceb68c15a18925cd409e6eaac11}{value\+\_\+type}, Allocator $>$ \hyperlink{classterraces_1_1basic__bitvector_a65d3b2d2706a757fa305b725508a3830}{m\+\_\+blocks}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_aff8b2ad5a1518f6d8b157df0d2f77bdd}\label{classterraces_1_1basic__bitvector_aff8b2ad5a1518f6d8b157df0d2f77bdd}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!iterator@{iterator}}
+\index{iterator@{iterator}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{iterator}{iterator}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+using \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::\hyperlink{classterraces_1_1basic__bitvector_aff8b2ad5a1518f6d8b157df0d2f77bdd}{iterator} =  \hyperlink{classterraces_1_1bitvector__iterator}{bitvector\+\_\+iterator}$<$Allocator$>$}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_ad076eceb68c15a18925cd409e6eaac11}\label{classterraces_1_1basic__bitvector_ad076eceb68c15a18925cd409e6eaac11}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!value\+\_\+type@{value\+\_\+type}}
+\index{value\+\_\+type@{value\+\_\+type}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{value\+\_\+type}{value\_type}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+using \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::\hyperlink{classterraces_1_1basic__bitvector_ad076eceb68c15a18925cd409e6eaac11}{value\+\_\+type} =  \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_aeb3cce162b70f7bcbbf51eefad7acce2}\label{classterraces_1_1basic__bitvector_aeb3cce162b70f7bcbbf51eefad7acce2}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!basic\+\_\+bitvector@{basic\+\_\+bitvector}}
+\index{basic\+\_\+bitvector@{basic\+\_\+bitvector}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{basic\+\_\+bitvector()}{basic\_bitvector()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+\hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::\hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector} (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{size,  }\item[{Allocator}]{alloc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initializes a bitvector with given size. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_ad5a0a0f50c0f41c8f0f10ea74cd272fa}\label{classterraces_1_1basic__bitvector_ad5a0a0f50c0f41c8f0f10ea74cd272fa}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!add\+\_\+sentinel@{add\+\_\+sentinel}}
+\index{add\+\_\+sentinel@{add\+\_\+sentinel}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{add\+\_\+sentinel()}{add\_sentinel()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+void \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::add\+\_\+sentinel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_a2256081065bc6537e467f437cfdbef5c}\label{classterraces_1_1basic__bitvector_a2256081065bc6537e467f437cfdbef5c}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!alloc\+\_\+size@{alloc\+\_\+size}}
+\index{alloc\+\_\+size@{alloc\+\_\+size}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{alloc\+\_\+size()}{alloc\_size()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+static \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::alloc\+\_\+size (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_a205a9008238b8ed80f126230d80a08f3}\label{classterraces_1_1basic__bitvector_a205a9008238b8ed80f126230d80a08f3}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!begin@{begin}}
+\index{begin@{begin}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+auto \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_ac21b3d7ece4c87cfc4967d7fefb55c54}\label{classterraces_1_1basic__bitvector_ac21b3d7ece4c87cfc4967d7fefb55c54}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!bitwise\+\_\+xor@{bitwise\+\_\+xor}}
+\index{bitwise\+\_\+xor@{bitwise\+\_\+xor}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{bitwise\+\_\+xor()}{bitwise\_xor()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+void \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::bitwise\+\_\+xor (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&}]{other }\end{DoxyParamCaption})}
+
+Applies element-\/wise xor from another bitvector. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_aa52688df4fe89e58f1e45b41faf7e068}\label{classterraces_1_1basic__bitvector_aa52688df4fe89e58f1e45b41faf7e068}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!blank@{blank}}
+\index{blank@{blank}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{blank()}{blank()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+void \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::blank (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clears all bits in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_a9701e586ebb927deaec8bbff3461c22a}\label{classterraces_1_1basic__bitvector_a9701e586ebb927deaec8bbff3461c22a}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!clr@{clr}}
+\index{clr@{clr}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{clr()}{clr()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+void \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::clr (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Clears a bit in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_afe730070283b54ea7013300950488eea}\label{classterraces_1_1basic__bitvector_afe730070283b54ea7013300950488eea}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!empty@{empty}}
+\index{empty@{empty}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{empty()}{empty()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+bool \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns true if and only if no bit is set. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_aab7b24b23810e5eda52a99145057d75d}\label{classterraces_1_1basic__bitvector_aab7b24b23810e5eda52a99145057d75d}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!end@{end}}
+\index{end@{end}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+auto \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_a43d7e193d6ce2d937039af566f480a74}\label{classterraces_1_1basic__bitvector_a43d7e193d6ce2d937039af566f480a74}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!first\+\_\+set@{first\+\_\+set}}
+\index{first\+\_\+set@{first\+\_\+set}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{first\+\_\+set()}{first\_set()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::first\+\_\+set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the index of the first set bit or \hyperlink{classterraces_1_1basic__bitvector_a7a846347ea4c1c1f542ff3331307fdb9}{size()} if no bit is set. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_ad8f5d3222a2294e462f235ecd9dcb884}\label{classterraces_1_1basic__bitvector_ad8f5d3222a2294e462f235ecd9dcb884}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!flip@{flip}}
+\index{flip@{flip}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{flip()}{flip()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+void \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::flip (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Flips a bit in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_a13da8f2c63010742d71c351cababc2d3}\label{classterraces_1_1basic__bitvector_a13da8f2c63010742d71c351cababc2d3}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!get@{get}}
+\index{get@{get}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+bool \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::get (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a bit from the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_a50cd443a48618a59a130b0325e75eac4}\label{classterraces_1_1basic__bitvector_a50cd443a48618a59a130b0325e75eac4}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!get\+\_\+allocator@{get\+\_\+allocator}}
+\index{get\+\_\+allocator@{get\+\_\+allocator}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{get\+\_\+allocator()}{get\_allocator()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+Allocator \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::get\+\_\+allocator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_a8a1d7d4cd0916068c73e3412347c7b18}\label{classterraces_1_1basic__bitvector_a8a1d7d4cd0916068c73e3412347c7b18}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!invert@{invert}}
+\index{invert@{invert}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{invert()}{invert()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+void \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::invert (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Inverts all bits in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_aac46a6f2e72007dc5508f4f3855e236e}\label{classterraces_1_1basic__bitvector_aac46a6f2e72007dc5508f4f3855e236e}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!last\+\_\+set@{last\+\_\+set}}
+\index{last\+\_\+set@{last\+\_\+set}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{last\+\_\+set()}{last\_set()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::last\+\_\+set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the index one past the last element. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_a21edd3eed32e2c09950d137987457078}\label{classterraces_1_1basic__bitvector_a21edd3eed32e2c09950d137987457078}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!next\+\_\+set@{next\+\_\+set}}
+\index{next\+\_\+set@{next\+\_\+set}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{next\+\_\+set()}{next\_set()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::next\+\_\+set (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption}) const}
+
+Returns the index of the next set bit after the index or \hyperlink{classterraces_1_1basic__bitvector_a7a846347ea4c1c1f542ff3331307fdb9}{size()} if no bit is set. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_a6821bf429f6a9b60065c6e61faadb333}\label{classterraces_1_1basic__bitvector_a6821bf429f6a9b60065c6e61faadb333}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+bool \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::operator!= (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_ac09540b4ecb00339e8a9b6a44e1711e3}\label{classterraces_1_1basic__bitvector_ac09540b4ecb00339e8a9b6a44e1711e3}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+bool \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_ad4299081f5f8a3d3d16b662941801400}\label{classterraces_1_1basic__bitvector_ad4299081f5f8a3d3d16b662941801400}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!operator==@{operator==}}
+\index{operator==@{operator==}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+bool \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Allocator $>$ \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_a08123518674191423e1f8872ef665650}\label{classterraces_1_1basic__bitvector_a08123518674191423e1f8872ef665650}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!set@{set}}
+\index{set@{set}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+void \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::set (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets a bit in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_a3e071c2698f1e19765b3c968a80ea65e}\label{classterraces_1_1basic__bitvector_a3e071c2698f1e19765b3c968a80ea65e}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!set\+\_\+bitwise\+\_\+or@{set\+\_\+bitwise\+\_\+or}}
+\index{set\+\_\+bitwise\+\_\+or@{set\+\_\+bitwise\+\_\+or}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{set\+\_\+bitwise\+\_\+or()}{set\_bitwise\_or()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+void \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Alloc $>$\+::set\+\_\+bitwise\+\_\+or (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&}]{fst,  }\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&}]{snd }\end{DoxyParamCaption})}
+
+Sets the values of this bitvector to the bitwise or of two bitvectors. \mbox{\Hypertarget{classterraces_1_1basic__bitvector_a7a846347ea4c1c1f542ff3331307fdb9}\label{classterraces_1_1basic__bitvector_a7a846347ea4c1c1f542ff3331307fdb9}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!size@{size}}
+\index{size@{size}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the size of the bitvector. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_a65d3b2d2706a757fa305b725508a3830}\label{classterraces_1_1basic__bitvector_a65d3b2d2706a757fa305b725508a3830}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!m\+\_\+blocks@{m\+\_\+blocks}}
+\index{m\+\_\+blocks@{m\+\_\+blocks}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{m\+\_\+blocks}{m\_blocks}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+std\+::vector$<$\hyperlink{classterraces_1_1basic__bitvector_ad076eceb68c15a18925cd409e6eaac11}{value\+\_\+type}, Allocator$>$ \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::m\+\_\+blocks\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classterraces_1_1basic__bitvector_ac78f807a89b0bfca92d855ebf1b61206}\label{classterraces_1_1basic__bitvector_ac78f807a89b0bfca92d855ebf1b61206}} 
+\index{terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}!m\+\_\+size@{m\+\_\+size}}
+\index{m\+\_\+size@{m\+\_\+size}!terraces\+::basic\+\_\+bitvector@{terraces\+::basic\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{m\+\_\+size}{m\_size}}
+{\footnotesize\ttfamily template$<$typename Allocator$>$ \\
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector}{terraces\+::basic\+\_\+bitvector}$<$ Allocator $>$\+::m\+\_\+size\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\hyperlink{bitvector_8hpp}{bitvector.\+hpp}\end{DoxyCompactItemize}

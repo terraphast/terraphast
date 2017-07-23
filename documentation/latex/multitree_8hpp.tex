@@ -1,0 +1,47 @@
+\hypertarget{multitree_8hpp}{}\section{include/terraces/multitree.hpp File Reference}
+\label{multitree_8hpp}\index{include/terraces/multitree.\+hpp@{include/terraces/multitree.\+hpp}}
+{\ttfamily \#include \char`\"{}trees.\+hpp\char`\"{}}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structterraces_1_1multitree__nodes_1_1leaves}{terraces\+::multitree\+\_\+nodes\+::leaves}
+\item 
+struct \hyperlink{structterraces_1_1multitree__nodes_1_1unconstrained}{terraces\+::multitree\+\_\+nodes\+::unconstrained}
+\item 
+struct \hyperlink{structterraces_1_1multitree__nodes_1_1inner__node}{terraces\+::multitree\+\_\+nodes\+::inner\+\_\+node}
+\item 
+struct \hyperlink{structterraces_1_1multitree__nodes_1_1alternative__array}{terraces\+::multitree\+\_\+nodes\+::alternative\+\_\+array}
+\item 
+struct \hyperlink{structterraces_1_1multitree__nodes_1_1unexplored}{terraces\+::multitree\+\_\+nodes\+::unexplored}
+\item 
+struct \hyperlink{structterraces_1_1multitree__node}{terraces\+::multitree\+\_\+node}
+\item 
+struct \hyperlink{structterraces_1_1newick__multitree__t}{terraces\+::newick\+\_\+multitree\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceterraces}{terraces}
+\item 
+ \hyperlink{namespaceterraces_1_1multitree__nodes}{terraces\+::multitree\+\_\+nodes}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1}{terraces\+::multitree\+\_\+node\+\_\+type} \{ \newline
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a70e35885c895c187b609f94b096e29f1}{terraces\+::multitree\+\_\+node\+\_\+type\+::base\+\_\+single\+\_\+leaf}, 
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1adfa457b833292690acca0e88b7b6f5c9}{terraces\+::multitree\+\_\+node\+\_\+type\+::base\+\_\+two\+\_\+leaves}, 
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a9c3d991ae32ae0f5981317c6cc6df349}{terraces\+::multitree\+\_\+node\+\_\+type\+::base\+\_\+unconstrained}, 
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1adccfcf9079db20b56ceaa83c0117b85b}{terraces\+::multitree\+\_\+node\+\_\+type\+::inner\+\_\+node}, 
+\newline
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a3efbbe65015e1cffe03f16adbb19f7db}{terraces\+::multitree\+\_\+node\+\_\+type\+::alternative\+\_\+array}, 
+\hyperlink{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1a842481836d8f0854f1e1e50788f5b4be}{terraces\+::multitree\+\_\+node\+\_\+type\+::unexplored}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \hyperlink{namespaceterraces_ad5d0342efed28b0bd79f604eb73f9b61}{terraces\+::operator$<$$<$} (std\+::ostream \&stream, newick\+\_\+multitree\+\_\+t \hyperlink{tree__gen_8cpp_a9d94445b1f84599f2bd43fa479dbbf41}{tree})
+\item 
+newick\+\_\+multitree\+\_\+t \hyperlink{namespaceterraces_ac1f8e7b342ecb4934d77c309c3ac8692}{terraces\+::as\+\_\+newick} (const multitree\+\_\+node $\ast$root, const name\+\_\+map \&names)
+\end{DoxyCompactItemize}

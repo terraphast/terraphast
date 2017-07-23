@@ -1,0 +1,64 @@
+\hypertarget{input__parser_8c}{}\section{alexis\+\_\+samples/input\+\_\+parser.c File Reference}
+\label{input__parser_8c}\index{alexis\+\_\+samples/input\+\_\+parser.\+c@{alexis\+\_\+samples/input\+\_\+parser.\+c}}
+{\ttfamily \#include \char`\"{}input\+\_\+parser.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{input__parser_8c_abd6b063ee1c50489e2b1f9970369ee1b}{free\+\_\+input\+\_\+data} (\hyperlink{structinput__data}{input\+\_\+data} $\ast$d)
+\item 
+char $\ast$ \hyperlink{input__parser_8c_a88dd100e0a91aa69d05e5848f020101f}{read\+\_\+newk\+\_\+tree} (const char $\ast$newk\+\_\+file)
+\item 
+\hyperlink{structinput__data}{input\+\_\+data} $\ast$ \hyperlink{input__parser_8c_a6a11d80c505ab7b3a7e5e6dd6dda4862}{parse\+\_\+input\+\_\+data} (const char $\ast$data\+\_\+file)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{input__parser_8c_abd6b063ee1c50489e2b1f9970369ee1b}\label{input__parser_8c_abd6b063ee1c50489e2b1f9970369ee1b}} 
+\index{input\+\_\+parser.\+c@{input\+\_\+parser.\+c}!free\+\_\+input\+\_\+data@{free\+\_\+input\+\_\+data}}
+\index{free\+\_\+input\+\_\+data@{free\+\_\+input\+\_\+data}!input\+\_\+parser.\+c@{input\+\_\+parser.\+c}}
+\subsubsection{\texorpdfstring{free\+\_\+input\+\_\+data()}{free\_input\_data()}}
+{\footnotesize\ttfamily void free\+\_\+input\+\_\+data (\begin{DoxyParamCaption}\item[{\hyperlink{structinput__data}{input\+\_\+data} $\ast$}]{d }\end{DoxyParamCaption})}
+
+Free the input data d points to including the struct.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The input data to free \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{input__parser_8c_a6a11d80c505ab7b3a7e5e6dd6dda4862}\label{input__parser_8c_a6a11d80c505ab7b3a7e5e6dd6dda4862}} 
+\index{input\+\_\+parser.\+c@{input\+\_\+parser.\+c}!parse\+\_\+input\+\_\+data@{parse\+\_\+input\+\_\+data}}
+\index{parse\+\_\+input\+\_\+data@{parse\+\_\+input\+\_\+data}!input\+\_\+parser.\+c@{input\+\_\+parser.\+c}}
+\subsubsection{\texorpdfstring{parse\+\_\+input\+\_\+data()}{parse\_input\_data()}}
+{\footnotesize\ttfamily \hyperlink{structinput__data}{input\+\_\+data}$\ast$ parse\+\_\+input\+\_\+data (\begin{DoxyParamCaption}\item[{const char $\ast$}]{data\+\_\+file }\end{DoxyParamCaption})}
+
+Parse the input data from the given data file. The struct must be freed afterwards by the caller using free\+\_\+input\+\_\+data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+file} & The input file to read\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The parsed input data or N\+U\+LL if the data could not be parsed. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{input__parser_8c_a88dd100e0a91aa69d05e5848f020101f}\label{input__parser_8c_a88dd100e0a91aa69d05e5848f020101f}} 
+\index{input\+\_\+parser.\+c@{input\+\_\+parser.\+c}!read\+\_\+newk\+\_\+tree@{read\+\_\+newk\+\_\+tree}}
+\index{read\+\_\+newk\+\_\+tree@{read\+\_\+newk\+\_\+tree}!input\+\_\+parser.\+c@{input\+\_\+parser.\+c}}
+\subsubsection{\texorpdfstring{read\+\_\+newk\+\_\+tree()}{read\_newk\_tree()}}
+{\footnotesize\ttfamily char$\ast$ read\+\_\+newk\+\_\+tree (\begin{DoxyParamCaption}\item[{const char $\ast$}]{newk\+\_\+file }\end{DoxyParamCaption})}
+
+Reads the newk tree from the given file. The returned data must be freed by the caller.
+
+
+\begin{DoxyParams}{Parameters}
+{\em newk\+\_\+file} & The file to read. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The contents of the file. 
+\end{DoxyReturn}

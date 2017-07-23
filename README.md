@@ -1,5 +1,15 @@
-# terraces
+Documentation Home                         {#mainpage}
+==================
+
 C++ data checker for the existence of terraces in phylogenetic tree space.
+
+## Add to this page:
+-  What's the problem we want so solve? What is a terrace?
+-  Why is it relevant?
+-  How do we solve it?
+-  No guarantees for completeness
+-  basic code walkthrough
+
 
 **Usage**: `terraces/build/release/app <nwk file> <gene/site file>`
 
@@ -11,7 +21,7 @@ Program output states some imput data properties, the species whose leaf edge is
 
 Both enhancements were chosen such that the result is standard newick format if there's only one possible supertree.
 
-## Improvements and Optimizations
+## Improvements and Optimizations to the basic approach
 
 ### Implemented:
 

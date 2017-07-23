@@ -1,0 +1,89 @@
+\hypertarget{classterraces_1_1tree__enumerator}{}\section{terraces\+:\+:tree\+\_\+enumerator$<$ Callback, Parallel $>$ Class Template Reference}
+\label{classterraces_1_1tree__enumerator}\index{terraces\+::tree\+\_\+enumerator$<$ Callback, Parallel $>$@{terraces\+::tree\+\_\+enumerator$<$ Callback, Parallel $>$}}
+
+
+{\ttfamily \#include $<$supertree\+\_\+enumerator.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classterraces_1_1tree__enumerator_abac88ae38b6f65882007d15d4a4fc213}{tree\+\_\+enumerator} (Callback cb, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} leaf\+\_\+count, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} constraint\+\_\+count)
+\item 
+result\+\_\+type \hyperlink{classterraces_1_1tree__enumerator_ae523d14dfc46be4015d4ba5993f4c2ba}{run} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} num\+\_\+leaves, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints}, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} root\+\_\+leaf)
+\item 
+result\+\_\+type \hyperlink{classterraces_1_1tree__enumerator_a933db3e1e37840e6a217bc1faca3194b}{run} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} num\+\_\+leaves, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&\hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints})
+\item 
+result\+\_\+type \hyperlink{classterraces_1_1tree__enumerator_a7d5262aee9bc2a40318b39314838dc92}{run} (const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&leaves, const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&constraint\+\_\+occ)
+\item 
+const Callback \& \hyperlink{classterraces_1_1tree__enumerator_a050104cc4faec501e8329c427730e372}{callback} () const
+\item 
+const Callback \& \hyperlink{classterraces_1_1tree__enumerator_a21af6b1b63002d05ce90f8100521d858}{parallel\+\_\+callback} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} thread) const
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classterraces_1_1tree__enumerator_a9233453e725dd710bc8d92a5291f832b}{tree\+\_\+enumerator$<$ Callback, true $>$}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classterraces_1_1tree__enumerator_abac88ae38b6f65882007d15d4a4fc213}\label{classterraces_1_1tree__enumerator_abac88ae38b6f65882007d15d4a4fc213}} 
+\index{terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}!tree\+\_\+enumerator@{tree\+\_\+enumerator}}
+\index{tree\+\_\+enumerator@{tree\+\_\+enumerator}!terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}}
+\subsubsection{\texorpdfstring{tree\+\_\+enumerator()}{tree\_enumerator()}}
+{\footnotesize\ttfamily template$<$typename Callback, bool Parallel$>$ \\
+\hyperlink{classterraces_1_1tree__enumerator}{terraces\+::tree\+\_\+enumerator}$<$ Callback, Parallel $>$\+::\hyperlink{classterraces_1_1tree__enumerator}{tree\+\_\+enumerator} (\begin{DoxyParamCaption}\item[{Callback}]{cb,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{leaf\+\_\+count,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{constraint\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1tree__enumerator_a050104cc4faec501e8329c427730e372}\label{classterraces_1_1tree__enumerator_a050104cc4faec501e8329c427730e372}} 
+\index{terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}!callback@{callback}}
+\index{callback@{callback}!terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}}
+\subsubsection{\texorpdfstring{callback()}{callback()}}
+{\footnotesize\ttfamily template$<$typename Callback, bool Parallel = false$>$ \\
+const Callback\& \hyperlink{classterraces_1_1tree__enumerator}{terraces\+::tree\+\_\+enumerator}$<$ Callback, Parallel $>$\+::callback (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1tree__enumerator_a21af6b1b63002d05ce90f8100521d858}\label{classterraces_1_1tree__enumerator_a21af6b1b63002d05ce90f8100521d858}} 
+\index{terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}!parallel\+\_\+callback@{parallel\+\_\+callback}}
+\index{parallel\+\_\+callback@{parallel\+\_\+callback}!terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}}
+\subsubsection{\texorpdfstring{parallel\+\_\+callback()}{parallel\_callback()}}
+{\footnotesize\ttfamily template$<$typename Callback, bool Parallel = false$>$ \\
+const Callback\& \hyperlink{classterraces_1_1tree__enumerator}{terraces\+::tree\+\_\+enumerator}$<$ Callback, Parallel $>$\+::parallel\+\_\+callback (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{thread }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1tree__enumerator_ae523d14dfc46be4015d4ba5993f4c2ba}\label{classterraces_1_1tree__enumerator_ae523d14dfc46be4015d4ba5993f4c2ba}} 
+\index{terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}!run@{run}}
+\index{run@{run}!terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}}
+\subsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename Callback , bool Parallel$>$ \\
+auto \hyperlink{classterraces_1_1tree__enumerator}{terraces\+::tree\+\_\+enumerator}$<$ Callback, Parallel $>$\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{num\+\_\+leaves,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{constraints,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{root\+\_\+leaf }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classterraces_1_1tree__enumerator_a933db3e1e37840e6a217bc1faca3194b}\label{classterraces_1_1tree__enumerator_a933db3e1e37840e6a217bc1faca3194b}} 
+\index{terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}!run@{run}}
+\index{run@{run}!terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}}
+\subsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename Callback , bool Parallel$>$ \\
+auto \hyperlink{classterraces_1_1tree__enumerator}{terraces\+::tree\+\_\+enumerator}$<$ Callback, Parallel $>$\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{num\+\_\+leaves,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{constraints }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classterraces_1_1tree__enumerator_a7d5262aee9bc2a40318b39314838dc92}\label{classterraces_1_1tree__enumerator_a7d5262aee9bc2a40318b39314838dc92}} 
+\index{terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}!run@{run}}
+\index{run@{run}!terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}}
+\subsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename Callback , bool Parallel$>$ \\
+auto \hyperlink{classterraces_1_1tree__enumerator}{terraces\+::tree\+\_\+enumerator}$<$ Callback, Parallel $>$\+::run (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{leaves,  }\item[{const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&}]{constraint\+\_\+occ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1tree__enumerator_a9233453e725dd710bc8d92a5291f832b}\label{classterraces_1_1tree__enumerator_a9233453e725dd710bc8d92a5291f832b}} 
+\index{terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}!tree\+\_\+enumerator$<$ Callback, true $>$@{tree\+\_\+enumerator$<$ Callback, true $>$}}
+\index{tree\+\_\+enumerator$<$ Callback, true $>$@{tree\+\_\+enumerator$<$ Callback, true $>$}!terraces\+::tree\+\_\+enumerator@{terraces\+::tree\+\_\+enumerator}}
+\subsubsection{\texorpdfstring{tree\+\_\+enumerator$<$ Callback, true $>$}{tree\_enumerator< Callback, true >}}
+{\footnotesize\ttfamily template$<$typename Callback, bool Parallel = false$>$ \\
+friend class \hyperlink{classterraces_1_1tree__enumerator}{tree\+\_\+enumerator}$<$ Callback, true $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\hyperlink{supertree__enumerator_8hpp}{supertree\+\_\+enumerator.\+hpp}\end{DoxyCompactItemize}

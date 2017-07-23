@@ -1,0 +1,36 @@
+\hypertarget{io__utils_8hpp}{}\section{include/terraces/io\+\_\+utils.hpp File Reference}
+\label{io__utils_8hpp}\index{include/terraces/io\+\_\+utils.\+hpp@{include/terraces/io\+\_\+utils.\+hpp}}
+{\ttfamily \#include $<$ostream$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structterraces_1_1utils_1_1comma__separated__output}{terraces\+::utils\+::comma\+\_\+separated\+\_\+output$<$ T $>$}
+\item 
+struct \hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__output}{terraces\+::utils\+::comma\+\_\+separated\+\_\+mapped\+\_\+output$<$ T1, T2 $>$}
+\item 
+struct \hyperlink{structterraces_1_1utils_1_1comma__separated__mapped__subset__output}{terraces\+::utils\+::comma\+\_\+separated\+\_\+mapped\+\_\+subset\+\_\+output$<$ T1, T2, T3 $>$}
+\item 
+struct \hyperlink{structterraces_1_1utils_1_1named__output}{terraces\+::utils\+::named\+\_\+output$<$ T2, T3 $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceterraces}{terraces}
+\item 
+ \hyperlink{namespaceterraces_1_1utils}{terraces\+::utils}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::ostream \& \hyperlink{namespaceterraces_1_1utils_a5e3d378a88978234fe3a4adc9bea47b9}{terraces\+::utils\+::operator$<$$<$} (std\+::ostream \&stream, comma\+\_\+separated\+\_\+output$<$ T $>$ output)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 $>$ }\\std\+::ostream \& \hyperlink{namespaceterraces_1_1utils_a00158c640c24f8fc9ceeaf63a1660d99}{terraces\+::utils\+::operator$<$$<$} (std\+::ostream \&stream, comma\+\_\+separated\+\_\+mapped\+\_\+output$<$ T1, T2 $>$ output)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 , typename T3 $>$ }\\std\+::ostream \& \hyperlink{namespaceterraces_1_1utils_a4f2c8fedb5f9c911ac107e32c4bdb7e1}{terraces\+::utils\+::operator$<$$<$} (std\+::ostream \&stream, comma\+\_\+separated\+\_\+mapped\+\_\+subset\+\_\+output$<$ T1, T2, T3 $>$ output)
+\item 
+{\footnotesize template$<$typename T $>$ }\\comma\+\_\+separated\+\_\+output$<$ T $>$ \hyperlink{namespaceterraces_1_1utils_a0179dbbfb1f4aa737076b3f47fdccdb4}{terraces\+::utils\+::as\+\_\+comma\+\_\+separated\+\_\+output} (const T \&data)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 $>$ }\\comma\+\_\+separated\+\_\+mapped\+\_\+output$<$ T1, T2 $>$ \hyperlink{namespaceterraces_1_1utils_ac87c5dc23381a9d53a4ceb4f41070e40}{terraces\+::utils\+::as\+\_\+comma\+\_\+separated\+\_\+output} (const T1 \&data, const T2 \&names)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 , typename T3 $>$ }\\comma\+\_\+separated\+\_\+mapped\+\_\+subset\+\_\+output$<$ T1, T2, T3 $>$ \hyperlink{namespaceterraces_1_1utils_a1b6a6d4d742c0466921e62d127c51df9}{terraces\+::utils\+::as\+\_\+comma\+\_\+separated\+\_\+output} (const T1 \&subset, const T2 \&data, const T3 \&names)
+\end{DoxyCompactItemize}

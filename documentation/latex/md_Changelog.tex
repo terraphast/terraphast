@@ -1,0 +1,28 @@
+\subsection*{Optimizations }
+
+
+\begin{DoxyItemize}
+\item implement bitvector with rank support
+\item use bitvector instead of index vectors for subsets
+\item inline lots of often-\/used methods
+\item deduplicate constraints
+\item remap constraints (removing inner nodes from the numbering)
+\item halved union-\/find storage by out-\/of-\/bounds parent trick
+\item avoid allocations by reusing old storage
+\item some micro-\/optimizations
+\end{DoxyItemize}
+
+\subsection*{Fixes and Features }
+
+
+\begin{DoxyItemize}
+\item fast terrace check without traversing the tree to the end
+\item fixed subtree computation (problematic input data caused an assertion to fail)
+\item fix counting bug (communication problem)
+\item don\textquotesingle{}t count incorrectly rooted trees
+\item extracted all computations to callback methods
+\item implemented logging + stack state decorators
+\item implemented isomorphy check
+\item Visual C++ compatibility checked with appveyor
+\item extracted intrinsics to stay portable 
+\end{DoxyItemize}

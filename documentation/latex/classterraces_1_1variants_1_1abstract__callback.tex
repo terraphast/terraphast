@@ -1,0 +1,176 @@
+\hypertarget{classterraces_1_1variants_1_1abstract__callback}{}\section{terraces\+:\+:variants\+:\+:abstract\+\_\+callback$<$ Result $>$ Class Template Reference}
+\label{classterraces_1_1variants_1_1abstract__callback}\index{terraces\+::variants\+::abstract\+\_\+callback$<$ Result $>$@{terraces\+::variants\+::abstract\+\_\+callback$<$ Result $>$}}
+
+
+{\ttfamily \#include $<$supertree\+\_\+variants.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{classterraces_1_1variants_1_1abstract__callback_ac1da94f0be306068e89627dc40cd0f3b}{result\+\_\+type} = Result
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback_adf435bcc662fcf318ce9346a96a6a38f}{enter} (const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&)
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_a47cd86299e98295ebb4c083a1a4216f3}{exit} (Result val)
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_a0f548b968a4027953c57378d33938026}{base\+\_\+one\+\_\+leaf} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index})
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_ab252330b1c41618075dee4dbc4a6284a}{base\+\_\+two\+\_\+leaves} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index})
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_ab067313cb90b076ac0e96bb4a10637bd}{base\+\_\+unconstrained} (const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&)
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_af17192793805d3568b4de20aa857f02d}{null\+\_\+result} ()
+\item 
+bool \hyperlink{classterraces_1_1variants_1_1abstract__callback_a3f311a32d48f72f0766dcfe58573af26}{fast\+\_\+return} (const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&)
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_a2efb18adddf3a5fa1f3934f5a9385997}{fast\+\_\+return\+\_\+value} (const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&)
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_a1a774cf9c621fa1559d0a29980ca27df}{begin\+\_\+iteration} (const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&, const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&)
+\item 
+bool \hyperlink{classterraces_1_1variants_1_1abstract__callback_ac90e8de571a8ad0d135f1b6fd14c3103}{continue\+\_\+iteration} (Result)
+\item 
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback_a902bd7698240f1e96c58d14e53066661}{step\+\_\+iteration} (const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&)
+\item 
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback_a620ab0e89816f96ed30f68bb04110c20}{finish\+\_\+iteration} ()
+\item 
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback_a2f05ded7e1d02c569777ca6b47467c34}{left\+\_\+subcall} ()
+\item 
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback_a9a44428885ec76e5076f76d5518019d7}{right\+\_\+subcall} ()
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_a3023a9a366af9fd5fdd5d6ad26137dc7}{accumulate} (Result, Result)
+\item 
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback_a5978e41947d47b33f643d356750d07d8}{combine} (Result, Result)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_ac1da94f0be306068e89627dc40cd0f3b}\label{classterraces_1_1variants_1_1abstract__callback_ac1da94f0be306068e89627dc40cd0f3b}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!result\+\_\+type@{result\+\_\+type}}
+\index{result\+\_\+type@{result\+\_\+type}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{result\+\_\+type}{result\_type}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+using \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::\hyperlink{classterraces_1_1variants_1_1abstract__callback_ac1da94f0be306068e89627dc40cd0f3b}{result\+\_\+type} =  Result}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a3023a9a366af9fd5fdd5d6ad26137dc7}\label{classterraces_1_1variants_1_1abstract__callback_a3023a9a366af9fd5fdd5d6ad26137dc7}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!accumulate@{accumulate}}
+\index{accumulate@{accumulate}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{accumulate()}{accumulate()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::accumulate (\begin{DoxyParamCaption}\item[{Result}]{,  }\item[{Result}]{ }\end{DoxyParamCaption})}
+
+Accumulates the results from multiple bipartitions. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a0f548b968a4027953c57378d33938026}\label{classterraces_1_1variants_1_1abstract__callback_a0f548b968a4027953c57378d33938026}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!base\+\_\+one\+\_\+leaf@{base\+\_\+one\+\_\+leaf}}
+\index{base\+\_\+one\+\_\+leaf@{base\+\_\+one\+\_\+leaf}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{base\+\_\+one\+\_\+leaf()}{base\_one\_leaf()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::base\+\_\+one\+\_\+leaf (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{ }\end{DoxyParamCaption})}
+
+Returns the result for a single leaf. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_ab252330b1c41618075dee4dbc4a6284a}\label{classterraces_1_1variants_1_1abstract__callback_ab252330b1c41618075dee4dbc4a6284a}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!base\+\_\+two\+\_\+leaves@{base\+\_\+two\+\_\+leaves}}
+\index{base\+\_\+two\+\_\+leaves@{base\+\_\+two\+\_\+leaves}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{base\+\_\+two\+\_\+leaves()}{base\_two\_leaves()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::base\+\_\+two\+\_\+leaves (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{ }\end{DoxyParamCaption})}
+
+Returns the result for two leaves. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_ab067313cb90b076ac0e96bb4a10637bd}\label{classterraces_1_1variants_1_1abstract__callback_ab067313cb90b076ac0e96bb4a10637bd}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!base\+\_\+unconstrained@{base\+\_\+unconstrained}}
+\index{base\+\_\+unconstrained@{base\+\_\+unconstrained}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{base\+\_\+unconstrained()}{base\_unconstrained()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::base\+\_\+unconstrained (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{ }\end{DoxyParamCaption})}
+
+Returns the result for multiple leaves without constraints. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a1a774cf9c621fa1559d0a29980ca27df}\label{classterraces_1_1variants_1_1abstract__callback_a1a774cf9c621fa1559d0a29980ca27df}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!begin\+\_\+iteration@{begin\+\_\+iteration}}
+\index{begin\+\_\+iteration@{begin\+\_\+iteration}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{begin\+\_\+iteration()}{begin\_iteration()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::begin\+\_\+iteration (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&}]{,  }\item[{const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&}]{,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when we begin iterating over the bipartitions. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a5978e41947d47b33f643d356750d07d8}\label{classterraces_1_1variants_1_1abstract__callback_a5978e41947d47b33f643d356750d07d8}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!combine@{combine}}
+\index{combine@{combine}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{combine()}{combine()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::combine (\begin{DoxyParamCaption}\item[{Result}]{,  }\item[{Result}]{ }\end{DoxyParamCaption})}
+
+Combines the results from two subcalls. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_ac90e8de571a8ad0d135f1b6fd14c3103}\label{classterraces_1_1variants_1_1abstract__callback_ac90e8de571a8ad0d135f1b6fd14c3103}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!continue\+\_\+iteration@{continue\+\_\+iteration}}
+\index{continue\+\_\+iteration@{continue\+\_\+iteration}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{continue\+\_\+iteration()}{continue\_iteration()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+bool \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::continue\+\_\+iteration (\begin{DoxyParamCaption}\item[{Result}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns true iff the iteration should continue. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_adf435bcc662fcf318ce9346a96a6a38f}\label{classterraces_1_1variants_1_1abstract__callback_adf435bcc662fcf318ce9346a96a6a38f}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!enter@{enter}}
+\index{enter@{enter}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{enter()}{enter()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::enter (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when a (sub)call begins. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a47cd86299e98295ebb4c083a1a4216f3}\label{classterraces_1_1variants_1_1abstract__callback_a47cd86299e98295ebb4c083a1a4216f3}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!exit@{exit}}
+\index{exit@{exit}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{exit()}{exit()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::exit (\begin{DoxyParamCaption}\item[{Result}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when a (sub)call finishes. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a3f311a32d48f72f0766dcfe58573af26}\label{classterraces_1_1variants_1_1abstract__callback_a3f311a32d48f72f0766dcfe58573af26}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!fast\+\_\+return@{fast\+\_\+return}}
+\index{fast\+\_\+return@{fast\+\_\+return}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{fast\+\_\+return()}{fast\_return()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+bool \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::fast\+\_\+return (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a2efb18adddf3a5fa1f3934f5a9385997}\label{classterraces_1_1variants_1_1abstract__callback_a2efb18adddf3a5fa1f3934f5a9385997}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!fast\+\_\+return\+\_\+value@{fast\+\_\+return\+\_\+value}}
+\index{fast\+\_\+return\+\_\+value@{fast\+\_\+return\+\_\+value}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{fast\+\_\+return\+\_\+value()}{fast\_return\_value()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::fast\+\_\+return\+\_\+value (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a620ab0e89816f96ed30f68bb04110c20}\label{classterraces_1_1variants_1_1abstract__callback_a620ab0e89816f96ed30f68bb04110c20}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!finish\+\_\+iteration@{finish\+\_\+iteration}}
+\index{finish\+\_\+iteration@{finish\+\_\+iteration}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{finish\+\_\+iteration()}{finish\_iteration()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::finish\+\_\+iteration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when the last iteration step has finished. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a2f05ded7e1d02c569777ca6b47467c34}\label{classterraces_1_1variants_1_1abstract__callback_a2f05ded7e1d02c569777ca6b47467c34}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!left\+\_\+subcall@{left\+\_\+subcall}}
+\index{left\+\_\+subcall@{left\+\_\+subcall}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{left\+\_\+subcall()}{left\_subcall()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::left\+\_\+subcall (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called before descending into the left subset. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_af17192793805d3568b4de20aa857f02d}\label{classterraces_1_1variants_1_1abstract__callback_af17192793805d3568b4de20aa857f02d}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!null\+\_\+result@{null\+\_\+result}}
+\index{null\+\_\+result@{null\+\_\+result}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{null\+\_\+result()}{null\_result()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+Result \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::null\+\_\+result (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns an empty result. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a9a44428885ec76e5076f76d5518019d7}\label{classterraces_1_1variants_1_1abstract__callback_a9a44428885ec76e5076f76d5518019d7}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!right\+\_\+subcall@{right\+\_\+subcall}}
+\index{right\+\_\+subcall@{right\+\_\+subcall}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{right\+\_\+subcall()}{right\_subcall()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::right\+\_\+subcall (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called before descending into the right subset. \mbox{\Hypertarget{classterraces_1_1variants_1_1abstract__callback_a902bd7698240f1e96c58d14e53066661}\label{classterraces_1_1variants_1_1abstract__callback_a902bd7698240f1e96c58d14e53066661}} 
+\index{terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}!step\+\_\+iteration@{step\+\_\+iteration}}
+\index{step\+\_\+iteration@{step\+\_\+iteration}!terraces\+::variants\+::abstract\+\_\+callback@{terraces\+::variants\+::abstract\+\_\+callback}}
+\subsubsection{\texorpdfstring{step\+\_\+iteration()}{step\_iteration()}}
+{\footnotesize\ttfamily template$<$typename Result$>$ \\
+void \hyperlink{classterraces_1_1variants_1_1abstract__callback}{terraces\+::variants\+::abstract\+\_\+callback}$<$ Result $>$\+::step\+\_\+iteration (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when an iteration step begins. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\hyperlink{supertree__variants_8hpp}{supertree\+\_\+variants.\+hpp}\end{DoxyCompactItemize}

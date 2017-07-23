@@ -1,0 +1,159 @@
+\hypertarget{classterraces_1_1basic__ranked__bitvector}{}\section{terraces\+:\+:basic\+\_\+ranked\+\_\+bitvector$<$ Alloc $>$ Class Template Reference}
+\label{classterraces_1_1basic__ranked__bitvector}\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector$<$ Alloc $>$@{terraces\+::basic\+\_\+ranked\+\_\+bitvector$<$ Alloc $>$}}
+
+
+{\ttfamily \#include $<$ranked\+\_\+bitvector.\+hpp$>$}
+
+Inheritance diagram for terraces\+:\+:basic\+\_\+ranked\+\_\+bitvector$<$ Alloc $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classterraces_1_1basic__ranked__bitvector}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{classterraces_1_1basic__ranked__bitvector_affd5ab8cf4bfba9184dbdd57f4d07bcb}{value\+\_\+type} = typename \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$\+::\hyperlink{classterraces_1_1basic__ranked__bitvector_affd5ab8cf4bfba9184dbdd57f4d07bcb}{value\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classterraces_1_1basic__ranked__bitvector_a5c6565730dd4f847b9538ea2cb29bdce}{basic\+\_\+ranked\+\_\+bitvector} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__bitvector_a7a846347ea4c1c1f542ff3331307fdb9}{size}, Alloc alloc)
+\item 
+\hyperlink{classterraces_1_1basic__ranked__bitvector_ae29465a05501bcc83ce6f03df7d860ae}{m\+\_\+ranks} (base\+::m\+\_\+blocks.\+size(), 0, alloc)
+\item 
+void \hyperlink{classterraces_1_1basic__ranked__bitvector_ad586efd4696b4d1b9c6a2d01afd7f6e8}{set} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i)
+\item 
+void \hyperlink{classterraces_1_1basic__ranked__bitvector_ab473239260d7a43c5c000f258e69b35f}{clr} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i)
+\item 
+void \hyperlink{classterraces_1_1basic__ranked__bitvector_a4e5caea75842be5a7a598f40e3ae452d}{flip} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i)
+\item 
+void \hyperlink{classterraces_1_1basic__ranked__bitvector_a800cac4946ede86d99fd361e8dabbf02}{blank} ()
+\item 
+void \hyperlink{classterraces_1_1basic__ranked__bitvector_a1577fa0a6830398e813ea7e6ac3f8587}{invert} ()
+\item 
+void \hyperlink{classterraces_1_1basic__ranked__bitvector_af574d03b47d01094a2b93569e7dda53e}{bitwise\+\_\+xor} (const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&other)
+\item 
+void \hyperlink{classterraces_1_1basic__ranked__bitvector_addd524d9185ed8415909b1bba88102ea}{set\+\_\+bitwise\+\_\+or} (const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&fst, const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&snd)
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__ranked__bitvector_a1d7f3da0a64ed420e4836994cd8cba3c}{count} () const
+\item 
+void \hyperlink{classterraces_1_1basic__ranked__bitvector_a329e1115f06aa09cf71ec659ba4a0c13}{update\+\_\+ranks} ()
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__ranked__bitvector_a9e06ab9864653c65a1d4c8c8d72eaac1}{rank} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i) const
+\item 
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__ranked__bitvector_a56bd3b3ec826c18f78c6bd4012b8da8f}{select} (\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} i) const
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_affd5ab8cf4bfba9184dbdd57f4d07bcb}\label{classterraces_1_1basic__ranked__bitvector_affd5ab8cf4bfba9184dbdd57f4d07bcb}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!value\+\_\+type@{value\+\_\+type}}
+\index{value\+\_\+type@{value\+\_\+type}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{value\+\_\+type}{value\_type}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+using \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::\hyperlink{classterraces_1_1basic__ranked__bitvector_affd5ab8cf4bfba9184dbdd57f4d07bcb}{value\+\_\+type} =  typename \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$Alloc$>$\+::\hyperlink{classterraces_1_1basic__ranked__bitvector_affd5ab8cf4bfba9184dbdd57f4d07bcb}{value\+\_\+type}}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_a5c6565730dd4f847b9538ea2cb29bdce}\label{classterraces_1_1basic__ranked__bitvector_a5c6565730dd4f847b9538ea2cb29bdce}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!basic\+\_\+ranked\+\_\+bitvector@{basic\+\_\+ranked\+\_\+bitvector}}
+\index{basic\+\_\+ranked\+\_\+bitvector@{basic\+\_\+ranked\+\_\+bitvector}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{basic\+\_\+ranked\+\_\+bitvector()}{basic\_ranked\_bitvector()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+\hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::\hyperlink{classterraces_1_1basic__ranked__bitvector}{basic\+\_\+ranked\+\_\+bitvector} (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{size,  }\item[{Alloc}]{alloc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_af574d03b47d01094a2b93569e7dda53e}\label{classterraces_1_1basic__ranked__bitvector_af574d03b47d01094a2b93569e7dda53e}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!bitwise\+\_\+xor@{bitwise\+\_\+xor}}
+\index{bitwise\+\_\+xor@{bitwise\+\_\+xor}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{bitwise\+\_\+xor()}{bitwise\_xor()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+void \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::bitwise\+\_\+xor (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&}]{other }\end{DoxyParamCaption})}
+
+Applies element-\/wise xor from another bitvector. \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_a800cac4946ede86d99fd361e8dabbf02}\label{classterraces_1_1basic__ranked__bitvector_a800cac4946ede86d99fd361e8dabbf02}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!blank@{blank}}
+\index{blank@{blank}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{blank()}{blank()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+void \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::blank (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clears all bits in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_ab473239260d7a43c5c000f258e69b35f}\label{classterraces_1_1basic__ranked__bitvector_ab473239260d7a43c5c000f258e69b35f}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!clr@{clr}}
+\index{clr@{clr}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{clr()}{clr()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+void \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::clr (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Clears a bit in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_a1d7f3da0a64ed420e4836994cd8cba3c}\label{classterraces_1_1basic__ranked__bitvector_a1d7f3da0a64ed420e4836994cd8cba3c}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!count@{count}}
+\index{count@{count}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{count()}{count()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the number of set bits. \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_a4e5caea75842be5a7a598f40e3ae452d}\label{classterraces_1_1basic__ranked__bitvector_a4e5caea75842be5a7a598f40e3ae452d}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!flip@{flip}}
+\index{flip@{flip}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{flip()}{flip()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+void \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::flip (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Flips a bit in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_a1577fa0a6830398e813ea7e6ac3f8587}\label{classterraces_1_1basic__ranked__bitvector_a1577fa0a6830398e813ea7e6ac3f8587}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!invert@{invert}}
+\index{invert@{invert}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{invert()}{invert()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+void \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::invert (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Inverts all bits in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_ae29465a05501bcc83ce6f03df7d860ae}\label{classterraces_1_1basic__ranked__bitvector_ae29465a05501bcc83ce6f03df7d860ae}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!m\+\_\+ranks@{m\+\_\+ranks}}
+\index{m\+\_\+ranks@{m\+\_\+ranks}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{m\+\_\+ranks()}{m\_ranks()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+\hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::m\+\_\+ranks (\begin{DoxyParamCaption}\item[{base\+::m\+\_\+blocks.}]{size(),  }\item[{0}]{,  }\item[{alloc}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_a9e06ab9864653c65a1d4c8c8d72eaac1}\label{classterraces_1_1basic__ranked__bitvector_a9e06ab9864653c65a1d4c8c8d72eaac1}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!rank@{rank}}
+\index{rank@{rank}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{rank()}{rank()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::rank (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption}) const}
+
+Returns the rank of an index, i.\+e. the number of set bits in the range \mbox{[}0..i) \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_a56bd3b3ec826c18f78c6bd4012b8da8f}\label{classterraces_1_1basic__ranked__bitvector_a56bd3b3ec826c18f78c6bd4012b8da8f}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!select@{select}}
+\index{select@{select}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{select()}{select()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::select (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_ad586efd4696b4d1b9c6a2d01afd7f6e8}\label{classterraces_1_1basic__ranked__bitvector_ad586efd4696b4d1b9c6a2d01afd7f6e8}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!set@{set}}
+\index{set@{set}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+void \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::set (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets a bit in the bitvector. \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_addd524d9185ed8415909b1bba88102ea}\label{classterraces_1_1basic__ranked__bitvector_addd524d9185ed8415909b1bba88102ea}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!set\+\_\+bitwise\+\_\+or@{set\+\_\+bitwise\+\_\+or}}
+\index{set\+\_\+bitwise\+\_\+or@{set\+\_\+bitwise\+\_\+or}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{set\+\_\+bitwise\+\_\+or()}{set\_bitwise\_or()}}
+{\footnotesize\ttfamily template$<$typename Alloc$>$ \\
+void \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::set\+\_\+bitwise\+\_\+or (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&}]{fst,  }\item[{const \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ Alloc $>$ \&}]{snd }\end{DoxyParamCaption})}
+
+Sets the values of this bitvector to the bitwise or of two bitvectors. \mbox{\Hypertarget{classterraces_1_1basic__ranked__bitvector_a329e1115f06aa09cf71ec659ba4a0c13}\label{classterraces_1_1basic__ranked__bitvector_a329e1115f06aa09cf71ec659ba4a0c13}} 
+\index{terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}!update\+\_\+ranks@{update\+\_\+ranks}}
+\index{update\+\_\+ranks@{update\+\_\+ranks}!terraces\+::basic\+\_\+ranked\+\_\+bitvector@{terraces\+::basic\+\_\+ranked\+\_\+bitvector}}
+\subsubsection{\texorpdfstring{update\+\_\+ranks()}{update\_ranks()}}
+{\footnotesize\ttfamily template$<$typename Alloc $>$ \\
+void \hyperlink{classterraces_1_1basic__ranked__bitvector}{terraces\+::basic\+\_\+ranked\+\_\+bitvector}$<$ Alloc $>$\+::update\+\_\+ranks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Updates the internal data structures after editing the vector. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\hyperlink{ranked__bitvector_8hpp}{ranked\+\_\+bitvector.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,96 @@
+\hypertarget{classterraces_1_1debug_1_1variants_1_1logging__decorator}{}\section{terraces\+:\+:debug\+:\+:variants\+:\+:logging\+\_\+decorator$<$ Callback $>$ Class Template Reference}
+\label{classterraces_1_1debug_1_1variants_1_1logging__decorator}\index{terraces\+::debug\+::variants\+::logging\+\_\+decorator$<$ Callback $>$@{terraces\+::debug\+::variants\+::logging\+\_\+decorator$<$ Callback $>$}}
+
+
+{\ttfamily \#include $<$supertree\+\_\+variants\+\_\+debug.\+hpp$>$}
+
+Inheritance diagram for terraces\+:\+:debug\+:\+:variants\+:\+:logging\+\_\+decorator$<$ Callback $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classterraces_1_1debug_1_1variants_1_1logging__decorator}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}{result\+\_\+type} = typename Callback\+::result\+\_\+type
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a6e9f97ef90017d53d69241a9b827014e}{logging\+\_\+decorator} (Args \&\&... args, std\+::ostream \&output, const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&names)
+\item 
+void \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a05818c97704f093630e84b915b58a5cd}{enter} (const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&leaves)
+\item 
+\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}{result\+\_\+type} \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_abd1db25829d4a60328582e094d36c4fd}{begin\+\_\+iteration} (const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&bip\+\_\+it, const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&c\+\_\+occ, const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&c)
+\item 
+void \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_abf7256cde9b9aada061a80c8dd7a011f}{step\+\_\+iteration} (const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&bip\+\_\+it)
+\item 
+void \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_aed1d3afe4d25a5b08be18c8576b98dd8}{finish\+\_\+iteration} ()
+\item 
+\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}{result\+\_\+type} \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a8279aabed27469c45219527121f5948b}{exit} (\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}{result\+\_\+type} result)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}\label{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}} 
+\index{terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}!result\+\_\+type@{result\+\_\+type}}
+\index{result\+\_\+type@{result\+\_\+type}!terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}}
+\subsubsection{\texorpdfstring{result\+\_\+type}{result\_type}}
+{\footnotesize\ttfamily template$<$typename Callback $>$ \\
+using \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator}{terraces\+::debug\+::variants\+::logging\+\_\+decorator}$<$ Callback $>$\+::\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}{result\+\_\+type} =  typename Callback\+::result\+\_\+type}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classterraces_1_1debug_1_1variants_1_1logging__decorator_a6e9f97ef90017d53d69241a9b827014e}\label{classterraces_1_1debug_1_1variants_1_1logging__decorator_a6e9f97ef90017d53d69241a9b827014e}} 
+\index{terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}!logging\+\_\+decorator@{logging\+\_\+decorator}}
+\index{logging\+\_\+decorator@{logging\+\_\+decorator}!terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}}
+\subsubsection{\texorpdfstring{logging\+\_\+decorator()}{logging\_decorator()}}
+{\footnotesize\ttfamily template$<$typename Callback $>$ \\
+template$<$typename... Args$>$ \\
+\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator}{terraces\+::debug\+::variants\+::logging\+\_\+decorator}$<$ Callback $>$\+::\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator}{logging\+\_\+decorator} (\begin{DoxyParamCaption}\item[{Args \&\&...}]{args,  }\item[{std\+::ostream \&}]{output,  }\item[{const \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} \&}]{names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classterraces_1_1debug_1_1variants_1_1logging__decorator_abd1db25829d4a60328582e094d36c4fd}\label{classterraces_1_1debug_1_1variants_1_1logging__decorator_abd1db25829d4a60328582e094d36c4fd}} 
+\index{terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}!begin\+\_\+iteration@{begin\+\_\+iteration}}
+\index{begin\+\_\+iteration@{begin\+\_\+iteration}!terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}}
+\subsubsection{\texorpdfstring{begin\+\_\+iteration()}{begin\_iteration()}}
+{\footnotesize\ttfamily template$<$typename Callback $>$ \\
+\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}{result\+\_\+type} \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator}{terraces\+::debug\+::variants\+::logging\+\_\+decorator}$<$ Callback $>$\+::begin\+\_\+iteration (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&}]{bip\+\_\+it,  }\item[{const \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} \&}]{c\+\_\+occ,  }\item[{const \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} \&}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1debug_1_1variants_1_1logging__decorator_a05818c97704f093630e84b915b58a5cd}\label{classterraces_1_1debug_1_1variants_1_1logging__decorator_a05818c97704f093630e84b915b58a5cd}} 
+\index{terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}!enter@{enter}}
+\index{enter@{enter}!terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}}
+\subsubsection{\texorpdfstring{enter()}{enter()}}
+{\footnotesize\ttfamily template$<$typename Callback $>$ \\
+void \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator}{terraces\+::debug\+::variants\+::logging\+\_\+decorator}$<$ Callback $>$\+::enter (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} \&}]{leaves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1debug_1_1variants_1_1logging__decorator_a8279aabed27469c45219527121f5948b}\label{classterraces_1_1debug_1_1variants_1_1logging__decorator_a8279aabed27469c45219527121f5948b}} 
+\index{terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}!exit@{exit}}
+\index{exit@{exit}!terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}}
+\subsubsection{\texorpdfstring{exit()}{exit()}}
+{\footnotesize\ttfamily template$<$typename Callback $>$ \\
+\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}{result\+\_\+type} \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator}{terraces\+::debug\+::variants\+::logging\+\_\+decorator}$<$ Callback $>$\+::exit (\begin{DoxyParamCaption}\item[{\hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator_a7c08c8ede1f8c884a3bab0437b244f55}{result\+\_\+type}}]{result }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1debug_1_1variants_1_1logging__decorator_aed1d3afe4d25a5b08be18c8576b98dd8}\label{classterraces_1_1debug_1_1variants_1_1logging__decorator_aed1d3afe4d25a5b08be18c8576b98dd8}} 
+\index{terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}!finish\+\_\+iteration@{finish\+\_\+iteration}}
+\index{finish\+\_\+iteration@{finish\+\_\+iteration}!terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}}
+\subsubsection{\texorpdfstring{finish\+\_\+iteration()}{finish\_iteration()}}
+{\footnotesize\ttfamily template$<$typename Callback $>$ \\
+void \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator}{terraces\+::debug\+::variants\+::logging\+\_\+decorator}$<$ Callback $>$\+::finish\+\_\+iteration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classterraces_1_1debug_1_1variants_1_1logging__decorator_abf7256cde9b9aada061a80c8dd7a011f}\label{classterraces_1_1debug_1_1variants_1_1logging__decorator_abf7256cde9b9aada061a80c8dd7a011f}} 
+\index{terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}!step\+\_\+iteration@{step\+\_\+iteration}}
+\index{step\+\_\+iteration@{step\+\_\+iteration}!terraces\+::debug\+::variants\+::logging\+\_\+decorator@{terraces\+::debug\+::variants\+::logging\+\_\+decorator}}
+\subsubsection{\texorpdfstring{step\+\_\+iteration()}{step\_iteration()}}
+{\footnotesize\ttfamily template$<$typename Callback $>$ \\
+void \hyperlink{classterraces_1_1debug_1_1variants_1_1logging__decorator}{terraces\+::debug\+::variants\+::logging\+\_\+decorator}$<$ Callback $>$\+::step\+\_\+iteration (\begin{DoxyParamCaption}\item[{const \hyperlink{classterraces_1_1bipartition__iterator}{bipartition\+\_\+iterator} \&}]{bip\+\_\+it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\hyperlink{supertree__variants__debug_8hpp}{supertree\+\_\+variants\+\_\+debug.\+hpp}\end{DoxyCompactItemize}
