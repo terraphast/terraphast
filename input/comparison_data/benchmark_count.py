@@ -46,7 +46,9 @@ print >> csv_file, "\"Newick File\",\"Data File\",\"Runtime (seconds)\",\"Memory
 for nwk_file in glob.glob("*.nwk*"):
     data_file = nwk_file.replace(".nwk",".data")
 
-    times = [benchmarkTime(data_file, nwk_file) for i in range(10)]
-    mem = benchmarkMemory(data_file, nwk_file)
+    print "Processing %s and %s" % (data_file,nwk_file)
+    times = [benchmarkTime(data_file, nwk_file) for i in range(1)]
+    #mem = benchmarkMemory(data_file, nwk_file)
+    mem = 0
 
     print >> csv_file, "%s,%s,%.4f,%.3f" % (data_file,nwk_file, sum(times)/len(times),mem/(1024**2))
