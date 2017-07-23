@@ -251,12 +251,7 @@ protected:
     inline
     mpz_class scan_unconstraint_leaves(LeafSet &leaves,
                                        bool unrooted = false) override {
-        // formula to count all trees is (2n-5)!!
-        mpz_class result = 1;
-        for(size_t i = 4; i <= (leaves.size() + 1); i++) {
-            result *= (2*i-5);
-        }
-        return result;
+        return Node::number_of_binary_trees(leaves.size());
     }
 
     inline

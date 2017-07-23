@@ -19,7 +19,15 @@ friend class AllLeafCombinationsNode;
 friend class AllTreeCombinationsNode;
 friend class UnrootedCombinationsNode;
 
-public: 
+public:
+    static mpz_class number_of_binary_trees(const size_t leaves) {
+        // formula to count all trees is (2n-5)!! <-- !! is double factorial
+        mpz_class result = 1;
+        for(size_t i = 4; i <= (leaves + 1); i++) {
+            result *= (2*i-5);
+        }
+        return result;
+    }
     /**
      * Whether this node is used a leaf. Iff this returns true then get_leaf()
      * can safely be called.
@@ -162,12 +170,7 @@ public:
     const std::vector<leaf_number> leaves;
 
     mpz_class count_trees() const {
-        // formula to count all trees is (2n-5)!!
-        mpz_class result = 1;
-        for(size_t i = 4; i <= (leaves.size() + 1); i++) {
-            result *= (2*i-5);
-        }
-        return result;
+        return number_of_binary_trees(leaves.size());
     }
 
 protected:
