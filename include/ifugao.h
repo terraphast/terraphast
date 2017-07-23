@@ -78,10 +78,10 @@ public:
                             bool unrooted = false) {
         if (constraints.empty()) {
             return scan_unconstraint_leaves(leaves, unrooted);
-        } else {
-            leaves.apply_constraints(constraints);
-            return traverse_partitions(constraints, leaves, unrooted);
         }
+
+        leaves.apply_constraints(constraints);
+        return traverse_partitions(constraints, leaves, unrooted);
     }
 
 protected:
@@ -273,7 +273,8 @@ class CheckIfTerrace : public TerraceAlgorithm<bool> {
 protected:
     inline
     bool traverse_partitions(const std::vector<constraint> &constraints,
-                             LeafSet &leaves) {
+                             LeafSet &leaves,
+                             bool unrooted = false) override {
         if(leaves.number_partition_tuples() > 1) {
             return true;
         }
