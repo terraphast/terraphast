@@ -16,8 +16,8 @@ struct label_mapper {
     std::vector<std::string> labels;
     std::string root_label;
     
-    label_mapper() {};
-    label_mapper(std::vector<std::string> labels) : labels(labels) {};
+    label_mapper() {}
+    label_mapper(std::vector<std::string> labels) : labels(labels) {}
     
     inline const std::string& operator[](leaf_number leaf_id) const {
         assert(leaf_id < labels.size());

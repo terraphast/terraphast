@@ -237,7 +237,7 @@ public:
 class CountAllRootedTrees : public TerraceAlgorithm<mpz_class, mpz_class> {
 protected:
     inline
-    mpz_class initialize_collect_type() {
+    mpz_class initialize_result_type() override {
         return mpz_class(0);
     }
 
@@ -249,18 +249,13 @@ protected:
 
     inline
     mpz_class scan_unconstraint_leaves(LeafSet &leaves,
-                                       bool unrooted = false) {
-        // formula to count all trees is ((2n-5)!)!
-        mpz_class result = 1;
-        for(size_t i = 4; i <= (leaves.size() + 1); i++) {
-            result *= (2*i-5);
-        }
-        return result;
+                                       bool unrooted = false) override {
+        return Node::number_of_binary_trees(leaves.size());
     }
 
     inline
     mpz_class combine_part_results(const mpz_class &left_part,
-                                   const mpz_class &right_part) {
+                                   const mpz_class &right_part) override {
         return left_part * right_part;
     }
 
@@ -276,7 +271,7 @@ class CheckIfTerrace : public TerraceAlgorithm<bool, bool> {
 protected:
     inline
     bool traverse_partitions(const std::vector<constraint> &constraints,
-                             LeafSet &leaves) {
+                             LeafSet &leaves) override {
         if(leaves.number_partition_tuples() > 1) {
             return true;
         }
@@ -284,29 +279,29 @@ protected:
     }
 
     inline
-    bool initialize_collect_type() {
+    bool initialize_collect_type() override {
         return false;
     }
 
     inline
     bool finalize_collect_type(bool &aggregation,
-                               bool unrooted = false) {
+                               bool unrooted = false) override {
         return aggregation;
     }
 
     inline
-    bool scan_unconstraint_leaves(LeafSet &leaves, bool unrooted = false) {
+    bool scan_unconstraint_leaves(LeafSet &leaves, bool unrooted = false) override {
         return leaves.size() >= 3;
     }
 
     inline
-    bool combine_part_results(const bool &left_part, const bool &right_part) {
+    bool combine_part_results(const bool &left_part, const bool &right_part) override {
         return left_part || right_part;
     }
 
     inline
     bool combine_bipartition_results(bool &aggregation,
-                                     const bool &new_result) {
+                                     const bool &new_result) override {
         aggregation |= new_result;
         return aggregation;
     }

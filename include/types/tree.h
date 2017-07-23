@@ -2,6 +2,7 @@
 #pragma once
 
 #include <sstream>
+#include <gmpxx.h>
 
 #include "functional.h"
 #include "types.h"
@@ -13,7 +14,15 @@ class Node {
 // make classes that inherit be able to use the protected methods
 friend class InnerNode;
 
-public: 
+public:
+    static mpz_class number_of_binary_trees(const size_t leaves) {
+        // formula to count all trees is (2n-5)!! <-- !! is double factorial
+        mpz_class result = 1;
+        for(size_t i = 4; i <= (leaves + 1); i++) {
+            result *= (2*i-5);
+        }
+        return result;
+    }
     /**
      * Whether this node is used a leaf. Iff this returns true then get_leaf()
      * can safely be called.
@@ -45,6 +54,15 @@ public:
      */
     std::vector<constraint> extract_constraints() const;
 
+    /**
+     * Returns the number of actual trees.
+     * If the tree denoted by this node is a compressed tree,
+     * it will traverse and count all trees induced by that compressed tree.
+     * If the tree is not a compressed tree, the result should be always 1.
+     * @return
+     */
+    virtual mpz_class count_trees() const = 0;
+
 protected:
     /** Used for recursion by extract_constraints */
     virtual std::tuple<leaf_number, leaf_number> get_constraints(
@@ -71,6 +89,10 @@ public:
 
     bool is_leaf() const { return true; };
     leaf_number get_leaf() const { return leaf_id; }
+
+    mpz_class count_trees() const {
+        return 1;
+    };
 
 protected:
     void to_newick_string(std::stringstream &ss,
@@ -110,6 +132,12 @@ public:
     const std::shared_ptr<Node> left;
     const std::shared_ptr<Node> right;
 
+    mpz_class count_trees() const {
+        auto left_count = left->count_trees();
+        left_count *= right->count_trees();
+        return left_count;
+    };
+
 protected:
     std::tuple<leaf_number, leaf_number> get_constraints(
             std::vector<constraint> &constraints) const;
@@ -130,6 +158,10 @@ private:
 public:
     UnrootedNode(const std::shared_ptr<NonLeafNode> node) : node(node) {};
 
+    mpz_class count_trees() const {
+        return inner->count_trees();
+    };
+
 protected:
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
@@ -148,6 +180,10 @@ public:
     };
 
     const std::vector<leaf_number> leaves;
+
+    mpz_class count_trees() const {
+        return number_of_binary_trees(leaves.size());
+    }
 
 protected:
     void to_newick_string(std::stringstream &ss,
@@ -170,6 +206,14 @@ public:
         for(auto node:nodes) {
             assert(node != nullptr);
         }
+    }
+
+    mpz_class count_trees() const {
+        mpz_class result = 0;
+        for(auto tree:trees) {
+            result += tree->count_trees();
+        }
+        return result;
     }
 
 protected:
