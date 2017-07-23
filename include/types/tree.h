@@ -11,12 +11,7 @@
  */
 class Node {
 // make classes that inherit be able to use the protected methods
-friend class Leaf;
 friend class InnerNode;
-friend class UnrootedNode;
-friend class AllLeafCombinationsNode;
-friend class AllTreeCombinationsNode;
-friend class UnrootedCombinationsNode;
 
 public: 
     /**
@@ -83,11 +78,27 @@ protected:
 };
 
 /**
+ * Represents the "root" of an unrooted binary tree, meaning a node without a
+ * parent, which has 3 children. It is created with minimal overhead by
+ * "absorbing" a normal InnerNode and reusing it's children.
+ */
+class NonLeafNode : public Node {
+friend class UnrootedNode;
+
+protected:
+    void to_newick_string(std::stringstream &ss,
+                          const label_mapper &id_to_label) const = 0;
+
+    virtual void to_newick_string_with_root(
+            std::stringstream &ss, const label_mapper &id_to_label) const = 0;
+};
+
+/**
  * Represents an inner node of a binary tree, therefore has exactly two
  * children. These need to be known upon creation.
  */
-class InnerNode : public Node {
-friend class Node;
+class InnerNode : public NonLeafNode {
+friend class AllTreeCombinationsNode;
 public:
     InnerNode(const std::shared_ptr<Node> left,
               const std::shared_ptr<Node> right) :
@@ -104,18 +115,20 @@ protected:
             std::vector<constraint> &constraints) const;
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
+    void to_newick_string_with_root(std::stringstream &ss,
+                                    const label_mapper &id_to_label) const;
 };
 
 /**
  * Represents the "root" of an unrooted binary tree, meaning a node without a
  * parent, which has 3 children. It is created with minimal overhead by
- * "absorbing" a normal InnerNode and reusing it's children.
+ * "absorbing" a NonLeafNode and reusing it's children.
  */
 class UnrootedNode : public Node {
 private:
-    const std::shared_ptr<InnerNode> inner;
+    const std::shared_ptr<NonLeafNode> node;
 public:
-    UnrootedNode(const std::shared_ptr<InnerNode> inner) : inner(inner) {};
+    UnrootedNode(const std::shared_ptr<NonLeafNode> node) : node(node) {};
 
 protected:
     void to_newick_string(std::stringstream &ss,
@@ -127,8 +140,7 @@ protected:
  * by using any combination of a set of leaves.
  * This can not be treated like a leaf, so is_leaf() returns false.
  */
-class AllLeafCombinationsNode : public Node {
-friend class UnrootedCombinationsNode;
+class AllLeafCombinationsNode : public NonLeafNode {
 public:
     AllLeafCombinationsNode(std::vector<leaf_number> leaves) :
             leaves(leaves) {
@@ -140,60 +152,40 @@ public:
 protected:
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
+    void to_newick_string_with_root(std::stringstream &ss,
+                                    const label_mapper &id_to_label) const;
 };
 
 /**
  * Abstract representation of all possible binary trees that could be created
- * by using any combination of a se of trees.
- * Trees can be added ad-hoc with add_tree(), so the object can be created
- * before all trees are known.
+ * by using any combination of a set of trees.
  */
-class AllTreeCombinationsNode : public Node {
+class AllTreeCombinationsNode : public NonLeafNode {
+private:
+    const std::vector<std::shared_ptr<InnerNode>> nodes;
 public:
-    AllTreeCombinationsNode(std::vector<std::shared_ptr<Node>> trees) :
-            trees(trees) {
-        for(auto tree:trees) {
-            assert(tree != nullptr);
+    AllTreeCombinationsNode(std::vector<std::shared_ptr<InnerNode>> nodes) :
+            nodes(nodes) {
+        assert(nodes.size() > 1);
+        for(auto node:nodes) {
+            assert(node != nullptr);
         }
     }
 
-    std::vector<std::shared_ptr<Node>> trees;
-
-    inline void add_tree(std::shared_ptr<Node> tree) {
-        assert(tree != nullptr);
-        trees.push_back(tree);
-    }
-
 protected:
     void to_newick_string(std::stringstream &ss,
                           const label_mapper &id_to_label) const;
-};
-
-/**
- * Represents the "root" of an unrooted binary tree, meaning a node without a
- * parent, which has 3 children. It is created with minimal overhead by
- * "absorbing" a normal InnerNode and reusing it's children.
- */
-class UnrootedCombinationsNode : public Node {
-private:
-    const std::shared_ptr<AllLeafCombinationsNode> combinations;
-public:
-    UnrootedCombinationsNode(
-            const std::shared_ptr<AllLeafCombinationsNode> combinations) :
-            combinations(combinations) {};
-
-protected:
-    void to_newick_string(std::stringstream &ss,
-                          const label_mapper &id_to_label) const;
+    void to_newick_string_with_root(std::stringstream &ss,
+                                    const label_mapper &id_to_label) const;
 };
 
 typedef std::shared_ptr<Node> NodePtr;
 typedef std::shared_ptr<Leaf> LeafPtr;
+typedef std::shared_ptr<NonLeafNode> NonLeafNodePtr;
 typedef std::shared_ptr<InnerNode> InnerNodePtr;
 typedef std::shared_ptr<UnrootedNode> UnrootedNodePtr;
 typedef std::shared_ptr<AllLeafCombinationsNode> AllLeafCombinationsNodePtr;
 typedef std::shared_ptr<AllTreeCombinationsNode> AllTreeCombinationsNodePtr;
-typedef std::shared_ptr<UnrootedCombinationsNode> UnrootedCombinationsNodePtr;
 // for prettier code
 typedef std::shared_ptr<Node> Tree;
 
