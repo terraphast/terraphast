@@ -115,13 +115,14 @@ typedef std::vector<InnerNodePtr> InnerNodeList;
 class FindCompressedTree : public TerraceAlgorithm<Tree, InnerNodeList> {
 protected:
     inline
-    InnerNodeList initialize_collect_type() {
+    InnerNodeList initialize_collect_type() override {
         InnerNodeList aggregation;
         return aggregation;
     }
 
     inline
-    Tree finalize_collect_type(InnerNodeList &aggregation, bool unrooted = false) {
+    Tree finalize_collect_type(InnerNodeList &aggregation,
+                               bool unrooted = false) override {
         assert(aggregation.size() > 0);
         
         if (aggregation.size() == 1) {
@@ -140,7 +141,8 @@ protected:
     }
 
     inline
-    Tree scan_unconstraint_leaves(LeafSet &leaves, bool unrooted = false) {
+    Tree scan_unconstraint_leaves(LeafSet &leaves,
+                                  bool unrooted = false) override {
         // TODO reconsider the whole std::set usage vs std::vector
         auto set = leaves.to_set();
         std::vector<leaf_number> leaves_vec(set.begin(), set.end());
@@ -154,29 +156,30 @@ protected:
     }
 
     inline
-    Tree combine_part_results(const Tree &left_part, const Tree &right_part) {
+    Tree combine_part_results(const Tree &left_part,
+                              const Tree &right_part) override {
         return std::make_shared<InnerNode>(left_part, right_part);
     }
 
     inline
     bool combine_bipartition_results(InnerNodeList &aggregation,
-                                     const Tree &new_result) {
+                                     const Tree &new_result) override {
         aggregation.push_back(std::static_pointer_cast<InnerNode>(new_result));
         return true;
     }
 };
 
 typedef std::vector<Tree> TreeList;
-class FindAllRootedTrees : public TerraceAlgorithm<TreeList, TreeList> {
+class FindAllRootedTrees : public TerraceAlgorithm<TreeList> {
 protected:
     inline
-    TreeList initialize_collect_type() {
+    TreeList initialize_collect_type() override {
         return TreeList();
     }
 
     inline
     TreeList finalize_collect_type(TreeList &aggregation,
-                                   bool unrooted = false) {
+                                   bool unrooted = false) override {
         if(unrooted) {
             for (size_t i = 0; i < aggregation.size(); ++i) {
                 // Guaranteed to work, otherwise no constraints would exist and
@@ -189,7 +192,8 @@ protected:
     }
 
     inline
-    TreeList scan_unconstraint_leaves(LeafSet &leaves, bool unrooted = false) {
+    TreeList scan_unconstraint_leaves(
+            LeafSet &leaves, bool unrooted = false) override {
         TreeList binary_trees = get_all_binary_trees(leaves);
         
         if(unrooted) {
@@ -205,13 +209,13 @@ protected:
 
     inline
     TreeList combine_part_results(const TreeList &left_part,
-                                  const TreeList &right_part) {
+                                  const TreeList &right_part) override {
         return merge_subtrees(left_part, right_part);
     }
 
     inline
     bool combine_bipartition_results(TreeList &aggregation,
-                                     const TreeList &new_result) {
+                                     const TreeList &new_result) override {
         aggregation.insert(aggregation.end(), new_result.begin(),
                            new_result.end());
         return true;
@@ -234,16 +238,16 @@ public:
     static TreeList merge_subtrees(const TreeList &left, const TreeList &right);
 };
 
-class CountAllRootedTrees : public TerraceAlgorithm<mpz_class, mpz_class> {
+class CountAllRootedTrees : public TerraceAlgorithm<mpz_class> {
 protected:
     inline
-    mpz_class initialize_result_type() override {
+    mpz_class initialize_collect_type() override {
         return mpz_class(0);
     }
 
     inline
     mpz_class finalize_collect_type(mpz_class &aggregation,
-                                    bool unrooted = false) {
+                                    bool unrooted = false) override {
         return aggregation;
     }
 
@@ -261,17 +265,18 @@ protected:
 
     inline
     bool combine_bipartition_results(mpz_class &aggregation,
-                                     const mpz_class &new_result) {
+                                     const mpz_class &new_result) override {
         aggregation += new_result;
         return true;
     }
 };
 
-class CheckIfTerrace : public TerraceAlgorithm<bool, bool> {
+class CheckIfTerrace : public TerraceAlgorithm<bool> {
 protected:
     inline
     bool traverse_partitions(const std::vector<constraint> &constraints,
-                             LeafSet &leaves) override {
+                             LeafSet &leaves,
+                             bool unrooted = false) override {
         if(leaves.number_partition_tuples() > 1) {
             return true;
         }

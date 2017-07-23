@@ -159,7 +159,7 @@ public:
     UnrootedNode(const std::shared_ptr<NonLeafNode> node) : node(node) {};
 
     mpz_class count_trees() const {
-        return inner->count_trees();
+        return node->count_trees();
     };
 
 protected:
@@ -210,8 +210,8 @@ public:
 
     mpz_class count_trees() const {
         mpz_class result = 0;
-        for(auto tree:trees) {
-            result += tree->count_trees();
+        for(auto node:nodes) {
+            result += node->count_trees();
         }
         return result;
     }

@@ -454,7 +454,6 @@ TEST_P(TAEnumerateCompressedFixture, ExamplesFromModifiedInput) {
                 != std::future_status::timeout);
 }
 
-
 INSTANTIATE_TEST_CASE_P(ModifiedDataInstance, TACountFixture, ::testing::Values(
     TACountParameter("../input/modified/Allium.nwk",
                      "../input/modified/Allium.data",
