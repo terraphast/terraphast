@@ -4,7 +4,6 @@
 #include <sstream>
 #include <gmpxx.h>
 
-#include "functional.h"
 #include "types.h"
 /**
  * Abstract representative of any Tree object used internally.
