@@ -1,3 +1,4 @@
+/*** DO NOT INCLUDE DIRECTLY, INCLUDE types.h INSTEAD ***/
 /*
  * UnionFind.h
  *
@@ -11,6 +12,7 @@
 #include <vector>
 #include <cstdio>
 #include <cassert>
+#include <limits>
 
 /**
  * @ingroup structures
@@ -21,18 +23,18 @@
 class UnionFind {
 private:
     std::vector<size_t> parent;
-	std::vector<unsigned char> rank;    //TODO evtl uint verwenden?
+    std::vector<unsigned char> rank;    //TODO evtl uint verwenden?
     size_t num_elems;
 public:
-		
-	/**
-	 * Create a new set representation with not more the \p max_element elements.
-	 * Initially every element is in its own set.
-	 * @param max_element maximum number of elements 
-	 */
+        
+    /**
+     * Create a new set representation with not more the \p max_element elements.
+     * Initially every element is in its own set.
+     * @param max_element maximum number of elements 
+     */
     UnionFind(size_t max_element) : parent(max_element), rank(max_element, 0), num_elems(max_element) {
-		allToSingletons();
-	}
+        allToSingletons();
+    }
 
     /**
      * Creates a new union_find datastructure with given parent- and rank-arrays
@@ -44,32 +46,32 @@ public:
     }
 
 
-	/**
-	 * Assigns every element to a singleton set.
-	 * Set id is equal to element id.
-	 */
+    /**
+     * Assigns every element to a singleton set.
+     * Set id is equal to element id.
+     */
 
-	void allToSingletons();
+    void allToSingletons();
 
-	/**
-	 * Find the representative to element \p u
-	 * @param u element
-	 * @return representative of set containing \p u
-	 */	
+    /**
+     * Find the representative to element \p u
+     * @param u element
+     * @return representative of set containing \p u
+     */    
     size_t find(size_t u);
-	
-	/**
-	 *  Merge the two sets contain \p u and \p v
-	 *  @param u element u
-	 *  @param v element v
-	 */
+    
+    /**
+     *  Merge the two sets contain \p u and \p v
+     *  @param u element u
+     *  @param v element v
+     */
     size_t merge(size_t u, size_t v);
 
     /**
      * @brief size getter for the size of the datastructure
      * @return size getter for the size of the datastructure
      */
-    size_t size() {
+    size_t size() const {
         return num_elems;
     }
 

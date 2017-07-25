@@ -23,6 +23,10 @@
  -5: only one partition in data matrix
  -6: reserved for something you must think about anyway (tree can't be rooted)
  -7: no output file specified
+ -8: input tree is not a binary tree
+ -9: there is no root species in the data file (a species present in all partitions)
+ -10: there is a species with no partition in the data file
+ -11: conflict between the set flags; can't perform all actions simultaniously
  */
 
 #define TERRACE_SUCCESS                   0
@@ -37,6 +41,7 @@
 #define TERRACE_TREE_NOT_BINARY_ERROR    -8
 #define TERRACE_NO_ROOT_SPECIES_ERROR    -9
 #define TERRACE_SPECIES_WITHOUT_PARTITION_ERROR    -10
+#define TERRACE_FLAG_CONFLICT_ERROR -11
 /* to be extended */
 
 /* Argument to control output of terraceAnalysis function (ta_outspec) */
@@ -71,11 +76,11 @@
 // data type containing data to be passed to the algorithm we want to implement
 
 typedef struct {
-	size_t numberOfSpecies;
-	size_t numberOfPartitions;
-	unsigned char *missingDataMatrix;
-	char **speciesNames;
-	bool allocatedNameArray;
+    size_t numberOfSpecies;
+    size_t numberOfPartitions;
+    unsigned char *missingDataMatrix;
+    char **speciesNames;
+    bool allocatedNameArray;
 } missingData;
 
 /**
@@ -91,7 +96,7 @@ typedef struct {
  */
 
 missingData * initializeMissingData(size_t numberOfSpecies,
-		size_t numberOfPartitions, const char **speciesNames);
+        size_t numberOfPartitions, const char **speciesNames);
 
 /**
  * Free missing data data structure
@@ -114,7 +119,7 @@ void freeMissingData(missingData *m);
  */
 
 void setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber,
-		unsigned char value);
+        unsigned char value);
 
 /**
  * get entry from missing data matrix
@@ -129,7 +134,7 @@ void setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber,
  */
 
 unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
-		size_t partitionNumber);
+        size_t partitionNumber);
 
 /**
  * copy one dimensional array containing the missing data matrix to the matrix in the missing data data type
@@ -150,9 +155,9 @@ void copyDataMatrix(const unsigned char *matrix, missingData *m);
  * @return All constraints of the given supertree.
  */
 std::vector<constraint> extract_constraints_from_supertree(
-		const std::shared_ptr<Tree> supertree,
-		const missingData* missing_data,
-		const std::vector<std::string> &id_to_label);
+        const Tree supertree,
+        const missingData* missing_data,
+        const label_mapper &id_to_label);
 
 /**
  * Function that tells us, given a tree, and a missing data matrix as well as its dimensions,
@@ -179,9 +184,10 @@ std::vector<constraint> extract_constraints_from_supertree(
  * @return TERRACE_SUCCESS on success, or an error code (see TERRACE_*) on failure
  */
 int terraceAnalysis(missingData *m, const char *newickTreeString,
-		const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
+        const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
 
 #ifdef __cplusplus
+//TODO move to debug.h or something
 std::string missing_data_to_nexus(const missingData* m);
 std::ostream& operator<<(std::ostream &strm, const missingData& m);
 #endif // __cplusplus

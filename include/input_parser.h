@@ -6,10 +6,10 @@
 #include "newick-tools/parse_ntree.h"
 
 typedef struct input_data {
-	size_t number_of_species;
-	size_t number_of_partitions;
-	unsigned char* matrix;
-	char** names;
+    size_t number_of_species;
+    size_t number_of_partitions;
+    unsigned char* matrix;
+    char** names;
 } input_data;
 
 #ifdef __cplusplus

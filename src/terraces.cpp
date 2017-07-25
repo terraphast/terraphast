@@ -43,6 +43,15 @@ int terraceAnalysis(missingData *m,
                                           != 0;
     /* some basic error checking, students, please extend this, see error codes at the end of this function */
 
+    if(treeIsOnTerrace && (countTrees || enumerateTrees || enumerateCompressedTrees)) {
+        // trees can't be counted or enumerated if only check on terrace should be performed
+        return TERRACE_FLAG_CONFLICT_ERROR;
+    }
+    if(enumerateTrees && enumerateCompressedTrees) {
+        // can't print the trees in two different output styles
+        return TERRACE_FLAG_CONFLICT_ERROR;
+    }
+
     assert(m->numberOfSpecies > 3 && m->numberOfPartitions > 1);
 
     if(m->numberOfSpecies <= 3) {
@@ -110,57 +119,35 @@ int terraceAnalysis(missingData *m,
     }
     assert(binAndCons == 0);
 
-    std::string root_species_name;
-    std::vector<std::string> id_to_lable;
-    std::shared_ptr<Tree> rtree = root_tree(tree, m, root_species_name, id_to_lable);
+    label_mapper id_to_label;
+    Tree rtree = root_tree(tree, m, id_to_label);
 
     assert(rtree != nullptr);
 
-    auto constraints = extract_constraints_from_supertree(rtree, m, id_to_lable);
-    auto leaves = LeafSet(id_to_lable.size());
-
+    auto constraints = extract_constraints_from_supertree(rtree, m, id_to_label);
+    auto leaves = LeafSet(id_to_label.size());
     mpz_class count = 0;
-    if(countTrees) {
-        CountAllRootedTrees algo;
-        count = algo.perform(leaves, constraints);
-    } else if(treeIsOnTerrace) {
-        CheckIfTerrace algo;
-        count = algo.perform(leaves, constraints) ? 2 : 0;
-    } else if (enumerateTrees) {
+    if (enumerateTrees) {
         FindAllRootedTrees algo;
-        auto all_trees = algo.perform(leaves, constraints);
+        auto all_trees = algo.scan_terrace(leaves, constraints);
         count = all_trees.size();
-        for (std::shared_ptr<Tree> t : all_trees) {
-            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_lable, root_species_name).c_str());
+        for (Tree t : all_trees) {
+            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_label).c_str());
         }
     } else if (enumerateCompressedTrees) {
         FindCompressedTree algo;
-        auto tree = algo.perform(leaves, constraints);
-        fprintf(allTreesOnTerrace, "%s\n", tree->to_newick_string(id_to_lable, root_species_name).c_str());
+        auto com_tree = algo.scan_terrace(leaves, constraints);
+        fprintf(allTreesOnTerrace, "%s\n", com_tree->to_newick_string(id_to_label).c_str());
+        count = com_tree->count_trees();
+    } else if(countTrees) {
+        CountAllRootedTrees algo;
+        count = algo.scan_terrace(leaves, constraints);
+    } else if(treeIsOnTerrace) {
+        CheckIfTerrace algo;
+        count = algo.scan_terrace(leaves, constraints) ? 2 : 0;
     }
 
     mpz_set(*terraceSize, count.get_mpz_t());
-
-    /* e.g., include an error check to make sure the Newick tree you have parsed contains as many species as indicated by numberOfSpecies */
-
-    /*
-     the function shall write to variable terraceSize
-     1. the number of UNROOTED trees on the terrace
-     2. or just some value > 1 in terraceSize, if we only wanted to know if the tree is on a terrace
-     */
-
-    /*
-     the return value is an error code
-     we will define these together as the project proceeds, e.g.
-     0:  succesfull completion
-     -1: problem parsing Newick file
-     -2: #species in Newick file does not correspond to number of species in data matrix
-     -3: entries in data matrix not either 0 or 1
-     -4: less than 4 spcies in input tree
-     -5: only one partition in data matrix
-     -6: reserved for something you must think about anyway (tree can't be rooted)
-     -7: no output file specified
-     */
 
     ntree_destroy(tree);
     return TERRACE_SUCCESS;
@@ -265,9 +252,9 @@ unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
 }
 
 std::vector<constraint> extract_constraints_from_supertree(
-        const std::shared_ptr<Tree> supertree,
+        const Tree supertree,
         const missingData *missing_data,
-        const std::vector<std::string> &id_to_label) {
+        const label_mapper &id_to_label) {
 
     std::map<std::string, leaf_number> species_map;
     for (leaf_number i = 0; i < missing_data->numberOfSpecies; i++) {
@@ -279,15 +266,17 @@ std::vector<constraint> extract_constraints_from_supertree(
     for (size_t i = 0; i < missing_data->numberOfPartitions; i++) {
         auto partition = generate_induced_tree(supertree, missing_data,
                                                species_map, id_to_label, i);
-
-        auto constraints = extract_constraints_from_tree(partition);
+        if (partition == nullptr) {
+            continue;
+        }
+        auto constraints = partition->extract_constraints();
         //dout(partition << "\n");
         //dout(constraints << "\n");
 
         for (auto &c : constraints) {
             //avoid duplications
             std::string key = std::to_string(c.smaller_left) + std::to_string(c.smaller_right) + "__" +
-                              std::to_string(c.bigger_left) + std::to_string(c.bigger_right);
+                              std::to_string(c.bigger);
             if (constraint_map.count(key) == 0) {
                 constraint_map[key] = c;
             }

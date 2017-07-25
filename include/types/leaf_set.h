@@ -1,6 +1,8 @@
+/*** DO NOT INCLUDE DIRECTLY, INCLUDE types.h INSTEAD ***/
 #pragma once
 
 #include <boost/dynamic_bitset.hpp>
+#include <limits>
 
 #include "types.h"
 #include "debug.h"
@@ -66,7 +68,7 @@ public:
         sets.reserve(this->size());
 
         for (leaf_number l : *this) {
-            // create an empty set for each leave
+            // create an empty set for each leaf
             auto set = std::make_shared<SimpleLeafSet>();
             set->insert(l);
             sets.push_back(set);
@@ -229,7 +231,7 @@ private:
 
         leaf_number pos = this->find_first();
         while (pos != npos) {
-            // create an empty set for each leave
+            // create an empty set for each leaf
             auto set = std::make_shared<BitLeafSet>(boost::dynamic_bitset<>::size(), 0);
             set->insert(pos);
             sets.push_back(set);
@@ -252,23 +254,30 @@ private:
 
 class UnionFindLeafSet  {
     typedef std::vector<std::shared_ptr<UnionFindLeafSet>> partition_list;
+    static const size_t invalid_entry = std::numeric_limits<size_t>::max();
 public:
     UnionFindLeafSet(const UnionFindLeafSet& obj) {
         data_structure = obj.data_structure;
         repr = obj.repr;
         repr_valid = obj.repr_valid;
+
         //list_of_partitions = obj.list_of_partitions; I dont think we need to copy this
     }
 
     UnionFindLeafSet(std::shared_ptr<UnionFind> data_structure, size_t repr)
         : data_structure(data_structure), repr(repr), repr_valid(true) {
-
+        assert(repr != invalid_entry);
     }
 
     UnionFindLeafSet(std::shared_ptr<UnionFind> data_structure) : data_structure(data_structure) {}
 
     UnionFindLeafSet(size_t num_elems) {
         data_structure = std::make_shared<UnionFind>(num_elems);
+        for (size_t i = 0; i < data_structure->size(); i++) {
+            data_structure->get_parent().at(i) = 0;
+        }
+        repr = 0;
+        repr_valid = true;
         //list_of_partitions = std::vector<std::shared_ptr<UnionFindLeafSet> >();
     }
 
@@ -284,10 +293,15 @@ public:
     }
 
     bool contains(size_t leaf) const {
+        assert(repr_valid);
+        assert(leaf != invalid_entry);
+
         return data_structure->find(leaf) == repr;
     }
 
     inline size_t size() const {
+        assert(repr != invalid_entry);
+
         if (!repr_valid) {  //in this case we dont really represent a set
             return 0;
         } else {
@@ -302,11 +316,15 @@ public:
     }
 
     inline void insert(const leaf_number l) {
+        assert(repr != invalid_entry);
         assert(repr_valid);
+
         data_structure->get_parent().at(l) = repr;
     }
 
     inline std::set<leaf_number> to_set() const {
+        assert(repr != invalid_entry);
+
         std::set<leaf_number> set;
         if (!repr_valid) {
             return set;
@@ -320,12 +338,23 @@ public:
     }
 
     inline leaf_number pop() {
+        assert(repr != invalid_entry);
         assert(repr_valid);
 
         //TODO this is inefficient. Pop can be efficiently implemented with backpointers
         if (this->size() == 1) {
             repr_valid = false;
+            //std::cout << "invalid entry set\n"; //debug
+            data_structure->get_parent().at(repr) = invalid_entry;
             return repr;
+        }
+
+        //this is needed to make sure the chain of parent pointers is not broken, if we delete elements
+        //this works, because find has path compression and sets the parent to the representative
+        //TODO we dont have to do this for every call of pop(). We can do this once and remember that we already did it.
+        //  but we would have to be careful to forget it, e.g. if we merge to sets.
+        for (size_t i = 0; i < data_structure->size(); i++) {
+            data_structure->find(i);
         }
 
         for (size_t i = 0; i < data_structure->size(); i++) {
@@ -333,7 +362,8 @@ public:
                 continue;
             }
             else if (data_structure->find(i) == repr) {
-                data_structure->get_parent().at(i) = i;
+                data_structure->get_parent().at(i) = invalid_entry;
+                assert(i != invalid_entry);
                 return i;
             }
         }
@@ -349,11 +379,25 @@ public:
      * @return the number of partition tuples that can be formed from the given list
      */
     inline size_t number_partition_tuples() const {
+        assert(repr != invalid_entry);
         assert(list_of_partitions.size() > 1);
+
         return (1 << (list_of_partitions.size() - 1)) - 1;
     }
 
     void apply_constraints(const std::vector<constraint> &constraints) {
+        assert(list_of_partitions.size() == 0);
+        assert(repr != invalid_entry);
+
+        //assert(data_structure->get_parent().at(repr) == repr);
+        //TODO: use backpointers!!!
+        //set all elements that are not in this set to invalid
+        for (size_t i = 0; i < data_structure->size(); i++) {
+            if (data_structure->find(i) != repr) {
+                data_structure->get_parent().at(i) = invalid_entry;
+            }
+        }
+        assert(repr != invalid_entry);  //new
 
         //if the datastrucute is not copied, we must apply "allToSingletons" only to the elements in the current set
         data_structure->allToSingletons();
@@ -361,15 +405,19 @@ public:
 
         for (constraint cons : constraints) {
             assert(cons.smaller_left < data_structure->size() && cons.smaller_right < data_structure->size());
-            data_structure->merge(cons.smaller_left, cons.smaller_right);
+            assert(cons.smaller_left != invalid_entry && cons.smaller_right != invalid_entry);
+            repr = data_structure->merge(cons.smaller_left, cons.smaller_right);
         }
 
         //TODO how slow are std::sets? we could use a bool array as well
         //create a list of all distinct sets
         std::set<leaf_number> sets;
         for (size_t i = 0; i < data_structure->size(); i++) {
-            leaf_number set_repr = data_structure->find(i);
-            sets.insert(set_repr);
+            if (data_structure->get_parent().at(i) != invalid_entry) {
+                leaf_number set_repr = data_structure->find(i);
+                assert(set_repr != invalid_entry);
+                sets.insert(set_repr);
+            }
         }
         for (std::set<leaf_number>::iterator it=sets.begin(); it != sets.end(); ++it) {
             list_of_partitions.push_back(*it);
@@ -379,6 +427,8 @@ public:
 
     std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>
     get_nth_partition_tuple(size_t n) const {
+        assert(repr != invalid_entry);
+
         //idea: it may be possible to copy the datastructure only once, since the two sets are disjoint
         assert(n > 0 && n <= number_partition_tuples());
         assert(list_of_partitions.size() > 1);  //we need at least 2 sets, otherwise creating partitions does not make sense
@@ -396,18 +446,22 @@ public:
           if (is_bit_set(n, i)) { //put the set into part_one
               if (!part_one_first_set) {
                   part_one->repr = list_of_partitions.at(i);
+                  assert(part_one->repr != invalid_entry);
                   part_one->repr_valid = true;
                   part_one_first_set = true;
               } else {
                   part_one->repr = part_one->data_structure->merge(part_one->repr, list_of_partitions.at(i));
+                  assert(part_one->repr != invalid_entry);
               }
           } else {    //put the set into part_two
               if (!part_two_first_set) {
                   part_two->repr = list_of_partitions.at(i);
+                  assert(part_two->repr != invalid_entry);
                   part_two->repr_valid = true;
                   part_two_first_set = true;
               } else {
                   part_two->repr = part_two->data_structure->merge(part_two->repr, list_of_partitions.at(i));
+                  assert(part_two->repr != invalid_entry);
               }
           }
         }
@@ -416,6 +470,7 @@ public:
     }
 
     partition_list get_list_of_partitions() const {
+        assert(repr != invalid_entry);
         partition_list ret;
 
         for (size_t elem : list_of_partitions) {
