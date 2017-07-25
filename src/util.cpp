@@ -173,7 +173,7 @@ Tree root_recursive(ntree_t *current_ntree, ntree_t *previous,
                 return root_recursive (current_ntree->children[0],
                                        current_ntree, id_to_label);
             } else {
-                assert(false);
+                assert(0);
             }
         } else {
             // normal inner node
@@ -189,7 +189,7 @@ Tree root_recursive(ntree_t *current_ntree, ntree_t *previous,
                 left = current_ntree->parent;
                 right = current_ntree->children[0];
             } else {
-                assert(false);
+                assert(0);
             }
             auto left_tree = root_recursive(left, current_ntree, id_to_label);
             auto right_tree = root_recursive(right, current_ntree, id_to_label);

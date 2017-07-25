@@ -16,7 +16,7 @@
 
 /**
  * This funktion generates the trees T|G_i, which is exactly the subtree of T induced by partition G_i
- * @param tree the rooted binary supertree
+ * @param node the rooted binary supertree
  * @param missing_data the data matrix representing the missing partition data.
  * @param partition the index i used to extract the subtree T|G_i. In other words, it is the i-th
  * column of the missing data matrix

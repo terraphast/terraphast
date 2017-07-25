@@ -30,7 +30,6 @@ include(ConfigSafeGuards)
 set(CORE_HEADERS
         include/newick-tools/newick-tools.h
         include/newick-tools/parse_ntree.h
-        include/types/functional.h
         include/types/leaf_set.h
         include/types/tree.h
         include/types/UnionFind.h

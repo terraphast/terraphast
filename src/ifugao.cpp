@@ -123,28 +123,3 @@ std::string missing_data_to_nexus(const missingData* m) {
     return ss.str();
 }
 
-std::ostream& operator<<(std::ostream &strm,
-                         const std::vector<std::shared_ptr<std::set<leaf_number>> >& set) {
-    strm << "[";
-    bool first = true;
-    for(size_t i = 0; i < set.size(); i++) {
-        if(first) {
-            first = false;
-        } else {
-            strm << ",";
-        }
-
-        strm << "{";
-        bool first2 = true;
-        for(const auto &e : *set[i]) {
-            if(first2) {
-                first2 = false;
-            } else {
-                strm << ",";
-            }
-            strm << e;
-        }
-        strm << "}";
-    }
-    return strm << "]";
-}

@@ -5,43 +5,6 @@
 #include <iterator>
 #include <gmpxx.h>
 
-/* TODO UNUSED
-template<typename T>
-std::ostream& operator<<(std::ostream &strm, const std::set<T>& set) {
-    strm << "{";
-    bool first = true;
-    for(const T &elem : set) {
-        if(first) {
-            first = false;
-        } else {
-            strm << ",";
-        }
-        strm << elem;
-    }
-    return strm << "}";
-}
-
-template<typename T>
-std::ostream& operator<<(std::ostream &strm, const std::vector<T>& set) {
-    strm << "[";
-    bool first = true;
-    for(const T &elem : set) {
-        if(first) {
-            first = false;
-        } else {
-            strm << ",";
-        }
-        strm << elem;
-    }
-    return strm << "]";
-}
-
-std::ostream& operator<<(std::ostream &strm, const constraint& tree);
-
-std::ostream& operator<<(std::ostream &strm,
-                         const std::vector<std::shared_ptr<std::set<leaf_number>> >& set);
-*/
-
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
  *
@@ -247,13 +210,13 @@ protected:
 
     inline
     mpz_class finalize_collect_type(mpz_class &aggregation,
-                                    bool unrooted = false) override {
+                                    bool) override {
         return aggregation;
     }
 
     inline
     mpz_class scan_unconstraint_leaves(LeafSet &leaves,
-                                       bool unrooted = false) override {
+                                       bool) override {
         return Node::number_of_binary_trees(leaves.size());
     }
 
@@ -276,7 +239,7 @@ protected:
     inline
     bool traverse_partitions(const std::vector<constraint> &constraints,
                              LeafSet &leaves,
-                             bool unrooted = false) override {
+                             bool) override {
         if(leaves.number_partition_tuples() > 1) {
             return true;
         }
@@ -290,12 +253,12 @@ protected:
 
     inline
     bool finalize_collect_type(bool &aggregation,
-                               bool unrooted = false) override {
+                               bool) override {
         return aggregation;
     }
 
     inline
-    bool scan_unconstraint_leaves(LeafSet &leaves, bool unrooted = false) override {
+    bool scan_unconstraint_leaves(LeafSet &leaves, bool) override {
         return leaves.size() >= 3;
     }
 
