@@ -1,0 +1,13 @@
+This is a short and rather shallow guide to the codebase. Starting from main.\+cpp, you\textquotesingle{}ll see the crucial steps and data structures involved in solving the terrace detection and enumeration problem.
+
+\subsubsection*{0) Interpreting the C\+LI Arguments}
+
+If two file paths are provided, it is assumed that the first path points to the tree file (.nwk) and the second path points to the data file (.data).
+
+If one file path Y/X is provided, it is assumed that the files X.\+nwk and X.\+data are present in the directory Y.
+
+\subsubsection*{1) Parsing the Input Files}
+
+This is done by calling \hyperlink{namespaceterraces_add61915a31828774ee0371d443031c29}{terraces\+::parse\+\_\+nwk} and \hyperlink{namespaceterraces_af52559863b67502f00d68853f50c69af}{terraces\+::parse\+\_\+bitmatrix}. Both throw exceptions, if the input files are not in the right format. If the .data file does not contain a species that possesses all gene sites, this is denoted by a terraces\+::none value in the std\+::pair returned by \hyperlink{namespaceterraces_af52559863b67502f00d68853f50c69af}{terraces\+::parse\+\_\+bitmatrix}. In this case, the current course of action is to exit with error code 1.
+
+\subsubsection*{2) Rerooting the Input Tree}

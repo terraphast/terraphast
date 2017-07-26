@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['documentation_20home',['Documentation Home',['../index.html',1,'']]],
-  ['dependencies',['Dependencies',['../md_Dependencies.html',1,'']]]
+  ['a_20short_20guide_20to_20the_20codebase',['A Short Guide to the Codebase',['../md_documentation_walkthrough.html',1,'']]]
 ];

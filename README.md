@@ -22,8 +22,7 @@ Both enhancements were chosen such that the result is standard newick format if 
 
 
 ## The Terrace Phenomenon and Problem
-In recent years, it has become common practice to infer phylogenies on so-called multi-gene
-datasets. Concatenated multi-gene datasets usually exhibit holes, that is, sequence data for some species might not be available for some genes G i in our concatenated dataset. This can be due to a plethora of reasons, for instance, a specific species might simply not have a specific gene G i or the specific gene has simply not been sequenced for some of the species. After concatenating genes (partitions) we therefore end up with an alignment that contains patches of missing data:
+In recent years, it has become common practice to infer phylogenies on so-called multi-gene datasets. Concatenated multi-gene datasets usually exhibit holes, that is, sequence data for some species might not be available for some genes G i in our concatenated dataset. This can be due to a plethora of reasons, for instance, a specific species might simply not have a specific gene G i or the specific gene has simply not been sequenced for some of the species. After concatenating genes (partitions) we therefore end up with an alignment that contains patches of missing data:
 
 ```
 index       0123
@@ -56,8 +55,7 @@ TO PUT IN HERE:
 
 ## A Short Guide to the Code
 
-TO PUT IN HERE:
--  A short walkthrough through the codebase.
+This can be found [here](documentation/walkthrough.md).
 
 ## Improvements and Optimizations to the basic approach
 
