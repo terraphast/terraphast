@@ -9,6 +9,7 @@
 #include <terraces/bitmatrix.hpp>
 #include <terraces/errors.hpp>
 #include <terraces/simple.hpp>
+#include <terraces/advanced.hpp>
 
 namespace {
 
@@ -77,34 +78,34 @@ extern "C" {
 
 terraces_errors terraces_check_tree(const terraces_missing_data* missing_data,
                                     const char* nwk_string, bool* out) noexcept {
-	// TODO: implement this using missing_data
-	auto sites = to_bitmatrix(missing_data);
-	(void)sites;
-	(void)nwk_string;
-	(void)out;
-	return terraces_success;
+	return exec_and_catch([&]{
+		auto sites = to_bitmatrix(missing_data);
+		auto tree = terraces::parse_nwk(nwk_string);
+		terraces::reroot_inplace(tree.tree, sites.second);
+		*out = check_terrace(prepare_constraints(tree.tree, sites.first, tree.names, sites.second));
+	});
 }
 
 terraces_errors terraces_count_tree(const terraces_missing_data* missing_data,
                                     const char* nwk_string, mpz_t out) noexcept {
-	// TODO: implement this using missing_data
-	auto sites = to_bitmatrix(missing_data);
-	(void)sites;
-	(void)nwk_string;
-	(void)out;
-	return terraces_success;
+	return exec_and_catch([&]{
+		auto sites = to_bitmatrix(missing_data);
+		auto tree = terraces::parse_nwk(nwk_string);
+		terraces::reroot_inplace(tree.tree, sites.second);
+		mpz_set(out, terraces::count_terrace_bigint(prepare_constraints(tree.tree, sites.first, tree.names, sites.second)).get_mpz_t());
+	});
 }
 
 terraces_errors terraces_print_tree(const terraces_missing_data* missing_data,
                                     const char* nwk_string, mpz_t out,
                                     const char* output_filename) noexcept {
-	// TODO: implement this using missing_data
-	auto sites = to_bitmatrix(missing_data);
-	(void)sites;
-	(void)nwk_string;
-	(void)out;
-	(void)output_filename;
-	return terraces_success;
+	return exec_and_catch([&]{
+		auto sites = to_bitmatrix(missing_data);
+		auto tree = terraces::parse_nwk(nwk_string);
+		auto output = open_output_file(output_filename);
+		terraces::reroot_inplace(tree.tree, sites.second);
+		mpz_set(out, terraces::print_terrace(prepare_constraints(tree.tree, sites.first, tree.names, sites.second), tree.names, output).get_mpz_t());
+	});
 }
 
 terraces_errors terraces_check_tree_str(const char* missing_data, const char* nwk_string,
