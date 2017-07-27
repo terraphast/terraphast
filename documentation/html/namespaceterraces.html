@@ -82,6 +82,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceterraces_1_1parsing"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces_1_1parsing.html">parsing</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceterraces_1_1rooting"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces_1_1rooting.html">rooting</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceterraces_1_1tests"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces_1_1tests.html">tests</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceterraces_1_1utils"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces_1_1utils.html">utils</a></td></tr>
@@ -139,13 +141,13 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a6f603ffd30ed4d902fce6424492e0581"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces.html#a6f603ffd30ed4d902fce6424492e0581">constraints</a> = std::vector&lt; <a class="el" href="structterraces_1_1constraint.html">constraint</a> &gt;</td></tr>
 <tr class="separator:a6f603ffd30ed4d902fce6424492e0581"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbc33ccb543d1634e96d0eb02e472c77"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces.html#adbc33ccb543d1634e96d0eb02e472c77">index</a> = std::size_t</td></tr>
-<tr class="memdesc:adbc33ccb543d1634e96d0eb02e472c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Our index-type.  <a href="#adbc33ccb543d1634e96d0eb02e472c77">More...</a><br /></td></tr>
 <tr class="separator:adbc33ccb543d1634e96d0eb02e472c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07aaf7feec4a22c6cdefc14c5a81bdd0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces.html#a07aaf7feec4a22c6cdefc14c5a81bdd0">tree</a> = std::vector&lt; <a class="el" href="structterraces_1_1node.html">node</a> &gt;</td></tr>
 <tr class="separator:a07aaf7feec4a22c6cdefc14c5a81bdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ef0217fe5aed881737d9bc5a8d45dca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces.html#a4ef0217fe5aed881737d9bc5a8d45dca">name_map</a> = std::vector&lt; std::string &gt;</td></tr>
 <tr class="separator:a4ef0217fe5aed881737d9bc5a8d45dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a148f3e895119c2a72d995caae669e40d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces.html#a148f3e895119c2a72d995caae669e40d">index_map</a> = std::unordered_map&lt; std::string, <a class="el" href="namespaceterraces.html#adbc33ccb543d1634e96d0eb02e472c77">index</a> &gt;</td></tr>
+<tr class="memdesc:a148f3e895119c2a72d995caae669e40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps the name of a species to it's index in the tree:  <a href="#a148f3e895119c2a72d995caae669e40d">More...</a><br /></td></tr>
 <tr class="separator:a148f3e895119c2a72d995caae669e40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b526fb554dff829f7ad51eb21d5ed06"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceterraces.html#a1b526fb554dff829f7ad51eb21d5ed06">bitvector</a> = <a class="el" href="classterraces_1_1basic__bitvector.html">basic_bitvector</a>&lt; <a class="el" href="classterraces_1_1utils_1_1stack__allocator.html">utils::stack_allocator</a>&lt; <a class="el" href="namespaceterraces.html#adbc33ccb543d1634e96d0eb02e472c77">index</a> &gt; &gt;</td></tr>
 <tr class="separator:a1b526fb554dff829f7ad51eb21d5ed06"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,8 +334,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Our index-type. </p>
+<p>Our index-type. please do not use anything else directly, as we might be willing to change it's definition and it's easier to change one line than twenty.</p>
+<p>You may rely on the fact that it's unsigned and that sizeof(index) &gt;= sizeof(int) </p>
 
 </div>
 </div>
@@ -349,6 +351,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>maps the name of a species to it's index in the tree: </p>
+
 </div>
 </div>
 <a id="a4ef0217fe5aed881737d9bc5a8d45dca"></a>
@@ -362,6 +366,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>to look up the name associated with an index, simply reuse the index to check in a std::vector: </p>
 
 </div>
 </div>
@@ -390,6 +395,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>The same thing as above applies: The details of this type will most likely change: </p>
 
 </div>
 </div>
@@ -2146,6 +2152,10 @@ template&lt;typename Alloc &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>compute occurrences on inner nodes: bitwise or of the children</p>
+<p>collect leaves and inner nodes: bitwise and of the children</p>
+<p>compute occurrences on inner nodes: bitwise or of the children</p>
+<p>collect leaves and inner nodes: bitwise and of the children </p>
 
 </div>
 </div>

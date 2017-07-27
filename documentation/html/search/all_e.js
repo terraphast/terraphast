@@ -4,7 +4,6 @@ var searchData=
   ['parent',['parent',['../structtree__node.html#ab8bbd1b843e135810fc96529bc452d22',1,'tree_node::parent()'],['../structterraces_1_1parsing_1_1parser__state.html#a3cae4795f4aa78de14cfaf743d24d12e',1,'terraces::parsing::parser_state::parent()'],['../structterraces_1_1node.html#a0dc3c66ea9c5d75867cf529de3d78598',1,'terraces::node::parent() const'],['../structterraces_1_1node.html#a702158876a59ff469fa1e1fd5a5bca45',1,'terraces::node::parent()']]],
   ['parent_5fchild_5frelationship',['parent_child_relationship',['../namespaceterraces_1_1tests.html#a25ca9a3b46fb14ea14a41a5b863fc77a',1,'terraces::tests']]],
   ['parse_5fbitmatrix',['parse_bitmatrix',['../namespaceterraces.html#af52559863b67502f00d68853f50c69af',1,'terraces']]],
-  ['parse_5finput_5fdata',['parse_input_data',['../input__parser_8c.html#a6a11d80c505ab7b3a7e5e6dd6dda4862',1,'parse_input_data(const char *data_file):&#160;input_parser.c'],['../input__parser_8h.html#a6a11d80c505ab7b3a7e5e6dd6dda4862',1,'parse_input_data(const char *data_file):&#160;input_parser.c']]],
   ['parse_5fnwk',['parse_nwk',['../namespaceterraces.html#add61915a31828774ee0371d443031c29',1,'terraces']]],
   ['parser',['parser',['../namespaceconvert.html#af8535903aa99b7698550743368e65b24',1,'convert']]],
   ['parser_2ecpp',['parser.cpp',['../lib_2parser_8cpp.html',1,'(Global Namespace)'],['../test_2parser_8cpp.html',1,'(Global Namespace)']]],

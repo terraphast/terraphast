@@ -5,7 +5,6 @@ var searchData=
   ['set_5fbitwise_5for',['set_bitwise_or',['../classterraces_1_1basic__bitvector.html#a3e071c2698f1e19765b3c968a80ea65e',1,'terraces::basic_bitvector::set_bitwise_or()'],['../classterraces_1_1basic__ranked__bitvector.html#addd524d9185ed8415909b1bba88102ea',1,'terraces::basic_ranked_bitvector::set_bitwise_or()']]],
   ['set_5fchildren',['set_children',['../structtree__node.html#acd3e8c452abe8574fbf7b2d1ce52ccfc',1,'tree_node']]],
   ['set_5fmask',['set_mask',['../namespaceterraces_1_1bits.html#a565f9c808bbf7e0d4c9d75ab7a2cadbf',1,'terraces::bits']]],
-  ['setdatamatrix',['setDataMatrix',['../terraces_8c.html#aaa73d721910667797f9df0fc55988632',1,'setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber, unsigned char value):&#160;terraces.c'],['../terraces_8h.html#aaa73d721910667797f9df0fc55988632',1,'setDataMatrix(missingData *m, size_t speciesNumber, size_t partitionNumber, unsigned char value):&#160;terraces.c']]],
   ['sets',['sets',['../classterraces_1_1bipartition__iterator.html#adf63f745fee83552648553ddb0530a3b',1,'terraces::bipartition_iterator']]],
   ['shift_5findex',['shift_index',['../namespaceterraces_1_1bits.html#ab572e0592b3131f5450c412546b8bcbd',1,'terraces::bits']]],
   ['simple_5ffind',['simple_find',['../classterraces_1_1union__find.html#ab873ad737cf121e74b2aa644006c35ee',1,'terraces::union_find']]],

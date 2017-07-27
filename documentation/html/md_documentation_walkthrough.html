@@ -69,7 +69,18 @@ $(function() {
 <p>If one file path Y/X is provided, it is assumed that the files X.nwk and X.data are present in the directory Y.</p>
 <h3>1) Parsing the Input Files</h3>
 <p>This is done by calling <a class="el" href="namespaceterraces.html#add61915a31828774ee0371d443031c29">terraces::parse_nwk</a> and <a class="el" href="namespaceterraces.html#af52559863b67502f00d68853f50c69af">terraces::parse_bitmatrix</a>. Both throw exceptions, if the input files are not in the right format. If the .data file does not contain a species that possesses all gene sites, this is denoted by a terraces::none value in the std::pair returned by <a class="el" href="namespaceterraces.html#af52559863b67502f00d68853f50c69af">terraces::parse_bitmatrix</a>. In this case, the current course of action is to exit with error code 1.</p>
-<h3>2) Rerooting the Input Tree</h3>
+<h3>2) Re-Rooting the Input Tree</h3>
+<p>A call to <a class="el" href="namespaceterraces.html#ae8abab19d1c4a35eb187cd2cf005fe59">terraces::reroot_inplace</a> re-roots the given tree at the given species. This is done in-place by traversing the input tree from the given species to the original root, and adjusting all edges so that the parent reference of every node points to the node that was traversed before. This procedure has O(tree-height) time complexity.</p>
+<h3>3) Extracting Subtrees</h3>
+<p>Using an occurence bitmatrix (is gene i present in species j?) and the re-rooted tree, all subtrees of this tree are extracted.</p>
+<h3>4) Computing Constraints</h3>
+<p>By collecting the left- and rightmost nodes x and y for every inner node i, we establish lowest-common-ancestor relationships of the form lca(x, y) = i. With this information, we then obtain our constraints of the form lca(x, y) &lt; lca(x, z) which mean that the lowest common ancestor node od x and y is a descendant of the lca of x and z.</p>
+<h3>5) Deduplicating Constaints</h3>
+<p>Constraint calculation can result in constraints being found multiple times. <a class="el" href="namespaceterraces.html#a13888c94deeee29c8f5157c9071e3946">terraces::deduplicate_constraints</a> ensures that the given constraints vector contains only unique elements by removing all duplicates.</p>
+<h3>6) Supertree-Assembly and Output</h3>
+<p>Now that we have extracted the constraints from the re-rooted version of our tree, we assemble our supertrees according to Constantinescu's Algorithm [CS95] which merges sets of nodes so that for each constraint lca(i, j) &lt; lca(k, l), the sets of nodes i and j are merged. This is done for every constraint. In the end, if at least two node sets remain, there's at least one supertree. This gives us the leaves under the two subtrees under our new root's non-comprehensive-leaf child. In these two subtrees, we then use the constraints to further narrow down the tree's overall structure. Doing so, we can end up with subtress with more than two subtrees and without constraints. In this case, we enumerate all possible subtree topologies.</p>
+<h3>References</h3>
+<p>[CS95] Mariana Constantinescu and David Sankoff. An efficient algorithm for supertrees. Journal of Classification, 12(1):101–112, 1995. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

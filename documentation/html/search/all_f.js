@@ -1,14 +1,14 @@
 var searchData=
 [
+  ['readme',['README',['../md_data_README.html',1,'']]],
   ['rand_5findex',['rand_index',['../tree__gen_8cpp.html#a2668e116bc4da5c536df809fa761949c',1,'tree_gen.cpp']]],
   ['rank',['rank',['../classterraces_1_1basic__ranked__bitvector.html#a9e06ab9864653c65a1d4c8c8d72eaac1',1,'terraces::basic_ranked_bitvector']]],
   ['ranked_5fbitvector',['ranked_bitvector',['../namespaceterraces.html#acc45ec9c561024c50ecbce5b6738ba08',1,'terraces']]],
   ['ranked_5fbitvector_2ehpp',['ranked_bitvector.hpp',['../ranked__bitvector_8hpp.html',1,'']]],
   ['rbitscan',['rbitscan',['../namespaceterraces_1_1bits.html#a8b6b7055638e4550e4ddb50e0bd7d602',1,'terraces::bits']]],
   ['rchild',['rchild',['../structterraces_1_1node.html#ab6022c07498a4b1cb9e737fa0ffe4278',1,'terraces::node::rchild() const'],['../structterraces_1_1node.html#a7d53d6f802bc0fa727c67a72033c15ad',1,'terraces::node::rchild()']]],
-  ['read_5fnewk_5ftree',['read_newk_tree',['../input__parser_8c.html#a88dd100e0a91aa69d05e5848f020101f',1,'read_newk_tree(const char *newk_file):&#160;input_parser.c'],['../input__parser_8h.html#a88dd100e0a91aa69d05e5848f020101f',1,'read_newk_tree(const char *newk_file):&#160;input_parser.c']]],
   ['read_5ftrees',['read_trees',['../isomorphic_8cpp.html#ab3044bc9aa7706078c36d3bfb9e31d48',1,'isomorphic.cpp']]],
-  ['readme_2emd',['README.md',['../README_8md.html',1,'']]],
+  ['readme_2emd',['README.md',['../data_2README_8md.html',1,'(Global Namespace)'],['../README_8md.html',1,'(Global Namespace)']]],
   ['remap_5fto_5fleaves',['remap_to_leaves',['../namespaceterraces.html#aa6cd6a7a07d6af5190482a739c575ece',1,'terraces']]],
   ['report_5fperformance_5fresults',['report_performance_results',['../namespaceterraces_1_1tests.html#a62c2bedb73f6a77050e4efc1ae854e78',1,'terraces::tests']]],
   ['representative',['representative',['../structterraces_1_1debug_1_1union__find__iterable__set.html#a2984a7dbd4f05c6779040c41f9734ec2',1,'terraces::debug::union_find_iterable_set']]],

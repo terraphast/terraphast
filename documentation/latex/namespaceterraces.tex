@@ -13,6 +13,8 @@
 \item 
  \hyperlink{namespaceterraces_1_1parsing}{parsing}
 \item 
+ \hyperlink{namespaceterraces_1_1rooting}{rooting}
+\item 
  \hyperlink{namespaceterraces_1_1tests}{tests}
 \item 
  \hyperlink{namespaceterraces_1_1utils}{utils}
@@ -70,13 +72,13 @@ class \hyperlink{classterraces_1_1union__find}{union\+\_\+find}
 using \hyperlink{namespaceterraces_a6f603ffd30ed4d902fce6424492e0581}{constraints} = std\+::vector$<$ \hyperlink{structterraces_1_1constraint}{constraint} $>$
 \item 
 using \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} = std\+::size\+\_\+t
-\begin{DoxyCompactList}\small\item\em Our index-\/type. \end{DoxyCompactList}\item 
+\item 
 using \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} = std\+::vector$<$ \hyperlink{structterraces_1_1node}{node} $>$
 \item 
 using \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{name\+\_\+map} = std\+::vector$<$ std\+::string $>$
 \item 
 using \hyperlink{namespaceterraces_a148f3e895119c2a72d995caae669e40d}{index\+\_\+map} = std\+::unordered\+\_\+map$<$ std\+::string, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$
-\item 
+\begin{DoxyCompactList}\small\item\em maps the name of a species to it\textquotesingle{}s index in the tree\+: \end{DoxyCompactList}\item 
 using \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}{bitvector} = \hyperlink{classterraces_1_1basic__bitvector}{basic\+\_\+bitvector}$<$ \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ $>$
 \item 
 using \hyperlink{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}{ranked\+\_\+bitvector} = \hyperlink{classterraces_1_1basic__ranked__bitvector}{basic\+\_\+ranked\+\_\+bitvector}$<$ \hyperlink{classterraces_1_1utils_1_1stack__allocator}{utils\+::stack\+\_\+allocator}$<$ \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} $>$ $>$
@@ -236,15 +238,17 @@ std\+::vector$<$ \hyperlink{namespaceterraces_a1b526fb554dff829f7ad51eb21d5ed06}
 \subsubsection{\texorpdfstring{index}{index}}
 {\footnotesize\ttfamily using \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{terraces\+::index} = typedef std\+::size\+\_\+t}
 
+Our index-\/type. please do not use anything else directly, as we might be willing to change it\textquotesingle{}s definition and it\textquotesingle{}s easier to change one line than twenty.
 
-
-Our index-\/type. 
-
-\mbox{\Hypertarget{namespaceterraces_a148f3e895119c2a72d995caae669e40d}\label{namespaceterraces_a148f3e895119c2a72d995caae669e40d}} 
+You may rely on the fact that it\textquotesingle{}s unsigned and that sizeof(index) $>$= sizeof(int) \mbox{\Hypertarget{namespaceterraces_a148f3e895119c2a72d995caae669e40d}\label{namespaceterraces_a148f3e895119c2a72d995caae669e40d}} 
 \index{terraces@{terraces}!index\+\_\+map@{index\+\_\+map}}
 \index{index\+\_\+map@{index\+\_\+map}!terraces@{terraces}}
 \subsubsection{\texorpdfstring{index\+\_\+map}{index\_map}}
 {\footnotesize\ttfamily using \hyperlink{namespaceterraces_a148f3e895119c2a72d995caae669e40d}{terraces\+::index\+\_\+map} = typedef std\+::unordered\+\_\+map$<$std\+::string, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}$>$}
+
+
+
+maps the name of a species to it\textquotesingle{}s index in the tree\+: 
 
 \mbox{\Hypertarget{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}\label{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}} 
 \index{terraces@{terraces}!name\+\_\+map@{name\+\_\+map}}
@@ -252,7 +256,7 @@ Our index-\/type.
 \subsubsection{\texorpdfstring{name\+\_\+map}{name\_map}}
 {\footnotesize\ttfamily using \hyperlink{namespaceterraces_a4ef0217fe5aed881737d9bc5a8d45dca}{terraces\+::name\+\_\+map} = typedef std\+::vector$<$std\+::string$>$}
 
-\mbox{\Hypertarget{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}\label{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}} 
+to look up the name associated with an index, simply reuse the index to check in a std\+::vector\+: \mbox{\Hypertarget{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}\label{namespaceterraces_acc45ec9c561024c50ecbce5b6738ba08}} 
 \index{terraces@{terraces}!ranked\+\_\+bitvector@{ranked\+\_\+bitvector}}
 \index{ranked\+\_\+bitvector@{ranked\+\_\+bitvector}!terraces@{terraces}}
 \subsubsection{\texorpdfstring{ranked\+\_\+bitvector}{ranked\_bitvector}}
@@ -264,7 +268,7 @@ Our index-\/type.
 \subsubsection{\texorpdfstring{tree}{tree}}
 {\footnotesize\ttfamily using \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{terraces\+::tree} = typedef std\+::vector$<$\hyperlink{structterraces_1_1node}{node}$>$}
 
-
+The same thing as above applies\+: The details of this type will most likely change\+: 
 
 \subsection{Enumeration Type Documentation}
 \mbox{\Hypertarget{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1}\label{namespaceterraces_ae1e4987c27eddd3b87041a2f0479bcc1}} 
@@ -716,7 +720,13 @@ The given root\+\_\+leaf will be the right child of our new root, with the res t
 \subsubsection{\texorpdfstring{subtrees()}{subtrees()}}
 {\footnotesize\ttfamily std\+::vector$<$ \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} $>$ terraces\+::subtrees (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{const \hyperlink{classterraces_1_1bitmatrix}{bitmatrix} \&}]{occ }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespaceterraces_a34db8e988e2845af99b6b228924a5f56}\label{namespaceterraces_a34db8e988e2845af99b6b228924a5f56}} 
+compute occurrences on inner nodes\+: bitwise or of the children
+
+collect leaves and inner nodes\+: bitwise and of the children
+
+compute occurrences on inner nodes\+: bitwise or of the children
+
+collect leaves and inner nodes\+: bitwise and of the children \mbox{\Hypertarget{namespaceterraces_a34db8e988e2845af99b6b228924a5f56}\label{namespaceterraces_a34db8e988e2845af99b6b228924a5f56}} 
 \index{terraces@{terraces}!tree\+\_\+bipartitions@{tree\+\_\+bipartitions}}
 \index{tree\+\_\+bipartitions@{tree\+\_\+bipartitions}!terraces@{terraces}}
 \subsubsection{\texorpdfstring{tree\+\_\+bipartitions()}{tree\_bipartitions()}}

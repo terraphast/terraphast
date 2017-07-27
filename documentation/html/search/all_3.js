@@ -28,7 +28,6 @@ var searchData=
   ['convert',['convert',['../namespaceconvert.html',1,'']]],
   ['convert_2ecpp',['convert.cpp',['../convert_8cpp.html',1,'']]],
   ['convert_2epy',['convert.py',['../convert_8py.html',1,'']]],
-  ['copydatamatrix',['copyDataMatrix',['../terraces_8c.html#a3691c03c136b6f12b0468f3c5e336935',1,'copyDataMatrix(const unsigned char *matrix, missingData *m):&#160;terraces.c'],['../terraces_8h.html#a3691c03c136b6f12b0468f3c5e336935',1,'copyDataMatrix(const unsigned char *matrix, missingData *m):&#160;terraces.c']]],
   ['count',['count',['../structterraces_1_1counted__supertree.html#a0ba6a52d09a0b572d1821d852a210f11',1,'terraces::counted_supertree::count()'],['../classterraces_1_1basic__ranked__bitvector.html#a1d7f3da0a64ed420e4836994cd8cba3c',1,'terraces::basic_ranked_bitvector::count()']]],
   ['count_5fcallback',['count_callback',['../classterraces_1_1variants_1_1count__callback.html',1,'terraces::variants']]],
   ['count_5fsupertree',['count_supertree',['../namespaceterraces.html#a8451b492b27c157a54e8c8b797896c0a',1,'terraces::count_supertree(index num_leaves, const constraints &amp;constraints, index root_leaf)'],['../namespaceterraces.html#af4db64ea1af8673f87af37b1155f2682',1,'terraces::count_supertree(index num_leaves, const constraints &amp;constraints)']]],

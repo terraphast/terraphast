@@ -16,23 +16,25 @@
 
 namespace terraces {
 
-/// Our index-type.
-// please do not use anything else directly,
-// as we might be willing to change it's definition
-// and it's easier to change one line than twenty.
-//
-// You may rely on the fact that it's unsigned and
-// that sizeof(index) >= sizeof(int)
+/** Our index-type.
+	please do not use anything else directly,
+	as we might be willing to change it's definition
+	and it's easier to change one line than twenty.
+
+	You may rely on the fact that it's unsigned and
+	that sizeof(index) >= sizeof(int)
+*/
 using index = std::size_t;
 
 constexpr static const auto none = std::numeric_limits<index>::max();
 
-// This struct will represent both nodes of rooted and
-// unrooted trees, depending on context
-//
-// The specific implementation is still subject to change until
-// we know better what exactly we need, so don't rely too much on
-// details yet.
+/** This struct will represent both nodes of rooted and
+	unrooted trees, depending on context
+
+	The specific implementation is still subject to change until
+	we know better what exactly we need, so don't rely too much on
+	details yet.
+*/
 struct node {
 	node(index parent = none, index left = none, index right = none)
 	        : data{{parent, left, right}} {}
@@ -61,8 +63,9 @@ struct node {
 
 std::ostream& operator<<(std::ostream& s, const node& n);
 
-// The same thing as above applies: The details of this
-// type will most likely change:
+/** The same thing as above applies: The details of this
+   type will most likely change:
+*/
 using tree = std::vector<node>;
 
 std::ostream& operator<<(std::ostream& ss, const tree& t);
@@ -90,8 +93,9 @@ private:
 	index m_node;
 };
 
-// to look up the name associated with an index, simply
-// reuse the index to check in a std::vector:
+/** to look up the name associated with an index, simply
+	reuse the index to check in a std::vector:
+*/
 using name_map = std::vector<std::string>;
 using permutation = std::vector<index>;
 
@@ -115,7 +119,7 @@ inline newick_permuted_t as_newick(const tree& t, const name_map& names,
 std::ostream& operator<<(std::ostream& s, newick_t tree_pair);
 std::ostream& operator<<(std::ostream& s, newick_permuted_t tree_set);
 
-// maps the name of a species to it's index in the tree:
+/// maps the name of a species to it's index in the tree:
 using index_map = std::unordered_map<std::string, index>;
 
 /**

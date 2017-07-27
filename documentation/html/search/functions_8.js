@@ -1,7 +1,7 @@
 var searchData=
 [
   ['increase',['increase',['../classterraces_1_1bipartition__iterator.html#ac072beaef1deb4144217036e5595f4cb',1,'terraces::bipartition_iterator']]],
-  ['initializemissingdata',['initializeMissingData',['../terraces_8c.html#a25cd78aba487f5df20dd1a3c63a79680',1,'initializeMissingData(size_t numberOfSpecies, size_t numberOfPartitions, const char **speciesNames):&#160;terraces.c'],['../terraces_8h.html#a25cd78aba487f5df20dd1a3c63a79680',1,'initializeMissingData(size_t numberOfSpecies, size_t numberOfPartitions, const char **speciesNames):&#160;terraces.c']]],
+  ['insert_5fnew_5froot',['insert_new_root',['../namespaceterraces_1_1rooting.html#a5fa10e038e438e5d9eb672bdaec413ea',1,'terraces::rooting']]],
   ['invert',['invert',['../classterraces_1_1basic__bitvector.html#a8a1d7d4cd0916068c73e3412347c7b18',1,'terraces::basic_bitvector::invert()'],['../classterraces_1_1basic__ranked__bitvector.html#a1577fa0a6830398e813ea7e6ac3f8587',1,'terraces::basic_ranked_bitvector::invert()']]],
   ['is_5fisomorphic',['is_isomorphic',['../namespaceterraces.html#a58682ec06711d5ae85a58aec6d811d31',1,'terraces']]],
   ['is_5fleaf',['is_leaf',['../structtree__node.html#a2c35968103d4326090dcd4b100c1fd56',1,'tree_node::is_leaf()'],['../namespaceterraces.html#a05257bc42db3c5cbed6ef082df709555',1,'terraces::is_leaf()']]],

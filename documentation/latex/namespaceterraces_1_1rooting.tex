@@ -1,0 +1,37 @@
+\hypertarget{namespaceterraces_1_1rooting}{}\section{terraces\+:\+:rooting Namespace Reference}
+\label{namespaceterraces_1_1rooting}\index{terraces\+::rooting@{terraces\+::rooting}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespaceterraces_1_1rooting_a4b0a3f334477b7cc4fcc0f4a53dc43f6}{adjust\+\_\+parent\+\_\+child\+\_\+edge} (bool coming\+\_\+from\+\_\+left, \hyperlink{structterraces_1_1node}{node} \&current\+\_\+node, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} original\+\_\+parent\+\_\+index)
+\item 
+void \hyperlink{namespaceterraces_1_1rooting_a5fa10e038e438e5d9eb672bdaec413ea}{insert\+\_\+new\+\_\+root} (bool coming\+\_\+from\+\_\+left, \hyperlink{structterraces_1_1node}{node} \&new\+\_\+root, \hyperlink{structterraces_1_1node}{node} \&leaf\+\_\+node, \hyperlink{structterraces_1_1node}{node} \&current\+\_\+node, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} current\+\_\+node\+\_\+index, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} root\+\_\+leaf, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} original\+\_\+parent\+\_\+index)
+\item 
+void \hyperlink{namespaceterraces_1_1rooting_a27b5d633461a2008842a40402a9cb1c0}{link\+\_\+to\+\_\+sibling\+\_\+tree} (bool coming\+\_\+from\+\_\+left, \hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&t, \hyperlink{structterraces_1_1node}{node} old\+\_\+root, \hyperlink{structterraces_1_1node}{node} \&current\+\_\+node, \hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index} current\+\_\+node\+\_\+index)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceterraces_1_1rooting_a4b0a3f334477b7cc4fcc0f4a53dc43f6}\label{namespaceterraces_1_1rooting_a4b0a3f334477b7cc4fcc0f4a53dc43f6}} 
+\index{terraces\+::rooting@{terraces\+::rooting}!adjust\+\_\+parent\+\_\+child\+\_\+edge@{adjust\+\_\+parent\+\_\+child\+\_\+edge}}
+\index{adjust\+\_\+parent\+\_\+child\+\_\+edge@{adjust\+\_\+parent\+\_\+child\+\_\+edge}!terraces\+::rooting@{terraces\+::rooting}}
+\subsubsection{\texorpdfstring{adjust\+\_\+parent\+\_\+child\+\_\+edge()}{adjust\_parent\_child\_edge()}}
+{\footnotesize\ttfamily void terraces\+::rooting\+::adjust\+\_\+parent\+\_\+child\+\_\+edge (\begin{DoxyParamCaption}\item[{bool}]{coming\+\_\+from\+\_\+left,  }\item[{\hyperlink{structterraces_1_1node}{node} \&}]{current\+\_\+node,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{original\+\_\+parent\+\_\+index }\end{DoxyParamCaption})}
+
+Our standard case\+: Swap child and parent indices depending on the tree traversal direction. \mbox{\Hypertarget{namespaceterraces_1_1rooting_a5fa10e038e438e5d9eb672bdaec413ea}\label{namespaceterraces_1_1rooting_a5fa10e038e438e5d9eb672bdaec413ea}} 
+\index{terraces\+::rooting@{terraces\+::rooting}!insert\+\_\+new\+\_\+root@{insert\+\_\+new\+\_\+root}}
+\index{insert\+\_\+new\+\_\+root@{insert\+\_\+new\+\_\+root}!terraces\+::rooting@{terraces\+::rooting}}
+\subsubsection{\texorpdfstring{insert\+\_\+new\+\_\+root()}{insert\_new\_root()}}
+{\footnotesize\ttfamily void terraces\+::rooting\+::insert\+\_\+new\+\_\+root (\begin{DoxyParamCaption}\item[{bool}]{coming\+\_\+from\+\_\+left,  }\item[{\hyperlink{structterraces_1_1node}{node} \&}]{new\+\_\+root,  }\item[{\hyperlink{structterraces_1_1node}{node} \&}]{leaf\+\_\+node,  }\item[{\hyperlink{structterraces_1_1node}{node} \&}]{current\+\_\+node,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{current\+\_\+node\+\_\+index,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{root\+\_\+leaf,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{original\+\_\+parent\+\_\+index }\end{DoxyParamCaption})}
+
+Inserts a new root as the parent of the root leaf and the subtree containint all other nodes.
+
+This operation is executed if we\textquotesingle{}re currently at the direct parent of the root leaf. The operation overwrites our current parent. \mbox{\Hypertarget{namespaceterraces_1_1rooting_a27b5d633461a2008842a40402a9cb1c0}\label{namespaceterraces_1_1rooting_a27b5d633461a2008842a40402a9cb1c0}} 
+\index{terraces\+::rooting@{terraces\+::rooting}!link\+\_\+to\+\_\+sibling\+\_\+tree@{link\+\_\+to\+\_\+sibling\+\_\+tree}}
+\index{link\+\_\+to\+\_\+sibling\+\_\+tree@{link\+\_\+to\+\_\+sibling\+\_\+tree}!terraces\+::rooting@{terraces\+::rooting}}
+\subsubsection{\texorpdfstring{link\+\_\+to\+\_\+sibling\+\_\+tree()}{link\_to\_sibling\_tree()}}
+{\footnotesize\ttfamily void terraces\+::rooting\+::link\+\_\+to\+\_\+sibling\+\_\+tree (\begin{DoxyParamCaption}\item[{bool}]{coming\+\_\+from\+\_\+left,  }\item[{\hyperlink{namespaceterraces_a07aaf7feec4a22c6cdefc14c5a81bdd0}{tree} \&}]{t,  }\item[{\hyperlink{structterraces_1_1node}{node}}]{old\+\_\+root,  }\item[{\hyperlink{structterraces_1_1node}{node} \&}]{current\+\_\+node,  }\item[{\hyperlink{namespaceterraces_adbc33ccb543d1634e96d0eb02e472c77}{index}}]{current\+\_\+node\+\_\+index }\end{DoxyParamCaption})}
+
+Assuming the current node is a child of the root node (in the input tree), we properly insert the subtree under the root\textquotesingle{}s other child int our rerooted tree.
+
+Re-\/rooting as time-\/complexity O(tree\+\_\+height). 

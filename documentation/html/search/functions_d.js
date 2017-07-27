@@ -4,7 +4,6 @@ var searchData=
   ['parent',['parent',['../structterraces_1_1node.html#a0dc3c66ea9c5d75867cf529de3d78598',1,'terraces::node::parent() const'],['../structterraces_1_1node.html#a702158876a59ff469fa1e1fd5a5bca45',1,'terraces::node::parent()']]],
   ['parent_5fchild_5frelationship',['parent_child_relationship',['../namespaceterraces_1_1tests.html#a25ca9a3b46fb14ea14a41a5b863fc77a',1,'terraces::tests']]],
   ['parse_5fbitmatrix',['parse_bitmatrix',['../namespaceterraces.html#af52559863b67502f00d68853f50c69af',1,'terraces']]],
-  ['parse_5finput_5fdata',['parse_input_data',['../input__parser_8c.html#a6a11d80c505ab7b3a7e5e6dd6dda4862',1,'parse_input_data(const char *data_file):&#160;input_parser.c'],['../input__parser_8h.html#a6a11d80c505ab7b3a7e5e6dd6dda4862',1,'parse_input_data(const char *data_file):&#160;input_parser.c']]],
   ['parse_5fnwk',['parse_nwk',['../namespaceterraces.html#add61915a31828774ee0371d443031c29',1,'terraces']]],
   ['parser_5fstate',['parser_state',['../structterraces_1_1parsing_1_1parser__state.html#a6da424cef05b8f33368f4af9bb7c1734',1,'terraces::parsing::parser_state']]],
   ['partial_5fpopcount',['partial_popcount',['../namespaceterraces_1_1bits.html#ae9bc44ee1d6422ce98b49667672ebe8e',1,'terraces::bits']]],

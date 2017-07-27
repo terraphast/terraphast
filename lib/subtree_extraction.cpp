@@ -18,7 +18,7 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 
 	auto node_occ = occ;
 
-	// compute occurrences on inner nodes: bitwise or of the children
+	/// compute occurrences on inner nodes: bitwise or of the children
 	foreach_postorder(t, [&](index i) {
 		auto node = t[i];
 		if (!is_leaf(node)) {
@@ -26,7 +26,7 @@ std::vector<tree> subtrees(const tree& t, const bitmatrix& occ) {
 		}
 	});
 
-	// collect leaves and inner nodes: bitwise and of the children
+	/// collect leaves and inner nodes: bitwise and of the children
 	foreach_preorder(t, [&](index i) {
 		auto node = t[i];
 		for (index site = 0; site < num_sites; ++site) {

@@ -10,8 +10,6 @@ var searchData=
   ['flip_5fsets',['flip_sets',['../classterraces_1_1bipartition__iterator.html#aa8f7242cbf825373196f3fc16b28cfcd',1,'terraces::bipartition_iterator']]],
   ['foreach_5fpostorder',['foreach_postorder',['../namespaceterraces.html#a479ffe90c01af88c1683e743d417fe1a',1,'terraces']]],
   ['foreach_5fpreorder',['foreach_preorder',['../namespaceterraces.html#a38d599d41ed134678e30b9cf7b454759',1,'terraces']]],
-  ['free_5finput_5fdata',['free_input_data',['../input__parser_8c.html#abd6b063ee1c50489e2b1f9970369ee1b',1,'free_input_data(input_data *d):&#160;input_parser.c'],['../input__parser_8h.html#abd6b063ee1c50489e2b1f9970369ee1b',1,'free_input_data(input_data *d):&#160;input_parser.c']]],
-  ['freemissingdata',['freeMissingData',['../terraces_8c.html#a5072c1492d0cf7d0a0c3a48c4cb71264',1,'freeMissingData(missingData *m):&#160;terraces.c'],['../terraces_8h.html#a5072c1492d0cf7d0a0c3a48c4cb71264',1,'freeMissingData(missingData *m):&#160;terraces.c']]],
   ['full_5franked_5fset',['full_ranked_set',['../namespaceterraces.html#a75e78e4205ecb8d8dbd3485c464741fe',1,'terraces']]],
   ['full_5fset',['full_set',['../namespaceterraces.html#a89a9c3d18566c475960fa9bbe5954049',1,'terraces']]]
 ];

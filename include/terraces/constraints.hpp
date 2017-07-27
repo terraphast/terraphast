@@ -15,6 +15,7 @@ struct constraint {
 	index shared;
 	index right;
 
+	/// This triple (i, j, k) represents the constraint lca(i, j) < lca(i, k).
 	constraint(index left, index shared, index right)
 	        : left{left}, shared{shared}, right{right} {}
 
