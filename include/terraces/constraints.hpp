@@ -30,6 +30,7 @@ using constraints = std::vector<constraint>;
 std::ostream& operator<<(std::ostream& s, const constraint& c);
 std::ostream& operator<<(std::ostream& stream, utils::named_output<constraints, name_map>);
 
+// TODO move to separate header
 constraints compute_constraints(const std::vector<tree>& trees);
 
 index deduplicate_constraints(constraints& in_c);
