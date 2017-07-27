@@ -23,7 +23,7 @@ else()
 endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BASIC_WARNINGS} ${OPTIMIZATION_FLAGS}")
 
-include_directories("include" "Catch/include")
+include_directories("include" "Catch/include" "c_include")
 enable_testing()
 
 # Get Libraries
@@ -38,6 +38,13 @@ file(GLOB lib_int_headers "lib/*.hpp")
 add_library(terraces ${lib_sources} ${lib_headers} ${lib_int_headers})
 target_link_libraries(terraces ${THREAD_LIBS})
 
+file(GLOB c_lib_headers "c_include/terraces/*.h")
+file(GLOB c_lib_sources "c_lib/*.cpp")
+file(GLOB c_lib_int_headers "c_lib/*.hpp")
+add_library(c_terraces ${c_lib_sources} ${c_lib_headers} ${c_lib_int_headers})
+target_link_libraries(c_terraces terraces)
+
+target_link_libraries(terraces ${THREAD_LIBS})
 file(GLOB test_headers "test/*.hpp")
 file(GLOB test_sources "test/*.cpp")
 add_executable(unittests ${test_sources} ${test_headers})
