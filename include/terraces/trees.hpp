@@ -17,23 +17,23 @@
 namespace terraces {
 
 /** Our index-type.
-	please do not use anything else directly,
-	as we might be willing to change it's definition
-	and it's easier to change one line than twenty.
+        please do not use anything else directly,
+        as we might be willing to change it's definition
+        and it's easier to change one line than twenty.
 
-	You may rely on the fact that it's unsigned and
-	that sizeof(index) >= sizeof(int)
+        You may rely on the fact that it's unsigned and
+        that sizeof(index) >= sizeof(int)
 */
 using index = std::size_t;
 
 constexpr static const auto none = std::numeric_limits<index>::max();
 
 /** This struct will represent both nodes of rooted and
-	unrooted trees, depending on context
+        unrooted trees, depending on context
 
-	The specific implementation is still subject to change until
-	we know better what exactly we need, so don't rely too much on
-	details yet.
+        The specific implementation is still subject to change until
+        we know better what exactly we need, so don't rely too much on
+        details yet.
 */
 struct node {
 	node(index parent = none, index left = none, index right = none)
@@ -94,7 +94,7 @@ private:
 };
 
 /** to look up the name associated with an index, simply
-	reuse the index to check in a std::vector:
+        reuse the index to check in a std::vector:
 */
 using name_map = std::vector<std::string>;
 using permutation = std::vector<index>;
