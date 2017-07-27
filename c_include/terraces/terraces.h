@@ -29,8 +29,10 @@ enum terraces_errors {
 	terraces_success = 0,
 	terraces_out_of_memory_error = 1,
 	terraces_invalid_input_error = 2,
-	terraces_file_open_error = 3,
-	terraces_unknown_error = 4
+	terraces_no_usable_root_error = 3,
+	terraces_file_open_error = 4,
+	terraces_unknown_error = 5,
+	terraces_tree_count_overflow_error = 6
 };
 
 terraces_errors terraces_check_tree(const terraces_missing_data* missing_data,

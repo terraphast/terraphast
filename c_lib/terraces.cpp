@@ -3,11 +3,12 @@
 
 // The implementation will of the C-wrapper will of course be done in C++:
 
+#include <cstdlib>
 #include <fstream>
 
+#include <terraces/bitmatrix.hpp>
 #include <terraces/errors.hpp>
 #include <terraces/simple.hpp>
-#include <terraces/bitmatrix.hpp>
 
 namespace {
 
@@ -19,10 +20,19 @@ terraces_errors exec_and_catch(Function f) {
 		return terraces_success;
 	} catch (std::bad_alloc& e) {
 		return terraces_out_of_memory_error;
-	} catch (terraces::bad_input_error) {
+	} catch (terraces::bad_input_error& e) {
 		return terraces_invalid_input_error;
-	} catch (...) {
+	} catch (terraces::no_usable_root_error& e) {
+		return terraces_no_usable_root_error;
+	} catch (terraces::file_open_error& e) {
+		return terraces_file_open_error;
+	} catch (terraces::tree_count_overflow_error& e) {
+		return terraces_tree_count_overflow_error;
+	} catch (std::exception& e) {
 		return terraces_unknown_error;
+	} catch (...) {
+		// Something would have to go terribly wrong to end here, so let's just abort.
+		std::abort();
 	}
 }
 
@@ -34,7 +44,8 @@ std::ofstream open_output_file(const char* filename) {
 	return ret;
 }
 
-std::pair<terraces::bitmatrix, terraces::index> to_bitmatrix(const terraces_missing_data* missing_data_ptr) {
+std::pair<terraces::bitmatrix, terraces::index>
+to_bitmatrix(const terraces_missing_data* missing_data_ptr) {
 	if (not missing_data_ptr) {
 		throw terraces::bad_input_error{"nullpointer"};
 	}
@@ -45,15 +56,15 @@ std::pair<terraces::bitmatrix, terraces::index> to_bitmatrix(const terraces_miss
 		auto all_known = true;
 		auto any_known = false;
 		for (auto col = terraces::index{}; col < missing_data.num_partitions; ++col) {
-			const auto known = missing_data.matrix[row * missing_data.num_partitions + col];
+			const auto known =
+			        missing_data.matrix[row * missing_data.num_partitions + col];
 			all_known &= known;
 			any_known |= known;
 			bm.set(row, col, known);
 		}
 		if (all_known and root == terraces::none) {
 			root = row;
-		}
-		else if (not any_known) {
+		} else if (not any_known) {
 			throw terraces::bad_input_error{""};
 		}
 	}
