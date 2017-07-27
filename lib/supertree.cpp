@@ -10,11 +10,13 @@
 #include "supertree_variants_debug.hpp"
 #include "supertree_variants_multitree.hpp"
 
+#include "clamped_uint.hpp"
+
 namespace terraces {
 
 namespace variants {
 template class fast_check_decorator<check_callback>;
-template class fast_check_decorator<count_callback<index>>;
+template class fast_check_decorator<count_callback<clamped_uint>>;
 template class fast_check_decorator<multitree_callback>;
 }
 
@@ -64,24 +66,26 @@ mpz_class count_supertree_bigint(index num_leaves, const constraints& constraint
 }
 
 std::uint64_t count_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
-	tree_enumerator<variants::count_callback<std::uint64_t>> counter{
+	tree_enumerator<variants::count_callback<clamped_uint>> counter{
 	        {}, num_leaves, constraints.size()};
-	return counter.run(num_leaves, constraints, root_leaf);
+	return counter.run(num_leaves, constraints, root_leaf).value();
 }
 
 std::uint64_t count_supertree(index num_leaves, const constraints& constraints) {
-	tree_enumerator<variants::count_callback<std::uint64_t>> counter{
+	tree_enumerator<variants::count_callback<clamped_uint>> counter{
 	        {}, num_leaves, constraints.size()};
-	return counter.run(num_leaves, constraints);
+	return counter.run(num_leaves, constraints).value();
 }
 
 bool check_supertree(index num_leaves, const constraints& constraints, index root_leaf) {
-	tree_enumerator<variants::check_callback> counter{{}, num_leaves, constraints.size()};
+	tree_enumerator<variants::fast_check_decorator<variants::check_callback>> counter{
+	        {}, num_leaves, constraints.size()};
 	return counter.run(num_leaves, constraints, root_leaf) > 1;
 }
 
 bool check_supertree(index num_leaves, const constraints& constraints) {
-	tree_enumerator<variants::check_callback> counter{{}, num_leaves, constraints.size()};
+	tree_enumerator<variants::fast_check_decorator<variants::check_callback>> counter{
+	        {}, num_leaves, constraints.size()};
 	return counter.run(num_leaves, constraints) > 1;
 }
 
