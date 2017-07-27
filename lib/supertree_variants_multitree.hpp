@@ -14,7 +14,6 @@ class multitree_callback : public abstract_callback<multitree_node*> {
 private:
 	multitree_impl::storage_blocks<multitree_node> m_nodes;
 	multitree_impl::storage_blocks<index> m_leaves;
-	std::stack<multitree_node*> m_accumulators;
 
 	multitree_node* alloc_node() { return m_nodes.get(); }
 
@@ -50,30 +49,21 @@ public:
 
 	return_type begin_iteration(const bipartition_iterator& bip_it, const bitvector&,
 	                            const constraints&) {
-		auto acc = multitree_impl::make_alternative_array(
+		return multitree_impl::make_alternative_array(
 		        alloc_node(), alloc_nodes(bip_it.num_bip()), bip_it.leaves().count());
-		m_accumulators.push(acc);
-		return acc;
 	}
 
 	return_type accumulate(multitree_node* acc, multitree_node* node) {
-		assert(acc == m_accumulators.top());
-		assert(node == (acc->alternative_array.end - 1));
 		assert(acc->num_leaves == node->num_leaves);
 		acc->num_trees += node->num_trees;
-		// node is already linked from combine(.,.)
+		*(acc->alternative_array.end) = *node;
+		++(acc->alternative_array.end);
 		return acc;
 	}
 
 	return_type combine(multitree_node* left, multitree_node* right) {
-		auto acc = m_accumulators.top();
-		auto& aa = acc->alternative_array;
-		auto result = multitree_impl::make_inner_node(aa.end, left, right);
-		++aa.end;
-		return result;
+		return multitree_impl::make_inner_node(alloc_node(), left, right);
 	}
-
-	void finish_iteration() { m_accumulators.pop(); }
 };
 
 } // namespace variants
