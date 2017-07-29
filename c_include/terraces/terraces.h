@@ -51,8 +51,8 @@ terraces_errors terraces_check_tree_str(const char* missing_data, const char* nw
 terraces_errors terraces_count_tree_str(const char* missing_data, const char* nwk_string,
                                         mpz_t out) TERRACES_NOEXCEPT;
 
-terraces_errors terraces_print_tree_str(const char* missing_data, const char* nwk_string,
-                                        mpz_t out, const char* output_filename) TERRACES_NOEXCEPT;
+terraces_errors terraces_print_tree_str(const char* missing_data, const char* nwk_string, mpz_t out,
+                                        const char* output_filename) TERRACES_NOEXCEPT;
 
 #ifdef __cplusplus
 } // extern "C"
