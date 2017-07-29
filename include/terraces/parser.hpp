@@ -12,6 +12,9 @@
 
 namespace terraces {
 
+/**
+ * Stores a tree and its node name <-> index mapping
+ */
 struct tree_set {
 	terraces::tree tree;
 	name_map names;
@@ -23,17 +26,12 @@ struct tree_set {
  * unrooted tree and name-table
  *
  * Will throw bad_input_error if the format is not obeyed.
- *
- * Warning/TODO: The exact type of the input will likely be
- * changed to something along the lines of std::string_view,
- * which should however not impact normal users in ways other than
- * performance improvements.
  */
 tree_set parse_nwk(const std::string& input);
 
 /**
  * Parses a data-file and returns the associated bit-matrix as well
- * as a suitable index for rooting (or `none` if none exists).
+ * as a suitable index for rooting (or \ref none if none exists).
  */
 std::pair<bitmatrix, index> parse_bitmatrix(std::istream& input, const index_map& indices,
                                             index tree_size);

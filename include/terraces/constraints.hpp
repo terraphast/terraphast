@@ -10,6 +10,12 @@
 
 namespace terraces {
 
+/**
+ * Represents a LCA constraint on leaves of a tree.
+ * It is of the form \code
+ * lca(left, shared) < lca(shared, right)
+ * where the LCA's are compared by their height in the tree.
+ */
 struct constraint {
 	index left;
 	index shared;

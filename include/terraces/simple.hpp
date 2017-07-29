@@ -18,7 +18,7 @@ namespace terraces {
 
 /**
  * Check whether the given tree is on a terrace.
- * @returns true if there is at least one other tree on the terrace.
+ * \returns true if there is at least one other tree on the terrace.
  */
 bool is_on_terrace(std::istream& nwk_stream, std::istream& matrix_stream);
 bool is_on_terrace(std::istream& nwk_stream, const std::string& matrix_string);
@@ -28,7 +28,7 @@ bool is_on_terrace_from_file(const std::string& nwk_filename, const std::string&
 
 /**
  * Count the number of trees on the terrace.
- * @returns the number of trees on the terrace
+ * \returns the number of trees on the terrace
  */
 std::uint64_t get_terrace_size(std::istream& nwk_stream, std::istream& matrix_stream);
 std::uint64_t get_terrace_size(std::istream& nwk_stream, const std::string& matrix_string);

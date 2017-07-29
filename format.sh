@@ -31,5 +31,7 @@ for FILE in $(find include -iname "*.[hc]pp"); do format_file "$FILE"; done
 for FILE in $(find lib     -iname "*.[hc]pp"); do format_file "$FILE"; done
 for FILE in $(find app     -iname "*.[hc]pp"); do format_file "$FILE"; done
 for FILE in $(find test    -iname "*.[hc]pp"); do format_file "$FILE"; done
+for FILE in $(find c_include -iname "*.[hc]"); do format_file "$FILE"; done
+for FILE in $(find c_lib    -iname "*.[hc]pp"); do format_file "$FILE"; done
 
 
