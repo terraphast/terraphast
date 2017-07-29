@@ -1,14 +1,20 @@
 #include "gmp.h"
-#include <limits.h>
+#include <climits>
 #include <iostream>
 #include <string>
 #include <cstdio>
 #include <cstdlib>
 #include <future>
 
+#include "util.h"
 #include "terraces.h"
 #include "parameters.h"
 #include "debug.h"
+
+#include <gtest/gtest.h>
+#include <gmock/gmock-matchers.h>
+#include <gmock/gmock.h>
+
 
 typedef TerracesAnalysisTestParameter<const long> RootedTreesCountParameter;
 

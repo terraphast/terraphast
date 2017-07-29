@@ -1,14 +1,9 @@
-#ifndef UNION_FIND_LEAF_SET_TEST_H
-#define UNION_FIND_LEAF_SET_TEST_H
-
-
 #include "gtest/gtest.h"
 
 #include "types.h"
 
 #include <vector>
 #include <iostream>
-
 
 TEST(DISABLED_get_nth_partition_tuple, no_constraints) {
     UnionFindLeafSet leafset(10);
@@ -66,6 +61,3 @@ TEST(DISABLED_get_nth_partition_tuple, only_one_leaf) {
 }
 
 //TODO more testcases, especially with a loop over all the partition tuples
-
-
-#endif // UNION_FIND_LEAF_SET_TEST_H

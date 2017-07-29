@@ -9,6 +9,10 @@
 #include "parameters.h"
 #include "debug.h"
 
+#include "gtest/gtest.h"
+#include "gmock/gmock-matchers.h"
+#include "gmock/gmock.h"
+
 #define TIME_FOR_TESTS 1000*30
 
 typedef TerracesAnalysisTestParameter<const char*> TACountParameter;
