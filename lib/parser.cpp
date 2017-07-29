@@ -10,6 +10,7 @@
 
 #include <terraces/errors.hpp>
 
+#include "trees_impl.hpp"
 #include "utils.hpp"
 
 namespace terraces {

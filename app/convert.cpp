@@ -6,6 +6,8 @@
 #include <terraces/rooting.hpp>
 #include <terraces/trees.hpp>
 
+#include "../lib/trees_impl.hpp"
+
 int main(int argc, char* argv[]) {
 	if (argc != 3) {
 		return 1;

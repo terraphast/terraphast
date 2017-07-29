@@ -1,7 +1,7 @@
 #ifndef MULTITREE_HPP
 #define MULTITREE_HPP
 
-#include "trees.hpp"
+#include "trees_impl.hpp"
 
 #include <gmpxx.h>
 

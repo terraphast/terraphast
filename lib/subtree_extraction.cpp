@@ -1,3 +1,4 @@
+#include "trees_impl.hpp"
 #include <terraces/subtree_extraction.hpp>
 
 using std::vector;

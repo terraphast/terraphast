@@ -1,3 +1,4 @@
+#include "trees_impl.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <sstream>

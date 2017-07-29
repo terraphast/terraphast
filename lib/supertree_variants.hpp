@@ -3,11 +3,11 @@
 
 #include <terraces/constraints.hpp>
 #include <terraces/io_utils.hpp>
-#include <terraces/trees.hpp>
 
 #include <gmpxx.h>
 
 #include "bipartitions.hpp"
+#include "trees_impl.hpp"
 
 namespace terraces {
 namespace variants {

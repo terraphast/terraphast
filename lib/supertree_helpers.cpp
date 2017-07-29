@@ -1,4 +1,5 @@
 #include "supertree_helpers.hpp"
+#include "trees_impl.hpp"
 
 namespace terraces {
 

@@ -5,6 +5,7 @@
 
 #include "ranked_bitvector.hpp"
 #include "supertree_helpers.hpp"
+#include "trees_impl.hpp"
 #include "validation.hpp"
 
 namespace terraces {

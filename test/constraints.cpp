@@ -5,6 +5,8 @@
 
 #include <algorithm>
 
+#include "../lib/trees_impl.hpp"
+
 namespace terraces {
 namespace tests {
 

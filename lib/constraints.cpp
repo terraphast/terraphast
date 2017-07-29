@@ -2,6 +2,7 @@
 
 #include <ostream>
 
+#include "trees_impl.hpp"
 #include "union_find.hpp"
 
 namespace terraces {

@@ -1,7 +1,7 @@
 #ifndef UNCONSTRAINED_ENUMERATOR_CPP
 #define UNCONSTRAINED_ENUMERATOR_CPP
 
-#include <terraces/multitree.hpp>
+#include "multitree.hpp"
 
 #include <bitset>
 #include <cassert>

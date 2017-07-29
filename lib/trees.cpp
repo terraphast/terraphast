@@ -1,6 +1,6 @@
+#include "trees_impl.hpp"
 #include <algorithm>
 #include <ostream>
-#include <terraces/trees.hpp>
 
 namespace terraces {
 
@@ -78,15 +78,6 @@ bool is_valid_tree(const tree& t) {
 	}
 
 	return true;
-}
-
-std::ostream& operator<<(std::ostream& ss, const tree& t) {
-	ss << "TREE [\n";
-	for (auto node : t) {
-		ss << "\t" << node << "\n";
-	}
-	ss << "]\n";
-	return ss;
 }
 
 std::ostream& operator<<(std::ostream& s, newick_t tree_pair) {

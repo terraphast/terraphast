@@ -1,8 +1,8 @@
 #ifndef MULTITREE_IMPL_HPP
 #define MULTITREE_IMPL_HPP
 
+#include "multitree.hpp"
 #include <memory>
-#include <terraces/multitree.hpp>
 
 namespace terraces {
 namespace multitree_impl {
