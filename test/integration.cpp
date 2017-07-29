@@ -1,5 +1,6 @@
 #include <catch.hpp>
 
+#include <terraces/advanced.hpp>
 #include <terraces/constraints.hpp>
 #include <terraces/parser.hpp>
 #include <terraces/rooting.hpp>
@@ -25,7 +26,7 @@ TEST_CASE("full_run_disjoint", "[rerooting],[tree_extraction],[constraints],[sup
 	auto names = name_map(t.size());
 	index root = 2;
 	auto num_leaves = remap_to_leaves(t, cs, names, root);
-	CHECK(count_supertree(num_leaves, cs, root) == 15);
+	CHECK(count_terrace({cs, num_leaves, root}) == 15);
 }
 
 } // namespace tests

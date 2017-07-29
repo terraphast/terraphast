@@ -8,6 +8,7 @@
 #include <gmpxx.h>
 
 namespace terraces {
+namespace simple {
 
 /*
  * All these functions may throw bad_input_error if the input is invalid.
@@ -59,6 +60,7 @@ mpz_class print_terrace(const std::string& nwk_string, const std::string& matrix
 mpz_class print_terrace_from_file(const std::string& nwk_filename,
                                   const std::string& matrix_filename, std::ostream& output);
 
+} // namespace simple
 } // namespace terraces
 
 #endif

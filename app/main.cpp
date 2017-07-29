@@ -25,7 +25,7 @@ int main(int argc, char** argv) try {
 	}
 	auto trees = std::ostringstream{};
 	const auto terraces_count =
-	        terraces::print_terrace_from_file(tree_file_name, data_file_name, trees);
+	        terraces::simple::print_terrace_from_file(tree_file_name, data_file_name, trees);
 
 	std::cout << "There are " << terraces_count
 	          << " trees on the terrace.\n\nThe trees in question are:\n"

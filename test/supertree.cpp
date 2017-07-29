@@ -2,10 +2,21 @@
 
 #include <iostream>
 
-#include <terraces/supertree.hpp>
+#include "../lib/supertree_enumerator.hpp"
+#include "../lib/supertree_variants.hpp"
 
 namespace terraces {
 namespace tests {
+
+uint64_t count_supertree(index num_leaves, const constraints& constraints) {
+	tree_enumerator<variants::count_callback<uint64_t>> e{{}, num_leaves, constraints.size()};
+	return e.run(num_leaves, constraints);
+}
+
+bool check_supertree(index num_leaves, const constraints& constraints) {
+	tree_enumerator<variants::check_callback> e{{}, num_leaves, constraints.size()};
+	return e.run(num_leaves, constraints) > 1;
+}
 
 TEST_CASE("count_supertree1", "[supertree]") {
 	constraints c = {};

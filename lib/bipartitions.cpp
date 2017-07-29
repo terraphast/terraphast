@@ -3,7 +3,10 @@
 #include <cassert>
 #include <ostream>
 
+#include <terraces/errors.hpp>
+
 #include "bits.hpp"
+#include "utils.hpp"
 
 namespace terraces {
 
@@ -11,8 +14,8 @@ bipartition_iterator::bipartition_iterator(const ranked_bitvector& leaves, const
                                            utils::stack_allocator<index> a)
         : m_alloc{a}, m_leaves{leaves}, m_sets{sets}, m_set_rep{find_set_reps()},
           m_subleaves{leaves.size(), a}, m_bip{0}, m_end{(1ull << (m_set_rep.count() - 1))} {
-	// TODO catch this case more explicitly
-	assert(m_set_rep.count() < bits::word_bits);
+	utils::ensure<tree_count_overflow_error>(m_set_rep.count() < bits::word_bits,
+	                                         "Huge terrace encountered");
 	increase();
 }
 
