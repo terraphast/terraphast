@@ -38,9 +38,15 @@ protected:
                                            LeafSet &leaves,
                                            bool unrooted = false) {
         CollectType aggregation = initialize_collect_type();
-        bool cont = true; // variable indicating whether to continue or not
+        //bool cont = true; // variable indicating whether to continue or not
         
-        for (size_t i = 1; cont && i <= leaves.number_partition_tuples(); i++) {
+        int depth = 0;
+        depth++;
+
+        size_t loop_max = leaves.number_partition_tuples();
+        //std::vector<ResultType> results(loop_max);
+#pragma omp parallel for if(depth==1)
+        for (size_t i = 1; i <= loop_max; i++) {
             std::shared_ptr<LeafSet> part_left;
             std::shared_ptr<LeafSet> part_right;
             std::tie(part_left, part_right) = leaves.get_nth_partition_tuple(i);
@@ -48,13 +54,17 @@ protected:
             auto constraints_left = find_constraints(*part_left, constraints);
             auto constraints_right = find_constraints(*part_right, constraints);
 
-            auto subtrees_left = scan_terrace(*part_left,
-                                                       constraints_left);
-            auto subtrees_right = scan_terrace(*part_right,
-                                                        constraints_right);
-            auto trees = combine_part_results(subtrees_left, subtrees_right);
+            ResultType subtrees_left;
+            ResultType subtrees_right;
 
-            cont = combine_bipartition_results(aggregation, trees);
+            subtrees_left = scan_terrace(*part_left,
+                                                       constraints_left);
+            subtrees_right = scan_terrace(*part_right,
+                                                        constraints_right);
+
+            auto trees = combine_part_results(subtrees_left, subtrees_right);
+#pragma omp critical
+            combine_bipartition_results(aggregation, trees);
         }
         
         return finalize_collect_type(aggregation, unrooted);

@@ -1,12 +1,13 @@
 #include "input_parser.h"
 #include "util.h"
 
-#include <limits.h>
+#include <climits>
 #include <iostream>
 #include <memory>
-#include "gtest/gtest.h"
-#include "gmock/gmock-matchers.h"
-#include "gmock/gmock.h"
+
+#include <gtest/gtest.h>
+#include <gmock/gmock-matchers.h>
+#include <gmock/gmock.h>
 
 // Test a simple tree file
 TEST(GetNewickTreeFromStringTest, simple_tree) {

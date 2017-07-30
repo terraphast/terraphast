@@ -111,14 +111,17 @@ include_directories(SYSTEM "${googlebenchmark_SOURCE_DIR}/include")
 
 include_directories(test)
 
-set(TEST_HEADERS
-        test/parameters.h
-        test/util_test.h
-        test/algorithm_test.h
-        test/input_parser_test.h
-        test/terraces_test.h)
+set(TEST_SRCS
+        test/gtest.cpp
+        test/terraces_test.cpp
+        test/algorithm_test.cpp
+        test/input_parser_test.cpp
+        test/union_find_leaf_set_test.cpp)
 
-add_executable(terraces_tests test/gtest.cpp ${CORE_HEADERS} ${TEST_HEADERS})
+set(TEST_HEADERS
+        test/parameters.h)
+
+add_executable(terraces_tests ${TEST_SRCS} ${CORE_HEADERS} ${TEST_HEADERS})
 set_target_properties(terraces_tests PROPERTIES COMPILE_FLAGS "${TEST_CXX_FLAGS}")
 target_link_libraries(terraces_tests terraces ${COMMON_LIBRARIEY} gtest gmock)
 add_test(terraces_tests terraces_tests)
