@@ -24,78 +24,39 @@ inline bool is_bit_set(size_t num, size_t n) {
     return 1 == ((num >> n) & 1);
 }
 
+/**
+ * This is the abstract superclass of the LeafSet implementations.
+ *
+ * A LeafSet class is used to represent a set of leafs.
+ */
 template <class LSClass>
 class AbstractLeafSet {
 public:
     AbstractLeafSet() = default;
     AbstractLeafSet(const AbstractLeafSet&) = default;
     virtual ~AbstractLeafSet() = default;
+
+    /**
+     * @brief contains checks whether a leaf is contained in the set
+     * @param leaf the leaf, who's membership is tested
+     * @return true iff the set contains <leaf>
+     */
     virtual bool contains(const size_t leaf) const = 0;
+
+    /**
+     * @brief size returns the number of elements in this set
+     * @return  the number of elements in this set
+     */
     virtual size_t size() const = 0;
+
+    /**
+     * @brief pop deletes and returns an element of the set
+     * @return an element from the set
+     */
     virtual leaf_number pop() = 0;
-    virtual void merge(const LSClass &other) = 0;
 };
 
-//TODO SimpleLeafSet aufs neue Interface anpassen
-class SimpleLeafSet : public AbstractLeafSet<SimpleLeafSet>, std::set<leaf_number> {
-    typedef std::vector<std::shared_ptr<SimpleLeafSet>> partition_list;
-public:
-    SimpleLeafSet () = default;
-    SimpleLeafSet (std::initializer_list<leaf_number> l) : std::set<leaf_number>(l) {
-    }
-    inline
-    static SimpleLeafSet  create(size_t size) {
-        SimpleLeafSet  leaves;
-        for (size_t k = 0; k < size; k++) {
-            leaves.insert(leaf_number(k));
-        }
-        return leaves;
-    }
-    inline
-    bool contains(leaf_number leaf) const {
-        return this->count(leaf) > 0;
-    }
-    inline size_t size() const {
-        return std::set<leaf_number>::size();
-    }
-    inline
-    void insert(const leaf_number l) {
-        std::set<leaf_number>::insert(l);
-    }
-    inline
-    partition_list create_partition_list() const {
-        partition_list sets;
-        sets.reserve(this->size());
 
-        for (leaf_number l : *this) {
-            // create an empty set for each leaf
-            auto set = std::make_shared<SimpleLeafSet>();
-            set->insert(l);
-            sets.push_back(set);
-        }
-
-        return sets;
-    }
-    inline
-    std::set<leaf_number> to_set() {
-        return *this;
-    }
-    inline
-    std::shared_ptr<SimpleLeafSet> create_empty() {
-        return std::make_shared<SimpleLeafSet>();
-    }
-    inline
-    leaf_number pop() {
-        auto itr = this->begin();
-        auto first_elem = *itr;
-        this->erase(itr);
-        return first_elem;
-    }
-    inline
-    void merge(const SimpleLeafSet  &other) {
-        std::set<leaf_number>::insert(other.begin(), other.end());
-    }
-};
 
 class BitLeafSet : public AbstractLeafSet<BitLeafSet>, boost::dynamic_bitset<> {
     typedef std::vector<std::shared_ptr<BitLeafSet>> partition_list;
@@ -487,9 +448,4 @@ private:
     size_t repr; //this is the number of the representative of this set. its an index to the array of the union find data structure
     bool repr_valid = false; //true iff the representative is valid
     std::vector<leaf_number> list_of_partitions;  //contains the id's of the representatives of the sets
-
-//    void merge(const UnionFindLeafSet &other) {
-//        assert(repr_valid && other.repr_valid);
-//        repr = data_structure->merge(repr, other.repr);
-//    }
 };
