@@ -54,16 +54,43 @@ public:
      * @return an element from the set
      */
     virtual leaf_number pop() = 0;
+
+    /**
+     * @brief apply_constraints partitions the set into new sets according to the constraints
+     * @param constraints the constraints that must be fulfilled
+     */
+    virtual void apply_constraints(const std::vector<constraint> &constraints) = 0;
+
+    /**
+     * @brief to_set converts the LeafSet to a std::set
+     * @return a std::set that contains the leafs in this LeafSet
+     */
+    virtual inline std::set<leaf_number> to_set() const = 0;
 };
 
 
-
+/**
+ * @brief The BitLeafSet class represents a set of leafs
+ *
+ * Membership to this class is indicated by a single bit in a bit-array
+ */
 class BitLeafSet : public AbstractLeafSet<BitLeafSet>, boost::dynamic_bitset<> {
     typedef std::vector<std::shared_ptr<BitLeafSet>> partition_list;
 public:
     BitLeafSet() = default;
+
+    /**
+     * @brief BitLeafSet creates a new BitLeafSet with the given parameters
+     * @param num_bits the number of bits (capacity) of the set
+     * @param value
+     */
     BitLeafSet (size_type num_bits, unsigned long value) : boost::dynamic_bitset<>(num_bits, value) {
     }
+
+    /**
+     * @brief UnionFindLeafSet creates a LeafSet from an initializer list. Only used for tests
+     * @param l the initializer list
+     */
     BitLeafSet (std::initializer_list<leaf_number> l)  {
         auto max_val = *std::max_element(l.begin(), l.end());
         this->resize(max_val + 1, 0);
@@ -71,24 +98,28 @@ public:
             (*this)[elem] = 1;
         }
     }
-    inline
-    BitLeafSet (size_t size) {
+
+    /**
+     * @brief BitLeafSet creates a new BitLeafSet with the given size
+     * @param size the size of the leafset
+     */
+    inline BitLeafSet (size_t size) {
         this->resize(size, 1);
     }
-    inline
-    bool contains(leaf_number leaf) const {
+
+    inline bool contains(leaf_number leaf) const {
         return leaf < boost::dynamic_bitset<>::size() && (*this)[leaf];
     }
+
     inline size_t size() const {
         return this->count();
     }
-    inline
-    void insert(const leaf_number l) {
+
+    inline void insert(const leaf_number l) {
         (*this)[l] = 1;
     }
 
-    inline
-    std::set<leaf_number> to_set() const {
+    inline std::set<leaf_number> to_set() const {
         std::set<leaf_number> set;
         leaf_number pos = this->find_first();
         while (pos != npos) {
@@ -98,8 +129,7 @@ public:
         return set;
     }
 
-    inline
-    leaf_number pop() {
+    inline leaf_number pop() {
         leaf_number pos = this->find_first();
         (*this)[pos] = false;
         return pos;
@@ -126,7 +156,7 @@ public:
         return std::make_tuple(part_one, part_two);
     }
 
-    //TODO this method should be in the super class
+
     /**
      * Returns the number of partition tuples that can be formed by combining the
      * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
@@ -212,26 +242,47 @@ private:
     }
 };
 
-
+/**
+ * @brief The UnionFindLeafSet class is used as a representation of a set of leafs
+ *
+ * This class internally uses the union find datastructre to efficently implement
+ * find and merge operations.
+ */
 class UnionFindLeafSet  {
     typedef std::vector<std::shared_ptr<UnionFindLeafSet>> partition_list;
     static const size_t invalid_entry = std::numeric_limits<size_t>::max();
 public:
+    /**
+     * @brief UnionFindLeafSet copy constructor
+     * @param obj
+     */
     UnionFindLeafSet(const UnionFindLeafSet& obj) {
         data_structure = obj.data_structure;
         repr = obj.repr;
         repr_valid = obj.repr_valid;
-
-        //list_of_partitions = obj.list_of_partitions; I dont think we need to copy this
     }
 
+    /**
+     * @brief UnionFindLeafSet creates a new LeafSet with the given parameters
+     * @param data_structure the union-find datastructre
+     * @param repr the number of the leaf that is the representative of the set
+     *          in the union-find datastructre
+     */
     UnionFindLeafSet(std::shared_ptr<UnionFind> data_structure, size_t repr)
         : data_structure(data_structure), repr(repr), repr_valid(true) {
         assert(repr != invalid_entry);
     }
 
+    /**
+     * @brief UnionFindLeafSet creates a new LeafSet with the given union-find structre
+     * @param data_structure the union-find datastructre
+     */
     UnionFindLeafSet(std::shared_ptr<UnionFind> data_structure) : data_structure(data_structure) {}
 
+    /**
+     * @brief UnionFindLeafSet creates a new LeafSet with <num_elems> elements
+     * @param num_elems the size of the structure
+     */
     UnionFindLeafSet(size_t num_elems) {
         data_structure = std::make_shared<UnionFind>(num_elems);
         for (size_t i = 0; i < data_structure->size(); i++) {
@@ -239,9 +290,12 @@ public:
         }
         repr = 0;
         repr_valid = true;
-        //list_of_partitions = std::vector<std::shared_ptr<UnionFindLeafSet> >();
     }
 
+    /**
+     * @brief UnionFindLeafSet creates a LeafSet from an initializer list. Only used for tests
+     * @param l the initializer list
+     */
     UnionFindLeafSet (std::initializer_list<leaf_number> l)  {
         auto max_val = *std::max_element(l.begin(), l.end());
         data_structure = std::make_shared<UnionFind>(max_val + 1);
@@ -276,13 +330,6 @@ public:
         }
     }
 
-    inline void insert(const leaf_number l) {
-        assert(repr != invalid_entry);
-        assert(repr_valid);
-
-        data_structure->get_parent().at(l) = repr;
-    }
-
     inline std::set<leaf_number> to_set() const {
         assert(repr != invalid_entry);
 
@@ -302,17 +349,16 @@ public:
         assert(repr != invalid_entry);
         assert(repr_valid);
 
-        //TODO this is inefficient. Pop can be efficiently implemented with backpointers
+        //Possible Imrpovement: Use pointers that point from the parent to its childs
         if (this->size() == 1) {
             repr_valid = false;
-            //std::cout << "invalid entry set\n"; //debug
             data_structure->get_parent().at(repr) = invalid_entry;
             return repr;
         }
 
         //this is needed to make sure the chain of parent pointers is not broken, if we delete elements
         //this works, because find has path compression and sets the parent to the representative
-        //TODO we dont have to do this for every call of pop(). We can do this once and remember that we already did it.
+        //Possible Improvement: we dont have to do this for every call of pop(). We can do this once and remember that we already did it.
         //  but we would have to be careful to forget it, e.g. if we merge to sets.
         for (size_t i = 0; i < data_structure->size(); i++) {
             data_structure->find(i);
@@ -332,7 +378,7 @@ public:
         return 0;
     }
 
-    //TODO this method should be in the super class
+
     /**
      * Returns the number of partition tuples that can be formed by combining the
      * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
@@ -350,17 +396,15 @@ public:
         assert(list_of_partitions.size() == 0);
         assert(repr != invalid_entry);
 
-        //assert(data_structure->get_parent().at(repr) == repr);
-        //TODO: use backpointers!!!
+        //Possible Improvement: Implement pointers that point from a parent to its child.
+            //this might speed up some things asymptotically, but has of course a constant slow down.
         //set all elements that are not in this set to invalid
         for (size_t i = 0; i < data_structure->size(); i++) {
             if (data_structure->find(i) != repr) {
                 data_structure->get_parent().at(i) = invalid_entry;
             }
         }
-        assert(repr != invalid_entry);  //new
 
-        //if the datastrucute is not copied, we must apply "allToSingletons" only to the elements in the current set
         data_structure->allToSingletons();
         repr_valid = false;
 
@@ -370,7 +414,7 @@ public:
             repr = data_structure->merge(cons.smaller_left, cons.smaller_right);
         }
 
-        //TODO how slow are std::sets? we could use a bool array as well
+        //Possible improvement: use bool-arrays for this
         //create a list of all distinct sets
         std::set<leaf_number> sets;
         for (size_t i = 0; i < data_structure->size(); i++) {
@@ -386,11 +430,16 @@ public:
 
     }
 
+    /**
+     * @brief get_nth_partition_tuple creates two new LeafSets, that represent the nth partition of the set of sets
+     * @param n the number of the required partition
+     * @return two new LeafSets that represent the nth partition
+     */
     std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>
     get_nth_partition_tuple(size_t n) const {
         assert(repr != invalid_entry);
 
-        //idea: it may be possible to copy the datastructure only once, since the two sets are disjoint
+        //Possible improvement: it may be possible to copy the datastructure only once, since the two sets are disjoint
         assert(n > 0 && n <= number_partition_tuples());
         assert(list_of_partitions.size() > 1);  //we need at least 2 sets, otherwise creating partitions does not make sense
 
@@ -444,7 +493,7 @@ public:
 
 
 private:
-    std::shared_ptr<UnionFind> data_structure;
+    std::shared_ptr<UnionFind> data_structure;  //pointer to the UnionFind datastructure
     size_t repr; //this is the number of the representative of this set. its an index to the array of the union find data structure
     bool repr_valid = false; //true iff the representative is valid
     std::vector<leaf_number> list_of_partitions;  //contains the id's of the representatives of the sets
