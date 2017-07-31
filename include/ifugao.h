@@ -119,12 +119,17 @@ protected:
         // TODO reconsider the whole std::set usage vs std::vector
         auto set = leaves.to_set();
         std::vector<leaf_number> leaves_vec(set.begin(), set.end());
-        const auto result =
-                std::make_shared<AllLeafCombinationsNode>(leaves_vec);
-        if(unrooted) {
-            return std::make_shared<UnrootedNode>(result);
+        
+        if (leaves_vec.size() == 1) {
+            return std::make_shared<Leaf>(leaves_vec[0]);
         } else {
-            return result;
+            const auto result =
+                std::make_shared<AllLeafCombinationsNode>(leaves_vec);
+            if(unrooted) {
+                return std::make_shared<UnrootedNode>(result);
+            } else {
+                return result;
+            }
         }
     }
 
