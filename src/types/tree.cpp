@@ -4,20 +4,30 @@
 /*** Node methods ***/
 /********************/
 std::string Node::to_newick_string(const label_mapper &id_to_label) const {
-    std::stringstream ss;
+    StringStream ss;
     this->to_newick_string(ss, id_to_label);
     ss << ";";
-    return ss.str();
+    return ss.to_string();
 }
 
 std::string Node::to_compressed_newick_string(
         const label_mapper &id_to_label) const {
-    std::stringstream ss;
+    StringStream ss;
     this->to_newick_string(ss, id_to_label, true);
     ss << ";";
-    return ss.str();
+    return ss.to_string();
 }
 
+void Node::print_newick_string(FILE *file,
+                               const label_mapper &id_to_label) const {
+    FileStream fs(file);
+    this->to_newick_string(fs, id_to_label);
+}
+
+void Node::print_compressed_newick_string(
+            FILE *file, const label_mapper &id_to_label) const {
+    //TODO
+}
 std::vector<constraint> Node::extract_constraints() const {
     std::vector<constraint> constraints;
     if (!this->is_leaf()) {
@@ -30,11 +40,11 @@ std::vector<constraint> Node::extract_constraints() const {
 /********************/
 /*** Leaf methods ***/
 /********************/
-void Leaf::to_newick_string(std::ostream &ss,
+void Leaf::to_newick_string(Stream &stream,
                             const label_mapper &id_to_label,
                             bool compressed /* = false */,
                             bool with_root /* = false */) const {
-    ss << id_to_label[this->leaf_id];
+    stream << id_to_label[this->leaf_id];
 };
 
 /*************************/
@@ -89,53 +99,53 @@ std::tuple<leaf_number, leaf_number> InnerNode::get_constraints(
     return std::make_tuple(left_most_leaf, right_most_leaf);
 }
 
-void InnerNode::to_newick_string(std::ostream &ss,
+void InnerNode::to_newick_string(Stream &stream,
                                  const label_mapper &id_to_label,
                                  bool compressed /* = false */,
                                  bool with_root /* = false */) const {
-    ss << "(";
+    stream << "(";
     if (with_root) {
-        ss << id_to_label.root_label << ",";
+        stream << id_to_label.root_label << ",";
     }
-    this->left->to_newick_string(ss, id_to_label, compressed);
-    ss << ",";
-    this->right->to_newick_string(ss, id_to_label, compressed);
-    ss << ")";
+    this->left->to_newick_string(stream, id_to_label, compressed);
+    stream << ",";
+    this->right->to_newick_string(stream, id_to_label, compressed);
+    stream << ")";
 };
 
 /****************************/
 /*** UnrootedNode methods ***/
 /****************************/
-void UnrootedNode::to_newick_string(std::ostream &ss,
+void UnrootedNode::to_newick_string(Stream &stream,
                                     const label_mapper &id_to_label,
                                     bool compressed /* = false */,
                                     bool with_root /* = false */) const {
-    this->node->to_newick_string(ss, id_to_label, compressed, true);
+    this->node->to_newick_string(stream, id_to_label, compressed, true);
 }
 
 /***************************************/
 /*** AllLeafCombinationsNode methods ***/
 /***************************************/
 void AllLeafCombinationsNode::to_newick_string(
-        std::ostream &ss, const label_mapper &id_to_label,
+        Stream &stream, const label_mapper &id_to_label,
         bool compressed /* = false */, bool with_root /* = false */) const {
     if (with_root) {
-        ss << "(" << id_to_label.root_label << ",";
+        stream << "(" << id_to_label.root_label << ",";
     }
     if (this->leaves.size() == 1) {
-        ss << id_to_label[leaves[0]];
+        stream << id_to_label[leaves[0]];
     } else if (this->leaves.size() == 2) {
-        ss << "(" << id_to_label[leaves[0]] << "," << id_to_label[leaves[1]]
+        stream << "(" << id_to_label[leaves[0]] << "," << id_to_label[leaves[1]]
            << ")";
     } else {
         assert(this->leaves.size() > 2);
         if (compressed) {
-            ss << "{";
-            ss << id_to_label[this->leaves[0]];
+            stream << "{";
+            stream << id_to_label[this->leaves[0]];
             for(size_t i = 1; i < this->leaves.size(); ++i) {
-                ss << "," << id_to_label[this->leaves[i]];
+                stream << "," << id_to_label[this->leaves[i]];
             }
-            ss << "}";
+            stream << "}";
         } else {
             assert(0);
             // TODO generate all binary trees
@@ -143,7 +153,7 @@ void AllLeafCombinationsNode::to_newick_string(
         }
     }
     if (with_root) {
-        ss << ")"; 
+        stream << ")"; 
     }
 }
 
@@ -151,12 +161,13 @@ void AllLeafCombinationsNode::to_newick_string(
 /*** AllTreeCombinationsNode methods ***/
 /***************************************/
 void AllTreeCombinationsNode::to_newick_string(
-        std::ostream &ss, const label_mapper &id_to_label,
+        Stream &stream, const label_mapper &id_to_label,
         bool compressed /* = false */, bool with_root /* = false */) const {
-    this->nodes[0]->to_newick_string(ss, id_to_label, compressed, with_root);
+    this->nodes[0]->to_newick_string(stream, id_to_label,
+                                     compressed, with_root);
     for (size_t i = 1; i < this->nodes.size(); ++i) {
-        ss << "|";
+        stream << "|";
         this->nodes[i]->
-                to_newick_string(ss, id_to_label, compressed, with_root);
+                to_newick_string(stream, id_to_label, compressed, with_root);
     }
 }

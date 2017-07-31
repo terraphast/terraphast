@@ -132,13 +132,13 @@ int terraceAnalysis(missingData *m,
         auto all_trees = algo.scan_terrace(leaves, constraints, true);
         count = all_trees.size();
         for (Tree t : all_trees) {
-            fprintf(allTreesOnTerrace, "%s\n", t->to_newick_string(id_to_label).c_str());
+            t->print_newick_string(allTreesOnTerrace, id_to_label);
         }
     } else if (enumerateCompressedTrees) {
         FindCompressedTree algo;
         auto com_tree = algo.scan_terrace(leaves, constraints, true);
-        fprintf(allTreesOnTerrace, "%s\n",
-                com_tree->to_compressed_newick_string(id_to_label).c_str());
+        com_tree->
+            print_compressed_newick_string(allTreesOnTerrace, id_to_label);
         count = com_tree->count_trees();
     } else if(countTrees) {
         CountAllRootedTrees algo;

@@ -1,9 +1,6 @@
 /*** DO NOT INCLUDE DIRECTLY, INCLUDE types.h INSTEAD ***/
 #pragma once
 
-#include <sstream>
-#include <gmpxx.h>
-
 #include "types.h"
 /**
  * Abstract representative of any Tree object used internally.
@@ -58,6 +55,24 @@ public:
     std::string to_compressed_newick_string(const label_mapper &id_to_label) const;
 
     /**
+     * Prints the newick representation of this node/tree. Recurses all children
+     * if there are any.
+     * @param id_to_label Mapper of leaf IDs to their label.
+     * @return A string representation of this node/tree.
+     */
+    void print_newick_string(FILE *file,
+                             const label_mapper &id_to_label) const;
+
+    /**
+     * Prints the compresed newick representation of this node/tree. Recurses
+     * all children if there are any.
+     * @param id_to_label Mapper of leaf IDs to their label.
+     * @return A string representation of this node/tree.
+     */
+    void print_compressed_newick_string(FILE *file,
+                                        const label_mapper &id_to_label) const;
+
+    /**
      * Returns a vector containing all constraints infered from this tree.
      * @return All constraints of this tree.
      */
@@ -82,7 +97,7 @@ protected:
     }
 
     /** Used by public to_newick_string */
-    virtual void to_newick_string(std::ostream &ss,
+    virtual void to_newick_string(Stream &stream,
                                   const label_mapper &id_to_label,
                                   bool compressed = false,
                                   bool with_root = false) const = 0;
@@ -106,7 +121,7 @@ public:
     }
 
 protected:
-    void to_newick_string(std::ostream &ss,
+    void to_newick_string(Stream &stream,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
@@ -138,7 +153,7 @@ public:
 protected:
     std::tuple<leaf_number, leaf_number> get_constraints(
             std::vector<constraint> &constraints) const;
-    void to_newick_string(std::ostream &ss,
+    void to_newick_string(Stream &stream,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
@@ -160,7 +175,7 @@ public:
     }
 
 protected:
-    void to_newick_string(std::ostream &ss,
+    void to_newick_string(Stream &stream,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
@@ -185,7 +200,7 @@ public:
     }
 
 protected:
-    void to_newick_string(std::ostream &ss,
+    void to_newick_string(Stream &stream,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
@@ -216,7 +231,7 @@ public:
     }
 
 protected:
-    void to_newick_string(std::ostream &ss,
+    void to_newick_string(Stream &stream,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
