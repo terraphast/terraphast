@@ -20,7 +20,7 @@ bipartition_iterator::bipartition_iterator(const ranked_bitvector& leaves, const
 }
 
 bool bipartition_iterator::in_left_partition(index i) const {
-	return (m_bip & (1ull << (i - 1))) != 0;
+	return (m_bip & (1ull << ((i - 1) & (bits::word_bits - 1)))) != 0;
 }
 
 ranked_bitvector bipartition_iterator::find_set_reps() const {
