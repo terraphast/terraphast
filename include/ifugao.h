@@ -1,10 +1,6 @@
 #pragma once
 #include "types.h"
 
-#include <iostream>
-#include <iterator>
-#include <gmpxx.h>
-
 /**
  * Returns a vector containing all constraints that still are valid for the given set of leaves.
  *
