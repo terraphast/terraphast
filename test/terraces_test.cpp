@@ -230,7 +230,8 @@ TEST(FindCompressedUnrootedTree, example_from_slides) {
     FindCompressedTree get_trees;
     auto result = get_trees.scan_terrace(leaves, constraints, true);
 
-    ASSERT_EQ(result->to_newick_string(id_to_label), "(s3,{s1,s2,s4,s5});");
+    ASSERT_EQ(result->to_compressed_newick_string(id_to_label),
+              "(s3,{s1,s2,s4,s5});");
 
     ntree_destroy(tree);
     freeMissingData(example1);

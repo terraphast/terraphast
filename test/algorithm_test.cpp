@@ -370,7 +370,7 @@ TEST(FindCompressedTree, example_from_slides) {
     FindCompressedTree algo;
     auto result = algo.scan_terrace(leaves, constraints);
 
-    ASSERT_EQ(result->to_newick_string(id_to_label),
+    ASSERT_EQ(result->to_compressed_newick_string(id_to_label),
               "((1,2),{3,4,5})|(3,(1,(2,(4,5)))|(2,{1,4,5})|((1,2),(4,5)))|(((1,2),3),(4,5));");
 }
 
