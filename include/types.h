@@ -2,9 +2,10 @@
 
 #include <cstddef>
 #include <assert.h>
+#include <gmpxx.h>
 #include <map>
 #include <memory>
-#include <ostream>
+#include <iostream>
 #include <set>
 #include <string>
 #include <tuple>
@@ -13,13 +14,13 @@
 typedef size_t leaf_number;
 
 struct label_mapper {
-    std::vector<std::string> labels;
-    std::string root_label;
+    std::vector<char*> labels;
+    char* root_label;
     
     label_mapper() {}
-    label_mapper(std::vector<std::string> labels) : labels(labels) {}
+    label_mapper(std::vector<char*> labels) : labels(labels) {}
     
-    inline const std::string& operator[](leaf_number leaf_id) const {
+    inline char* operator[](leaf_number leaf_id) const {
         assert(leaf_id < labels.size());
         return labels.at(leaf_id);
     }
@@ -46,6 +47,9 @@ struct constraint {
     }
 };
 
+typedef std::vector<constraint> constraint_list;
+
+#include "types/stream.h"
 #include "types/UnionFind.h"
 #include "types/tree.h"
 #include "types/leaf_set.h"          // includes all sub-LeafSet types itself

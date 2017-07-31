@@ -156,7 +156,7 @@ Tree root_recursive(ntree_t *current_ntree, ntree_t *previous,
         size_t leaf_id = id_to_label.size();
         
         // handle label_mapper business
-        id_to_label.labels.push_back(std::string(current_ntree->label));
+        id_to_label.labels.push_back(current_ntree->label);
         
         return std::make_shared<Leaf>(leaf_id);
     } else if (current_ntree->children_count == 2) {

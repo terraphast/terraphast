@@ -142,7 +142,7 @@ TEST(ApplyConstraintsTest, no_merges) {
 TEST(GetAllBinaryTrees, with_tree_leafs) {
 
     LeafSet leaves = {0, 1, 2};
-    label_mapper id_to_label({"1", "2", "3"});
+    label_mapper id_to_label({(char*)"1", (char*)"2", (char*)"3"});
 
     auto result = FindAllRootedTrees::get_all_binary_trees(leaves);
     
@@ -163,7 +163,7 @@ TEST(GetAllBinaryTrees, with_four_leaves) {
 
     LeafSet leaves = {0, 1, 2, 3};
     label_mapper id_to_label;
-    id_to_label.labels = { "1", "2", "3", "4" };
+    id_to_label.labels = { (char*)"1", (char*)"2", (char*)"3", (char*)"4" };
 
     auto result = FindAllRootedTrees::get_all_binary_trees(leaves);
 
@@ -329,7 +329,8 @@ TEST(FindAllRootedTrees, example_from_slides) {
 
     LeafSet leaves = {0, 1, 2, 3, 4};
     label_mapper id_to_label;
-    id_to_label.labels = {"1", "2", "3", "4", "5"};
+    id_to_label.labels = {(char*)"1", (char*)"2", (char*)"3", (char*)"4",
+                          (char*)"5"};
 
     std::vector<constraint> constraints;
 
@@ -357,7 +358,8 @@ TEST(FindCompressedTree, example_from_slides) {
 
     LeafSet leaves = {0, 1, 2, 3, 4};
     label_mapper id_to_label;
-    id_to_label.labels = { "1", "2", "3", "4", "5" };
+    id_to_label.labels = {(char*)"1", (char*)"2", (char*)"3", (char*)"4",
+                          (char*)"5" };
 
     std::vector<constraint> constraints;
 
@@ -377,7 +379,7 @@ TEST(FindCompressedTree, example_from_slides) {
 TEST(FindConstraintsTest, example_from_slides) {
     LeafSet leaves = {0, 1, 2};
     label_mapper id_to_label;
-    id_to_label.labels = { "1", "2", "3" };
+    id_to_label.labels = {(char*)"1", (char*)"2", (char*)"3"};
     std::vector<constraint> constraints;
 
     constraint cons1 = {0, 1, 2};

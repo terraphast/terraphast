@@ -63,11 +63,11 @@ TEST(Root_at_Test, simple_tree) {
     ASSERT_FALSE(root->left->is_leaf());
     auto left = std::static_pointer_cast<InnerNode>(root->left);
     ASSERT_TRUE(left->left->is_leaf());
-    ASSERT_EQ("A", id_to_label[left->left->get_leaf()]);
+    ASSERT_EQ("A", std::string(id_to_label[left->left->get_leaf()]));
     ASSERT_TRUE(left->right->is_leaf());
-    ASSERT_EQ("B", id_to_label[left->right->get_leaf()]);
+    ASSERT_EQ("B", std::string(id_to_label[left->right->get_leaf()]));
     ASSERT_TRUE(root->right->is_leaf());
-    ASSERT_EQ("C", id_to_label[root->right->get_leaf()]);
+    ASSERT_EQ("C", std::string(id_to_label[root->right->get_leaf()]));
     
 
     ntree_destroy(tree);
