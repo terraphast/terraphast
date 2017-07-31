@@ -1,5 +1,6 @@
 #include <terraces/advanced.hpp>
 
+#include <terraces/errors.hpp>
 #include <terraces/subtree_extraction.hpp>
 #include <terraces/supertree.hpp>
 
@@ -23,13 +24,21 @@ supertree_data prepare_constraints(const tree& tree, const bitmatrix& data, name
 bool check_terrace(const supertree_data& data) {
 	tree_enumerator<variants::check_callback> enumerator{
 	        {}, data.num_leaves, data.constraints.size()};
-	return enumerator.run(data.num_leaves, data.constraints, data.root) > 1;
+	try {
+		return enumerator.run(data.num_leaves, data.constraints, data.root) > 1;
+	} catch (terraces::tree_count_overflow_error&) {
+		return true;
+	}
 }
 
 uint64_t count_terrace(const supertree_data& data) {
 	tree_enumerator<variants::clamped_count_callback> enumerator{
 	        {}, data.num_leaves, data.constraints.size()};
-	return enumerator.run(data.num_leaves, data.constraints, data.root).value();
+	try {
+		return enumerator.run(data.num_leaves, data.constraints, data.root).value();
+	} catch (terraces::tree_count_overflow_error&) {
+		return std::numeric_limits<uint64_t>::max();
+	}
 }
 
 mpz_class count_terrace_bigint(const supertree_data& data) {
