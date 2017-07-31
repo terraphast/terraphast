@@ -9,10 +9,19 @@
 
 //Black Magic
 class BitLeafSet;
-typedef BitLeafSet LeafSet;
+class SimpleLeafSet;
+class UnionFindLeafSet;
 
-//class UnionFindLeafSet;
+/************************/
+/*** pick flavor here ***/
+/************************/
+typedef BitLeafSet LeafSet;
 //typedef UnionFindLeafSet LeafSet;
+
+typedef std::unique_ptr<LeafSet> LeafSetPtr;
+typedef std::unique_ptr<BitLeafSet> BitLeafSetPtr;
+typedef std::unique_ptr<SimpleLeafSet> SimpleLeafSetPtr;
+typedef std::unique_ptr<UnionFindLeafSet> UnionFindLeafSetPtr;
 
 /**
  * Checks whenever the n-th bit is set in the given number
@@ -135,8 +144,8 @@ public:
         return pos;
     }
 
-    std::tuple<std::shared_ptr<BitLeafSet>,
-            std::shared_ptr<BitLeafSet> > get_nth_partition_tuple(const size_t n) {
+    std::tuple<std::shared_ptr<BitLeafSet>, std::shared_ptr<BitLeafSet>>
+    get_nth_partition_tuple(const size_t n) const {
 
         assert(list_of_partitions.size() > 0);
 
@@ -163,7 +172,7 @@ public:
      * the list.
      * @return the number of partition tuples that can be formed from the given list
      */
-    inline size_t number_partition_tuples() {
+    inline size_t number_partition_tuples() const {
         assert(list_of_partitions.size() > 1);
         return (1 << (list_of_partitions.size() - 1)) - 1;
     }
@@ -232,7 +241,7 @@ private:
         return sets;
     }
     inline
-    std::shared_ptr<BitLeafSet> create_empty() {
+    std::shared_ptr<BitLeafSet> create_empty() const {
         return std::make_shared<BitLeafSet>(boost::dynamic_bitset<>::size(), 0);
     }
 
