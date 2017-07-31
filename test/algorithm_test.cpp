@@ -150,7 +150,7 @@ TEST(GetAllBinaryTrees, with_tree_leafs) {
 
     std::vector<std::string> result_strings;
 
-    for (auto &temp : result) {
+    for (auto temp : result) {
         result_strings.push_back(temp->to_newick_string(id_to_label));
     }
 
@@ -212,7 +212,7 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
     
     ASSERT_EQ(result.size(), sets_set.size());
     
-    for(auto &r : result) {
+    for(auto r : result) {
         ASSERT_TRUE(sets_set.find(r->to_set()) != sets_set.end());
     }
 }
@@ -264,7 +264,7 @@ TEST(GetNthPartitionTuple, example_from_slides) {
     LeafSet leaves = {0, 1, 2, 3, 4};
     std::vector<constraint> constraints;
     constraints.push_back({0, 1, 2});
-    constraints.push_back({3, 4, 2});
+    constraints.push_back({3, 4, 2}); //TODO
 
     leaves.apply_constraints(constraints);
     auto result = leaves.get_list_of_partitions();
@@ -290,9 +290,9 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
     LeafSet leaves = {0, 1, 2, 3, 4, 5, 6, 7};
     std::vector<constraint> constraints;
     constraints.push_back({0, 1, 2});
-    constraints.push_back({3, 4, 2});
-    constraints.push_back({5, 6, 2});
-    constraints.push_back({6, 7, 2});
+    constraints.push_back({3, 4, 2}); //TODO
+    constraints.push_back({5, 6, 2}); //TODO
+    constraints.push_back({6, 7, 2}); //TODO
 
     leaves.apply_constraints(constraints);
     auto result = leaves.get_list_of_partitions();
