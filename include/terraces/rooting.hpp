@@ -9,6 +9,14 @@ namespace terraces {
 // child of our new root, with the res tof the tree being the left subtree.
 // NOTE that after re-rooting, the tree will no longer possess min-heap
 // structure!
+
+/** Re-roots the given tree in-place.
+
+   The given root_leaf will be the right
+   child of our new root, with the res tof the tree being the left subtree.
+   NOTE that after re-rooting, the tree will no longer possess min-heap
+   structure!
+*/
 void reroot_inplace(tree& t, index root_leaf);
 } // namespace terraces
 

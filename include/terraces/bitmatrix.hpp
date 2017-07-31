@@ -7,6 +7,8 @@
 
 namespace terraces {
 
+/** A (memory-wise) compact bitmatrix with fast acceccor methods.
+*/
 class bitmatrix {
 public:
 	bitmatrix(index rows, index cols);
