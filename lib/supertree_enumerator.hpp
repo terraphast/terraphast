@@ -145,7 +145,7 @@ auto tree_enumerator<Callback, Parallel>::iterate(bipartition_iterator& bip_it,
                                                   const bitvector& new_constraint_occ)
         -> result_type {
 	if (m_cb.fast_return(bip_it)) {
-		return m_cb.fast_return_value(bip_it);
+		return m_cb.exit(m_cb.fast_return_value(bip_it));
 	}
 
 	auto result = m_cb.begin_iteration(bip_it, new_constraint_occ, *m_constraints);

@@ -7,20 +7,25 @@
 
 namespace terraces {
 
-/** A (memory-wise) compact bitmatrix with fast acceccor methods.
-*/
+/** A (memory-wise) compact bitmatrix. */
 class bitmatrix {
 public:
+	/** Constructs a bitmatrix with \p rows rows and \p cols columns. */
 	bitmatrix(index rows, index cols);
 
+	/** @returns the number of rows. */
 	index rows() const;
+	/** @returns the number of columns. */
 	index cols() const;
 
+	/** Returns the entry at cordinates (row, col). */
 	bool get(index row, index col) const;
+	/** Sets the entry at coordinates (row, col). */
 	void set(index row, index col, bool val);
-	/** Writes the bit rows 'in1' and 'in2' to row 'out'. */
+	/** Writes the bit rows \p in1 | \p in2 to row \p out. */
 	void row_or(index in1, index in2, index out);
 
+	/** Returns a bitmatrix containing only the given columns. */
 	bitmatrix get_cols(const std::vector<std::size_t>& cols) const;
 
 private:

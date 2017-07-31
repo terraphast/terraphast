@@ -21,13 +21,13 @@ supertree_data prepare_constraints(const tree& tree, const bitmatrix& data, name
 }
 
 bool check_terrace(const supertree_data& data) {
-	tree_enumerator<variants::fast_check_decorator<variants::check_callback>> enumerator{
+	tree_enumerator<variants::check_callback> enumerator{
 	        {}, data.num_leaves, data.constraints.size()};
 	return enumerator.run(data.num_leaves, data.constraints, data.root) > 1;
 }
 
 uint64_t count_terrace(const supertree_data& data) {
-	tree_enumerator<variants::count_callback<clamped_uint>> enumerator{
+	tree_enumerator<variants::clamped_count_callback> enumerator{
 	        {}, data.num_leaves, data.constraints.size()};
 	return enumerator.run(data.num_leaves, data.constraints, data.root).value();
 }

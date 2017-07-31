@@ -36,7 +36,6 @@ bool bipartition_iterator::is_valid() const { return m_bip < m_end; }
 
 void bipartition_iterator::increase() {
 	m_bip++;
-	// TODO can we do better?
 	if (is_valid()) {
 		m_subleaves.blank();
 		index ii = 0;

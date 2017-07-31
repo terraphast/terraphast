@@ -36,9 +36,20 @@ using constraints = std::vector<constraint>;
 std::ostream& operator<<(std::ostream& s, const constraint& c);
 std::ostream& operator<<(std::ostream& stream, utils::named_output<constraints, name_map>);
 
-// TODO move to separate header
+/**
+ * Extracts all LCA constraints from the input trees.
+ * \param trees The input trees.
+ * \returns All LCA constraints for the input trees.
+ * For every inner edge, one LCA constraint based on the leftmost and rightmost descendant
+ * of the endpoints are is extracted.
+ */
 constraints compute_constraints(const std::vector<tree>& trees);
 
+/**
+ * Removes duplicate constraints from the input vector
+ * \param in_c The input constraints.
+ * \returns The input constraints without duplicates and possibly reordered.
+ */
 index deduplicate_constraints(constraints& in_c);
 
 } // namespace terraces
