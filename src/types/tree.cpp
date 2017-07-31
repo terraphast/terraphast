@@ -30,7 +30,7 @@ std::vector<constraint> Node::extract_constraints() const {
 /********************/
 /*** Leaf methods ***/
 /********************/
-void Leaf::to_newick_string(std::stringstream &ss,
+void Leaf::to_newick_string(std::ostream &ss,
                             const label_mapper &id_to_label,
                             bool compressed /* = false */,
                             bool with_root /* = false */) const {
@@ -89,7 +89,7 @@ std::tuple<leaf_number, leaf_number> InnerNode::get_constraints(
     return std::make_tuple(left_most_leaf, right_most_leaf);
 }
 
-void InnerNode::to_newick_string(std::stringstream &ss,
+void InnerNode::to_newick_string(std::ostream &ss,
                                  const label_mapper &id_to_label,
                                  bool compressed /* = false */,
                                  bool with_root /* = false */) const {
@@ -106,7 +106,7 @@ void InnerNode::to_newick_string(std::stringstream &ss,
 /****************************/
 /*** UnrootedNode methods ***/
 /****************************/
-void UnrootedNode::to_newick_string(std::stringstream &ss,
+void UnrootedNode::to_newick_string(std::ostream &ss,
                                     const label_mapper &id_to_label,
                                     bool compressed /* = false */,
                                     bool with_root /* = false */) const {
@@ -117,12 +117,10 @@ void UnrootedNode::to_newick_string(std::stringstream &ss,
 /*** AllLeafCombinationsNode methods ***/
 /***************************************/
 void AllLeafCombinationsNode::to_newick_string(
-        std::stringstream &ss, const label_mapper &id_to_label,
+        std::ostream &ss, const label_mapper &id_to_label,
         bool compressed /* = false */, bool with_root /* = false */) const {
     if (with_root) {
         ss << "(" << id_to_label.root_label << ",";
-        this->to_newick_string(ss, id_to_label, compressed);
-        ss << ")"; 
     }
     if (this->leaves.size() == 1) {
         ss << id_to_label[leaves[0]];
@@ -139,9 +137,13 @@ void AllLeafCombinationsNode::to_newick_string(
             }
             ss << "}";
         } else {
+            assert(0);
             // TODO generate all binary trees
             
         }
+    }
+    if (with_root) {
+        ss << ")"; 
     }
 }
 
@@ -149,7 +151,7 @@ void AllLeafCombinationsNode::to_newick_string(
 /*** AllTreeCombinationsNode methods ***/
 /***************************************/
 void AllTreeCombinationsNode::to_newick_string(
-        std::stringstream &ss, const label_mapper &id_to_label,
+        std::ostream &ss, const label_mapper &id_to_label,
         bool compressed /* = false */, bool with_root /* = false */) const {
     this->nodes[0]->to_newick_string(ss, id_to_label, compressed, with_root);
     for (size_t i = 1; i < this->nodes.size(); ++i) {

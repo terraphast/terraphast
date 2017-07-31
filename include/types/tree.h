@@ -82,7 +82,7 @@ protected:
     }
 
     /** Used by public to_newick_string */
-    virtual void to_newick_string(std::stringstream &ss,
+    virtual void to_newick_string(std::ostream &ss,
                                   const label_mapper &id_to_label,
                                   bool compressed = false,
                                   bool with_root = false) const = 0;
@@ -106,7 +106,7 @@ public:
     }
 
 protected:
-    void to_newick_string(std::stringstream &ss,
+    void to_newick_string(std::ostream &ss,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
@@ -138,7 +138,7 @@ public:
 protected:
     std::tuple<leaf_number, leaf_number> get_constraints(
             std::vector<constraint> &constraints) const;
-    void to_newick_string(std::stringstream &ss,
+    void to_newick_string(std::ostream &ss,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
@@ -160,7 +160,7 @@ public:
     }
 
 protected:
-    void to_newick_string(std::stringstream &ss,
+    void to_newick_string(std::ostream &ss,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
@@ -185,7 +185,7 @@ public:
     }
 
 protected:
-    void to_newick_string(std::stringstream &ss,
+    void to_newick_string(std::ostream &ss,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
@@ -216,7 +216,7 @@ public:
     }
 
 protected:
-    void to_newick_string(std::stringstream &ss,
+    void to_newick_string(std::ostream &ss,
                           const label_mapper &id_to_label,
                           bool compressed = false,
                           bool with_root = false) const;
