@@ -80,6 +80,10 @@ add_executable(terraces_main src/main.cpp)
 set_target_properties(terraces_main PROPERTIES COMPILE_FLAGS "${TARGET_CXX_FLAGS}")
 target_link_libraries(terraces_main terraces ${COMMON_LIBRARIEY})
 
+add_executable(missing_data_to_nexus src/missing_data_to_nexus.cpp)
+set_target_properties(missing_data_to_nexus PROPERTIES COMPILE_FLAGS "${TARGET_CXX_FLAGS}")
+target_link_libraries(missing_data_to_nexus terraces ${COMMON_LIBRARIEY})
+
 ## TESTS & BENCHMARK ##################################################################
 
 include(CTest)

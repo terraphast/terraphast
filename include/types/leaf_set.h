@@ -82,7 +82,7 @@ public:
     /**
      * @brief BitLeafSet creates a new BitLeafSet with the given parameters
      * @param num_bits the number of bits (capacity) of the set
-     * @param value
+     * @param value the value used to initialize the elements
      */
     BitLeafSet (size_type num_bits, unsigned long value) : boost::dynamic_bitset<>(num_bits, value) {
     }
@@ -254,7 +254,7 @@ class UnionFindLeafSet  {
 public:
     /**
      * @brief UnionFindLeafSet copy constructor
-     * @param obj
+     * @param obj the object
      */
     UnionFindLeafSet(const UnionFindLeafSet& obj) {
         data_structure = obj.data_structure;
