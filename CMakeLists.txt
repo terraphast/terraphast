@@ -5,8 +5,14 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 
+#Boost
+set(BOOST_REQUESTED_VERSION 1.61)
+find_package(Boost COMPONENTS dynamic_bitset)
+
+#GMP
 find_package(GMP REQUIRED)
 
+#OpenMP
 option(USE_OpenMP "Use OpenMP" ON)
 if (USE_OpenMP)
     find_package(OpenMP)
