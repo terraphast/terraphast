@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 
 #Boost
-set(BOOST_REQUESTED_VERSION 1.61)
+set(BOOST_REQUESTED_VERSION 1.61.0)
 find_package(Boost COMPONENTS dynamic_bitset)
 
 #GMP
