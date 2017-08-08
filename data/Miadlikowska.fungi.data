@@ -179,7 +179,7 @@
 0 0 0 0 1 1 0 1 1 Usnea_florida_1
 1 1 1 0 0 0 1 0 0 Biatora_meiocarpa
 1 1 1 1 1 1 1 1 1 Menegazzia_terebrata
-1 1 1 1 1 1 1 1 1 Physcia_aff._aipolia
+1 1 1 1 1 1 1 1 1 Physcia_aff_aipolia
 0 0 0 1 1 1 1 1 1 Micarea_adnata
 0 0 0 1 0 0 1 0 0 Xanthoparmelia_tinctina
 1 1 1 1 1 1 0 1 1 Echinoplaca_strigulacea
@@ -394,7 +394,7 @@
 0 0 0 1 0 1 1 1 1 Megaloblastenia_marginiflexa
 0 0 0 1 0 0 1 0 0 Lecidea_cyrtidia
 0 0 0 1 1 1 1 1 1 Byssoloma_leucoblepharum
-0 0 0 1 1 1 0 1 1 Caloplaca_cf._squamosa
+0 0 0 1 1 1 0 1 1 Caloplaca_cf_squamosa
 1 1 1 1 1 0 1 0 0 Parmeliopsis_ambigua_0
 0 0 0 1 1 0 1 0 0 Parmeliopsis_ambigua_1
 0 0 0 1 0 1 1 1 1 Lobothallia_radiosa_1
@@ -677,7 +677,7 @@
 0 0 0 1 0 0 1 0 0 Fuscopannaria_praetermissa
 0 0 0 1 0 0 1 0 0 Lecanora_valesiaca
 0 0 0 1 0 0 1 0 0 Cetrariastrum_andense
-1 1 1 0 1 1 1 1 1 Pannaria_sp.
+1 1 1 0 1 1 1 1 1 Pannaria_sp
 0 0 0 1 1 1 1 1 1 Trichoglossum_hirsutum
 0 0 0 1 1 0 1 0 0 Brigantiaea_fuscolutea
 1 1 1 1 1 0 1 0 0 Dactylina_arctica
@@ -786,7 +786,7 @@
 0 0 0 1 0 1 1 1 1 Lecidea_turgidula_0
 0 0 0 1 1 0 1 0 0 Solorina_saccata_1
 0 0 0 1 0 0 1 0 0 Xanthoparmelia_notata
-1 1 1 1 1 0 1 0 0 Peltigera_sp_nov.
+1 1 1 1 1 0 1 0 0 Peltigera_sp_nov
 0 0 0 1 1 1 1 1 1 Cladonia_rangiferina
 0 0 0 1 0 0 1 0 0 Ocellularia_chiriquiensis
 0 0 0 0 1 0 1 0 0 Xanthodactylon_flammeum_1
@@ -1201,7 +1201,7 @@
 0 0 0 1 0 0 1 0 0 Sagedia_mastrucata
 0 0 0 1 0 0 1 0 0 Ocellularia_inturgescens
 0 0 0 1 1 0 1 0 0 Xanthomendoza_ulophyllodes
-0 0 0 1 1 1 1 1 1 Rhizocarpon_geographicum_s.l.
+0 0 0 1 1 1 1 1 1 Rhizocarpon_geographicum_sl
 1 1 1 1 1 1 1 1 1 Crocynia_pyxinoides
 0 0 0 1 0 0 1 0 0 Xanthoparmelia_subverrucigera
 0 0 0 1 0 0 1 0 0 Everniastrum_sorocheilum
@@ -1242,7 +1242,7 @@
 1 1 1 1 1 0 0 0 0 Acarospora_canadensis
 0 0 0 1 0 0 1 0 0 Sagiolechia_protuberans
 1 1 1 0 0 0 1 0 0 Lecania_rabenhorstii
-0 0 0 1 1 1 1 1 1 Caloplaca_arnoldii_subsp._obliterata
+0 0 0 1 1 1 1 1 1 Caloplaca_arnoldii_subsp_obliterata
 0 0 0 1 0 1 1 1 1 Caloplaca_carphinea
 0 0 0 1 0 0 1 0 0 Ochrolechia_tartarea
 0 0 0 1 0 0 1 0 0 Remotrachyna_costaricensis
