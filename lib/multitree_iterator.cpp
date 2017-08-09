@@ -174,6 +174,9 @@ bool multitree_iterator::next_unconstrained(index root, multitree_nodes::unconst
 
 void multitree_iterator::reset(index root) {
 	auto& choice = m_choices[root];
+	if (choice.has_choices()) {
+		choice.reset();
+	}
 	switch (choice.current->type) {
 	case multitree_node_type::base_single_leaf:
 	case multitree_node_type::base_two_leaves:
@@ -183,9 +186,6 @@ void multitree_iterator::reset(index root) {
 		break;
 	case multitree_node_type::inner_node:
 	case multitree_node_type::alternative_array:
-		if (choice.has_choices()) {
-			choice.reset();
-		}
 		init_subtree(root);
 		break;
 	case multitree_node_type::unexplored: {
