@@ -57,6 +57,9 @@ if(BUILD_TESTS OR BUILD_TESTS_FULL)
 	enable_testing()
 endif()
 
+file(GLOB app_sources "app/*.cpp")
+file(GLOB tool_sources "tools/*.cpp")
+
 # build example app
 add_executable(app "app/main.cpp")
 add_executable(progress-app "app/progress-app.cpp")
@@ -81,7 +84,7 @@ target_link_libraries(site_gen terraces)
 if(BUILD_TESTS AND WIN32)
 	file(GLOB test_main_source "test/main.cpp")
 	list(REMOVE_ITEM test_sources ${test_main_source})
-	set_source_files_properties(${lib_sources} ${test_sources} ${app_sources} PROPERTIES COMPILE_FLAGS "-Za")
+	set_source_files_properties(${lib_sources} ${test_sources} ${app_sources} ${tools_sources} PROPERTIES COMPILE_FLAGS "-Za")
 endif()
 
 # Use debug version of STL
