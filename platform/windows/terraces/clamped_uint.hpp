@@ -18,15 +18,19 @@ public:
 	clamped_uint(uint64_t value = 0) : m_value{value} {}
 
 	clamped_uint& operator+=(clamped_uint other) {
-		if (!SafeAdd(m_value, other.m_value, m_value)) {
+		if (m_max - other.m_value < m_value) {
 			m_value = m_max;
+		} else {
+			m_value += other.m_value;
 		}
 		return *this;
 	}
 
 	clamped_uint& operator*=(clamped_uint other) {
-		if (!SafeMultiply(m_value, other.m_value, &m_value)) {
+		if (m_max / other.m_value < m_value) {
 			m_value = m_max;
+		} else {
+			m_value *= other.m_value;
 		}
 		return *this;
 	}
