@@ -10,7 +10,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # set platform-specific options
 if(WIN32)
 	include_directories("platform/windows")
-	set(BASIC_WARNINGS "-W4 -WX")
+	set(BASIC_WARNINGS "-W4")
 	set(OPTIMIZATION_FLAGS "-Oi")
 	set(GMP_LIBS "")
 	set(THREAD_LIBS "")
