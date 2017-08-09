@@ -2,6 +2,12 @@
 
 #include <catch.hpp>
 
+#include <terraces/rooting.hpp>
+#include <terraces/subtree_extraction.hpp>
+#include <terraces/supertree.hpp>
+
+#include "../lib/supertree_helpers.hpp"
+
 namespace terraces {
 namespace tests {
 
@@ -108,35 +114,6 @@ loaded_dataset load(std::string tree_file_path, std::string data_file_path) {
 	auto num_species = terraces::remap_to_leaves(tree, constraints, names, root_species);
 
 	return {data, site_occ, num_species, root_species, subtrees, constraints};
-}
-
-void check_unique_trees(multitree_node* root, index num_trees) {
-	multitree_iterator it(root);
-
-	utils::free_list fl;
-	utils::stack_allocator<index> alloc(fl, bitvector::alloc_size(root->num_leaves));
-	std::vector<std::vector<bitvector>> bipartitions;
-	do {
-		bipartitions.push_back(tree_bipartitions(it.tree(), it.leaves(), alloc));
-	} while (it.next());
-	// check that all trees are unique
-	std::sort(bipartitions.begin(), bipartitions.end());
-	CHECK(std::adjacent_find(bipartitions.begin(), bipartitions.end()) == bipartitions.end());
-	// check that there is the right number of trees
-	CHECK(bipartitions.size() == num_trees);
-}
-
-void check_subtrees(multitree_node* root, const loaded_dataset& /* dataset */) {
-	multitree_iterator it(root);
-
-	utils::free_list fl;
-	utils::stack_allocator<index> alloc(fl, bitvector::alloc_size(root->num_leaves));
-	std::vector<bitvector> bipartitions;
-	do {
-		bipartitions = tree_bipartitions(it.tree(), it.leaves(), alloc);
-		// TODO check that the subtrees produced by it.tree() are isomorphic to those from
-		// dataset.subtrees
-	} while (it.next());
 }
 
 } // namespace tests

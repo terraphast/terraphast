@@ -1,7 +1,11 @@
 #include <catch.hpp>
 
 #include "../lib/clamped_uint.hpp"
+#include "../lib/supertree_enumerator.hpp"
+#include "../lib/supertree_variants_multitree.hpp"
+
 #include "datasets.hpp"
+#include "validation_utils.hpp"
 
 using terraces::variants::multitree_callback;
 using terraces::variants::count_callback;

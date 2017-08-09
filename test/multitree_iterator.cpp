@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include "datasets.hpp"
+#include "validation_utils.hpp"
 
 #include "../lib/multitree_iterator.hpp"
 #include "../lib/supertree_enumerator.hpp"

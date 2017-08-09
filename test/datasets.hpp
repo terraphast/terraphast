@@ -3,15 +3,9 @@
 
 #include <terraces/constraints.hpp>
 #include <terraces/parser.hpp>
-#include <terraces/rooting.hpp>
-#include <terraces/subtree_extraction.hpp>
 #include <terraces/trees.hpp>
 
-#include "../lib/multitree_iterator.hpp"
-#include "../lib/supertree_enumerator.hpp"
-#include "../lib/supertree_variants.hpp"
-#include "../lib/supertree_variants_multitree.hpp"
-#include "../lib/validation.hpp"
+#include <gmpxx.h>
 
 #include <fstream>
 #include <tuple>
@@ -33,8 +27,6 @@ struct loaded_dataset {
 };
 
 loaded_dataset load(std::string tree_file_path, std::string data_file_path);
-void check_unique_trees(multitree_node* root, index num_trees);
-void check_subtrees(multitree_node* root, const loaded_dataset& dataset);
 
 } // namespace tests
 } // namespace terraces
