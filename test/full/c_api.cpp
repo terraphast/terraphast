@@ -7,7 +7,7 @@
 namespace terraces {
 namespace tests {
 
-TEST_CASE("c_api_bigint", "[c-api][.]") {
+TEST_CASE("c_api_bigint", "[c-api]") {
 	for (auto set : data_sets) {
 		auto count = simple::get_terrace_size_bigint_from_file(
 		        "../../data/data/" + std::get<0>(set),
@@ -16,7 +16,7 @@ TEST_CASE("c_api_bigint", "[c-api][.]") {
 	}
 }
 
-TEST_CASE("c_api", "[c-api][.]") {
+TEST_CASE("c_api", "[c-api]") {
 	for (auto set : data_sets) {
 		auto count =
 		        simple::get_terrace_size_from_file("../../data/data/" + std::get<0>(set),

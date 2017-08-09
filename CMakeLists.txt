@@ -1,4 +1,4 @@
-project(terrace-searcher)
+project(terraphast)
 
 cmake_minimum_required(VERSION 3.5)
 
@@ -7,13 +7,13 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# set platform-specific options
 if(WIN32)
 	include_directories("platform/windows")
 	set(BASIC_WARNINGS "-W4 -WX")
 	set(OPTIMIZATION_FLAGS "-Oi")
 	set(GMP_LIBS "")
 	set(THREAD_LIBS "")
-	#set(OPTIMIZATION_FLAGS "${OPTIMIZATION_FLAGS} -arch:AVX")
 else()
 	include_directories("platform/linux")
 	set(BASIC_WARNINGS "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion")
@@ -23,15 +23,9 @@ else()
 endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BASIC_WARNINGS} ${OPTIMIZATION_FLAGS}")
 
-include_directories("include" "Catch/include" "c_include")
-enable_testing()
+include_directories("include" "c_include")
 
-# Get Libraries
-#####################################################################
-
-# TODO add proper use of GMP
-
-#####################################################################
+# build libraries
 file(GLOB lib_headers "include/terraces/*.hpp")
 file(GLOB lib_sources "lib/*.cpp")
 file(GLOB lib_int_headers "lib/*.hpp")
@@ -43,41 +37,43 @@ file(GLOB c_lib_sources "c_lib/*.cpp")
 file(GLOB c_lib_int_headers "c_lib/*.hpp")
 add_library(c_terraces ${c_lib_sources} ${c_lib_headers} ${c_lib_int_headers})
 target_link_libraries(c_terraces terraces)
-
 target_link_libraries(terraces ${THREAD_LIBS})
-file(GLOB test_headers "test/*.hpp")
-file(GLOB test_sources "test/*.cpp")
-add_executable(unittests ${test_sources} ${test_headers})
-target_link_libraries(unittests terraces ${GMP_LIBS} ${THREAD_LIBS})
-add_test(NAME unittests COMMAND unittests)
 
-file(GLOB app_headers "app/*.hpp")
-file(GLOB app_sources "app/*.cpp")
+# build tests
+Option(BUILD_TESTS "BUILD_TESTS" OFF)
+Option(BUILD_TESTS_FULL "BUILD_TESTS_FULL" OFF)
+if(BUILD_TESTS OR BUILD_TESTS_FULL)
+	include_directories("Catch/include")
+	file(GLOB test_headers "test/*.hpp")
+	file(GLOB test_sources "test/*.cpp")
+	file(GLOB test_full_sources "test/full/*.cpp")
+	if (BUILD_TESTS_FULL)
+		add_executable(unittests ${test_sources} ${test_full_sources} ${test_headers})
+	else()
+		add_executable(unittests ${test_sources} ${test_headers})
+	endif()
+	target_link_libraries(unittests terraces ${GMP_LIBS} ${THREAD_LIBS})
+	add_test(NAME unittests COMMAND unittests)
+	enable_testing()
+endif()
 
+# build example app
 add_executable(app "app/main.cpp")
-target_link_libraries(app terraces ${GMP_LIBS} ${THREAD_LIBS})
-
 add_executable(progress-app "app/progress-app.cpp")
+target_link_libraries(app terraces ${GMP_LIBS} ${THREAD_LIBS})
 target_link_libraries(progress-app terraces ${GMP_LIBS} ${THREAD_LIBS})
 
-add_executable(convert "app/convert.cpp")
-target_link_libraries(convert terraces ${THREAD_LIBS})
-
-add_executable(isomorphic "app/isomorphic.cpp")
-target_link_libraries(isomorphic terraces ${THREAD_LIBS})
-
-add_executable(reroot "app/reroot.cpp")
-target_link_libraries(reroot terraces ${THREAD_LIBS})
-
-add_executable(subtree "app/subtree.cpp")
-target_link_libraries(subtree terraces ${THREAD_LIBS})
-
-add_executable(tree_gen "app/tree_gen.cpp")
-target_link_libraries(tree_gen terraces ${THREAD_LIBS})
-
-add_executable(site_gen "app/site_gen.cpp")
-target_link_libraries(site_gen terraces ${THREAD_LIBS})
-
+# build helper tools
+add_executable(isomorphic "tools/isomorphic.cpp")
+add_executable(reroot "tools/reroot.cpp")
+add_executable(subtree "tools/subtree.cpp")
+add_executable(tree_gen "tools/tree_gen.cpp")
+add_executable(site_gen "tools/site_gen.cpp")
+target_link_libraries(isomorphic terraces)
+target_link_libraries(reroot terraces)
+target_link_libraries(subtree terraces)
+target_link_libraries(tree_gen terraces)
+target_link_libraries(site_gen terraces)
 
 # Most of our files only compile with disabled language extensions for VC++
 # Unfortunately, Catch uses some windows-specific features, so we have to
@@ -86,27 +82,6 @@ if(WIN32)
 	file(GLOB test_main_source "test/main.cpp")
 	list(REMOVE_ITEM test_sources ${test_main_source})
 	set_source_files_properties(${lib_sources} ${test_sources} ${app_sources} PROPERTIES COMPILE_FLAGS "-Za")
-endif()
-
-# Test coverage generation
-Option(GCOV_OUTPUT "GCOV_OUTPUT" OFF)
-if(GCOV_OUTPUT)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-dir=${CMAKE_BINARY_DIR}")
-	add_custom_command(
-		 TARGET unittests
-		 COMMENT "Generate test coverage statistics"
-		 POST_BUILD
-		 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		 COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> -R "unittests" --output-on-failures
-		 COMMAND lcov --no-external --base-directory ${CMAKE_SOURCE_DIR} --capture --directory . --output-file coverage.info
-		 COMMAND genhtml coverage.info --output-directory out
-	)
-endif()
-
-# Assembly generation
-Option(ASM_OUTPUT "ASM_OUTPUT" OFF)
-if(ASM_OUTPUT)
-	target_compile_options(terraces PRIVATE "-save-temps")
 endif()
 
 # Use debug version of STL

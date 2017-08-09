@@ -1,4 +1,4 @@
 mkdir build
 cd build
-cmake -G "Visual Studio 14 2015 Win64" ..
+cmake "-DBUILD_TESTS=ON" -G "Visual Studio 14 2015 Win64" ..
 cd ..

@@ -25,10 +25,10 @@ mkdir "build/release"
 mkdir "build/debug"
 
 cd "build/release"
-CC=$CC CXX=$CXX cmake "-DCMAKE_BUILD_TYPE=Release" "-DDEV_ENVIRONMENT=ON" "$BUILD_BACKEND"  "../.."
+CC=$CC CXX=$CXX cmake "-DCMAKE_BUILD_TYPE=Release" "-DDEV_ENVIRONMENT=ON" "-DBUILD_TESTS=ON" "$BUILD_BACKEND"  "../.."
 cd "../.."
 
 cd "build/debug"
-CC=$CC CXX=$CXX cmake "-DCMAKE_BUILD_TYPE=Debug" "-DDEV_ENVIRONMENT=ON" "$BUILD_BACKEND"  "../.."
+CC=$CC CXX=$CXX cmake "-DCMAKE_BUILD_TYPE=Debug" "-DDEV_ENVIRONMENT=ON" "-DBUILD_TESTS=ON" "$BUILD_BACKEND"  "../.."
 cd "../.."
 
