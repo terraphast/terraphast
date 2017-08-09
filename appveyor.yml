@@ -1,5 +1,5 @@
 version: 1.0.{build}
-configuration: Debug
+configuration: Release
 platform: x64
 clone_depth: 1
 before_build:
