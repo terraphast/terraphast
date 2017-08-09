@@ -13,4 +13,4 @@ build:
   project: terraphast.sln
   verbosity: minimal
 test_script:
-- cmd: C:\projects\terraces\Debug\unittests.exe
+- cmd: C:\projects\terraces\Release\unittests.exe
