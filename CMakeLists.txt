@@ -78,7 +78,7 @@ target_link_libraries(site_gen terraces)
 # Most of our files only compile with disabled language extensions for VC++
 # Unfortunately, Catch uses some windows-specific features, so we have to
 # enable these extensions for the Catch main method (more specific: not disable them)
-if(WIN32)
+if(BUILD_TESTS AND WIN32)
 	file(GLOB test_main_source "test/main.cpp")
 	list(REMOVE_ITEM test_sources ${test_main_source})
 	set_source_files_properties(${lib_sources} ${test_sources} ${app_sources} PROPERTIES COMPILE_FLAGS "-Za")
