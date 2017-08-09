@@ -1,3 +1,4 @@
+#include <terraces/clamped_uint.hpp>
 #include <terraces/supertree.hpp>
 
 #include "bipartitions.hpp"
@@ -9,8 +10,6 @@
 #include "supertree_variants.hpp"
 #include "supertree_variants_debug.hpp"
 #include "supertree_variants_multitree.hpp"
-
-#include "clamped_uint.hpp"
 
 namespace terraces {
 

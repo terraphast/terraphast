@@ -5,9 +5,9 @@
 #include <terraces/io_utils.hpp>
 
 #include <gmpxx.h>
+#include <terraces/clamped_uint.hpp>
 
 #include "bipartitions.hpp"
-#include "clamped_uint.hpp"
 #include "trees_impl.hpp"
 
 namespace terraces {

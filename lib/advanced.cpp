@@ -1,10 +1,10 @@
 #include <terraces/advanced.hpp>
 
+#include <terraces/clamped_uint.hpp>
 #include <terraces/errors.hpp>
 #include <terraces/subtree_extraction.hpp>
 #include <terraces/supertree.hpp>
 
-#include "clamped_uint.hpp"
 #include "supertree_enumerator.hpp"
 #include "supertree_variants.hpp"
 #include "supertree_variants_multitree.hpp"

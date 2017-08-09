@@ -1,6 +1,7 @@
 #include <catch.hpp>
 
-#include "../lib/clamped_uint.hpp"
+#include <terraces/clamped_uint.hpp>
+
 #include "../lib/supertree_enumerator.hpp"
 #include "../lib/supertree_variants_multitree.hpp"
 
