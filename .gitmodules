@@ -1,6 +1,6 @@
 [submodule "Catch"]
-	path = Catch
+	path = terraphastI/Catch
 	url = https://github.com/philsquared/Catch.git
 [submodule "bioinfo-data"]
-	path = data
+	path = terraphastI/data
 	url = https://git.scc.kit.edu/uycyd/bioinfo-data.git
