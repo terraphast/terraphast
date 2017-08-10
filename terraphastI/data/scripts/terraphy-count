@@ -1,0 +1,12 @@
+#!/bin/bash
+TERRAPHY=./terraphy.main.py
+tree=$(readlink -m $1)
+data=$(readlink -m $2)
+cd ~/uni/terraphy/build/scripts-2.7
+subtrees=$(tempfile)
+triples=$(tempfile)
+$TERRAPHY --parent-tree-file=$tree --subset-file=$data -d > $subtrees
+$TERRAPHY --subtree-file=$subtrees -t > $triples
+$TERRAPHY --triplet-file=$triples --count-parents | grep "trees on terrace" | grep -oE "[0-9]+"
+rm $subtrees
+rm $triples
