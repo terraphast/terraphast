@@ -1,0 +1,8 @@
+optional optimizations:
+* cache tree outputs
+* mapping of sets to smaller sets, if a set is rather empty (Mapping)
+* Reorganize Unit-Tests in ifugao
+* Make errors in input_parser more verbose? (currently, it only says somethign like "could read" or "could not read")
+* Parallelisierung (Work-Stealing-Approach)
+* Write scipt for compareable benchmark
+

@@ -1,0 +1,55 @@
+Run on (4 X 2600 MHz CPU s)
+2017-07-09 02:43:53
+-----------------------------------------------------------------------------------
+Benchmark                                            Time           CPU Iterations
+-----------------------------------------------------------------------------------
+BM_terrace_analysis__detect/Allium                   1 ms          1 ms       1187
+BM_terrace_analysis__detect/Allium_Reduced           0 ms          0 ms       2377
+BM_terrace_analysis__detect/Allium_Tiny              0 ms          0 ms      14570
+BM_terrace_analysis__detect/Asplenium_1              3 ms          3 ms        230
+BM_terrace_analysis__detect/Asplenium_2              2 ms          2 ms        309
+BM_terrace_analysis__detect/Bouchenak               11 ms         11 ms         62
+BM_terrace_analysis__detect/Caryophyllaceae          5 ms          5 ms        113
+BM_terrace_analysis__detect/Eucalyptus_1             2 ms          2 ms        316
+BM_terrace_analysis__detect/Eucalyptus_2             2 ms          2 ms        392
+BM_terrace_analysis__detect/Eucalyptus_3             0 ms          0 ms      11850
+BM_terrace_analysis__detect/Euphorbia_1              3 ms          3 ms        260
+BM_terrace_analysis__detect/Euphorbia_2              2 ms          2 ms        354
+BM_terrace_analysis__detect/Ficus_1                  2 ms          2 ms        295
+BM_terrace_analysis__detect/Ficus_2                  2 ms          2 ms        313
+BM_terrace_analysis__detect/Ficus_3                  1 ms          1 ms        445
+BM_terrace_analysis__detect/Iris                     3 ms          3 ms        236
+BM_terrace_analysis__detect/Meusemann               21 ms         21 ms         25
+BM_terrace_analysis__detect/Pyron                   39 ms         39 ms         18
+BM_terrace_analysis__count/Allium                    7 ms          7 ms         83
+BM_terrace_analysis__count/Allium_Reduced         2679 ms       2678 ms          1
+BM_terrace_analysis__count/Allium_Tiny               0 ms          0 ms      10194
+BM_terrace_analysis__count/Asplenium_1               2 ms          2 ms        312
+BM_terrace_analysis__count/Asplenium_2               3 ms          3 ms        188
+BM_terrace_analysis__count/Bouchenak                21 ms         21 ms         27
+BM_terrace_analysis__count/Caryophyllaceae          31 ms         31 ms         18
+BM_terrace_analysis__count/Eucalyptus_1             16 ms         16 ms         35
+BM_terrace_analysis__count/Eucalyptus_2             15 ms         15 ms         46
+BM_terrace_analysis__count/Eucalyptus_3              0 ms          0 ms       9694
+BM_terrace_analysis__count/Euphorbia_1               3 ms          3 ms        239
+BM_terrace_analysis__count/Euphorbia_2              13 ms         13 ms         48
+BM_terrace_analysis__count/Ficus_1                   3 ms          3 ms        185
+BM_terrace_analysis__count/Ficus_2                   3 ms          3 ms        207
+BM_terrace_analysis__count/Ficus_3                  14 ms         14 ms         36
+BM_terrace_analysis__count/Iris                      3 ms          3 ms        291
+BM_terrace_analysis__count/Meusemann                21 ms         21 ms         29
+BM_terrace_analysis__count/Pyron                    44 ms         44 ms         14
+BM_terrace_analysis__enumerate/Allium_Tiny           0 ms          0 ms       2023
+BM_terrace_analysis__enumerate/Asplenium_1           3 ms          3 ms        314
+BM_terrace_analysis__enumerate/Asplenium_2           7 ms          7 ms         77
+BM_terrace_analysis__enumerate/Eucalyptus_1         29 ms         29 ms         23
+BM_terrace_analysis__enumerate/Eucalyptus_2         32 ms         32 ms         21
+BM_terrace_analysis__enumerate/Eucalyptus_3          0 ms          0 ms       3294
+BM_terrace_analysis__enumerate/Euphorbia_1          23 ms         23 ms         27
+BM_terrace_analysis__enumerate/Euphorbia_2          40 ms         40 ms         17
+BM_terrace_analysis__enumerate/Ficus_1            7846 ms       7842 ms          1
+BM_terrace_analysis__enumerate/Ficus_2           26190 ms      23418 ms          1
+BM_terrace_analysis__enumerate/Ficus_3           29930 ms      27031 ms          1
+BM_terrace_analysis__enumerate/Iris                  3 ms          3 ms        261
+BM_terrace_analysis__enumerate/Meusemann            20 ms         20 ms         31
+BM_terrace_analysis__enumerate/Pyron               424 ms        424 ms          2
