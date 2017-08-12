@@ -7,7 +7,11 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 
 #Boost
 set(BOOST_REQUESTED_VERSION 1.61.0)
-find_package(Boost COMPONENTS dynamic_bitset)
+find_package(Boost)
+if(NOT Boost_FOUND)
+    message(FATAL_ERROR "You need the Boost header files for lockfree data structures")
+endif()
+include_directories(${Boost_INCLUDE_DIRS})
 
 #GMP
 find_package(GMP REQUIRED)
@@ -22,7 +26,7 @@ if (USE_OpenMP)
     endif ()
 endif ()
 
-set(COMMON_LIBRARIEY ${GMP_LIBRARIES} ${GMPXX_LIBRARIES})
+set(COMMON_LIBRARIEY ${Boost_LIBRARIES} ${GMP_LIBRARIES} ${GMPXX_LIBRARIES})
 
 include_directories(include)
 
