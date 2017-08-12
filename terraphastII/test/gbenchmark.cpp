@@ -21,7 +21,9 @@ void BM_terrace_analysis__detect(benchmark::State &state,
         mpz_init(terraceSize);
         mpz_set_ui(terraceSize, 0);
 
-        terraceAnalysis(m, read_tree, TA_DETECT, nullptr, &terraceSize);
+        auto ret = terraceAnalysis(m, read_tree, TA_DETECT, nullptr, &terraceSize);
+
+        assert(ret == TERRACE_SUCCESS);
 
         delete[](read_tree);
         mpz_clear(terraceSize);
@@ -121,7 +123,9 @@ void BM_terrace_analysis__count(benchmark::State &state,
         mpz_init(terraceSize);
         mpz_set_ui(terraceSize, 0);
 
-        terraceAnalysis(m, read_tree, TA_COUNT, nullptr, &terraceSize);
+        auto ret = terraceAnalysis(m, read_tree, TA_COUNT, nullptr, &terraceSize);
+
+        assert(ret == TERRACE_SUCCESS);
 
         delete[](read_tree);
         mpz_clear(terraceSize);
@@ -222,7 +226,8 @@ void BM_terrace_analysis__enumerate_compressed(benchmark::State &state,
         mpz_set_ui(terraceSize, 0);
 
         std::FILE* tmpf = std::tmpfile();
-        terraceAnalysis(m, read_tree, TA_ENUMERATE_COMPRESS, tmpf, &terraceSize);
+        auto ret = terraceAnalysis(m, read_tree, TA_ENUMERATE_COMPRESS, tmpf, &terraceSize);
+        assert(ret == TERRACE_SUCCESS);
         std::fclose(tmpf);
 
         delete[](read_tree);
@@ -324,7 +329,8 @@ void BM_terrace_analysis__enumerate(benchmark::State &state,
         mpz_set_ui(terraceSize, 0);
 
         std::FILE* tmpf = std::tmpfile();
-        terraceAnalysis(m, read_tree, TA_ENUMERATE, tmpf, &terraceSize);
+        auto ret = terraceAnalysis(m, read_tree, TA_ENUMERATE, tmpf, &terraceSize);
+        assert(ret == TERRACE_SUCCESS);
         std::fclose(tmpf);
 
         delete[](read_tree);

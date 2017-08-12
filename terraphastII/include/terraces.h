@@ -44,6 +44,13 @@
 #define TERRACE_FLAG_CONFLICT_ERROR -11
 /* to be extended */
 
+/* check for unused return values */
+#if defined(_MSC_VER) && (_MSC_VER >= 1700)
+#define CHECK_RESULT _Check_return_
+#else
+#define CHECK_RESULT __attribute__ ((warn_unused_result))
+#endif
+
 /* Argument to control output of terraceAnalysis function (ta_outspec) */
 
 /**
@@ -183,7 +190,7 @@ std::vector<constraint> extract_constraints_from_supertree(
  *
  * @return TERRACE_SUCCESS on success, or an error code (see TERRACE_*) on failure
  */
-int terraceAnalysis(missingData *m, const char *newickTreeString,
+CHECK_RESULT int terraceAnalysis(missingData *m, const char *newickTreeString,
         const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
 
 #ifdef __cplusplus
