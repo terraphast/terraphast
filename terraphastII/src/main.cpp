@@ -3,19 +3,19 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 3) {
-        printf("Use %s <.data> <.nwk>\n", argv[0]);
+        printf("Use %s <.nwk> <.data>\n", argv[0]);
         printf(" to count the number of unrooted trees on the terrace.\n");
-        printf("Use %s <.data> <.nwk> DETECT\n", argv[0]);
+        printf("Use %s <.nwk> <.data> DETECT\n", argv[0]);
         printf(" to see if the tree relies on a terrace or not.\n");
-        printf("Use %s <.data> <.nwk> ENUMERATE_COMPRESSED <outfile>\n", argv[0]);
+        printf("Use %s <.nwk> <.data> ENUMERATE_COMPRESSED <outfile>\n", argv[0]);
         printf(" to save the compressed tree to the given <outfile>.\n");
-        printf("Use %s <.data> <.nwk> ENUMERATE <outfile>\n", argv[0]);
+        printf("Use %s <.nwk> <.data> ENUMERATE <outfile>\n", argv[0]);
         printf(" to save all trees to the given <outfile>.\n");
         std::exit(TERRACE_THINK_ON_YOUR_OWN_ERROR);
     }
 
-    input_data *read_data = parse_input_data(argv[1]);
-    char *read_tree = read_newk_tree(argv[2]);
+    char *read_tree = read_newk_tree(argv[1]);
+    input_data *read_data = parse_input_data(argv[2]);
 
     int ta_outspec = TA_COUNT;
     FILE *empiricalTrees = nullptr;
