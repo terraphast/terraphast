@@ -1,7 +1,7 @@
 Project Home
 ==================
 
-Two C/C++ libraries to check for and enumerate terraces in phylogenetic tree space. You will find the implementation and documentation of each library in their corresponding folders [terraphastI](terraphastI) (for Terraphest I) and [terraphastII](terraphastII/README.md) (for Terraphast II).
+Two C/C++ libraries to check for and enumerate terraces in phylogenetic tree space. You will find the implementation and documentation of each library in their corresponding folders [terraphastI](terraphastI/README.md) (for Terraphast I) and [terraphastII](terraphastII/README.md) (for Terraphast II).
 You can find all the used data for result validation in the folder [data](data).
 
 -----
@@ -18,7 +18,7 @@ You will need to install the following software packages in order to compile & r
 ### Download & Compilation (on unix systems)
 
 1. Click on the `Clone or Download` button of this page in order to obtain the source code. 
-2. Open the terminal emulator of you choice and navigate to the subfolders [terraphastI](terraphastI) and/or [terraphastII](terraphastII) 
+2. Open the terminal emulator of your choice and navigate to the subfolders [terraphastI](terraphastI) and/or [terraphastII](terraphastII) 
 3. Execute the following operations:
 
     1. `mkdir build` 
