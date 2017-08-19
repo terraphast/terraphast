@@ -1,25 +1,21 @@
 #!/usr/bin/python
-import glob, os, time, subprocess, re
+import glob, os, time, subprocess, re, sys
 
-def benchmarkTime(data_file, nwk_file):
-    fnull = open(os.devnull, 'w')
+
+def benchmarkTime(nwk_file, data_file, output_folder, command):
     start_time = time.time()
-    subprocess.call(["../../cmake-build-release/terraces_main",
-                     data_file,
-                     nwk_file], stdout=fnull)
+    out_file = "%s%s%s.%s.out" % (output_folder, os.sep, os.path.basename(data_file), int(round(time.time() * 1000)))
+    arg_list = command % (nwk_file, data_file, out_file)
+    subprocess.call(arg_list, shell=True)
     end_time = time.time()
     return (end_time - start_time)
 
-def benchmarkMemory(data_file, nwk_file):
+def benchmarkMemory(nwk_file, data_file, output_folder, command):
     fnull = open(os.devnull, 'w')
-    massif_file = "%s.massif.out" % data_file
-    subprocess.call(["valgrind",
-                     "--tool=massif",
-                     "--pages-as-heap=yes",
-                     "--massif-out-file=%s" % massif_file,
-                     "../../cmake-build-release/terraces_main",
-                     data_file,
-                     nwk_file], stdout=fnull, stderr=fnull)
+    massif_file = "%s%s%s.massif.out" % (output_folder, os.sep, os.path.basename(data_file))
+    arg_list = command % (nwk_file, data_file, "/dev/null")
+    valgrind_args = "valgrind --tool=massif --pages-as-heap=yes --massif-out-file=%s %s" % (massif_file, arg_list)
+    subprocess.call(valgrind_args, shell=True, stderr=fnull)
     mem_peak = 0.0
     with open(massif_file) as f:
         mem_sum = 0.0
@@ -40,15 +36,15 @@ def benchmarkMemory(data_file, nwk_file):
                 mem_sum = 0.0
     return mem_peak
 
-os.chdir(".")
-csv_file = open ("benchmark_count.csv", "w")
-print >> csv_file, "\"Newick File\",\"Data File\",\"Runtime (seconds)\",\"Memory Peak (in MB)\""
-for nwk_file in glob.glob("*.nwk*"):
-    data_file = nwk_file.replace(".nwk",".data")
+def doBenchmark(nwk_file, data_file, output_folder, command):
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    times = [benchmarkTime(nwk_file, data_file, output_folder, command) for i in range(10)]
+    mem = benchmarkMemory(nwk_file, data_file, output_folder, command)
+    print "%s,%s,%.4f,%.3f" % (nwk_file, data_file, sum(times)/len(times),mem/(1024**2))
 
-    print "Processing %s and %s" % (data_file,nwk_file)
-    times = [benchmarkTime(data_file, nwk_file) for i in range(1)]
-    #mem = benchmarkMemory(data_file, nwk_file)
-    mem = 0
-
-    print >> csv_file, "%s,%s,%.4f,%.3f" % (data_file,nwk_file, sum(times)/len(times),mem/(1024**2))
+with open(sys.argv[1]) as f:
+    for line in f:
+        nwk_file = line.rstrip()
+        data_file = nwk_file.replace("nwk","data")
+        doBenchmark(nwk_file, data_file, sys.argv[2], sys.argv[3])
