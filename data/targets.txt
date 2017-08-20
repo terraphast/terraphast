@@ -3,7 +3,7 @@ subsets/Allium_Reduced.nwk
 subsets/Allium_Tiny.nwk
 subsets/Asplenium.nwk.1
 subsets/Asplenium.nwk.2
-subsets/Bouchenak.nwk
+original/Bouchenak.nwk
 subsets/Burleigh.birds.small.nwk
 subsets/Caryophyllaceae.nwk
 subsets/Eucalyptus.nwk.1
@@ -15,11 +15,11 @@ subsets/Ficus.nwk.2
 subsets/Ficus.nwk.3
 subsets/Iris.nwk
 subsets/Meredith.mammals.nwk
-subsets/Meusemann.nwk
+original/Meusemann.nwk
 subsets/Miadlikowska.fungi.nwk
 subsets/Misof.insects.nwk
 subsets/Primula.nwk
-subsets/Pyron.nwk
+original/Pyron.nwk
 subsets/Rabosky.scincids.nwk
 subsets/Ranunculus.nwk
 subsets/Rhododendron.nwk
