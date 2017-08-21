@@ -7,10 +7,10 @@ subsets/Euphorbia.nwk.1
 subsets/Euphorbia.nwk.2
 subsets/Iris.nwk
 subsets/Meredith.mammals.nwk
-subsets/Meusemann.nwk
+original/Meusemann.nwk
 subsets/Misof.insects.nwk
 subsets/Primula.nwk
-subsets/Pyron.nwk
+original/Pyron.nwk
 subsets/Rabosky.scincids.nwk
 subsets/Ranunculus.nwk
 subsets/Rhododendron.nwk
