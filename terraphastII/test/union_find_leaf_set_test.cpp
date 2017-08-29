@@ -5,14 +5,14 @@
 #include <vector>
 #include <iostream>
 
-TEST(DISABLED_get_nth_partition_tuple, no_constraints) {
+TEST(DISABLED_get_nth_split_tuple, no_constraints) {
     UnionFindLeafSet leafset(10);
     std::vector<constraint> constraints;
     leafset.apply_constraints(constraints);
 
     std::shared_ptr<UnionFindLeafSet> part_left;
     std::shared_ptr<UnionFindLeafSet> part_right;
-    std::tie(part_left, part_right) = leafset.get_nth_partition_tuple(1);
+    std::tie(part_left, part_right) = leafset.get_nth_split_tuple(1);
 
     ASSERT_EQ(part_left->contains(0), true);
     ASSERT_EQ(part_right->contains(0), false);
@@ -25,7 +25,7 @@ TEST(DISABLED_get_nth_partition_tuple, no_constraints) {
     }
 }
 
-TEST(DISABLED_get_nth_partition_tuple, only_one_set) {
+TEST(DISABLED_get_nth_split_tuple, only_one_set) {
     UnionFindLeafSet leafset(10);
     std::vector<constraint> constraints =
             { constraint(1,2,4), constraint(2,3,4), constraint(3,4,3),
@@ -36,7 +36,7 @@ TEST(DISABLED_get_nth_partition_tuple, only_one_set) {
 
     std::shared_ptr<UnionFindLeafSet> part_left;
     std::shared_ptr<UnionFindLeafSet> part_right;
-    std::tie(part_left, part_right) = leafset.get_nth_partition_tuple(1);
+    std::tie(part_left, part_right) = leafset.get_nth_split_tuple(1);
 
     for (size_t i = 0; i < 10; i++) {
         ASSERT_EQ(part_left->contains(i), true);
@@ -46,7 +46,7 @@ TEST(DISABLED_get_nth_partition_tuple, only_one_set) {
     }
 }
 
-TEST(DISABLED_get_nth_partition_tuple, only_one_leaf) {
+TEST(DISABLED_get_nth_split_tuple, only_one_leaf) {
     UnionFindLeafSet leafset(1);
     std::vector<constraint> constraints;
 
@@ -54,10 +54,10 @@ TEST(DISABLED_get_nth_partition_tuple, only_one_leaf) {
 
     std::shared_ptr<UnionFindLeafSet> part_left;
     std::shared_ptr<UnionFindLeafSet> part_right;
-    std::tie(part_left, part_right) = leafset.get_nth_partition_tuple(1);
+    std::tie(part_left, part_right) = leafset.get_nth_split_tuple(1);
 
     ASSERT_EQ(part_left->contains(1), true);
     ASSERT_EQ(part_right->contains(1), false);
 }
 
-//TODO more testcases, especially with a loop over all the partition tuples
+//TODO more testcases, especially with a loop over all the split tuples

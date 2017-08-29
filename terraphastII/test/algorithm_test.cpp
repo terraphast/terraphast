@@ -14,6 +14,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
 #include <gmock/gmock.h>
+#include <terraces.h>
 
 
 typedef TerracesAnalysisTestParameter<const long> RootedTreesCountParameter;
@@ -52,7 +53,7 @@ static void test_rooted_trees(const char *newick_file, const char *data_file, lo
                 }
             }
             if (noData) {
-                dout("Species with no data in any partition: " << m->speciesNames[k] << "\n");
+                dout("Species with no data in any split: " << m->speciesNames[k] << "\n");
                 assert(0);
             }
             m_labels.insert(std::string(m->speciesNames[k]));
@@ -90,7 +91,7 @@ TEST(ApplyConstraintsTest, example_from_slides) {
     constraints.push_back(cons2);
 
     leaves.apply_constraints(constraints);
-    auto result = leaves.get_list_of_partitions();
+    auto result = leaves.get_list_of_splits();
 
     ASSERT_EQ(result.size(), 4);
 
@@ -117,7 +118,7 @@ TEST(ApplyConstraintsTest, merge_all_sets) {
     constraints.push_back(cons4);
 
     leaves.apply_constraints(constraints);
-    auto result = leaves.get_list_of_partitions();
+    auto result = leaves.get_list_of_splits();
 
     ASSERT_EQ(result.size(), 2);
 
@@ -198,7 +199,7 @@ TEST(ApplyConstraintsTest, merges_to_two_parts) {
     constraints.push_back(cons1);
     constraints.push_back(cons2);
     leaves.apply_constraints(constraints);
-    auto result = leaves.get_list_of_partitions();
+    auto result = leaves.get_list_of_splits();
 
     ASSERT_EQ(result.size(), 3);
     
@@ -240,7 +241,7 @@ TEST(ExtractConstraintsFromTree, example_from_slides) {
     ASSERT_EQ(constraints[1].bigger, 1);
 }
 
-TEST(GetNthPartitionTuple, example_with_two_parts) {
+TEST(GetNthsplitTuple, example_with_two_parts) {
 
     LeafSet leaves = {0, 1, 2};
     std::vector<constraint> constraints;
@@ -248,18 +249,18 @@ TEST(GetNthPartitionTuple, example_with_two_parts) {
     constraints.push_back(cons1);
 
     leaves.apply_constraints(constraints);
-    auto result = leaves.get_list_of_partitions();
+    auto result = leaves.get_list_of_splits();
 
-    ASSERT_EQ(leaves.number_partition_tuples(), 1);
+    ASSERT_EQ(leaves.number_split_tuples(), 1);
 
     std::shared_ptr<LeafSet> part_one;
     std::shared_ptr<LeafSet> part_two;
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(1);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(1);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(0, 1));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(2));
 }
 
-TEST(GetNthPartitionTuple, example_from_slides) {
+TEST(GetNthsplitTuple, example_from_slides) {
 
     LeafSet leaves = {0, 1, 2, 3, 4};
     std::vector<constraint> constraints;
@@ -267,25 +268,25 @@ TEST(GetNthPartitionTuple, example_from_slides) {
     constraints.push_back({3, 4, 2}); //TODO
 
     leaves.apply_constraints(constraints);
-    auto result = leaves.get_list_of_partitions();
+    auto result = leaves.get_list_of_splits();
 
-    ASSERT_EQ(leaves.number_partition_tuples(), 3);
+    ASSERT_EQ(leaves.number_split_tuples(), 3);
 
     std::shared_ptr<LeafSet> part_one;
     std::shared_ptr<LeafSet> part_two;
 
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(1);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(1);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(0, 1));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(2, 3, 4));
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(2);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(2);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(2));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(0, 1, 3, 4));
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(3);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(3);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(0, 1, 2));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(3, 4));
 }
 
-TEST(GetNthPartitionTuple, with_four_partitions) {
+TEST(GetNthsplitTuple, with_four_splits) {
 
     LeafSet leaves = {0, 1, 2, 3, 4, 5, 6, 7};
     std::vector<constraint> constraints;
@@ -295,32 +296,32 @@ TEST(GetNthPartitionTuple, with_four_partitions) {
     constraints.push_back({6, 7, 2}); //TODO
 
     leaves.apply_constraints(constraints);
-    auto result = leaves.get_list_of_partitions();
+    auto result = leaves.get_list_of_splits();
 
-    ASSERT_EQ(leaves.number_partition_tuples(), 7);
+    ASSERT_EQ(leaves.number_split_tuples(), 7);
 
     std::shared_ptr<LeafSet> part_one;
     std::shared_ptr<LeafSet> part_two;
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(1);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(1);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(0, 1));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(2, 3, 4, 5, 6, 7));
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(2);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(2);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(2));
     ASSERT_THAT(part_two->to_set(),
                 testing::ElementsAre(0, 1, 3, 4, 5, 6, 7));
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(3);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(3);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(0, 1, 2));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(3, 4, 5, 6, 7));
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(4);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(4);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(3, 4));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(0, 1, 2, 5, 6, 7));
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(5);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(5);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(0, 1, 3, 4));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(2, 5, 6, 7));
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(6);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(6);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(2, 3, 4));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(0, 1, 5, 6, 7));
-    std::tie(part_one, part_two) = leaves.get_nth_partition_tuple(7);
+    std::tie(part_one, part_two) = leaves.get_nth_split_tuple(7);
     ASSERT_THAT(part_one->to_set(), testing::ElementsAre(0, 1, 2, 3, 4));
     ASSERT_THAT(part_two->to_set(), testing::ElementsAre(5, 6, 7));
 }

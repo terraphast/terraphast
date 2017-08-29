@@ -56,7 +56,7 @@ public:
     virtual leaf_number pop() = 0;
 
     /**
-     * @brief apply_constraints partitions the set into new sets according to the constraints
+     * @brief apply_constraints splits the set into new sets according to the constraints
      * @param constraints the constraints that must be fulfilled
      */
     virtual void apply_constraints(const std::vector<constraint> &constraints) = 0;
@@ -75,7 +75,7 @@ public:
  * Membership to this class is indicated by a single bit in a bit-array
  */
 class BitLeafSet : public AbstractLeafSet<BitLeafSet>, boost::dynamic_bitset<> {
-    typedef std::vector<std::shared_ptr<BitLeafSet>> partition_list;
+    typedef std::vector<std::shared_ptr<BitLeafSet>> split_list;
 public:
     BitLeafSet() = default;
 
@@ -136,20 +136,20 @@ public:
     }
 
     std::tuple<std::shared_ptr<BitLeafSet>,
-            std::shared_ptr<BitLeafSet> > get_nth_partition_tuple(const size_t n) {
+            std::shared_ptr<BitLeafSet> > get_nth_split_tuple(const size_t n) {
 
-        assert(list_of_partitions.size() > 0);
+        assert(list_of_splits.size() > 0);
 
         auto part_one = this->create_empty();
         auto part_two = this->create_empty();
 
-        assert(n > 0 && n <= number_partition_tuples());
+        assert(n > 0 && n <= number_split_tuples());
 
-        for (size_t i = 0; i < list_of_partitions.size(); i++) {
+        for (size_t i = 0; i < list_of_splits.size(); i++) {
             if (is_bit_set(n, i)) {
-                part_one->merge(*list_of_partitions[i]);
+                part_one->merge(*list_of_splits[i]);
             } else {
-                part_two->merge(*list_of_partitions[i]);
+                part_two->merge(*list_of_splits[i]);
             }
         }
 
@@ -158,26 +158,26 @@ public:
 
 
     /**
-     * Returns the number of partition tuples that can be formed by combining the
-     * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
+     * Returns the number of split tuples that can be formed by combining the
+     * given list of splits. The formular is 2^(n-1) - 1, where n is the size of
      * the list.
-     * @return the number of partition tuples that can be formed from the given list
+     * @return the number of split tuples that can be formed from the given list
      */
-    inline size_t number_partition_tuples() {
-        assert(list_of_partitions.size() > 1);
-        return (1 << (list_of_partitions.size() - 1)) - 1;
+    inline size_t number_split_tuples() {
+        assert(list_of_splits.size() > 1);
+        return (1 << (list_of_splits.size() - 1)) - 1;
     }
 
     void apply_constraints(const std::vector<constraint> &constraints) {
-        list_of_partitions = create_partition_list();
+        list_of_splits = create_split_list();
 
         for (constraint cons : constraints) {
             bool found_left_constraint = false;
             bool found_right_constraint = false;
             size_t index_containing_left_constraint = 0;
             size_t index_containing_right_constraint = 0;
-             for (size_t i = 0; i < list_of_partitions.size(); i++) {
-                if (list_of_partitions[i]->contains(cons.smaller_left)) {
+             for (size_t i = 0; i < list_of_splits.size(); i++) {
+                if (list_of_splits[i]->contains(cons.smaller_left)) {
                     // set contains the left constraint
                     found_left_constraint = true;
                     index_containing_left_constraint = i;
@@ -185,7 +185,7 @@ public:
                         break;
                     }
                 }
-                if (list_of_partitions[i]->contains(cons.smaller_right)) {
+                if (list_of_splits[i]->contains(cons.smaller_right)) {
                     // set contains the right constraint
                     found_right_constraint = true;
                     index_containing_right_constraint = i;
@@ -195,29 +195,29 @@ public:
                 }
             }
             assert(found_left_constraint
-                    && index_containing_left_constraint < list_of_partitions.size());
+                    && index_containing_left_constraint < list_of_splits.size());
             assert(
                     found_right_constraint
-                    && index_containing_right_constraint < list_of_partitions.size());
+                    && index_containing_right_constraint < list_of_splits.size());
             if (index_containing_left_constraint != index_containing_right_constraint) {
                 // sets need to be merged
-                list_of_partitions[index_containing_left_constraint]->merge(*list_of_partitions[index_containing_right_constraint]);
-                list_of_partitions.erase(list_of_partitions.begin() + static_cast<partition_list::difference_type>(
+                list_of_splits[index_containing_left_constraint]->merge(*list_of_splits[index_containing_right_constraint]);
+                list_of_splits.erase(list_of_splits.begin() + static_cast<split_list::difference_type>(
                                                   index_containing_right_constraint));
             }
         }
     }
 
-    const partition_list& get_list_of_partitions() const {
-        return list_of_partitions;
+    const split_list& get_list_of_splits() const {
+        return list_of_splits;
     }
 
 private:
-    partition_list list_of_partitions;
+    split_list list_of_splits;
 
     inline
-    partition_list create_partition_list() const {
-        partition_list sets;
+    split_list create_split_list() const {
+        split_list sets;
         sets.reserve(this->size());
 
         leaf_number pos = this->find_first();
@@ -249,7 +249,7 @@ private:
  * find and merge operations.
  */
 class UnionFindLeafSet  {
-    typedef std::vector<std::shared_ptr<UnionFindLeafSet>> partition_list;
+    typedef std::vector<std::shared_ptr<UnionFindLeafSet>> split_list;
     static const size_t invalid_entry = std::numeric_limits<size_t>::max();
 public:
     /**
@@ -380,20 +380,20 @@ public:
 
 
     /**
-     * Returns the number of partition tuples that can be formed by combining the
-     * given list of partitions. The formular is 2^(n-1) - 1, where n is the size of
+     * Returns the number of split tuples that can be formed by combining the
+     * given list of splits. The formular is 2^(n-1) - 1, where n is the size of
      * the list.
-     * @return the number of partition tuples that can be formed from the given list
+     * @return the number of split tuples that can be formed from the given list
      */
-    inline size_t number_partition_tuples() const {
+    inline size_t number_split_tuples() const {
         assert(repr != invalid_entry);
-        assert(list_of_partitions.size() > 1);
+        assert(list_of_splits.size() > 1);
 
-        return (1 << (list_of_partitions.size() - 1)) - 1;
+        return (1 << (list_of_splits.size() - 1)) - 1;
     }
 
     void apply_constraints(const std::vector<constraint> &constraints) {
-        assert(list_of_partitions.size() == 0);
+        assert(list_of_splits.size() == 0);
         assert(repr != invalid_entry);
 
         //Possible Improvement: Implement pointers that point from a parent to its child.
@@ -425,23 +425,23 @@ public:
             }
         }
         for (std::set<leaf_number>::iterator it=sets.begin(); it != sets.end(); ++it) {
-            list_of_partitions.push_back(*it);
+            list_of_splits.push_back(*it);
         }
 
     }
 
     /**
-     * @brief get_nth_partition_tuple creates two new LeafSets, that represent the nth partition of the set of sets
-     * @param n the number of the required partition
-     * @return two new LeafSets that represent the nth partition
+     * @brief get_nth_split_tuple creates two new LeafSets, that represent the nth split of the set of sets
+     * @param n the number of the required split
+     * @return two new LeafSets that represent the nth split
      */
     std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>
-    get_nth_partition_tuple(size_t n) const {
+    get_nth_split_tuple(size_t n) const {
         assert(repr != invalid_entry);
 
         //Possible improvement: it may be possible to copy the datastructure only once, since the two sets are disjoint
-        assert(n > 0 && n <= number_partition_tuples());
-        assert(list_of_partitions.size() > 1);  //we need at least 2 sets, otherwise creating partitions does not make sense
+        assert(n > 0 && n <= number_split_tuples());
+        assert(list_of_splits.size() > 1);  //we need at least 2 sets, otherwise creating splits does not make sense
 
         std::shared_ptr<UnionFind> uf_1 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
         std::shared_ptr<UnionFind> uf_2 = std::make_shared<UnionFind>(data_structure->get_parent(), data_structure->get_rank());
@@ -452,25 +452,25 @@ public:
         bool part_one_first_set = false;
         bool part_two_first_set = false;
 
-        for (size_t i = 0; i < list_of_partitions.size(); i++) {
+        for (size_t i = 0; i < list_of_splits.size(); i++) {
           if (is_bit_set(n, i)) { //put the set into part_one
               if (!part_one_first_set) {
-                  part_one->repr = list_of_partitions.at(i);
+                  part_one->repr = list_of_splits.at(i);
                   assert(part_one->repr != invalid_entry);
                   part_one->repr_valid = true;
                   part_one_first_set = true;
               } else {
-                  part_one->repr = part_one->data_structure->merge(part_one->repr, list_of_partitions.at(i));
+                  part_one->repr = part_one->data_structure->merge(part_one->repr, list_of_splits.at(i));
                   assert(part_one->repr != invalid_entry);
               }
           } else {    //put the set into part_two
               if (!part_two_first_set) {
-                  part_two->repr = list_of_partitions.at(i);
+                  part_two->repr = list_of_splits.at(i);
                   assert(part_two->repr != invalid_entry);
                   part_two->repr_valid = true;
                   part_two_first_set = true;
               } else {
-                  part_two->repr = part_two->data_structure->merge(part_two->repr, list_of_partitions.at(i));
+                  part_two->repr = part_two->data_structure->merge(part_two->repr, list_of_splits.at(i));
                   assert(part_two->repr != invalid_entry);
               }
           }
@@ -479,11 +479,11 @@ public:
         return std::tuple<std::shared_ptr<UnionFindLeafSet>, std::shared_ptr<UnionFindLeafSet>>(part_one, part_two);
     }
 
-    partition_list get_list_of_partitions() const {
+    split_list get_list_of_splits() const {
         assert(repr != invalid_entry);
-        partition_list ret;
+        split_list ret;
 
-        for (size_t elem : list_of_partitions) {
+        for (size_t elem : list_of_splits) {
             std::shared_ptr<UnionFindLeafSet> temp = std::make_shared<UnionFindLeafSet>(this->data_structure, elem);
             ret.push_back(temp);
         }
@@ -496,5 +496,5 @@ private:
     std::shared_ptr<UnionFind> data_structure;  //pointer to the UnionFind datastructure
     size_t repr; //this is the number of the representative of this set. its an index to the array of the union find data structure
     bool repr_valid = false; //true iff the representative is valid
-    std::vector<leaf_number> list_of_partitions;  //contains the id's of the representatives of the sets
+    std::vector<leaf_number> list_of_splits;  //contains the id's of the representatives of the sets
 };

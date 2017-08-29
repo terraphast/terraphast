@@ -28,13 +28,13 @@ public:
             return scan_unconstraint_leaves(leaves, unrooted);
         } else {
             leaves.apply_constraints(constraints);
-            return traverse_partitions(constraints, leaves, unrooted);
+            return traverse_splits(constraints, leaves, unrooted);
         }
     }
 
 protected:
     inline
-    virtual ResultType traverse_partitions(const std::vector<constraint> &constraints,
+    virtual ResultType traverse_splits(const std::vector<constraint> &constraints,
                                            LeafSet &leaves,
                                            bool unrooted = false) {
         CollectType aggregation = initialize_collect_type();
@@ -43,13 +43,13 @@ protected:
         int depth = 0;
         depth++;
 
-        size_t loop_max = leaves.number_partition_tuples();
+        size_t loop_max = leaves.number_split_tuples();
         //std::vector<ResultType> results(loop_max);
 #pragma omp parallel for if(depth==1)
         for (size_t i = 1; i <= loop_max; i++) {
             std::shared_ptr<LeafSet> part_left;
             std::shared_ptr<LeafSet> part_right;
-            std::tie(part_left, part_right) = leaves.get_nth_partition_tuple(i);
+            std::tie(part_left, part_right) = leaves.get_nth_split_tuple(i);
 
             auto constraints_left = find_constraints(*part_left, constraints);
             auto constraints_right = find_constraints(*part_right, constraints);
@@ -64,7 +64,7 @@ protected:
 
             auto trees = combine_part_results(subtrees_left, subtrees_right);
 #pragma omp critical
-            combine_bipartition_results(aggregation, trees);
+            combine_split_results(aggregation, trees);
         }
         
         return finalize_collect_type(aggregation, unrooted);
@@ -80,7 +80,7 @@ protected:
     virtual ResultType combine_part_results(const ResultType &left_part,
                                             const ResultType &right_part) = 0;
 
-    virtual bool combine_bipartition_results(CollectType &aggregation,
+    virtual bool combine_split_results(CollectType &aggregation,
                                              const ResultType &new_result) = 0;
 };
 
@@ -140,7 +140,7 @@ protected:
     }
 
     inline
-    bool combine_bipartition_results(InnerNodeList &aggregation,
+    bool combine_split_results(InnerNodeList &aggregation,
                                      const Tree &new_result) override {
         aggregation.push_back(std::static_pointer_cast<InnerNode>(new_result));
         return true;
@@ -192,7 +192,7 @@ protected:
     }
 
     inline
-    bool combine_bipartition_results(TreeList &aggregation,
+    bool combine_split_results(TreeList &aggregation,
                                      const TreeList &new_result) override {
         aggregation.insert(aggregation.end(), new_result.begin(),
                            new_result.end());
@@ -242,7 +242,7 @@ protected:
     }
 
     inline
-    bool combine_bipartition_results(mpz_class &aggregation,
+    bool combine_split_results(mpz_class &aggregation,
                                      const mpz_class &new_result) override {
         aggregation += new_result;
         return true;
@@ -252,13 +252,13 @@ protected:
 class CheckIfTerrace : public TerraceAlgorithm<bool> {
 protected:
     inline
-    bool traverse_partitions(const std::vector<constraint> &constraints,
+    bool traverse_splits(const std::vector<constraint> &constraints,
                              LeafSet &leaves,
                              bool) override {
-        if(leaves.number_partition_tuples() > 1) {
+        if(leaves.number_split_tuples() > 1) {
             return true;
         }
-        return TerraceAlgorithm<bool>::traverse_partitions(constraints, leaves);
+        return TerraceAlgorithm<bool>::traverse_splits(constraints, leaves);
     }
 
     inline
@@ -283,7 +283,7 @@ protected:
     }
 
     inline
-    bool combine_bipartition_results(bool &aggregation,
+    bool combine_split_results(bool &aggregation,
                                      const bool &new_result) override {
         aggregation |= new_result;
         return aggregation;
