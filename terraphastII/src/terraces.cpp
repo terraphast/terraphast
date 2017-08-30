@@ -124,7 +124,7 @@ int terraceAnalysis(missingData *m,
 
     assert(rtree != nullptr);
 
-    auto constraints = extract_constraints_from_supertree(rtree, m, id_to_label);
+    auto constraints = extract_constraints_from_comp_tree(rtree, m, id_to_label);
     auto leaves = LeafSet(id_to_label.size());
     mpz_class count = 0;
     if (enumerateTrees) {
@@ -251,7 +251,7 @@ unsigned char getDataMatrix(const missingData *m, size_t speciesNumber,
     return value;
 }
 
-std::vector<constraint> extract_constraints_from_supertree(
+std::vector<constraint> extract_constraints_from_comp_tree(
         const Tree supertree,
         const missingData *missing_data,
         const label_mapper &id_to_label) {

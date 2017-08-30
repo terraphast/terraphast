@@ -161,9 +161,9 @@ void copyDataMatrix(const unsigned char *matrix, missingData *m);
  * @param missing_data the missing data information
  * @return All constraints of the given supertree.
  */
-std::vector<constraint> extract_constraints_from_supertree(
+std::vector<constraint> extract_constraints_from_comp_tree(
         const Tree supertree,
-        const missingData* missing_data,
+        const missingData *missing_data,
         const label_mapper &id_to_label);
 
 /**

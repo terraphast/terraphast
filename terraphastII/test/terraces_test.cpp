@@ -154,7 +154,7 @@ TEST(ExtractConstraintsFromSuperTree, example_from_slides) {
 
     label_mapper id_to_label;
     Tree r_tree = root_tree(tree, example1, id_to_label);
-    auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
+    auto constraints = extract_constraints_from_comp_tree(r_tree, example1, id_to_label);
 
     ASSERT_EQ(constraints.size(), 0);
 
@@ -180,7 +180,7 @@ TEST(FindAllUnrootedTrees, example_from_slides) {
     label_mapper id_to_label;
     Tree r_tree = root_tree(tree, example1, id_to_label);
     auto leaves = LeafSet(id_to_label.size());
-    auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
+    auto constraints = extract_constraints_from_comp_tree(r_tree, example1, id_to_label);
 
     FindAllRootedTrees get_trees;
     ASSERT_EQ(CountAllRootedTrees().scan_terrace(leaves, constraints), 15);
@@ -225,7 +225,7 @@ TEST(FindCompressedUnrootedTree, example_from_slides) {
     label_mapper id_to_label;
     Tree r_tree = root_tree(tree, example1, id_to_label);
     auto leaves = LeafSet(id_to_label.size());
-    auto constraints = extract_constraints_from_supertree(r_tree, example1, id_to_label);
+    auto constraints = extract_constraints_from_comp_tree(r_tree, example1, id_to_label);
 
     FindCompressedTree get_trees;
     auto result = get_trees.scan_terrace(leaves, constraints, true);
