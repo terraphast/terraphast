@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
         printf(" to save the compressed tree to the given <outfile>.\n");
         printf("Use %s <.nwk> <.data> ENUMERATE <outfile>\n", argv[0]);
         printf(" to save all trees to the given <outfile>.\n");
-        std::exit(TERRACE_THINK_ON_YOUR_OWN_ERROR);
+        std::exit(TERRACE_FLAG_CONFLICT_ERROR);
     }
 
     char *read_tree = read_newk_tree(argv[1]);
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
         }
 
         int errorCode = terraceAnalysis(m, read_tree, ta_outspec,
-                                        empiricalTrees, &alliumTerraceSize);
+                                        empiricalTrees, alliumTerraceSize);
         if (errorCode == TERRACE_SUCCESS) {
             char *terraceSizeString = nullptr;
             terraceSizeString = mpz_get_str(terraceSizeString, 10,

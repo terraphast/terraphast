@@ -21,7 +21,7 @@
  -3: entries in data matrix not either 0 or 1
  -4: less than 4 species in input tree
  -5: only one partition in data matrix
- -6: reserved for something you must think about anyway (tree can't be rooted)
+ -6: overflow in number of splits to process
  -7: no output file specified
  -8: input tree is not a binary tree
  -9: there is no root species in the data file (a species present in all partitions)
@@ -29,19 +29,18 @@
  -11: conflict between the set flags; can't perform all actions simultaniously
  */
 
-#define TERRACE_SUCCESS                   0
-#define TERRACE_NEWICK_ERROR             -1
-#define TERRACE_SPECIES_ERROR            -2
-#define TERRACE_MATRIX_ERROR             -3
-#define TERRACE_NUM_SPECIES_ERROR        -4
-#define TERRACE_NUM_PARTITIONS_ERROR     -5
-#define TERRACE_THINK_ON_YOUR_OWN_ERROR  -6
-#define TERRACE_OUTPUT_FILE_ERROR        -7
-
-#define TERRACE_TREE_NOT_BINARY_ERROR    -8
-#define TERRACE_NO_ROOT_SPECIES_ERROR    -9
-#define TERRACE_SPECIES_WITHOUT_PARTITION_ERROR    -10
-#define TERRACE_FLAG_CONFLICT_ERROR -11
+#define TERRACE_SUCCESS                           0
+#define TERRACE_NEWICK_ERROR                     -1
+#define TERRACE_SPECIES_ERROR                    -2
+#define TERRACE_MATRIX_ERROR                     -3
+#define TERRACE_NUM_SPECIES_ERROR                -4
+#define TERRACE_NUM_PARTITIONS_ERROR             -5
+#define TERRACE_SPLIT_COUNT_OVERFLOW_ERROR       -6
+#define TERRACE_OUTPUT_FILE_ERROR                -7
+#define TERRACE_TREE_NOT_BINARY_ERROR            -8
+#define TERRACE_NO_ROOT_SPECIES_ERROR            -9
+#define TERRACE_SPECIES_WITHOUT_PARTITION_ERROR -10
+#define TERRACE_FLAG_CONFLICT_ERROR             -11
 /* to be extended */
 
 /* check for unused return values */
@@ -191,7 +190,7 @@ std::vector<constraint> extract_constraints_from_comp_tree(
  * @return TERRACE_SUCCESS on success, or an error code (see TERRACE_*) on failure
  */
 CHECK_RESULT int terraceAnalysis(missingData *m, const char *newickTreeString,
-        const int ta_outspec, FILE *allTreesOnTerrace, mpz_t *terraceSize);
+        const int ta_outspec, FILE *allTreesOnTerrace, mpz_t terraceSize);
 
 #ifdef __cplusplus
 //TODO move to debug.h or something

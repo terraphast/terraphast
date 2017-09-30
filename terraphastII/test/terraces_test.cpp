@@ -48,7 +48,7 @@ static void test_terrace_analysis(const char *newick_file,
     mpz_init(terraceSize);
     mpz_set_ui(terraceSize, 0);
 
-    int errorCode = terraceAnalysis(m, read_tree, ta_outspec, nullptr, &terraceSize);
+    int errorCode = terraceAnalysis(m, read_tree, ta_outspec, nullptr, terraceSize);
 
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
@@ -85,7 +85,7 @@ static void test_terrace_analysis_with_file(const char *newick_file,
     FILE *file = fopen("test_output", "w");
     assert(file != nullptr);
 
-    int errorCode = terraceAnalysis(m, read_tree, ta_outspec, file, &terraceSize);
+    int errorCode = terraceAnalysis(m, read_tree, ta_outspec, file, terraceSize);
 
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
@@ -288,7 +288,7 @@ TEST(TerracesAnalysis, example1_from_old_main) {
     errorCode = terraceAnalysis(example1, newickString0,
                                 TA_COUNT + TA_ENUMERATE,
                                 f0,
-                                &terraceSize0);
+                                terraceSize0);
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     //now let's calculate terraces for example 2
@@ -296,7 +296,7 @@ TEST(TerracesAnalysis, example1_from_old_main) {
                                 newickString1,
                                 TA_COUNT + TA_ENUMERATE,
                                 f1,
-                                &terraceSize1);
+                                terraceSize1);
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     //the terraces for example input trees 0 and 1 must be of the same size and equal to 15
@@ -309,12 +309,12 @@ TEST(TerracesAnalysis, example1_from_old_main) {
     // there are 15 unique trees.
     // call for example tree 0
     errorCode = terraceAnalysis(example2, newickString0,
-                                TA_COUNT + TA_ENUMERATE, f0, &terraceSize0);
+                                TA_COUNT + TA_ENUMERATE, f0, terraceSize0);
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     // call for example tree 1
     errorCode = terraceAnalysis(example2, newickString1,
-                                TA_COUNT + TA_ENUMERATE, f1, &terraceSize1);
+                                TA_COUNT + TA_ENUMERATE, f1, terraceSize1);
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     //terrace size for both trees must be 1
@@ -355,7 +355,7 @@ TEST(TerracesAnalysis, examle_with_no_root_species) {
 
     copyDataMatrix(weirdDataMatrix, weirdExample);
     //TODO: Should not be an assert! return a corresponding error code instead
-    ASSERT_EQ(terraceAnalysis(weirdExample, weirdTree, TA_COUNT + TA_ENUMERATE, f0, &weirdTerraceSize),
+    ASSERT_EQ(terraceAnalysis(weirdExample, weirdTree, TA_COUNT + TA_ENUMERATE, f0, weirdTerraceSize),
                  TERRACE_NO_ROOT_SPECIES_ERROR);
 
     freeMissingData(weirdExample);
@@ -388,7 +388,7 @@ TEST(TerracesAnalysis, example2_from_old_main) {
     copyDataMatrix(weirdDataMatrix, weirdExample);
 
     int errorCode = terraceAnalysis(weirdExample, weirdTree,
-                                    TA_COUNT + TA_ENUMERATE, f0, &weirdTerraceSize);
+                                    TA_COUNT + TA_ENUMERATE, f0, weirdTerraceSize);
     ASSERT_EQ(errorCode, TERRACE_SUCCESS);
 
     char *weirdTerraceSizeString = nullptr;
@@ -670,7 +670,7 @@ TEST(CheckNewickError, examle_with_corrupt_newick_string_1) {
     copyDataMatrix(dataMatrix,example);
 
     int errorCode;
-    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, terraceSize);
     ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
 
     freeMissingData(example);
@@ -703,7 +703,7 @@ TEST(CheckNewickError, examle_with_corrupt_newick_string_2) {
     copyDataMatrix(dataMatrix,example);
 
     int errorCode;
-    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, terraceSize);
     ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
 
     freeMissingData(example);
@@ -736,7 +736,7 @@ TEST(CheckNewickError, examle_with_corrupt_newick_string_3) {
     copyDataMatrix(dataMatrix,example);
 
     int errorCode;
-    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, terraceSize);
     ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
 
     freeMissingData(example);
@@ -770,7 +770,7 @@ TEST(CheckNewickError, examle_with_corrupt_newick_string_4) {
     copyDataMatrix(dataMatrix,example);
 
     int errorCode;
-    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, terraceSize);
     ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
 
     freeMissingData(example);
@@ -803,7 +803,7 @@ TEST(CheckNewickError, examle_with_corrupt_newick_string_5) {
     copyDataMatrix(dataMatrix,example);
 
     int errorCode;
-    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, terraceSize);
     ASSERT_EQ(errorCode, TERRACE_NEWICK_ERROR);
 
     freeMissingData(example);
@@ -834,7 +834,7 @@ TEST(CheckTreeNotBinaryError, examle_with_not_binary_newick_string_1) {
     copyDataMatrix(dataMatrix,example);
 
     int errorCode;
-    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+    errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, terraceSize);
     ASSERT_EQ(errorCode, TERRACE_TREE_NOT_BINARY_ERROR);
 
     freeMissingData(example);
@@ -867,7 +867,7 @@ TEST(CheckTreeNotBinaryError, examle_with_not_binary_newick_string_2) {
   copyDataMatrix(dataMatrix,example);
 
   int errorCode;
-  errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, &terraceSize);
+  errorCode = terraceAnalysis(example, corruptTree, TA_COUNT + TA_ENUMERATE, f0, terraceSize);
   ASSERT_EQ(errorCode, TERRACE_TREE_NOT_BINARY_ERROR);
 
   freeMissingData(example);

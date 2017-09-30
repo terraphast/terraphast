@@ -24,15 +24,8 @@ int terraceAnalysis(missingData *m,
                     const char *newickTreeString,
                     const int ta_outspec,
                     FILE *allTreesOnTerrace,
-                    mpz_t *terraceSize) {
-    mpz_set_ui(*terraceSize, 0);
-
-    //some debugging print outs
-
-    //dout("read_tree = " << newickTreeString << std::endl);
-    //dout("missing_data = " << std::endl << *m);
-
-    //dout("\n" << missing_data_to_nexus(m) << "\n");
+                    mpz_t terraceSize) {
+    mpz_set_ui(terraceSize, 0);
 
     // figure out what we are supposed to calculate
 
@@ -77,7 +70,7 @@ int terraceAnalysis(missingData *m,
         bool speciesWithAllDataTemp = true;
         bool noData = true;
         for (size_t j = 0; j < m->numberOfPartitions; j++) {
-            if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
+               if (getDataMatrix(m, k, j) == static_cast<unsigned char>(1)) {
                 noData = false;
             } else {
                 assert(getDataMatrix(m, k, j) == static_cast<unsigned char>(0));
@@ -147,7 +140,7 @@ int terraceAnalysis(missingData *m,
         count = algo.scan_terrace(leaves, constraints, true) ? 2 : 0;
     }
 
-    mpz_set(*terraceSize, count.get_mpz_t());
+    mpz_set(terraceSize, count.get_mpz_t());
 
     ntree_destroy(tree);
     return TERRACE_SUCCESS;

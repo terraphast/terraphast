@@ -5,7 +5,7 @@
 int main(int argc, char *argv[]) {
     if (argc < 3) {
         std::cout << "Use " << argv[0] << " <input-data-file> <output-nexus-file>\n";
-        std::exit(TERRACE_THINK_ON_YOUR_OWN_ERROR);
+        std::exit(TERRACE_FLAG_CONFLICT_ERROR);
     }
 
     input_data *read_data = parse_input_data(argv[1]);
